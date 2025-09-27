@@ -3,320 +3,308 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>InspectionWale — Signup / Login</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-  <style>
-    body { background: #fff; color: #0f172a; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; }
-    .signup-card { border-radius:12px; box-shadow: 0 8px 30px rgba(2,6,23,.06); }
-    .proceed-btn { background: #10b981; color: #fff; font-weight:700; border-radius: 12px; padding: 12px 26px; }
-    .small-muted { color:#6b7280; }
-    .toast-demo { position: fixed; right: 16px; bottom: 16px; z-index: 9999; }
+  <title>InspectionWale — SteerEasy</title>
 
-    /* IMAGE: fixed width 500px, preserve aspect ratio and responsive */
-    .cover-img {
-      width: 500px;        /* desired width */
-      height: auto;        /* keep original aspect ratio */
-      max-width: 100%;     /* shrink on smaller screens */
-      object-fit: contain;
-      display: inline-block;
+  <!-- Bootstrap 5 CSS + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Google font -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --brand-red: #e2381b;
+      --muted: #6c7276;
+      --card-bg: #fbfbfb;
+      --soft-gray: #f3f4f5;
+      --icon-green: #2aa68f;
     }
 
-    /* adjust hero spacing on small screens */
-    @media (max-width: 991px) {
-      .cover-img { width: 320px; } /* smaller width on tablets/phones */
+    /* Base */
+    html,body { height:100%; margin:0; font-family: "Roboto", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; color:#222; background:#fff; }
+    a { text-decoration:none; }
+
+    /* NAV overlay */
+    .topbar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 20;
+      
+      backdrop-filter: blur(4px);
+      transition: background-color .25s ease, box-shadow .25s ease;
+    }
+    .topbar.solid {
+      box-shadow: 0 2px 8px rgba(20,20,20,0.06);
+      position: sticky;
+      top: 0;
+    }
+
+    .nav-row { display:flex; align-items:center; gap:12px; width:100%; }
+    .nav-left { flex:0 0 auto; }
+    .nav-center { flex:1 1 auto; display:flex; justify-content:center; }
+    .nav-right { flex:0 0 auto; display:flex; align-items:center; gap:10px; }
+
+    .navbar-brand { color:var(--brand-red); font-weight:700; font-size:20px; }
+    .nav-main { display:flex; gap:8px; list-style:none; margin:0; padding:0; }
+    .nav-main .nav-link { color:#222; font-weight:600; padding:12px 14px; display:block; }
+    .nav-main .nav-link.active, .nav-main .nav-link:hover { color:#000; border-radius:6px; }
+
+    .icon-btn {
+      border:1px solid #e6e6e6;
+      background:#fff;
+      height:42px;
+      width:42px;
+      border-radius:8px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      color:#666;
+    }
+
+    /* HERO carousel overlayed by nav */
+    .hero { padding:0; margin:0; }
+    .hero .carousel,
+    .hero .carousel-inner,
+    .hero .carousel-item {
+      height: 80vh;        /* tall hero by default */
+      min-height: 420px;
+      max-height: 900px;
+    }
+    /* make the hero shorter if you prefer a strip: change to 25vh etc */
+    @media (max-width: 1200px) {
+      .hero .carousel, .hero .carousel-inner, .hero .carousel-item { height: 60vh; }
+    }
+    @media (max-width: 768px) {
+      .hero .carousel, .hero .carousel-inner, .hero .carousel-item { height: 40vh; min-height: 180px; }
+    }
+
+    .hero .carousel-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display:block;
+    }
+
+    /* overlay caption centered */
+    .carousel-caption {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      bottom: auto;
+      text-align: left;
+      left: 8%;
+      right: auto;
+      max-width: 700px;
+    }
+    .carousel-caption h2 {
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: .6rem;
+      text-shadow: 0 6px 20px rgba(0,0,0,0.45);
+      line-height: 1.02;
+    }
+    .carousel-caption p {
+      color: #f5f5f5;
+      font-size: clamp(14px, 1.6vw, 18px);
+      text-shadow: 0 4px 12px rgba(0,0,0,0.45);
+      margin-bottom: 1rem;
+    }
+    .carousel-caption .btn {
+      border-radius: 8px;
+      padding: .65rem 1.25rem;
+      font-weight:700;
+    }
+
+    /* FEATURES + FORM */
+    .why-section { padding:48px 0; background:#fff; }
+    .feature-card{background:var(--card-bg);border-radius:10px;padding:18px;border:1px solid #f0f0f0;display:flex;gap:14px;align-items:center;}
+    .feature-icon{width:52px;height:52px;background:var(--soft-gray);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--icon-green);}
+    .callback-card{border:1px solid #eee;padding:22px;border-radius:8px;background:#fff;box-shadow:0 6px 18px rgba(10,10,10,0.03);}
+    .form-label-small{font-size:.72rem; text-transform:uppercase; color:#7a7f82; font-weight:600; margin-bottom:6px;}
+    .form-control{border-radius:8px;height:46px;padding:10px 14px;}
+    .btn-submit{background:var(--brand-red);border:none;color:#fff;width:100%;padding:12px;border-radius:8px;font-weight:700;margin-top:8px;}
+    .muted-small{color:var(--muted);font-size:.85rem;}
+
+    /* responsive nav order */
+    @media (max-width: 575.98px){
+      .nav-center { order:3; width:100%; }
+      .nav-right { order:2; margin-left:auto; }
+      .nav-left { order:1; }
+      .carousel-caption { left: 6%; right:6%; text-align:center; }
     }
   </style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
-  <div class="container">
-    <a class="navbar-brand" href="#">InspectionWale</a>
-    <div class="ms-auto">
-      <button class="btn btn-success" id="navLoginBtn" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
-    </div>
-  </div>
-</nav>
-
-<section class="py-5">
-  <div class="container">
-    <div class="row gx-5">
-      <div class="col-lg-7">
-        <h1 class="display-5">Let Your Car Do The Talking, <span class="text-success">Not The Mechanic!</span></h1>
-        <p class="text-muted">Beyond Visual Assessment | 3700+ Sensing Areas</p>
-
-        <!-- center the image under the copy -->
-        <div class="text-center mt-3">
-          <img src="/gwagon.avif" alt="Car under cover" class="cover-img rounded-3">
+  <!-- NAV (overlay) -->
+  <header class="topbar" id="siteTopbar" role="banner">
+    <div class="container">
+      <div class="nav-row py-2">
+        <div class="nav-left">
+          <a class="navbar-brand" href="#">InspectionWale</a>
         </div>
-      </div>
 
-      <div class="col-lg-5">
-        <div class="card signup-card p-4">
-          <h4 class="mb-3">Signup</h4>
+        <div class="nav-center">
+          <nav aria-label="Main navigation">
+            <ul class="nav-main">
+              <li><a class="nav-link active text-white" href="#">New Cars</a></li>
+              <li><a class="nav-link text-white" href="#">Used Cars</a></li>
+              
+            </ul>
+          </nav>
+        </div>
 
-          <form id="signupForm" onsubmit="return false;">
-            <div class="mb-3">
-              <label class="form-label small-muted">Name</label>
-              <input id="name" class="form-control" placeholder="Name" required>
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label small-muted">Email</label>
-              <input id="email" type="email" class="form-control" placeholder="Email" required>
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label small-muted">Password</label>
-              <input id="password" type="password" class="form-control" placeholder="Choose a password" required>
-              <div class="form-text small-muted">Password is stored client-side as a hash (demo only).</div>
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label small-muted">Country</label>
-              <select id="country" class="form-select">
-                <option value="+91" selected>India (+91)</option>
-                <option value="+1">United States (+1)</option>
-                <option value="+44">United Kingdom (+44)</option>
-              </select>
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label small-muted">Mobile</label>
-              <input id="mobile" type="tel" class="form-control" placeholder="98765 43210" required>
-            </div>
-
-            <div class="d-grid gap-2 mb-3">
-              <button type="button" id="proceedBtn" class="proceed-btn btn">Proceed</button>
-            </div>
-
-            <div class="text-center mb-2">
-              <small>Already Signed up? <a href="#" id="loginLink">Login</a></small>
-            </div>
-          </form>
-
-          <hr>
-
-          <!-- WhatsApp OTP quick action (demo) -->
-          <div class="mt-3">
-            <h6 class="mb-2">WhatsApp OTP (demo)</h6>
-            <div class="input-group mb-2">
-              <span class="input-group-text" id="waPrefix">+91</span>
-              <input id="waPhone" type="tel" class="form-control" placeholder="Enter phone for WhatsApp">
-            </div>
-            <div class="d-flex gap-2">
-              <button id="sendWhatsOtp" class="btn btn-success flex-grow-1">Send OTP via WhatsApp</button>
-              <button id="simulateSms" class="btn btn-outline-secondary">Simulate SMS</button>
-            </div>
-
-            <div class="mt-3 input-group">
-              <input id="waOtp" class="form-control" placeholder="Enter OTP" />
-              <button id="verifyOtp" class="btn btn-primary">Verify</button>
-            </div>
-          </div>
-
+        <div class="nav-right">
+          <button class="icon-btn d-none d-md-inline-flex" title="Locate" aria-label="Locate"><i class="bi bi-geo-alt"></i></button>
+          <button class="icon-btn" title="Profile" aria-label="Profile"><i class="bi bi-person"></i></button>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </header>
 
-<!-- LOGIN MODAL -->
-<div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content p-3">
-      <div class="modal-header border-0">
-        <h5 class="modal-title">Login</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+  <!-- HERO Carousel -->
+  <section class="hero" aria-label="Promotional banner">
+    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3500">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="/Newimg1.jpeg" class="d-block w-100" alt="Inspection banner 1">
+
+          <!-- Overlay caption (center-left) -->
+          <div class="carousel-caption d-none d-md-block">
+            <h2>Buy Smart, Inspect First</h2>
+            <p>Drive with confidence — get a certified inspection and instant report.</p>
+            <a href="#callbackForm" class="btn btn-danger">Request Callback</a>
+          </div>
+        </div>
+<!-- 
+        <div class="carousel-item">
+          <img src="/gwagon.avif" class="d-block w-100" alt="Inspection banner 3">
+          <div class="carousel-caption d-none d-md-block">
+            <h2>Trusted by Users</h2>
+            <p>4.5/5 user rating — fast, reliable and transparent.</p>
+            <a href="#callbackForm" class="btn btn-danger">Know More</a>
+          </div>
+        </div> -->
       </div>
 
-      <div class="modal-body">
-        <form id="loginForm" onsubmit="return false;">
-          <div class="mb-3">
-            <label class="form-label small-muted">Email</label>
-            <input id="loginEmail" type="email" class="form-control" placeholder="you@example.com" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label small-muted">Password</label>
-            <input id="loginPassword" type="password" class="form-control" placeholder="Password" required>
+      <!-- Optional controls -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev" aria-label="Previous slide">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next" aria-label="Next slide">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- WHY + form -->
+  <section class="why-section">
+    <div class="container">
+      <div class="row gx-5">
+        <div class="col-lg-8">
+          <h3 style="font-weight:700;margin-bottom:18px;">Why Car Inspection by SteerEasy?</h3>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="feature-icon"><i class="bi bi-check-square"></i></div>
+                <div>
+                  <h5 style="margin:0;font-weight:700;">160+</h5>
+                  <p class="muted-small" style="margin:0;">Check points</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="feature-icon"><i class="bi bi-award"></i></div>
+                <div>
+                  <h5 style="margin:0;font-weight:700;">4.5/5</h5>
+                  <p class="muted-small" style="margin:0;">Rated by the users</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="feature-icon"><i class="bi bi-arrow-counterclockwise"></i></div>
+                <div>
+                  <h5 style="margin:0;font-weight:700;">100%</h5>
+                  <p class="muted-small" style="margin:0;">Refunds, in case of cancellations</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="feature-icon"><i class="bi bi-clock"></i></div>
+                <div>
+                  <h5 style="margin:0;font-weight:700;">15 Mins</h5>
+                  <p class="muted-small" style="margin:0;">Get your reports within 15 minutes</p>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div class="d-grid gap-2">
-            <button type="button" id="emailLoginBtn" class="btn btn-success">Sign in</button>
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <h4 style="font-weight:700;margin-top:18px;">What We Check</h4>
+          <p class="muted-small">Our comprehensive inspection covers exterior, interior, engine, suspension, brakes, electrics and service history — backed by documented reports and photos. You can view a sample report for more details.</p>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="callback-card" id="callbackFormSection">
+            <h5 style="font-weight:700;margin-bottom:14px;">Request Callback</h5>
+            <form id="callbackForm">
+              <div class="mb-3">
+                <label class="form-label-small" for="fullName">Full Name</label>
+                <input id="fullName" class="form-control" type="text" placeholder="Full Name" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label-small" for="contactNumber">Contact Number</label>
+                <input id="contactNumber" class="form-control" type="tel" pattern="^\+91\d{10}$" placeholder="+91 Contact Number" required>
+              </div>
+              <button class="btn-submit" type="submit">Submit</button>
+              <p class="muted-small mt-3" style="font-size:.78rem;">
+                By proceeding you agree to the visitor agreement and privacy policy.
+              </p>
+            </form>
+            <div id="formMessage" class="text-success mt-2" style="display:none;">Thank you — we'll call you soon.</div>
           </div>
-        </form>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+  </section>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <footer class="py-4" style="border-top:1px solid #eee;">
+    <div class="container text-center text-muted small">&copy; 2025 InspectionWale. All rights reserved.</div>
+  </footer>
 
-<script>
-(async function(){
-  // ---- small toast helper ----
-  function toast(msg, t = 3000){
-    const el = document.createElement('div');
-    el.style = "position:fixed;right:16px;bottom:16px;background:#111827;color:#fff;padding:10px 14px;border-radius:8px;z-index:9999";
-    el.textContent = msg;
-    document.body.appendChild(el);
-    setTimeout(()=> el.remove(), t);
-  }
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-  // ---- Validation helpers ----
-  function isValidEmail(email){
-    if(!email) return false;
-    // simple but practical email regex for demo
-    const basic = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    return basic.test(email);
-  }
-  function isValidMobile(mobile){
-    if(!mobile) return false;
-    const digits = mobile.replace(/\D/g,'');
-    return digits.length >= 7 && digits.length <= 15;
-  }
+  <script>
+    // callback form handler
+    document.getElementById('callbackForm').addEventListener('submit', function(ev){
+      ev.preventDefault();
+      document.getElementById('formMessage').style.display = 'block';
+      document.getElementById('formMessage').textContent = "Thank you! We'll call you back soon.";
+      this.reset();
+    });
 
-  // ---- Password hashing (SHA-256 demo) ----
-  async function hashPassword(password){
-    const enc = new TextEncoder().encode(password);
-    const buf = await crypto.subtle.digest('SHA-256', enc);
-    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
-  }
-
-  // ---- localStorage helpers (single-user demo) ----
-  function saveUserObj(userObj){
-    localStorage.setItem('iw_user', JSON.stringify(userObj));
-    localStorage.setItem('iw_current_user', userObj.email);
-    localStorage.setItem('iw_logged_in', '1');
-  }
-  function loadUserObj(){
-    const raw = localStorage.getItem('iw_user'); return raw ? JSON.parse(raw) : null;
-  }
-
-  // ---- Signup: block duplicates and save hashed password ----
-  document.getElementById('proceedBtn').addEventListener('click', async function(){
-    const n = document.getElementById('name').value.trim();
-    const e = document.getElementById('email').value.trim().toLowerCase();
-    const p = document.getElementById('password').value;
-    const c = document.getElementById('country').value;
-    const m = document.getElementById('mobile').value.trim();
-
-    if(!n){ toast('Enter name'); return; }
-    if(!isValidEmail(e)){ toast('Enter a valid email address'); return; }
-    if(!p || p.length < 6){ toast('Choose a password (min 6 chars)'); return; }
-    if(!isValidMobile(m)){ toast('Enter valid phone'); return; }
-
-    // Check if user exists (single-user demo storage)
-    const existing = loadUserObj();
-    if (existing && existing.email === e) {
-      toast('User already registered. Please login instead.', 4000);
-      return;
-    }
-
-    const passHash = await hashPassword(p);
-    const userObj = {
-      name: n,
-      email: e,
-      mobile: m.replace(/\s+/g,''),
-      countryPrefix: c,
-      passwordHash: passHash
-    };
-
-    saveUserObj(userObj);
-    toast('Signup successful — redirecting...', 1400);
-    setTimeout(()=> window.location.href = 'welcome.html', 900);
-  });
-
-  // ---- Login with email+password (checks hash) ----
-  document.getElementById('emailLoginBtn').addEventListener('click', async function(){
-    const e = document.getElementById('loginEmail').value.trim().toLowerCase();
-    const p = document.getElementById('loginPassword').value;
-    if(!isValidEmail(e)){ toast('Enter a valid email address'); return; }
-    const stored = loadUserObj();
-    if(!stored || stored.email !== e){ toast('No user found. Please signup first.'); return; }
-    if(!p){ toast('Enter password'); return; }
-    const h = await hashPassword(p);
-    if(h === stored.passwordHash){
-      saveUserObj(stored); // mark logged in
-      toast('Login successful — redirecting...', 900);
-      setTimeout(()=> window.location.href = 'welcome.html', 700);
-    } else {
-      toast('Incorrect password');
-    }
-  });
-
-  // ---- OTP demo (whatsapp + simulate) ----
-  let lastOtp = null; let lastPhone = null;
-  function genOtp(){ return Math.floor(100000 + Math.random()*900000).toString(); }
-  function openWhatsAppWithMessage(phoneDigits, text){
-    window.open('https://wa.me/' + phoneDigits + '?text=' + encodeURIComponent(text), '_blank');
-  }
-
-  document.getElementById('sendWhatsOtp').addEventListener('click', function(){
-    const raw = document.getElementById('waPhone').value.trim();
-    if(!raw){ toast('Enter phone number for WhatsApp'); return; }
-    let phoneDigits = raw.replace(/\D/g,'');
-    if(phoneDigits.length === 10) phoneDigits = '91' + phoneDigits;
-    lastOtp = genOtp(); lastPhone = phoneDigits;
-    openWhatsAppWithMessage(phoneDigits, `Your InspectionWale OTP is: ${lastOtp}\n(This is a demo message).`);
-    toast('WhatsApp opened with OTP message. Paste OTP into field to verify.');
-  });
-
-  document.getElementById('simulateSms').addEventListener('click', function(){
-    const raw = document.getElementById('waPhone').value.trim();
-    if(!raw){ toast('Enter phone before simulating SMS'); return; }
-    let phoneDigits = raw.replace(/\D/g,'');
-    if(phoneDigits.length === 10) phoneDigits = '91' + phoneDigits;
-    lastOtp = genOtp(); lastPhone = phoneDigits;
-    toast('Simulated OTP (SMS): ' + lastOtp, 8000);
-  });
-
-  document.getElementById('verifyOtp').addEventListener('click', function(){
-    const entered = document.getElementById('waOtp').value.trim();
-    if(!lastOtp){ toast('No OTP requested yet'); return; }
-    if(entered === lastOtp){
-      let stored = loadUserObj();
-      if(!stored){
-        // create a minimal user if none exists
-        stored = { name: 'User', email: 'user@example.com', mobile: lastPhone, passwordHash: '' };
-        saveUserObj(stored);
-      } else {
-        saveUserObj(stored); // mark logged in
+    // toggle solid navbar on scroll
+    (function(){
+      const topbar = document.getElementById('siteTopbar');
+      const switchOffset = 120; // px scrolled before nav becomes solid
+      function checkScroll() {
+        if (window.scrollY > switchOffset) topbar.classList.add('solid');
+        else topbar.classList.remove('solid');
       }
-      toast('OTP verified — redirecting to welcome page...', 1200);
-      setTimeout(()=> window.location.href = 'welcome.html', 900);
-    } else {
-      toast('Incorrect OTP — try again', 3000);
-    }
-  });
-
-  // modal send OTP
-  document.getElementById('modalSendOtp').addEventListener('click', function(){
-    const raw = document.getElementById('modalWaPhone').value.trim();
-    if(!raw){ toast('Enter phone'); return; }
-    let phoneDigits = raw.replace(/\D/g,'');
-    if(phoneDigits.length === 10) phoneDigits = '91' + phoneDigits;
-    lastOtp = genOtp(); lastPhone = phoneDigits;
-    openWhatsAppWithMessage(phoneDigits, `Your InspectionWale OTP is: ${lastOtp}`);
-    toast('WhatsApp opened with OTP (demo).');
-  });
-
-  // login link opens modal
-  document.getElementById('loginLink').addEventListener('click', function(e){
-    e.preventDefault();
-    const modal = new bootstrap.Modal(document.getElementById('loginModal'));
-    modal.show();
-  });
-
-  // update wa prefix when country changes
-  const countrySelect = document.getElementById('country');
-  const waPrefix = document.getElementById('waPrefix');
-  countrySelect.addEventListener('change', ()=> waPrefix.textContent = countrySelect.value);
-
-})();
-</script>
-
+      window.addEventListener('scroll', checkScroll, {passive:true});
+      window.addEventListener('load', checkScroll);
+    })();
+  </script>
 </body>
 </html>
