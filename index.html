@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>InspectionWale</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body { background: #fff; color: #0f172a; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+    .brand { font-weight:800; color:#0f172a; }
+    .cta-btn { background: #06b6d4; color:#042f3a; font-weight:700; }
+    .hero-title { font-weight:900; font-size:48px; line-height:1; }
+    .hero-highlight { color:#10b981; } /* green highlight */
+    .signup-card { border-radius:12px; box-shadow: 0 8px 30px rgba(2,6,23,.06); }
+    .form-control:focus { box-shadow: none; border-color: #cbd5e1; }
+    .proceed-btn { background: #10b981; color: #fff; font-weight:700; border-radius: 12px; padding: 12px 26px; }
+    .small-muted { color:#6b7280; }
+    .cover-img { width:100%; height:auto; max-height:420px; object-fit:contain; }
+    @media (max-width: 991px) {
+      .hero-title { font-size:32px; }
+      .cover-img { max-height:260px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+  <div class="container">
+    <a class="navbar-brand brand" href="#">InspectionWale<span class="text-success"></span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item me-3">
+          <a class="nav-link small-muted" href="#"><i class="bi bi-geo-alt-fill text-success"></i> Mumbai</a>
+        </li>
+        <li class="nav-item me-2">
+          <button class="btn btn-outline-success rounded-pill">Book New Car PDI</button>
+        </li>
+        <li class="nav-item">
+          <button class="btn btn-success rounded-pill" id="navLoginBtn" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="py-5">
+  <div class="container">
+    <div class="row align-items-center gx-5">
+      <!-- Left: copy + image -->
+      <div class="col-lg-7">
+        <h1 class="hero-title mb-3">
+          Let Your Car Do The Talking,<br>
+          <span class="hero-highlight">Not The Mechanic!</span>
+        </h1>
+
+        <h5 class="fw-bold">Go Beyond Checklists!</h5>
+        <p class="small-muted mb-4">
+          Beyond Visual Assessment | 3700+ Sensing Areas <br>
+          Before Buying Get A 360° View On Your New Car's Health
+        </p>
+
+        <!-- large cover image -->
+        <!-- Replace src below with the actual path/filename.
+             If you placed the developer-supplied image as `cover.png` in the same folder, keep as is.
+             Or use the actual filename: abbee7d8-d57b-4d90-9af3-c0241d8b20eb.png -->
+        <img src="/gwagon.avif" alt="Car under cover"  class="cover-img rounded-3 mt-3">
+      </div>
+
+      <!-- Right: Signup card -->
+      <div class="col-lg-5">
+        <div class="card signup-card p-4">
+          <h4 class="mb-3">Signup</h4>
+
+          <form id="signupForm" class="mb-0">
+            <div class="mb-3">
+              <label class="form-label small-muted">Name</label>
+              <input id="name" class="form-control" placeholder="Name" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label small-muted">Email</label>
+              <input id="email" type="email" class="form-control" placeholder="Email" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label small-muted">Country</label>
+              <select id="country" class="form-select">
+                <option value="+91" selected>India (+91)</option>
+                <option value="+1">United States (+1)</option>
+                <option value="+44">United Kingdom (+44)</option>
+                <option value="+971">UAE (+971)</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label small-muted">Mobile</label>
+              <input id="mobile" type="tel" class="form-control" placeholder="98765 43210" required>
+            </div>
+
+            <div class="d-grid gap-2 mb-3">
+              <button type="button" id="proceedBtn" class="proceed-btn btn">Proceed</button>
+            </div>
+
+            <div class="text-center mb-3">
+              <small>Already Signed up? <a href="#" id="loginLink">Login</a></small>
+            </div>
+
+            <p class="text-center small-muted mb-0">By Signing In You Agree To Our <a href="#">Terms & Conditions</a></p>
+          </form>
+
+          <hr>
+
+          <!-- WhatsApp OTP quick action (demo) -->
+          <div class="mt-3">
+            <h6 class="mb-2">WhatsApp OTP (demo)</h6>
+            <div class="input-group mb-2">
+              <span class="input-group-text" id="waPrefix">+91</span>
+              <input id="waPhone" type="tel" class="form-control" placeholder="Enter phone for WhatsApp" aria-describedby="waPrefix">
+            </div>
+
+            <div class="d-flex gap-2">
+              <button id="sendWhatsOtp" class="btn btn-success flex-grow-1">Send OTP via WhatsApp</button>
+              <button id="simulateSms" class="btn btn-outline-secondary">Simulate SMS</button>
+            </div>
+
+            <div class="mt-3 input-group">
+              <input id="waOtp" class="form-control" placeholder="Enter OTP" />
+              <button id="verifyOtp" class="btn btn-primary">Verify</button>
+            </div>
+          </div>
+
+        </div> <!-- card -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGIN MODAL -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-3">
+      <div class="modal-header border-0">
+        <h5 class="modal-title">Login</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="loginForm">
+          <div class="mb-3">
+            <label class="form-label small-muted">Email</label>
+            <input id="loginEmail" type="email" class="form-control" placeholder="you@example.com">
+          </div>
+          <div class="mb-3">
+            <label class="form-label small-muted">Password</label>
+            <input id="loginPassword" type="password" class="form-control" placeholder="Password">
+          </div>
+
+          <div class="d-grid gap-2">
+            <button type="button" id="emailLoginBtn" class="btn btn-success">Sign in</button>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+
+        <hr>
+        <div class="text-center small-muted">Or login via WhatsApp OTP (demo)</div>
+
+        <div class="input-group mt-2">
+          <span class="input-group-text">+91</span>
+          <input id="modalWaPhone" class="form-control" placeholder="Mobile for OTP">
+          <button id="modalSendOtp" class="btn btn-success">Send</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap and dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Optional: Bootstrap icons for small bits -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+<script>
+  // Simple client-side demo behaviors (no backend)
+  (function(){
+    // Helper toast
+    function toast(msg, t = 3000) {
+      // small ephemeral alert using native alert for simplicity (you can replace with a nicer toast)
+      const el = document.createElement('div');
+      el.style.position = 'fixed';
+      el.style.right = '16px';
+      el.style.bottom = '16px';
+      el.style.background = '#111827';
+      el.style.color = '#fff';
+      el.style.padding = '10px 14px';
+      el.style.borderRadius = '8px';
+      el.style.zIndex = 9999;
+      el.innerText = msg;
+      document.body.appendChild(el);
+      setTimeout(()=> el.remove(), t);
+    }
+
+    // Basic signup proceed (demo)
+    document.getElementById('proceedBtn').addEventListener('click', function(){
+      const n = document.getElementById('name').value.trim();
+      const e = document.getElementById('email').value.trim();
+      const c = document.getElementById('country').value;
+      const m = document.getElementById('mobile').value.trim();
+      if(!n || !e || !m){ toast('Please complete name, email and mobile'); return; }
+      // In real app you'd POST to backend. Here we simulate sending OTP and open WhatsApp as option:
+      toast('Proceeding — you can use WhatsApp OTP below or check your email (demo).', 4000);
+    });
+
+    // WhatsApp OTP demo logic
+    let lastOtp = null;
+    let lastPhone = null;
+
+    function genOtp(){ return Math.floor(100000 + Math.random()*900000).toString(); }
+
+    function openWhatsAppWithMessage(phoneDigits, text){
+      // phoneDigits must be numbers only, without +. wa.me uses country code + number.
+      const link = 'https://wa.me/' + phoneDigits + '?text=' + encodeURIComponent(text);
+      window.open(link, '_blank');
+    }
+
+    document.getElementById('sendWhatsOtp').addEventListener('click', function(){
+      const raw = document.getElementById('waPhone').value.trim();
+      if(!raw){ toast('Enter phone number for WhatsApp (include country code or use prefix)'); return; }
+      // allow user to input just local number — default +91 if not set
+      let phoneDigits = raw.replace(/[^0-9]/g, '');
+      if(!phoneDigits) { toast('Invalid phone'); return; }
+
+      // if length seems local (10) and no country prefix given, prefix 91
+      if(phoneDigits.length === 10) phoneDigits = '91' + phoneDigits;
+
+      const otp = genOtp();
+      lastOtp = otp; lastPhone = phoneDigits;
+      const msg = `Your Zekardo OTP is: ${otp}\n(This is a demo message — do not share)`;
+      openWhatsAppWithMessage(phoneDigits, msg);
+      toast('WhatsApp opened with OTP message. Paste OTP into field to verify.');
+    });
+
+    document.getElementById('simulateSms').addEventListener('click', function(){
+      const raw = document.getElementById('waPhone').value.trim();
+      if(!raw){ toast('Enter phone before simulating SMS'); return; }
+      let phoneDigits = raw.replace(/[^0-9]/g, '');
+      if(phoneDigits.length === 10) phoneDigits = '91' + phoneDigits;
+      lastOtp = genOtp();
+      lastPhone = phoneDigits;
+      toast('Simulated OTP (SMS): ' + lastOtp, 8000);
+    });
+
+    document.getElementById('verifyOtp').addEventListener('click', function(){
+      const entered = document.getElementById('waOtp').value.trim();
+      if(!lastOtp){ toast('No OTP requested yet'); return; }
+      if(entered === lastOtp){
+        toast('OTP verified — signup/login successful');
+        // clear
+        lastOtp = null;
+        lastPhone = null;
+        document.getElementById('waOtp').value = '';
+      } else {
+        toast('Incorrect OTP — try again');
+      }
+    });
+
+    // Modal OTP send
+    document.getElementById('modalSendOtp').addEventListener('click', function(){
+      const raw = document.getElementById('modalWaPhone').value.trim();
+      if(!raw){ toast('Enter phone'); return; }
+      let phoneDigits = raw.replace(/[^0-9]/g, '');
+      if(phoneDigits.length === 10) phoneDigits = '91' + phoneDigits;
+      const otp = genOtp();
+      lastOtp = otp; lastPhone = phoneDigits;
+      const msg = `Your Zekardo OTP is: ${otp}\n(This is a demo message — do not share)`;
+      openWhatsAppWithMessage(phoneDigits, msg);
+      toast('WhatsApp opened with OTP message. Paste the code to verify (demo).');
+    });
+
+    // Basic email sign-in simulation
+    document.getElementById('emailLoginBtn').addEventListener('click', function(){
+      const e = document.getElementById('loginEmail').value.trim();
+      const p = document.getElementById('loginPassword').value;
+      if(!e || !p){ toast('Enter email & password'); return; }
+      // demo success
+      var loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+      if(loginModal) loginModal.hide();
+      toast('Signed in as ' + e);
+    });
+
+    // "Login" link in signup card opens modal
+    document.getElementById('loginLink').addEventListener('click', function(e){
+      e.preventDefault();
+      var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+      loginModal.show();
+    });
+
+    // set country prefix to waPrefix where applicable
+    const countrySelect = document.getElementById('country');
+    const waPrefix = document.getElementById('waPrefix');
+    countrySelect.addEventListener('change', function(){
+      waPrefix.textContent = countrySelect.value;
+    });
+
+    // populate waPhone prefix if user picks country and mobile
+    document.getElementById('mobile').addEventListener('input', function(){
+      // nothing forced — optional UX improvement could populate waPhone
+    });
+
+  })();
+</script>
+
+</body>
+</html>
