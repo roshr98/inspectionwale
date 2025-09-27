@@ -11,21 +11,9 @@
     .signup-card { border-radius:12px; box-shadow: 0 8px 30px rgba(2,6,23,.06); }
     .proceed-btn { background: #10b981; color: #fff; font-weight:700; border-radius: 12px; padding: 12px 26px; }
     .small-muted { color:#6b7280; }
-    .toast-demo { position: fixed; right: 16px; bottom: 16px; z-index: 9999; }
-
-    /* IMAGE: fixed width 500px, preserve aspect ratio and responsive */
-    .cover-img {
-      width: 500px;        /* desired width */
-      height: auto;        /* keep original aspect ratio */
-      max-width: 100%;     /* shrink on smaller screens */
-      object-fit: contain;
-      display: inline-block;
-    }
-
-    /* adjust hero spacing on small screens */
-    @media (max-width: 991px) {
-      .cover-img { width: 320px; } /* smaller width on tablets/phones */
-    }
+    .cover-img { width: 500px; height: auto; max-width: 100%; object-fit: contain; display: inline-block; }
+    @media (max-width: 991px) { .cover-img { width: 320px; } }
+    .hidden { display:none !important; }
   </style>
 </head>
 <body>
@@ -45,8 +33,6 @@
       <div class="col-lg-7">
         <h1 class="display-5">Let Your Car Do The Talking, <span class="text-success">Not The Mechanic!</span></h1>
         <p class="text-muted">Beyond Visual Assessment | 3700+ Sensing Areas</p>
-
-        <!-- center the image under the copy -->
         <div class="text-center mt-3">
           <img src="/gwagon.avif" alt="Car under cover" class="cover-img rounded-3">
         </div>
@@ -61,18 +47,14 @@
               <label class="form-label small-muted">Name</label>
               <input id="name" class="form-control" placeholder="Name" required>
             </div>
-
             <div class="mb-3">
               <label class="form-label small-muted">Email</label>
               <input id="email" type="email" class="form-control" placeholder="Email" required>
             </div>
-
             <div class="mb-3">
               <label class="form-label small-muted">Password</label>
               <input id="password" type="password" class="form-control" placeholder="Choose a password" required>
-              <div class="form-text small-muted">Password is stored client-side as a hash (demo only).</div>
             </div>
-
             <div class="mb-3">
               <label class="form-label small-muted">Country</label>
               <select id="country" class="form-select">
@@ -81,38 +63,27 @@
                 <option value="+44">United Kingdom (+44)</option>
               </select>
             </div>
-
             <div class="mb-3">
               <label class="form-label small-muted">Mobile</label>
               <input id="mobile" type="tel" class="form-control" placeholder="98765 43210" required>
             </div>
-
             <div class="d-grid gap-2 mb-3">
               <button type="button" id="proceedBtn" class="proceed-btn btn">Proceed</button>
             </div>
-
             <div class="text-center mb-2">
               <small>Already Signed up? <a href="#" id="loginLink">Login</a></small>
             </div>
           </form>
 
-          <hr>
-
-          <!-- WhatsApp OTP quick action (demo) -->
-          <div class="mt-3">
-            <h6 class="mb-2">WhatsApp OTP (demo)</h6>
-            <div class="input-group mb-2">
-              <span class="input-group-text" id="waPrefix">+91</span>
-              <input id="waPhone" type="tel" class="form-control" placeholder="Enter phone for WhatsApp">
+          <!-- Inline confirmation box -->
+          <div id="confirmBox" class="mt-3 hidden">
+            <h6>Enter confirmation code</h6>
+            <div class="mb-2">
+              <input id="confirmCode" class="form-control" placeholder="Confirmation code">
             </div>
             <div class="d-flex gap-2">
-              <button id="sendWhatsOtp" class="btn btn-success flex-grow-1">Send OTP via WhatsApp</button>
-              <button id="simulateSms" class="btn btn-outline-secondary">Simulate SMS</button>
-            </div>
-
-            <div class="mt-3 input-group">
-              <input id="waOtp" class="form-control" placeholder="Enter OTP" />
-              <button id="verifyOtp" class="btn btn-primary">Verify</button>
+              <button id="confirmBtn" class="btn btn-success">Confirm</button>
+              <button id="resendBtn" class="btn btn-outline-secondary">Resend Code</button>
             </div>
           </div>
 
@@ -130,7 +101,6 @@
         <h5 class="modal-title">Login</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-
       <div class="modal-body">
         <form id="loginForm" onsubmit="return false;">
           <div class="mb-3">
@@ -141,7 +111,6 @@
             <label class="form-label small-muted">Password</label>
             <input id="loginPassword" type="password" class="form-control" placeholder="Password" required>
           </div>
-
           <div class="d-grid gap-2">
             <button type="button" id="emailLoginBtn" class="btn btn-success">Sign in</button>
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -152,171 +121,86 @@
   </div>
 </div>
 
+<div id="toastRoot" style="position:fixed;right:16px;bottom:16px;z-index:9999;"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
-(async function(){
-  // ---- small toast helper ----
+<script type="module">
+  import Amplify, { Auth } from "https://cdn.jsdelivr.net/npm/aws-amplify@5.1.5/dist/aws-amplify.min.js";
+
+  const REGION = "us-east-1";
+  const USER_POOL_ID = "us-east-1_fPAJKVVeg";
+  const APP_CLIENT_ID = "4k10euult50cmg0g9oct0ehgen";
+
+  Amplify.configure({
+    Auth: {
+      region: REGION,
+      userPoolId: "us-east-1_fPAJKVVeg",
+      userPoolWebClientId: "4k10euult50cmg0g9oct0ehgen",
+    }
+  });
+
   function toast(msg, t = 3000){
+    const root = document.getElementById('toastRoot');
     const el = document.createElement('div');
-    el.style = "position:fixed;right:16px;bottom:16px;background:#111827;color:#fff;padding:10px 14px;border-radius:8px;z-index:9999";
-    el.textContent = msg;
-    document.body.appendChild(el);
+    el.className = 'p-2 mb-2 text-white rounded';
+    el.style.background = '#111827';
+    el.innerText = msg;
+    root.appendChild(el);
     setTimeout(()=> el.remove(), t);
   }
 
-  // ---- Validation helpers ----
-  function isValidEmail(email){
-    if(!email) return false;
-    // simple but practical email regex for demo
-    const basic = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    return basic.test(email);
-  }
-  function isValidMobile(mobile){
-    if(!mobile) return false;
-    const digits = mobile.replace(/\D/g,'');
-    return digits.length >= 7 && digits.length <= 15;
-  }
+  function isValidEmail(email){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email); }
 
-  // ---- Password hashing (SHA-256 demo) ----
-  async function hashPassword(password){
-    const enc = new TextEncoder().encode(password);
-    const buf = await crypto.subtle.digest('SHA-256', enc);
-    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
-  }
-
-  // ---- localStorage helpers (single-user demo) ----
-  function saveUserObj(userObj){
-    localStorage.setItem('iw_user', JSON.stringify(userObj));
-    localStorage.setItem('iw_current_user', userObj.email);
-    localStorage.setItem('iw_logged_in', '1');
-  }
-  function loadUserObj(){
-    const raw = localStorage.getItem('iw_user'); return raw ? JSON.parse(raw) : null;
-  }
-
-  // ---- Signup: block duplicates and save hashed password ----
-  document.getElementById('proceedBtn').addEventListener('click', async function(){
-    const n = document.getElementById('name').value.trim();
-    const e = document.getElementById('email').value.trim().toLowerCase();
-    const p = document.getElementById('password').value;
-    const c = document.getElementById('country').value;
-    const m = document.getElementById('mobile').value.trim();
-
-    if(!n){ toast('Enter name'); return; }
-    if(!isValidEmail(e)){ toast('Enter a valid email address'); return; }
-    if(!p || p.length < 6){ toast('Choose a password (min 6 chars)'); return; }
-    if(!isValidMobile(m)){ toast('Enter valid phone'); return; }
-
-    // Check if user exists (single-user demo storage)
-    const existing = loadUserObj();
-    if (existing && existing.email === e) {
-      toast('User already registered. Please login instead.', 4000);
-      return;
-    }
-
-    const passHash = await hashPassword(p);
-    const userObj = {
-      name: n,
-      email: e,
-      mobile: m.replace(/\s+/g,''),
-      countryPrefix: c,
-      passwordHash: passHash
-    };
-
-    saveUserObj(userObj);
-    toast('Signup successful — redirecting...', 1400);
-    setTimeout(()=> window.location.href = 'welcome.html', 900);
+  // Signup
+  document.getElementById('proceedBtn').addEventListener('click', async ()=>{
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim().toLowerCase();
+    const password = document.getElementById('password').value;
+    if(!isValidEmail(email)) return toast("Invalid email");
+    try {
+      await Auth.signUp({ username: email, password, attributes: { email, name } });
+      toast("Signup started, check email for confirmation code.");
+      localStorage.setItem("lastSignupEmail", email);
+      document.getElementById("confirmBox").classList.remove("hidden");
+    } catch(e){ toast("Signup failed: " + e.message); }
   });
 
-  // ---- Login with email+password (checks hash) ----
-  document.getElementById('emailLoginBtn').addEventListener('click', async function(){
-    const e = document.getElementById('loginEmail').value.trim().toLowerCase();
-    const p = document.getElementById('loginPassword').value;
-    if(!isValidEmail(e)){ toast('Enter a valid email address'); return; }
-    const stored = loadUserObj();
-    if(!stored || stored.email !== e){ toast('No user found. Please signup first.'); return; }
-    if(!p){ toast('Enter password'); return; }
-    const h = await hashPassword(p);
-    if(h === stored.passwordHash){
-      saveUserObj(stored); // mark logged in
-      toast('Login successful — redirecting...', 900);
-      setTimeout(()=> window.location.href = 'welcome.html', 700);
-    } else {
-      toast('Incorrect password');
-    }
+  // Confirm
+  document.getElementById('confirmBtn').addEventListener('click', async ()=>{
+    const code = document.getElementById('confirmCode').value.trim();
+    const email = localStorage.getItem("lastSignupEmail");
+    try {
+      await Auth.confirmSignUp(email, code);
+      toast("Confirmed! Now login.");
+      document.getElementById("confirmBox").classList.add("hidden");
+    } catch(e){ toast("Confirm failed: " + e.message); }
   });
 
-  // ---- OTP demo (whatsapp + simulate) ----
-  let lastOtp = null; let lastPhone = null;
-  function genOtp(){ return Math.floor(100000 + Math.random()*900000).toString(); }
-  function openWhatsAppWithMessage(phoneDigits, text){
-    window.open('https://wa.me/' + phoneDigits + '?text=' + encodeURIComponent(text), '_blank');
-  }
-
-  document.getElementById('sendWhatsOtp').addEventListener('click', function(){
-    const raw = document.getElementById('waPhone').value.trim();
-    if(!raw){ toast('Enter phone number for WhatsApp'); return; }
-    let phoneDigits = raw.replace(/\D/g,'');
-    if(phoneDigits.length === 10) phoneDigits = '91' + phoneDigits;
-    lastOtp = genOtp(); lastPhone = phoneDigits;
-    openWhatsAppWithMessage(phoneDigits, `Your InspectionWale OTP is: ${lastOtp}\n(This is a demo message).`);
-    toast('WhatsApp opened with OTP message. Paste OTP into field to verify.');
+  document.getElementById('resendBtn').addEventListener('click', async ()=>{
+    const email = localStorage.getItem("lastSignupEmail");
+    try { await Auth.resendSignUp(email); toast("Code resent."); }
+    catch(e){ toast("Resend failed: " + e.message); }
   });
 
-  document.getElementById('simulateSms').addEventListener('click', function(){
-    const raw = document.getElementById('waPhone').value.trim();
-    if(!raw){ toast('Enter phone before simulating SMS'); return; }
-    let phoneDigits = raw.replace(/\D/g,'');
-    if(phoneDigits.length === 10) phoneDigits = '91' + phoneDigits;
-    lastOtp = genOtp(); lastPhone = phoneDigits;
-    toast('Simulated OTP (SMS): ' + lastOtp, 8000);
+  // Login
+  document.getElementById('emailLoginBtn').addEventListener('click', async ()=>{
+    const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+    const password = document.getElementById('loginPassword').value;
+    try {
+      await Auth.signIn(email, password);
+      toast("Login successful — redirecting...");
+      setTimeout(()=> window.location.href = "welcome.html", 800);
+    } catch(e){ toast("Login failed: " + e.message); }
   });
 
-  document.getElementById('verifyOtp').addEventListener('click', function(){
-    const entered = document.getElementById('waOtp').value.trim();
-    if(!lastOtp){ toast('No OTP requested yet'); return; }
-    if(entered === lastOtp){
-      let stored = loadUserObj();
-      if(!stored){
-        // create a minimal user if none exists
-        stored = { name: 'User', email: 'user@example.com', mobile: lastPhone, passwordHash: '' };
-        saveUserObj(stored);
-      } else {
-        saveUserObj(stored); // mark logged in
-      }
-      toast('OTP verified — redirecting to welcome page...', 1200);
-      setTimeout(()=> window.location.href = 'welcome.html', 900);
-    } else {
-      toast('Incorrect OTP — try again', 3000);
-    }
-  });
-
-  // modal send OTP
-  document.getElementById('modalSendOtp').addEventListener('click', function(){
-    const raw = document.getElementById('modalWaPhone').value.trim();
-    if(!raw){ toast('Enter phone'); return; }
-    let phoneDigits = raw.replace(/\D/g,'');
-    if(phoneDigits.length === 10) phoneDigits = '91' + phoneDigits;
-    lastOtp = genOtp(); lastPhone = phoneDigits;
-    openWhatsAppWithMessage(phoneDigits, `Your InspectionWale OTP is: ${lastOtp}`);
-    toast('WhatsApp opened with OTP (demo).');
-  });
-
-  // login link opens modal
-  document.getElementById('loginLink').addEventListener('click', function(e){
+  document.getElementById('loginLink').addEventListener('click', e=>{
     e.preventDefault();
     const modal = new bootstrap.Modal(document.getElementById('loginModal'));
     modal.show();
   });
-
-  // update wa prefix when country changes
-  const countrySelect = document.getElementById('country');
-  const waPrefix = document.getElementById('waPrefix');
-  countrySelect.addEventListener('change', ()=> waPrefix.textContent = countrySelect.value);
-
-})();
 </script>
 
 </body>
 </html>
+
