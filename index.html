@@ -32,7 +32,6 @@
       left: 0;
       width: 100%;
       z-index: 20;
-      
       backdrop-filter: blur(4px);
       transition: background-color .25s ease, box-shadow .25s ease;
     }
@@ -40,6 +39,7 @@
       box-shadow: 0 2px 8px rgba(20,20,20,0.06);
       position: sticky;
       top: 0;
+      background: #fff;
     }
 
     .nav-row { display:flex; align-items:center; gap:12px; width:100%; }
@@ -51,6 +51,19 @@
     .nav-main { display:flex; gap:8px; list-style:none; margin:0; padding:0; }
     .nav-main .nav-link { color:#222; font-weight:600; padding:12px 14px; display:block; }
     .nav-main .nav-link.active, .nav-main .nav-link:hover { color:#000; border-radius:6px; }
+
+    /* Header links over hero (white by default) */
+    .topbar .nav-center .nav-link {
+      color: #fff !important;
+      background: transparent;
+    }
+    .topbar .nav-center .nav-link.active {
+      background: rgba(0,0,0,0.18);
+      color: #fff !important;
+      font-weight:700;
+      padding:8px 14px;
+      border-radius:6px;
+    }
 
     .icon-btn {
       border:1px solid #e6e6e6;
@@ -73,7 +86,6 @@
       min-height: 420px;
       max-height: 900px;
     }
-    /* make the hero shorter if you prefer a strip: change to 25vh etc */
     @media (max-width: 1200px) {
       .hero .carousel, .hero .carousel-inner, .hero .carousel-item { height: 60vh; }
     }
@@ -151,9 +163,9 @@
         <div class="nav-center">
           <nav aria-label="Main navigation">
             <ul class="nav-main">
-              <li><a class="nav-link active text-white" href="#">New Cars</a></li>
-              <li><a class="nav-link text-white" href="#">Used Cars</a></li>
-              
+              <!-- header links will trigger tabs via JS -->
+              <li><a class="nav-link text-white" href="#buyer" role="tab" aria-controls="buyer" aria-selected="true">Buyers</a></li>
+              <li><a class="nav-link text-white" href="#seller" role="tab" aria-controls="seller" aria-selected="false">Sellers</a></li>
             </ul>
           </nav>
         </div>
@@ -171,7 +183,7 @@
     <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3500">
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img src="/Newimg1.jpeg" class="d-block w-100" alt="Inspection banner 1">
+          <img src="/Images/Banner.jpeg" class="d-block w-100" alt="Inspection banner 1">
 
           <!-- Overlay caption (center-left) -->
           <div class="carousel-caption d-none d-md-block">
@@ -180,24 +192,7 @@
             <a href="#callbackForm" class="btn btn-danger">Request Callback</a>
           </div>
         </div>
-<!-- 
-        <div class="carousel-item">
-          <img src="/gwagon.avif" class="d-block w-100" alt="Inspection banner 3">
-          <div class="carousel-caption d-none d-md-block">
-            <h2>Trusted by Users</h2>
-            <p>4.5/5 user rating — fast, reliable and transparent.</p>
-            <a href="#callbackForm" class="btn btn-danger">Know More</a>
-          </div>
-        </div> -->
       </div>
-
-      <!-- Optional controls -->
-      <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev" aria-label="Previous slide">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next" aria-label="Next slide">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      </button>
     </div>
   </section>
 
@@ -206,15 +201,14 @@
     <div class="container">
       <div class="row gx-5">
         <div class="col-lg-8">
-          <h3 style="font-weight:700;margin-bottom:18px;">Why Car Inspection by SteerEasy?</h3>
+          <h3 style="font-weight:700;margin-bottom:18px;">Why Us ?</h3>
 
           <div class="row g-3 mb-3">
             <div class="col-md-6">
               <div class="feature-card">
                 <div class="feature-icon"><i class="bi bi-check-square"></i></div>
                 <div>
-                  <h5 style="margin:0;font-weight:700;">160+</h5>
-                  <p class="muted-small" style="margin:0;">Check points</p>
+                  <h5 style="margin:0;font-weight:700;">Detailed Inspection</h5>
                 </div>
               </div>
             </div>
@@ -223,8 +217,7 @@
               <div class="feature-card">
                 <div class="feature-icon"><i class="bi bi-award"></i></div>
                 <div>
-                  <h5 style="margin:0;font-weight:700;">4.5/5</h5>
-                  <p class="muted-small" style="margin:0;">Rated by the users</p>
+                  <h5 style="margin:0;font-weight:700;">Easy to understand reports</h5>
                 </div>
               </div>
             </div>
@@ -233,8 +226,7 @@
               <div class="feature-card">
                 <div class="feature-icon"><i class="bi bi-arrow-counterclockwise"></i></div>
                 <div>
-                  <h5 style="margin:0;font-weight:700;">100%</h5>
-                  <p class="muted-small" style="margin:0;">Refunds, in case of cancellations</p>
+                  <h5 style="margin:0;font-weight:700;">Unbiased</h5>
                 </div>
               </div>
             </div>
@@ -243,37 +235,266 @@
               <div class="feature-card">
                 <div class="feature-icon"><i class="bi bi-clock"></i></div>
                 <div>
-                  <h5 style="margin:0;font-weight:700;">15 Mins</h5>
-                  <p class="muted-small" style="margin:0;">Get your reports within 15 minutes</p>
+                  <h5 style="margin:0;font-weight:700;">Fast Turnaround</h5>
                 </div>
               </div>
             </div>
           </div>
 
           <h4 style="font-weight:700;margin-top:18px;">What We Check</h4>
-          <p class="muted-small">Our comprehensive inspection covers exterior, interior, engine, suspension, brakes, electrics and service history — backed by documented reports and photos. You can view a sample report for more details.</p>
+          <p class="muted-small">
+            Our comprehensive inspection covers exterior, interior, engine, suspension, brakes, electrics and service history — backed by documented reports and photos. You can view a sample report for more details.
+          </p>
+
+          <!-- Buyer / Seller Buttons (nav-pills) -->
+          <ul class="nav nav-pills mb-3" id="buyerSellerTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="buyer-tab" data-bs-toggle="tab" data-bs-target="#buyer" type="button" role="tab" aria-controls="buyer" aria-selected="true">
+                Buyers
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="seller-tab" data-bs-toggle="tab" data-bs-target="#seller" type="button" role="tab" aria-controls="seller" aria-selected="false">
+                Sellers
+              </button>
+            </li>
+          </ul>
+
+          <!-- Tab Content -->
+          <div class="tab-content" id="buyerSellerTabContent">
+            <!-- Buyer Content -->
+            <div class="tab-pane fade show active" id="buyer" role="tabpanel" aria-labelledby="buyer-tab">
+              <div class="p-3 border rounded bg-light">
+                <h5>For Buyers</h5>
+                <p>Get complete peace of mind before purchasing a used car. Our inspection ensures the car is free from hidden issues, accident history, and gives you a clear estimate of its value.</p>
+                <ul>
+                  <li>160+ check points</li>
+                  <li>Accident & flood damage check</li>
+                  <li>Fair price evaluation</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Seller Content -->
+            <div class="tab-pane fade" id="seller" role="tabpanel" aria-labelledby="seller-tab">
+              <div class="p-3 border rounded bg-light">
+                <h5>For Sellers</h5>
+                <p>Boost buyer confidence and sell faster. Provide potential buyers with a certified inspection report to justify your asking price and close deals quickly.</p>
+                <ul>
+                  <li>Transparent inspection report</li>
+                  <li>Increases trust with buyers</li>
+                  <li>Helps in faster sales</li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="col-lg-4">
           <div class="callback-card" id="callbackFormSection">
             <h5 style="font-weight:700;margin-bottom:14px;">Request Callback</h5>
             <form id="callbackForm">
+              
+              <!-- First Name -->
               <div class="mb-3">
-                <label class="form-label-small" for="fullName">Full Name</label>
-                <input id="fullName" class="form-control" type="text" placeholder="Full Name" required>
+                <label class="form-label-small" for="firstName">First Name</label>
+                <input id="firstName" class="form-control" type="text" placeholder="First Name" required>
               </div>
+
+              <!-- Email -->
+              <div class="mb-3">
+                <label class="form-label-small" for="email">Email</label>
+                <input id="email" class="form-control" type="email" placeholder="example@email.com" required>
+              </div>
+
+              <!-- Phone -->
               <div class="mb-3">
                 <label class="form-label-small" for="contactNumber">Contact Number</label>
-                <input id="contactNumber" class="form-control" type="tel" pattern="^\+91\d{10}$" placeholder="+91 Contact Number" required>
+                <input id="contactNumber" class="form-control" 
+                       type="tel" 
+                       placeholder="10 digit mobile number"
+                       pattern="^\d{10}$" 
+                       maxlength="10" 
+                       required>
               </div>
+
+              <!-- Model -->
+              <div class="mb-3">
+                <label class="form-label-small" for="model">Car Model</label>
+                <input id="model" class="form-control" type="text" placeholder="e.g. Honda City" required>
+              </div>
+
+              <!-- Year -->
+              <div class="mb-3">
+                <label class="form-label-small" for="year">Year</label>
+                <input id="year" class="form-control" type="number" placeholder="e.g. 2020" min="1980" max="2025" required>
+              </div>
+
+              <!-- KMs Driven -->
+              <div class="mb-3">
+                <label class="form-label-small" for="kmsDriven">KMs Driven</label>
+                <input id="kmsDriven" class="form-control" type="number" placeholder="e.g. 45000" required>
+              </div>
+
+              <!-- No. of Owners -->
+              <div class="mb-3">
+                <label class="form-label-small" for="owners">No. of Owners</label>
+                <select id="owners" class="form-control" required>
+                  <option value="">Select</option>
+                  <option value="1">1st Owner</option>
+                  <option value="2">2nd Owner</option>
+                  <option value="3">3rd Owner</option>
+                  <option value="4">4th Owner or more</option>
+                </select>
+              </div>
+
+              <!-- Submit -->
               <button class="btn-submit" type="submit">Submit</button>
+
               <p class="muted-small mt-3" style="font-size:.78rem;">
                 By proceeding you agree to the visitor agreement and privacy policy.
               </p>
             </form>
-            <div id="formMessage" class="text-success mt-2" style="display:none;">Thank you — we'll call you soon.</div>
+
+            <div id="formMessage" class="text-success mt-2" style="display:none;">
+              Thank you — we'll call you soon.
+            </div>
           </div>
         </div>
+
+      </div>
+
+      <div class="row gx-5">
+        <div class="col-lg-8">
+         <h4 style="font-weight:700;margin-top:18px;">If you’re buying a car, you must know its market value and depreciation to avoid overpaying and to understand future resale worth.</h4>
+          <p class="muted-small">
+          Our Car Inspection Includes:
+
+          </p>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="feature-icon"><img src="/Icons/Enginecheck.png" width="52" height="52" alt="Engine Check Icon"></div>
+                <div>
+                  <h5 style="margin:0;font-weight:700;">Engine Check – overall performance & health</h5>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="feature-icon"><img src="/Icons/testdrive.png" width="52" height="52" alt="Test Drive Icon"></div>
+                <div>
+                  <h5 style="margin:0;font-weight:700;">Test Drive (3–5 km) – to spot hidden issues</h5>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="feature-icon"><img src="/Icons/Suspensioncheck.png" width="52" height="52" alt="Brakes & Suspension Icon"></div>
+                <div>
+                  <h5 style="margin:0;font-weight:700;">Brakes & Suspension – for safe handling</h5>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="feature-icon"><img src="/Icons/Tirecheck.png" width="52" height="52" alt="Tyres Assessment Icon"></div>
+                <div>
+                  <h5 style="margin:0;font-weight:700;">Tyres Assessment – wear, grip & safety</h5>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="feature-icon"><img src="/Icons/Electriccheck.png" width="52" height="52" alt="AC & Electricals Icon"></div>
+                <div>
+                  <h5 style="margin:0;font-weight:700;">AC & Electricals – cooling & proper function</h5>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="feature-icon"><img src="/Icons/Interiorcheck.png" width="52" height="52" alt="Interior & Accessories Icon"></div>
+                <div>
+                  <h5 style="margin:0;font-weight:700;">Interior & Accessories – comfort & condition</h5>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="feature-icon"><img src="/Icons/Paintcheck.png" width="52" height="52" alt="Exterior & Paint Check Icon"></div>
+                <div>
+                  <h5 style="margin:0;font-weight:700;">Exterior & Paint Check – scratches, dents, repaint signs</h5>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="feature-icon"><img src="/Icons/Accidentcheck.png" width="52" height="52" alt="Structural Damage Icon"></div>
+                <div>
+                  <h5 style="margin:0;font-weight:700;">Structural Damage – accident or frame issues</h5>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="feature-icon"><img src="/Icons/FireDamage.png" width="52" height="52" alt="Flood & Fire Damage Icon"></div>
+                <div>
+                  <h5 style="margin:0;font-weight:700;">Flood & Fire Damage – hidden past problems</h5>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="feature-icon"><img src="/Icons/factoryfitted.png" width="52" height="52" alt="Factory-Fitted Parts Icon"></div>
+                <div>
+                  <h5 style="margin:0;font-weight:700;">Factory-Fitted Parts – doors & glass originality</h5>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="feature-icon"><img src="/Icons/Documentcheck.png" width="52" height="52" alt="Documents Check Icon"></div>
+                <div>
+                  <h5 style="margin:0;font-weight:700;">Documents Check – ownership & records</h5>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="feature-icon"><img src="/Icons/PricingAssistance.png" width="52" height="52" alt="Pricing Assistance Icon"></div>
+                <div>
+                  <h5 style="margin:0;font-weight:700;">Pricing Assistance – fair value guidance</h5>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="feature-icon"><img src="/Icons/Reportcost.png" width="52" height="52" alt="Repair Cost Estimate Icon"></div>
+                <div>
+                  <h5 style="margin:0;font-weight:700;">Repair Cost Estimate – to fix current issues</h5>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="feature-icon"><img src="/Icons/Marketprice.png" width="52" height="52" alt="Market Value Icon"></div>
+                <div>
+                  <h5 style="margin:0;font-weight:700;">Market Value of Car – accurate resale worth</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      
+        
+
+        
+
       </div>
     </div>
   </section>
@@ -305,6 +526,108 @@
       window.addEventListener('scroll', checkScroll, {passive:true});
       window.addEventListener('load', checkScroll);
     })();
+
+    // ===== Sync header nav links with bootstrap tabs (so clicking header links shows the correct tab) =====
+    (function(){
+      // header links (topbar)
+      const headerLinks = document.querySelectorAll('.topbar .nav-center .nav-link[href^="#"]');
+
+      headerLinks.forEach(link => {
+        link.addEventListener('click', function(e){
+          e.preventDefault(); // prevent hash jump
+          const target = this.getAttribute('href'); // e.g. #buyer
+          if (!target) return;
+          // find the corresponding tab-button (nav-pills use data-bs-target)
+          const tabButton = document.querySelector('[data-bs-target="' + target + '"], #' + target.slice(1) + '-tab');
+          if (tabButton) {
+            const tab = new bootstrap.Tab(tabButton);
+            tab.show();
+          }
+        });
+      });
+
+      // when a tab is shown (via nav-pills or programmatically), update header active state
+      const pillsContainer = document.getElementById('buyerSellerTab');
+      if (pillsContainer) {
+        pillsContainer.addEventListener('shown.bs.tab', function(e){
+          // e.target is the newly activated tab trigger (button)
+          const target = e.target.getAttribute('data-bs-target') || e.target.getAttribute('href');
+          // remove active from header links and add to matching one
+          document.querySelectorAll('.topbar .nav-center .nav-link').forEach(l => l.classList.remove('active'));
+          const headerLink = document.querySelector('.topbar .nav-center .nav-link[href="' + target + '"]');
+          if (headerLink) headerLink.classList.add('active');
+        });
+      }
+
+      // initial sync on load: set header active according to the active pill
+      document.addEventListener('DOMContentLoaded', function(){
+        const activeBtn = document.querySelector('#buyerSellerTab button.active');
+        if (activeBtn) {
+          const target = activeBtn.getAttribute('data-bs-target') || activeBtn.getAttribute('href');
+          const headerLink = document.querySelector('.topbar .nav-center .nav-link[href="' + target + '"]');
+          if (headerLink) headerLink.classList.add('active');
+        }
+      });
+    })();
   </script>
+  <script>
+  // callback form handler
+  document.getElementById('callbackForm').addEventListener('submit', function(ev){
+    ev.preventDefault();
+    document.getElementById('formMessage').style.display = 'block';
+    document.getElementById('formMessage').textContent = "Thank you! We'll call you back soon.";
+    this.reset();
+  });
+
+  // toggle solid navbar on scroll
+  (function(){
+    const topbar = document.getElementById('siteTopbar');
+    const switchOffset = 120; // px scrolled before nav becomes solid
+    function checkScroll() {
+      if (window.scrollY > switchOffset) topbar.classList.add('solid');
+      else topbar.classList.remove('solid');
+    }
+    window.addEventListener('scroll', checkScroll, {passive:true});
+    window.addEventListener('load', checkScroll);
+  })();
+
+  // ===== Sync header nav links with bootstrap tabs AND smooth scroll =====
+  (function(){
+    const headerLinks = document.querySelectorAll('.topbar .nav-center .nav-link[href^="#"]');
+
+    headerLinks.forEach(link => {
+      link.addEventListener('click', function(e){
+        e.preventDefault(); // prevent default jump
+        const target = this.getAttribute('href'); // #buyer or #seller
+        if (!target) return;
+
+        // Show tab
+        const tabButton = document.querySelector('[data-bs-target="' + target + '"], #' + target.slice(1) + '-tab');
+        if (tabButton) {
+          const tab = new bootstrap.Tab(tabButton);
+          tab.show();
+        }
+
+        // Smooth scroll to the section
+        const section = document.querySelector(target);
+        if (section) {
+          section.scrollIntoView({behavior: "smooth", block: "start"});
+        }
+      });
+    });
+
+    // Keep header nav in sync when tabs are switched manually
+    const pillsContainer = document.getElementById('buyerSellerTab');
+    if (pillsContainer) {
+      pillsContainer.addEventListener('shown.bs.tab', function(e){
+        const target = e.target.getAttribute('data-bs-target');
+        document.querySelectorAll('.topbar .nav-center .nav-link').forEach(l => l.classList.remove('active'));
+        const headerLink = document.querySelector('.topbar .nav-center .nav-link[href="' + target + '"]');
+        if (headerLink) headerLink.classList.add('active');
+      });
+    }
+  })();
+</script>
+
 </body>
 </html>
