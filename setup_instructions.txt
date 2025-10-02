@@ -1,0 +1,36 @@
+
+SETUP INSTRUCTIONS (also provided in the GitHub zip root README):
+1) Download the zip and extract into your local clone of https://github.com/roshr98/inspectionwale
+   - Using Git Bash:
+     unzip /path/to/inspectionwale_project.zip -d /path/to/your/local/inspectionwale
+   - Or extract via Windows Explorer into the repo root.
+
+2) From Git Bash (in repo root):
+   git checkout -b develop
+   git add .
+   git commit -m "scaffold: add inspectionwale monorepo scaffold for pdf-generator and infra"
+   git push origin develop
+
+3) Create feature branch:
+   git checkout -b feature/pdf-generator develop
+   git push -u origin feature/pdf-generator
+
+4) Install backend dependencies (requires Node 18+):
+   cd backend/pdf-generator
+   npm ci
+
+5) Run local PDF render test (will download Chromium on first run):
+   node handler.local.js
+   -> outputs backend/pdf-generator/sample_output.pdf
+
+6) Build Docker image (optional, for local container testing):
+   docker build -t inspectionwale/pdf-generator backend/pdf-generator
+
+7) To run container locally (example):
+   docker run --rm -v %CD%/backend/pdf-generator:/app inspectionwale/pdf-generator node handler.local.js
+
+NOTES:
+- For frontend, place your Amplify app under 'frontend/' folder. The InspectorForm component is at frontend/src/components/InspectorForm.jsx
+- Ensure AWS credentials are configured when deploying infra or pushing images to ECR.
+- Recommended Node version: 18.x (LTS).
+- See the included .github/workflows for CI examples.

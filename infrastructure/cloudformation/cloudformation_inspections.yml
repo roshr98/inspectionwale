@@ -1,0 +1,80 @@
+
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'InspectionWale basic infra: S3 bucket and DynamoDB table'
+Resources:
+  InspectionDataBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub inspectionwale-data-${AWS::AccountId}
+      VersioningConfiguration: { Status: Enabled }
+      LifecycleConfiguration:
+        Rules:
+          - Id: "MoveOldPhotosToIA"
+            Status: Enabled
+            Prefix: "raw-uploads/"
+            Transition:
+              - StorageClass: STANDARD_IA
+                TransitionInDays: 30
+  InspectionsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Inspections
+      AttributeDefinitions:
+        - AttributeName: inspectionId
+          AttributeType: S
+        - AttributeName: customerId
+          AttributeType: S
+        - AttributeName: createdAt
+          AttributeType: S
+      KeySchema:
+        - AttributeName: inspectionId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      GlobalSecondaryIndexes:
+        - IndexName: CustomerCreatedAtIndex
+          KeySchema:
+            - AttributeName: customerId
+              KeyType: HASH
+            - AttributeName: createdAt
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+  PdfLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub InspectionWalePdfLambdaRole-${AWS::AccountId}
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: PdfLambdaPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:GetObject
+                Resource: !Sub arn:aws:s3:::inspectionwale-data-${AWS::AccountId}/*
+              - Effect: Allow
+                Action:
+                  - dynamodb:GetItem
+                  - dynamodb:PutItem
+                  - dynamodb:UpdateItem
+                  - dynamodb:Query
+                Resource: !GetAtt InspectionsTable.Arn
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: arn:aws:logs:*:*:*
+Outputs:
+  InspectionsTableName:
+    Value: !Ref InspectionsTable
+    Export:
+      Name: InspectionsTableName

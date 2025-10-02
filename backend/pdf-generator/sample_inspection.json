@@ -1,0 +1,73 @@
+{
+  "inspectionId": "MH04KD2255-20251002-001",
+  "inspectionDate": "2025-10-02",
+  "logoUrl": "https://via.placeholder.com/150x48.png?text=InspectionWale+Logo",
+  "vehicle": {
+    "regNumber": "MH04KD2255",
+    "makeModel": "Maruti Brezza",
+    "fuelType": "Diesel",
+    "manufactureDate": "2019-04-01",
+    "chassisNumber": "MA3NYF81SKD535417",
+    "engineNumber": "D13A-5818272",
+    "registrationDate": "2019-09-19",
+    "ownersCount": 2
+  },
+  "summary": {
+    "isAccidental": "Yes",
+    "floodDamage": "No",
+    "fireDamage": "No",
+    "highlights": "Car has impact on front and rear both"
+  },
+  "sections": {
+    "exterior": {
+      "bonnet": {
+        "condition": "Good",
+        "paintDepth": 345
+      },
+      "frontBumper": {
+        "condition": "Repainted"
+      },
+      "windshield": {
+        "status": "Replaced"
+      }
+    },
+    "interior": {
+      "dashCondition": "Good",
+      "acVents": "Yes",
+      "musicSystem": "Yes"
+    },
+    "engine": {
+      "battery": "Good",
+      "oilLeak": "No",
+      "estimatedRepairCost": 0
+    },
+    "tires": [
+      {
+        "position": "front_l",
+        "brand": "Yokohama",
+        "remainingPct": "90-100"
+      },
+      {
+        "position": "front_r",
+        "brand": "Bridgestone",
+        "remainingPct": "70-80"
+      }
+    ],
+    "structure": {
+      "comments": "Minor repairs on front members"
+    },
+    "testDrive": {
+      "notes": "Brakes OK; steering slightly stiff"
+    }
+  },
+  "images": {
+    "front_1": "https://via.placeholder.com/400x300.png?text=Front+1",
+    "front_2": "https://via.placeholder.com/400x300.png?text=Front+2",
+    "front_3": "https://via.placeholder.com/400x300.png?text=Front+3"
+  },
+  "documents": {
+    "chassisPlateImage": "https://via.placeholder.com/400x300.png?text=Chassis+Plate",
+    "rcImage": "https://via.placeholder.com/400x300.png?text=RC+Image",
+    "cngPlateImage": "https://via.placeholder.com/400x300.png?text=CNG+Plate"
+  }
+}
