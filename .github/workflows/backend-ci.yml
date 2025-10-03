@@ -1,6 +1,5 @@
 name: Backend CI - Build & Push ECR & Update Lambda
 
-# Run on pushes to branches you use for backend work.
 on:
   push:
     branches:
@@ -20,7 +19,8 @@ jobs:
       AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
       ECR_REPOSITORY: inspectionwale/pdf-generator
       IMAGE_TAG: ${{ github.sha }}
-      LAMBDA_FUNCTION: ${{ secrets.LAMBDA_FUNCTION }} # optional - leave empty if you don't want auto-update
+      # read the secret into env (can be empty)
+      LAMBDA_FUNCTION: ${{ secrets.LAMBDA_FUNCTION }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -58,12 +58,12 @@ jobs:
           docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest
 
       - name: Update Lambda function image (optional)
-        if: ${{ secrets.LAMBDA_FUNCTION != '' }}
+        if: ${{ env.LAMBDA_FUNCTION != '' }}
         run: |
-          # If function exists, update to the new image; otherwise print a helpful message.
-          if aws lambda get-function --function-name "${{ secrets.LAMBDA_FUNCTION }}" --region $AWS_REGION >/dev/null 2>&1; then
+          echo "Attempting to update Lambda: ${LAMBDA_FUNCTION}"
+          if aws lambda get-function --function-name "${LAMBDA_FUNCTION}" --region $AWS_REGION >/dev/null 2>&1; then
             aws lambda update-function-code \
-              --function-name "${{ secrets.LAMBDA_FUNCTION }}" \
+              --function-name "${LAMBDA_FUNCTION}" \
               --image-uri ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:${IMAGE_TAG} \
               --region $AWS_REGION
             echo "Lambda updated to image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:${IMAGE_TAG}"
