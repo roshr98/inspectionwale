@@ -1,134 +1,246 @@
-
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>InspectionWale - Vehicle Inspection Report</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Inspection Report - {{inspectionId}}</title>
   <style>
+    /* Page setup for A4 printing */
     @page { size: A4; margin: 18mm; }
-    body { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color:#222; margin:0; padding:0; }
-    .container { width: 100%; max-width: 800px; margin: 0 auto; }
-    header { display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid #004a99; padding-bottom:8px; margin-bottom:10px; }
-    .brand { display:flex; align-items:center; gap:12px; }
-    .brand img { height:48px; }
-    .title { font-size:18px; font-weight:700; color:#004a99; }
-    .meta { text-align:right; font-size:11px; color:#555; }
-    h2 { font-size:14px; margin:8px 0; color:#004a99; }
-    .section { margin-bottom:10px; }
-    .two-col { display:flex; gap:12px; }
-    .col { flex:1; }
-    table { width:100%; border-collapse:collapse; font-size:12px; }
-    td, th { padding:6px; vertical-align:top; }
-    .label { font-weight:700; width: 40%; color:#333; }
-    .img-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:6px; margin-top:6px; }
-    .img-grid img { width:100%; height:90px; object-fit:cover; border:1px solid #ccc; }
-    .notes { background:#f7f9fc; padding:8px; border-radius:4px; font-size:12px; }
-    .small { font-size:11px; color:#666; }
-    footer { margin-top:12px; border-top:1px dashed #ccc; padding-top:8px; font-size:11px; color:#666; }
-    @media print {
-      header, footer { color-adjust: exact; -webkit-print-color-adjust: exact; }
+    html, body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: #222;
+      font-size: 12px;
+      line-height: 1.35;
+      margin: 0;
+      padding: 0;
     }
+
+    .sheet {
+      width: 210mm;
+      min-height: 297mm;
+      padding: 12mm;
+      box-sizing: border-box;
+      background: white;
+    }
+
+    /* Header */
+    header {
+      display:flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      border-bottom: 1px solid #e6e6e6;
+      padding-bottom: 8px;
+    }
+    .logo img {
+      width: 150px;
+      height: 48px;
+      object-fit: contain;
+      display:block;
+    }
+    .report-meta {
+      text-align: right;
+      font-size: 11px;
+      color: #555;
+    }
+    .title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-top: 8px;
+      margin-bottom: 4px;
+    }
+
+    /* Intro */
+    .vehicle-info {
+      display:flex;
+      gap: 12px;
+      margin-top: 10px;
+      margin-bottom: 12px;
+    }
+    .vehicle-block {
+      flex: 1;
+      padding: 8px;
+      background: #fafafa;
+      border: 1px solid #eee;
+      border-radius: 6px;
+    }
+    .vehicle-block h4 { margin: 0 0 6px 0; font-size: 13px; }
+    .vehicle-block p { margin: 2px 0; font-size: 12px; color: #333; }
+
+    /* Summary */
+    .summary {
+      margin: 12px 0;
+      padding: 10px;
+      border-left: 4px solid #0073bb;
+      background: #fbfdff;
+    }
+    .summary p { margin: 4px 0; color: #222; }
+
+    /* Sections */
+    section.inspection-section {
+      margin: 14px 0;
+      page-break-inside: avoid;
+    }
+    section.inspection-section h3 {
+      font-size: 14px;
+      margin: 6px 0 8px 0;
+      color: #174e7b;
+      border-bottom: 1px dashed #e6e6e6;
+      padding-bottom: 6px;
+    }
+    .items { display:block; list-style:none; padding:0; margin:0; }
+    .item { margin-bottom: 6px; display:flex; gap: 8px; align-items:flex-start; }
+    .item .label { width:160px; color:#666; font-weight:600; }
+    .item .value { flex:1; color:#222; }
+
+    /* Image grid */
+    .images-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .images-grid .img-wrap {
+      width: 140px;
+      height: 100px;
+      border: 1px solid #e6e6e6;
+      background: #fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow: hidden;
+      border-radius: 4px;
+    }
+    .images-grid img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: cover;
+      display:block;
+    }
+
+    /* Footer */
+    footer {
+      position: absolute;
+      bottom: 12mm;
+      left: 12mm;
+      right: 12mm;
+      font-size: 10px;
+      color: #777;
+      border-top: 1px solid #eee;
+      padding-top: 6px;
+      display:flex;
+      justify-content: space-between;
+    }
+
+    /* Helpers for mustache conditional rendering */
+    .hidden { display:none; }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="sheet">
     <header>
-      <div class="brand">
-        <img src="{{logoUrl}}" alt="InspectionWale Logo" />
-        <div>
-          <div class="title">InspectionWale - Vehicle Inspection Report</div>
-          <div class="small">Rebranded from Whizzcheck</div>
-        </div>
+      <div class="logo">
+        <!-- logoUrl is expected to be a full URL (S3 public or presigned); fallback to DEFAULT logo handled in handler -->
+        <img src="{{logoUrl}}" alt="InspectionWale logo" />
       </div>
-      <div class="meta">
-        <div>Inspection ID: {{inspectionId}}</div>
-        <div>Date: {{inspectionDate}}</div>
+      <div class="report-meta">
+        <div>Inspection ID: <strong>{{inspectionId}}</strong></div>
+        <div>Date: <strong>{{inspectionDate}}</strong></div>
+        <div>Inspector: <strong>{{inspectorName}}</strong></div>
       </div>
     </header>
 
-    <section class="section">
-      <h2>Vehicle Registration Details</h2>
-      <table>
-        <tr><td class="label">Registration Number</td><td>{{vehicle.regNumber}}</td><td class="label">Make / Model</td><td>{{vehicle.makeModel}}</td></tr>
-        <tr><td class="label">Chassis Number</td><td>{{vehicle.chassisNumber}}</td><td class="label">Engine Number</td><td>{{vehicle.engineNumber}}</td></tr>
-        <tr><td class="label">Manufacture Date</td><td>{{vehicle.manufactureDate}}</td><td class="label">Registration Date</td><td>{{vehicle.registrationDate}}</td></tr>
-        <tr><td class="label">Fuel Type</td><td>{{vehicle.fuelType}}</td><td class="label">Owners</td><td>{{vehicle.ownersCount}}</td></tr>
-      </table>
-    </section>
+    <main>
+      <div class="title">Vehicle Inspection Report</div>
 
-    <section class="section">
-      <h2>Key Highlights</h2>
-      <div class="notes">
-        <div><strong>Accidental:</strong> {{summary.isAccidental}}</div>
-        <div><strong>Flood Damage:</strong> {{summary.floodDamage}}</div>
-        <div><strong>Fire Damage:</strong> {{summary.fireDamage}}</div>
-        <div><strong>Top Comments:</strong> {{summary.highlights}}</div>
-      </div>
-    </section>
+      <div class="vehicle-info">
+        <div class="vehicle-block">
+          <h4>Vehicle</h4>
+          <p><strong>Registration:</strong> {{vehicle.regNumber}}</p>
+          <p><strong>Make / Model:</strong> {{vehicle.makeModel}}</p>
+          <p><strong>VIN:</strong> {{vehicle.vin}}</p>
+          <p><strong>Odometer:</strong> {{vehicle.odometer}}</p>
+        </div>
 
-    <section class="section">
-      <h2>Exterior / Body</h2>
-      <table>
-        <tr><td class="label">Bonnet</td><td>{{sections.exterior.bonnet.condition}} (Paint depth: {{sections.exterior.bonnet.paintDepth}})</td></tr>
-        <tr><td class="label">Front Bumper</td><td>{{sections.exterior.frontBumper.condition}}</td></tr>
-        <tr><td class="label">Windshield</td><td>{{sections.exterior.windshield.status}}</td></tr>
-      </table>
-      <div class="img-grid">
-        <img src="{{images.front_1}}" alt="Front view 1" />
-        <img src="{{images.front_2}}" alt="Front view 2" />
-        <img src="{{images.front_3}}" alt="Front view 3" />
+        <div class="vehicle-block">
+          <h4>Customer</h4>
+          <p><strong>Name:</strong> {{customer.name}}</p>
+          <p><strong>Phone:</strong> {{customer.phone}}</p>
+          <p><strong>Email:</strong> {{customer.email}}</p>
+          <p><strong>Address:</strong> {{customer.address}}</p>
+        </div>
       </div>
-    </section>
 
-    <section class="section two-col">
-      <div class="col">
-        <h2>Interior</h2>
-        <table>
-          <tr><td class="label">Dashboard</td><td>{{sections.interior.dashCondition}}</td></tr>
-          <tr><td class="label">AC Vents</td><td>{{sections.interior.acVents}}</td></tr>
-          <tr><td class="label">Music System</td><td>{{sections.interior.musicSystem}}</td></tr>
-        </table>
+      <div class="summary">
+        <strong>Summary</strong>
+        <p><strong>Accidental:</strong> {{summary.isAccidental}}</p>
+        <p><strong>Flood Damage:</strong> {{summary.floodDamage}}</p>
+        <p><strong>Fire Damage:</strong> {{summary.fireDamage}}</p>
+        <p><strong>Highlights:</strong> {{summary.highlights}}</p>
       </div>
-      <div class="col">
-        <h2>Engine</h2>
-        <table>
-          <tr><td class="label">Battery</td><td>{{sections.engine.battery}}</td></tr>
-          <tr><td class="label">Oil Leak</td><td>{{sections.engine.oilLeak}}</td></tr>
-          <tr><td class="label">Estimated Repair Cost</td><td>{{sections.engine.estimatedRepairCost}}</td></tr>
-        </table>
-      </div>
-    </section>
 
-    <section class="section">
-      <h2>Tires & Wheels</h2>
-      <table>
-        <tr><td class="label">Front LHS</td><td>{{sections.tires.0.remainingPct}} - {{sections.tires.0.brand}}</td></tr>
-        <tr><td class="label">Front RHS</td><td>{{sections.tires.1.remainingPct}} - {{sections.tires.1.brand}}</td></tr>
-        <tr><td class="label">Spare</td><td>{{sections.tires.spare.brand}} - {{sections.tires.spare.remainingPct}}</td></tr>
-      </table>
-    </section>
+      <!-- Sections: expects sections to be an array of {title, items: [{label, value}]} -->
+      {{#sections}}
+      <section class="inspection-section">
+        <h3>{{title}}</h3>
+        <ul class="items">
+          {{#items}}
+            <li class="item">
+              <div class="label">{{label}}</div>
+              <div class="value">{{value}}</div>
+            </li>
+          {{/items}}
+        </ul>
+      </section>
+      {{/sections}}
 
-    <section class="section">
-      <h2>Structure & Test Drive</h2>
-      <div class="notes">
-        <div><strong>Structure:</strong> {{sections.structure.comments}}</div>
-        <div><strong>Test Drive Notes:</strong> {{sections.testDrive.notes}}</div>
-      </div>
-    </section>
+      <!-- Fallback if sections not present but simple key-values exist -->
+      {{^sections}}
+      <section class="inspection-section">
+        <h3>Details</h3>
+        <ul class="items">
+          {{#vehicle}}
+            <li class="item">
+              <div class="label">Reg Number</div>
+              <div class="value">{{vehicle.regNumber}}</div>
+            </li>
+          {{/vehicle}}
+        </ul>
+      </section>
+      {{/sections}}
 
-    <section class="section">
-      <h2>Documents & Images</h2>
-      <div class="img-grid">
-        <img src="{{documents.chassisPlateImage}}" alt="Chassis plate" />
-        <img src="{{documents.rcImage}}" alt="RC Image" />
-        <img src="{{documents.cngPlateImage}}" alt="CNG plate" />
-      </div>
-    </section>
+      <!-- Images gallery: expects images to be an array of {title, url} -->
+      {{#images}}
+      <section class="inspection-section">
+        <h3>Images</h3>
+        <div class="images-grid">
+          {{#images}}
+            <div class="img-wrap">
+              <img src="{{url}}" alt="{{title}}">
+            </div>
+          {{/images}}
+        </div>
+      </section>
+      {{/images}}
+
+      <!-- Documents (list) -->
+      {{#documents}}
+      <section class="inspection-section">
+        <h3>Documents</h3>
+        <ul>
+          {{#documents}}
+            <li>{{name}} — <small>{{note}}</small></li>
+          {{/documents}}
+        </ul>
+      </section>
+      {{/documents}}
+
+    </main>
 
     <footer>
-      <div class="small">Disclaimer: InspectionWale offers visual inspection reports. Mechanical condition beyond visual inspection is not guaranteed. Refer to the original report. </div>
-      <div class="small">Report generated by InspectionWale</div>
+      <div>Generated by InspectionWale</div>
+      <div>Report ID: {{inspectionId}} • Generated at {{generatedAt}}</div>
     </footer>
   </div>
 </body>

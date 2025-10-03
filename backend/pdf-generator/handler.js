@@ -28,7 +28,7 @@ const s3 = new AWS.S3();
 const ddb = new AWS.DynamoDB.DocumentClient();
 
 const TEMPLATE_PATH = path.join(__dirname, 'render_template.html');
-const DEFAULT_LOGO = 'https://via.placeholder.com/150x48.png?text=InspectionWale+Logo';
+const DEFAULT_LOGO = process.env.DEFAULT_LOGO_URL || 'https://inspectionwale-data-381328846826.s3.us-east-1.amazonaws.com/Inspectionwale_logo.png';
 
 // helper
 function isValidString(s) {
