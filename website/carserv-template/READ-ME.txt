@@ -1,0 +1,30 @@
+  =>  Template Name    : CarServ - Car Repair HTML Template
+
+  =>  Template Link    : https://htmlcodex.com/car-repair-html-template
+
+  =>  Template License : https://htmlcodex.com/license (or read the LICENSE.txt file)
+
+  =>  Template Author  : HTML Codex
+
+  =>  Author Website   : https://htmlcodex.com
+
+  =>  About HTML Codex : HTML Codex is one of the top creators and publishers of Free HTML templates, HTML landing pages, HTML email templates and HTML snippets in the world. Read more at ( https://htmlcodex.com/about-us )
+
+  Integration notes for InspectionWale
+  -----------------------------------
+  This copy of the CarServ template has been lightly branded for InspectionWale and wired to the local API endpoint /api/quote.
+  If you want me to integrate InspectionWale fully into the template and host it under the same app, I can do that.
+
+  Inputs I need from you to complete a full integration:
+   - Confirm API base URL (if your backend will be hosted at a separate URL) or confirm that /api/quote on this server should be used.
+   - The email address you want to use as SES sender (e.g. hello@inspectionwale.com) and whether SES is available in your AWS account.
+   - (Optional) Google Places API key & Place ID if you want to integrate live reviews into the template.
+   - Any branding assets (final logo PNG, preferred hero banner if different from /Images/Banner.jpeg).
+
+  How to preview locally
+  ----------------------
+  Start a local static server from the repo root and open:
+  http://localhost:8000/carserv-template/index.html
+
+  Quick command:
+    python -m http.server 8000

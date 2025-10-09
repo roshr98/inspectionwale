@@ -64,26 +64,55 @@ function createTransport(){
 }
 
 app.post('/api/callback', async (req,res)=>{
-  const {name,mobile,model,city} = req.body || {}
-  if(!name || !mobile) return res.status(400).json({error:'name and mobile required'})
+  const {firstName,lastName,mobile,email,location,carType} = req.body || {}
+  if(!firstName || !mobile) return res.status(400).json({error:'firstName and mobile required'})
 
   try{
-    await saveCallback({name,mobile,model,city})
+    const payload = { firstName,lastName,mobile,email,location,carType }
 
-    const transporter = await createTransport()
-    const to = process.env.NOTIFY_EMAIL || 'hello@inpection.com'
-    const subject = `Callback request from ${name}`
-    const text = `Callback request:\n\nName: ${name}\nMobile: ${mobile}\nCar: ${model || '-'}\nCity: ${city || '-'}\nReceived: ${new Date().toISOString()}`
-
-  const info = await transporter.sendMail({from: process.env.FROM_EMAIL || 'no-reply@inpection.com',to,subject,text})
-
-    // If using ethereal, include preview URL
-    let preview = null
-    if(nodemailer.getTestMessageUrl && info){
-      preview = nodemailer.getTestMessageUrl(info)
+    // Save to DynamoDB if configured, else save to file
+    if(process.env.QUOTES_TABLE){
+      try{
+        const ddb = new DynamoDBClient({ region: process.env.AWS_REGION || 'ap-south-1' })
+        const ddbDoc = DynamoDBDocumentClient.from(ddb)
+        await ddbDoc.send(new PutCommand({ TableName: process.env.QUOTES_TABLE, Item: { id: String(Date.now()), ...payload, receivedAt: new Date().toISOString() } }))
+      }catch(e){ console.error('Dynamo save failed',e); await saveToFile('callbacks.json',payload) }
+    } else {
+      await saveToFile('callbacks.json',payload)
     }
 
-    res.json({ok:true,preview})
+    // send notification and thank-you to user
+    const notifyTo = process.env.NOTIFY_EMAIL || 'hello@inpection.com'
+    const subject = `Callback request from ${firstName} ${lastName || ''}`
+    const adminText = `Callback request:\n\nName: ${firstName} ${lastName || ''}\nMobile: ${mobile}\nEmail: ${email || '-'}\nLocation: ${location || '-'}\nCar type: ${carType || '-'}\nReceived: ${new Date().toISOString()}`
+
+    // notify admin
+    try{
+      if(process.env.AWS_REGION && process.env.SES_FROM){
+        const sesClient = new SESClient({ region: process.env.AWS_REGION })
+        await sesClient.send(new SendEmailCommand({ Source: process.env.SES_FROM, Destination: { ToAddresses: [notifyTo] }, Message: { Subject: { Data: subject }, Body: { Text: { Data: adminText } } } }))
+      } else {
+        const transporter = await createTransport()
+        await transporter.sendMail({ from: process.env.FROM_EMAIL || 'no-reply@inpection.com', to: notifyTo, subject, text: adminText })
+      }
+    }catch(err){ console.error('notify failed',err) }
+
+    // thank-you email to user if email provided
+    if(email){
+      const userSubj = 'Thanks for requesting a quote'
+      const userText = `Hi ${firstName},\n\nThanks for requesting a quote. We have received your details and will get back to you shortly.\n\nRegards,\nInspectionWale`;
+      try{
+        if(process.env.AWS_REGION && process.env.SES_FROM){
+          const sesClient = new SESClient({ region: process.env.AWS_REGION })
+          await sesClient.send(new SendEmailCommand({ Source: process.env.SES_FROM, Destination: { ToAddresses: [email] }, Message: { Subject: { Data: userSubj }, Body: { Text: { Data: userText } } } }))
+        } else {
+          const transporter = await createTransport()
+          await transporter.sendMail({ from: process.env.FROM_EMAIL || 'no-reply@inpection.com', to: email, subject: userSubj, text: userText })
+        }
+      }catch(err){ console.error('send to user failed',err) }
+    }
+
+    return res.json({ ok: true })
   }catch(err){
     console.error(err)
     res.status(500).json({error:'server_error'})
@@ -110,29 +139,53 @@ app.post('/api/login', async (req,res)=>{
 
 // Quote endpoint - save and send email via SES if configured else nodemailer
 app.post('/api/quote', async (req,res)=>{
-  const {name,mobile,model,city} = req.body || {}
-  if(!name || !mobile) return res.status(400).json({error:'name and mobile required'})
+  // Accept fields: firstName,lastName,mobile,email,location,carType
+  const { firstName,lastName,mobile,email,location,carType } = req.body || {}
+  if(!firstName || !mobile) return res.status(400).json({ error: 'firstName and mobile required' })
   try{
-    await saveToFile('quotes.json',{name,mobile,model,city})
-    const subject = `Quote request from ${name}`
-    const text = `Quote request:\n\nName: ${name}\nMobile: ${mobile}\nCar: ${model || '-'}\nCity: ${city || '-'}\nReceived: ${new Date().toISOString()}`
+    const payload = { firstName,lastName,mobile,email,location,carType,receivedAt:new Date().toISOString() }
 
-    // Use SES if AWS creds present
-    if(process.env.AWS_REGION && process.env.SES_FROM && process.env.SES_TO){
-      const client = new SESClient({region:process.env.AWS_REGION})
-      const cmd = new SendEmailCommand({
-        Destination:{ToAddresses:[process.env.SES_TO]},
-        Message:{Subject:{Data:subject},Body:{Text:{Data:text}}},
-        Source:process.env.SES_FROM
-      })
-      await client.send(cmd)
-      return res.json({ok:true,via:'ses'})
+    // Save to DynamoDB if configured
+    if(process.env.QUOTES_TABLE){
+      try{
+        const ddb = new DynamoDBClient({ region: process.env.AWS_REGION || 'ap-south-1' })
+        const ddbDoc = DynamoDBDocumentClient.from(ddb)
+        await ddbDoc.send(new PutCommand({ TableName: process.env.QUOTES_TABLE, Item: { id: String(Date.now()), ...payload } }))
+      }catch(e){ console.error('Dynamo save failed',e); await saveToFile('quotes.json',payload) }
+    } else {
+      await saveToFile('quotes.json',payload)
     }
 
-    // fallback to nodemailer
-    const transporter = await createTransport()
-    const info = await transporter.sendMail({from: process.env.FROM_EMAIL || 'no-reply@inpection.com',to: process.env.NOTIFY_EMAIL || 'hello@inpection.com',subject,text})
-    return res.json({ok:true,preview: nodemailer.getTestMessageUrl ? nodemailer.getTestMessageUrl(info) : null})
+    // send admin notification
+    const adminTo = process.env.NOTIFY_EMAIL || 'hello@inpection.com'
+    const subject = `Quote request from ${firstName} ${lastName || ''}`
+    const adminText = `Quote request:\n\nName: ${firstName} ${lastName || ''}\nMobile: ${mobile}\nEmail: ${email || '-'}\nLocation: ${location || '-'}\nCar type: ${carType || '-'}\nReceived: ${payload.receivedAt}`
+    try{
+      if(process.env.AWS_REGION && process.env.SES_FROM){
+        const sesClient = new SESClient({ region: process.env.AWS_REGION })
+        await sesClient.send(new SendEmailCommand({ Source: process.env.SES_FROM, Destination: { ToAddresses: [adminTo] }, Message: { Subject: { Data: subject }, Body: { Text: { Data: adminText } } } }))
+      } else {
+        const transporter = await createTransport()
+        await transporter.sendMail({ from: process.env.FROM_EMAIL || 'no-reply@inpection.com', to: adminTo, subject, text: adminText })
+      }
+    }catch(err){ console.error('admin notify failed',err) }
+
+    // thank you email to user
+    if(email){
+      const userSubj = 'Thanks for your quote request'
+      const userText = `Hi ${firstName},\n\nThanks for requesting a quote. We'll reach out shortly with details.\n\nRegards,\nInspectionWale`
+      try{
+        if(process.env.AWS_REGION && process.env.SES_FROM){
+          const sesClient = new SESClient({ region: process.env.AWS_REGION })
+          await sesClient.send(new SendEmailCommand({ Source: process.env.SES_FROM, Destination: { ToAddresses: [email] }, Message: { Subject: { Data: userSubj }, Body: { Text: { Data: userText } } } }))
+        } else {
+          const transporter = await createTransport()
+          await transporter.sendMail({ from: process.env.FROM_EMAIL || 'no-reply@inpection.com', to: email, subject: userSubj, text: userText })
+        }
+      }catch(err){ console.error('send to user failed',err) }
+    }
+
+    return res.json({ ok: true })
   }catch(err){ console.error(err); res.status(500).json({error:'server_error'}) }
 })
 
