@@ -6,8 +6,8 @@ frontend:
     build:
       commands: []
   artifacts:
-    # Amplify will publish the contents of the `website` folder (static site)
-    baseDirectory: website
+    # Publish the CarServ-based site directory so Amplify serves the carserv-template pages
+    baseDirectory: website/carserv-template
     files:
       - '**/*'
   cache:
