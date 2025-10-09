@@ -1,0 +1,17 @@
+:root{
+  --primary: #ff8c00;
+  --bg1: #232a36;
+  --bg2: #79808d;
+  --card: #1b2026;
+  --muted: #d8dfe6;
+}
+body{font-family:Inter, Arial, sans-serif;background:linear-gradient(180deg,var(--bg1),var(--bg2));color:var(--muted);margin:0}
+.container{max-width:1100px;margin:0 auto;padding:0 16px}
+.hero{padding:64px 0;text-align:left}
+.hero .caption{max-width:640px}
+.btn-cta{background:var(--primary);border:none;color:white;padding:12px 18px;border-radius:10px}
+.brand-subtle{font-family:Poppins,Inter;font-size:1rem;color:var(--muted);background:rgba(255,255,255,0.03);padding:10px;border-radius:10px;margin:12px 0}
+.checks-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}
+.check{display:flex;gap:12px;align-items:center}
+@media(max-width:900px){.checks-grid{grid-template-columns:repeat(2,1fr)} }
+@media(max-width:640px){.checks-grid{grid-template-columns:1fr}}

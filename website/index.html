@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>InspectionWale — Certified Vehicle Inspections</title>
+  <meta name="description" content="InspectionWale — professional and unbiased vehicle inspection reports with photos, test-drive notes, and repair estimates. Fast turnaround across major cities." />
+
+  <!-- Favicons -->
+  <link rel="icon" href="Images/Inspectionwale_logo.png" />
+
+  <!-- Bootstrap 5 CSS + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Google fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+  /* Glowy brand message box */
+  .brand-message {
+    background: rgba(35,42,54,0.85);
+    border-radius: 18px;
+    padding: 28px 22px 22px 22px;
+    margin-bottom: 38px;
+    box-shadow: 0 0 32px 0 #0091ff55, 0 4px 32px #232a3622;
+    border: 2.5px solid #0091ff;
+    position: relative;
+    overflow: hidden;
+  }
+  .brand-message::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 18px;
+    background: linear-gradient(120deg, #0091ff55 0%, #22c55e33 100%);
+    opacity: 0.25;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .brand-message h2 {
+    font-family: Poppins, Inter;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 12px #0091ff88, 0 0 2px #fff;
+    position: relative;
+    z-index: 1;
+  }
+  .brand-message p {
+    font-size: 1.12rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 0;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.04);
+    position: relative;
+    z-index: 1;
+  }
+    @media (max-width:991px){
+      .col-lg-4 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .center-mobile {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    }
+    @media (max-width:991px){
+      .col-lg-4{margin-top:32px;}
+    }
+    :root{
+      --primary:#ff8c00; /* warm orange accent */
+      --accent:#6b7280;  /* neutral slate for secondary accents */
+      /* professional, light neutral background for readability and SEO friendliness */
+      --bg: linear-gradient(180deg,#f8fafc 0%, #eef2f6 100%);
+      --card:#ffffff;    /* light card background */
+      --panel:#f3f4f6;  /* subtle panel background used for cards and panels */
+      --muted:#374151;   /* readable dark-muted text */
+      --glass: rgba(0,0,0,0.04);
+    }
+    *{box-sizing:border-box}
+  body{font-family:Inter, Roboto, Arial, sans-serif;background:var(--bg);color:var(--muted);margin:0}
+
+    /* NAV */
+  .topbar{position:fixed;left:0;right:0;top:0;z-index:1030;background:transparent;padding:10px 0;transition:background .25s,box-shadow .25s}
+  .topbar.solid{background:rgba(255,255,255,0.98);box-shadow:0 6px 20px rgba(15,23,42,0.04)}
+  .brand-wrap{display:flex;align-items:center;gap:12px}
+  .brand-wrap img{height:44px}
+  .brand-logo{height:44px}
+  /* header auth buttons */
+  .btn-signup{background:linear-gradient(90deg,#0ea5e9,#0369a1);color:#fff;border-radius:10px;padding:8px 12px}
+  .btn-signup:hover{opacity:0.95}
+  .btn-outline-secondary{border-radius:10px}
+  .nav-main .nav-link{color:var(--muted);font-weight:600;padding:8px 12px;border-radius:8px}
+
+    /* hero */
+    .hero{margin-top:72px}
+  .hero .carousel-item{height:54vh;min-height:340px}
+  .hero .carousel-item img{object-fit:cover;object-position:center 65%;height:100%;width:100%;}
+  .carousel-caption{left:6%;right:auto;top:40%;transform:translateY(-50%);max-width:640px;background:linear-gradient(90deg, rgba(0,145,255,0.12), rgba(30,41,59,0.08));backdrop-filter: blur(6px);padding:28px;border-radius:14px}
+  .carousel-caption{z-index:2}
+  .carousel-caption h2{font-family:Poppins, Inter; font-weight:800;color:#0091ff; font-size:clamp(28px,4vw,44px);line-height:1}
+  /* ensure paragraph is visible over the hero image */
+  .carousel-caption p{color:#ffffff;margin-bottom:18px;text-shadow:0 2px 10px rgba(0,0,0,0.45)}
+  .btn-primary-cta{background:var(--primary);border:none;padding:12px 20px;border-radius:10px;font-weight:700;color:#fff;box-shadow:0 2px 8px rgba(0,145,255,0.12);transition:background .2s}
+  .btn-primary-cta:hover{background:#0070c0}
+
+    /* Why section */
+    .why-section{padding:56px 0}
+  .whyus-header{
+    font-family:Poppins,Inter;
+    font-weight:800;
+    color:#0091ff;
+    margin-bottom:12px;
+    font-size:2.2rem;
+    letter-spacing:0.5px;
+  }
+  /* Classy subtle brand blurb (glass + gradient accent) */
+  .brand-subtle{
+    font-family: Poppins, Inter, Arial, sans-serif;
+    font-size:0.98rem;
+    color:var(--muted);
+    font-weight:600;
+    font-style:italic;
+    margin:10px 0 18px 0;
+    max-width:820px;
+    line-height:1.45;
+    padding:12px 16px;
+    border-radius:12px;
+    background: linear-gradient(135deg, rgba(250,250,250,0.9) 0%, rgba(240,246,255,0.6) 100%);
+    border: 1px solid rgba(0,0,0,0.04);
+    box-shadow: 0 6px 18px rgba(15,23,42,0.04);
+    backdrop-filter: blur(6px);
+  }
+  @media (max-width:680px){
+    .brand-subtle{font-size:0.95rem;padding:10px 12px;max-width:100%;}
+  }
+    .whyus-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .whyus-card{border-radius:12px;padding:16px;display:flex;gap:12px;align-items:center;transition:transform .18s}
+  .whyus-card:hover{transform:translateY(-6px);box-shadow:0 12px 32px rgba(0,145,255,0.14)}
+  .whyus-icon{
+    width:56px;
+    height:56px;
+    border-radius:10px;
+    background:#ffffff;
+    display:grid;
+    place-items:center;
+    color:#16a34a;
+    font-size:22px;
+    border:1.5px solid rgba(0,0,0,0.04);
+    box-shadow:0 2px 8px rgba(15,23,42,0.04);
+    transition:box-shadow .18s;
+  }
+
+    /* features + what-we-check */
+  .checks-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:18px}
+  .check{background:transparent;padding:0;border:none;display:flex;flex-direction:row;align-items:center;gap:18px;box-shadow:none;transition:transform .18s}
+  .check img{
+  width:44px;
+  height:44px;
+  filter:drop-shadow(0 2px 8px rgba(15,23,42,0.04));
+  border-radius:12px;
+  background:#ffffff;
+  border:1.5px solid rgba(0,0,0,0.04);
+  box-shadow:0 2px 8px rgba(15,23,42,0.04);
+  padding:4px;
+  transition:box-shadow .18s;
+  }
+  .whyus-card strong{
+    font-family:Poppins,Inter;
+    font-size:1.08rem;  
+    color:var(--muted);
+    font-weight:600;
+    letter-spacing:0.5px;
+    margin-bottom:2px;
+    display:block;
+  }
+  .check strong{font-family:Poppins,Inter;font-size:1.15rem;color:var(--muted);font-weight:600;letter-spacing:0.5px;}
+
+    /* callback card */
+  .callback-card{background:#f3f4f6;padding:18px;border-radius:12px;border:1px solid rgba(15,23,42,0.04);box-shadow:0 6px 20px rgba(15,23,42,0.04)}
+
+  /* panel-card: consistent panel background used across the site */
+  .panel-card{background:var(--panel);padding:16px;border-radius:12px;border:1px solid rgba(15,23,42,0.04);box-shadow:0 6px 18px rgba(15,23,42,0.04);color:var(--muted)}
+
+    /* reported list (orange tick) */
+  .reported-points{list-style:none;padding-left:0;margin:0 0 18px 0}
+  .reported-points li{position:relative;padding-left:36px;margin-bottom:12px;color:var(--muted);font-weight:600}
+    .reported-points li::before{content:"\2713";position:absolute;left:0;top:0;color:var(--primary);background:rgba(255,255,255,0.03);width:28px;height:28px;border-radius:6px;display:grid;place-items:center;font-weight:800;box-shadow:0 2px 8px rgba(255,140,0,0.12)}
+
+    /* reviews carousel */
+    .reviews-carousel{position:relative;margin-top:8px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));padding:14px;border-radius:12px;border:1px solid rgba(255,140,0,0.06)}
+    .review-slide{display:none;padding:14px}
+    .review-slide.active{display:block}
+    .review-title{font-weight:800;color:var(--primary);margin-bottom:6px;font-size:42px;}
+    /* slightly larger title for the first testimonial */
+    .review-slide:first-child .review-title{font-size:42px;text-align: center;color: #ffffff;}
+    .review-text{color:var(--muted);margin-bottom:8px}
+  .review-author{font-size:0.88rem;color:var(--accent)}
+    .reviews-dots{display:flex;gap:6px;justify-content:center;margin-top:8px}
+  .reviews-dot{width:8px;height:8px;border-radius:50%;background:rgba(0,0,0,0.12)}
+    .reviews-dot.active{background:var(--primary)}
+
+  /* flashy CTA buttons */
+  .flash-btn{border:none;padding:10px 16px;border-radius:10px;font-weight:800;color:#fff;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,0.25);transition:transform .12s,box-shadow .12s}
+  .flash-btn:active{transform:translateY(1px)}
+  .flash-btn.buyer{background:linear-gradient(90deg,#22c55e,#16a34a);box-shadow:0 8px 28px rgba(34,197,94,0.14)}
+  .flash-btn.seller{background:linear-gradient(90deg,#ff8c00,#ff6a00);box-shadow:0 8px 28px rgba(255,140,0,0.14)}
+  .cta-info{color:var(--muted)}
+
+  /* Get Quote button (pulsing gradient) */
+  .flash-btn.get-quote{background:linear-gradient(90deg,#ff8c00,#ff6a00);padding:12px 18px;border-radius:14px;box-shadow:0 10px 30px rgba(255,140,0,0.16);position:relative;overflow:hidden}
+  .flash-btn.get-quote::after{content:'';position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,0.06),rgba(255,255,255,0));mix-blend-mode:overlay}
+  .pulse{animation:pulse 2.4s infinite}
+  @keyframes pulse{0%{box-shadow:0 6px 18px rgba(255,140,0,0.14)}50%{box-shadow:0 18px 48px rgba(255,140,0,0.22)}100%{box-shadow:0 6px 18px rgba(255,140,0,0.14)}}
+
+    /* responsive */
+    @media (max-width:1100px){
+      .whyus-grid{grid-template-columns:repeat(2,1fr);gap:18px;}
+      .checks-grid{grid-template-columns:repeat(2,1fr);gap:18px;}
+    }
+    @media (max-width:680px){
+  .whyus-grid{grid-template-columns:1fr!important;gap:16px;}
+  .whyus-card{flex-direction:row;}
+  .col-lg-4{margin-top:32px;}
+      .carousel-caption{left:6%;right:6%;top:50%;transform:translateY(-50%)}
+      .hero .carousel-item{height:46vh}
+    }
+
+  footer{border-top:1px solid #0091ff22;padding:28px 0;color:var(--muted);background:var(--bg)}
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <header class="topbar" id="siteTopbar">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="brand-wrap">
+          <a href="/" class="d-flex align-items-center" aria-label="InspectionWale home">
+            <!-- Inline SVG logo: graphic mark + wordmark -->
+            <svg class="brand-logo" width="220" height="44" viewBox="0 0 220 44" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="logoTitle logoDesc">
+              <title id="logoTitle">InspectionWale</title>
+              <desc id="logoDesc">InspectionWale logo: shield and checkmark with wordmark</desc>
+              <defs>
+                <linearGradient id="g1" x1="0" x2="1">
+                  <stop offset="0" stop-color="#ff8c00" />
+                  <stop offset="1" stop-color="#ff6a00" />
+                </linearGradient>
+              </defs>
+              <!-- mark: circle with check -->
+              <rect x="1" y="1" width="44" height="44" rx="10" fill="url(#g1)" />
+              <path d="M12 26c4 4 9 6 14 0" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              <!-- wordmark -->
+              <text x="64" y="30" font-family="Poppins, Inter, Arial" font-weight="700" font-size="18" fill="var(--muted)">InspectionWale</text>
+            </svg>
+          </a>
+        </div>
+        <nav>
+            <ul class="nav nav-main d-flex align-items-center gap-2 mb-0">
+            <!-- Simplified header: Book Now + Login + Signup -->
+            <li><a id="navBook" class="nav-link btn btn-primary-cta ms-2 text-white" href="#book">Book Now</a></li>
+            <li><button id="navLogin" class="nav-link btn btn-outline-secondary ms-2">Login</button></li>
+            <li><button id="navSignup" class="nav-link btn btn-signup ms-2">Sign up</button></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" aria-label="Promotional banner">
+    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="Images/Banner.jpeg" class="d-block w-100" alt="Inspection banner">
+          <div class="carousel-caption">
+            <h2>Checked. Cleared. Yours.</h2>
+            <p>Certified inspections with photo evidence, odometer validation, test-drive notes and a clear PDF report — trusted by buyers and fleet managers.</p>
+            <div class="d-flex gap-2">
+              <button id="requestInspectionBtn" class="btn btn-primary-cta">Request Inspection</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY + WHAT WE CHECK + FORM -->
+  <section id="why" class="why-section">
+    <div class="container">
+      
+      <div class="row gx-4">
+        <div class="col-lg-8">
+          <h3 class="whyus-header">“Inspect First. Drive Confidently.”</h3>
+          <p class="lead" style="color:var(--muted);margin-bottom:18px">Buying a car is a big decision — whether brand-new or pre-owned. A professional inspection makes sure you get exactly what you pay for.</p>
+          <ul>
+            <li>New cars – Catch transit damage, manufacturing faults, or missed dealer checks before delivery.</li>
+            <li>Used cars – Spot hidden issues, know the real value, and drive with confidence.</li>
+          </ul>
+          <p class="lead" style="color:var(--muted);margin-bottom:18px">An inspection protects your money, your safety, and your peace of mind.
+ </p>
+
+
+          <div class="whyus-grid">
+            <div class="whyus-card">
+              <div class="whyus-icon"><i class="bi bi-check2-square"></i></div>
+              <div><strong>160+ Checks</strong></div>
+            </div>
+            <div class="whyus-card">
+              <div class="whyus-icon"><i class="bi bi-file-earmark-text"></i></div>
+              <div><strong>Clear Report</strong></div>
+            </div>
+            <div class="whyus-card">
+              <div class="whyus-icon"><i class="bi bi-shield-check"></i></div>
+              <div><strong>Unbiased</strong></div>
+            </div>
+            <div class="whyus-card">
+              <div class="whyus-icon"><i class="bi bi-clock-history"></i></div>
+              <div><strong>Quick Turnaround</strong></div>
+            </div>
+          </div>
+
+
+          <h4 class="whyus-header" style="margin-top:34px">What is checked</h4>
+          <div id="checks" class="checks-grid">
+            <div class="check"><img src="Icons/Enginecheck.png" alt="Engine"> <strong>Engine</strong></div>
+            <div class="check"><img src="Icons/testdrive.png" alt="Test Drive"> <strong>Test Drive</strong></div>
+            <div class="check"><img src="Icons/Suspensioncheck.png" alt="Suspension"> <strong>Suspension</strong></div>
+            <div class="check"><img src="Icons/Tirecheck.png" alt="Tyres"> <strong>Tyres</strong></div>
+            <div class="check"><img src="Icons/Electriccheck.png" alt="Electricals"> <strong>Electricals</strong></div>
+            <div class="check"><img src="Icons/Interiorcheck.png" alt="Interior"> <strong>Interior</strong></div>
+            <div class="check"><img src="Icons/Paintcheck.png" alt="Paint"> <strong>Paint</strong></div>
+            <div class="check"><img src="Icons/Accidentcheck.png" alt="Damage"> <strong>Damage</strong></div>
+            <div class="check"><img src="Icons/Documentcheck.png" alt="Documents"> <strong>Documents</strong></div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="callback-card center-mobile panel-card">
+            <h5 style="font-family:Poppins,Inter;font-size:1.15rem;letter-spacing:1px;color:var(--primary);">GET QUOTE</h5>
+            <form id="callbackForm">
+              <div class="mb-2"><label class="form-label small text-uppercase">Name</label><input id="name" class="form-control" required></div>
+              <div class="mb-2"><label class="form-label small text-uppercase">Mobile</label><input id="mobile" class="form-control" pattern="^\d{10}$" required></div>
+              <div class="mb-2"><label class="form-label small text-uppercase">Car Model</label><input id="model" class="form-control"></div>
+              <div class="mb-2"><label class="form-label small text-uppercase">City</label><input id="city" class="form-control"></div>
+              <button class="btn btn-primary-cta w-100 mt-2" type="submit">Request Callback</button>
+            </form>
+            <div id="formMessage" class="text-success mt-3" style="display:none">Thanks — we'll call you soon.</div>
+          </div>
+        </div>
+                <h4 class="whyus-header" style="margin-top:34px">What is reported</h4>
+                <div class="reported-list">
+                          <ul class="reported-points" id="reportedPoints">
+                            <li>Show the true condition of the vehicle</li>
+                            <li>Estimate repair costs for existing issues</li>
+                            <li>Give you the right market value of the car &amp; brand</li>
+                            <li>Help you negotiate confidently with the seller</li>
+                            <li>Drive away with clarity, confidence, and the right deal.</li>
+                          </ul>
+                </div>
+
+
+                <!-- Reviews carousel (4 testimonials) -->
+                <div class="reviews-carousel" id="reviewsCarousel">
+                  <div id="reviewsList">Loading reviews…</div>
+                  <div class="reviews-dots" id="reviewsDots"></div>
+                </div>
+                <!-- About Us & Contact Us -->
+                <div class="about-contact" style="margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:18px">
+                  <div class="about-us panel-card">
+                    <h5 style="color:var(--primary);margin-bottom:8px">About Us</h5>
+                    <p style="margin:0">InspectionWale provides professional, unbiased vehicle inspections with photo-backed 160+ point reports, odometer validation, and clear repair estimates — helping buyers make confident decisions.</p>
+                  </div>
+                  <div class="contact-us panel-card">
+                    <h5 style="color:var(--primary);margin-bottom:8px">Contact Us</h5>
+                    <p style="margin:0">Email: <a href="mailto:hello@inspectionwale.com" style="color:var(--primary)">hello@inspectionwale.com</a><br>Phone: <a href="tel:+919167558998" style="color:var(--primary)">+91 9167558998</a><br>Service areas: Mumbai.</p>
+                  </div>
+                </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Get Quote Modal -->
+  <div class="modal fade" id="quoteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+  <div class="modal-content" style="background:var(--panel);border:none;color:var(--muted)">
+        <div class="modal-header border-0">
+          <h5 class="modal-title" style="color:var(--primary)">Get a Quick Quote</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="quoteForm">
+            <div class="mb-2"><input name="name" placeholder="Name" class="form-control" required></div>
+            <div class="mb-2"><input name="mobile" placeholder="Mobile" class="form-control" required></div>
+            <div class="mb-2"><input name="model" placeholder="Car Model" class="form-control"></div>
+            <div class="mb-2"><input name="city" placeholder="City" class="form-control"></div>
+            <div class="d-grid"><button class="btn btn-primary-cta" type="submit">Request Quote</button></div>
+          </form>
+          <div id="quoteStatus" role="status" aria-live="polite" class="mt-2" style="display:none"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+      <div class="modal-content" style="background:var(--panel);border:none;color:var(--muted)">
+        <div class="modal-header border-0">
+          <h5 class="modal-title" style="color:var(--primary)">Login</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="loginForm">
+            <div class="mb-2"><input name="email" placeholder="Email" class="form-control" required></div>
+            <div class="mb-2"><input name="password" type="password" placeholder="Password" class="form-control" required></div>
+            <div class="d-grid"><button class="btn btn-primary-cta" type="submit">Login</button></div>
+          </form>
+          <div id="loginSuccess" class="text-success mt-2" style="display:none">Logged in (demo).</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Signup Modal -->
+  <div class="modal fade" id="signupModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+      <div class="modal-content" style="background:var(--panel);border:none;color:var(--muted)">
+        <div class="modal-header border-0">
+          <h5 class="modal-title" style="color:var(--primary)">Sign up</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="signupForm">
+            <div class="mb-2"><input name="name" placeholder="Full name" class="form-control" required></div>
+            <div class="mb-2"><input name="email" placeholder="Email" class="form-control" required></div>
+            <div class="mb-2"><input name="mobile" placeholder="Mobile" class="form-control"></div>
+            <div class="d-grid"><button class="btn btn-primary-cta" type="submit">Sign up</button></div>
+          </form>
+          <div id="signupSuccess" class="text-success mt-2" style="display:none">Signed up (demo).</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="text-center text-muted">
+    <div class="container">&copy; <span id="currentYear"></span> InspectionWale. All rights reserved.</div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // small handlers
+    document.getElementById('callbackForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const data = {
+        name: document.getElementById('name').value,
+        mobile: document.getElementById('mobile').value,
+        model: document.getElementById('model').value,
+        city: document.getElementById('city').value
+      }
+      // Prefill quote modal and open
+      const quoteModalEl = document.getElementById('quoteModal')
+      if(quoteModalEl){
+        document.querySelector('#quoteModal input[name="name"]').value = data.name
+        document.querySelector('#quoteModal input[name="mobile"]').value = data.mobile
+        document.querySelector('#quoteModal input[name="model"]').value = data.model
+        document.querySelector('#quoteModal input[name="city"]').value = data.city
+        const m = new bootstrap.Modal(quoteModalEl); m.show()
+      }
+      this.reset();
+    });
+
+    // navbar solid on scroll
+    (function(){
+      const topbar = document.getElementById('siteTopbar');
+      function checkScroll(){ if(window.scrollY>120) topbar.classList.add('solid'); else topbar.classList.remove('solid'); }
+      window.addEventListener('scroll', checkScroll,{passive:true}); checkScroll();
+    })();
+
+    // set current year
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // reviews carousel autoplay
+    (function(){
+      const container = document.getElementById('reviewsCarousel')
+      const list = document.getElementById('reviewsList')
+      const dotsContainer = document.getElementById('reviewsDots')
+      let slides = []
+      let dots = []
+      let idx = 0
+
+      function renderReviews(data){
+        if(!data || !data.reviews || !data.reviews.length){ list.innerHTML = '<div>No reviews available yet.</div>'; return }
+        list.innerHTML = ''
+        data.reviews.forEach((rv,i)=>{
+          const slide = document.createElement('div')
+          slide.className = 'review-slide'+(i===0? ' active':'')
+          const title = document.createElement('div')
+          title.className = 'review-title'
+          title.textContent = rv.author || 'Customer'
+          const txt = document.createElement('div')
+          txt.className = 'review-text'
+          txt.textContent = rv.text || ''
+          const author = document.createElement('div')
+          author.className = 'review-author'
+          author.textContent = rv.relative_time_description ? `${rv.relative_time_description} · ${rv.rating || ''}★` : (rv.rating ? `${rv.rating}★` : '')
+          // optional photo
+          if(rv.photo){
+            const img = document.createElement('img')
+            img.src = rv.photo
+            img.alt = 'review photo'
+            img.style.maxWidth = '100%'
+            img.style.borderRadius = '8px'
+            img.style.marginTop = '8px'
+            slide.appendChild(img)
+          }
+          slide.appendChild(title)
+          slide.appendChild(txt)
+          slide.appendChild(author)
+          list.appendChild(slide)
+        })
+
+        // create dots
+        dotsContainer.innerHTML = ''
+        slides = Array.from(list.querySelectorAll('.review-slide'))
+        slides.forEach((s,i)=>{
+          const d = document.createElement('div'); d.className='reviews-dot'+(i===0? ' active':''); d.dataset.i = i
+          d.addEventListener('click', ()=>{ go(i) })
+          dotsContainer.appendChild(d)
+        })
+        dots = Array.from(dotsContainer.children)
+      }
+
+      function go(n){ if(!slides.length) return; slides[idx].classList.remove('active'); dots[idx].classList.remove('active'); idx = n; slides[idx].classList.add('active'); dots[idx].classList.add('active') }
+      function next(){ if(!slides.length) return; go((idx+1) % slides.length) }
+      let t = null
+      function start(){ if(t) clearInterval(t); t = setInterval(next,5000) }
+      function stop(){ if(t) clearInterval(t); t = null }
+
+      // fetch reviews from server
+      fetch('/api/reviews').then(r=>r.json()).then(json=>{ if(json && json.ok){ renderReviews(json); start() } else { list.innerHTML = '<div>No reviews available.</div>' } }).catch(()=>{ list.innerHTML = '<div>Unable to load reviews.</div>' })
+      container && container.addEventListener('mouseenter', stop)
+      container && container.addEventListener('mouseleave', start)
+    })()
+
+    // Buyer / Seller CTA handlers
+    (function(){
+      const buyerBtn = document.getElementById('buyerBtn')
+      const sellerBtn = document.getElementById('sellerBtn')
+      const info = document.getElementById('ctaInfo')
+      const buyerHtml = '<strong style="color:var(--primary)">For Buyers</strong><p style="margin:8px 0;color:var(--muted)">Get a 160+ point inspection report, repair estimates and an independent market value to negotiate confidently. We help you avoid hidden problems and buy with clarity.</p>'
+      const sellerHtml = '<strong style="color:var(--primary)">For Sellers</strong><p style="margin:8px 0;color:var(--muted)">Showcase your car with a trusted inspection report that highlights condition and market value — sell faster and at the right price with buyer confidence.</p>'
+
+      function show(html){ info.innerHTML = html + '<div style="text-align:right;margin-top:6px"><button id="closeCta" class="btn btn-sm btn-light">Close</button></div>'; info.style.display='block'; document.getElementById('closeCta').addEventListener('click', ()=>info.style.display='none') }
+      if(buyerBtn) buyerBtn.addEventListener('click', ()=> show(buyerHtml) )
+      if(sellerBtn) sellerBtn.addEventListener('click', ()=> show(sellerHtml) )
+    })()
+
+    // Get Quote button / modal handling
+    (function(){
+      const getQuoteBtn = document.getElementById('getQuoteBtn')
+      const quoteModalEl = document.getElementById('quoteModal')
+  const quoteForm = document.getElementById('quoteForm')
+  const quoteStatus = document.getElementById('quoteStatus')
+      let bsModal = null
+      if(quoteModalEl) bsModal = new bootstrap.Modal(quoteModalEl)
+  if(getQuoteBtn){ getQuoteBtn.addEventListener('click', ()=> bsModal && bsModal.show() ) }
+  // also wire hero / header CTAs to open the quote modal
+  const requestInspectionBtn = document.getElementById('requestInspectionBtn')
+  const navBook = document.querySelector('.nav-link[href="#book"]')
+  if(requestInspectionBtn) requestInspectionBtn.addEventListener('click', ()=> bsModal && bsModal.show())
+  if(navBook) navBook.addEventListener('click', (e)=>{ e.preventDefault(); bsModal && bsModal.show() })
+
+      if(quoteForm){ quoteForm.addEventListener('submit', async function(e){
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(this));
+        const endpoints = ['/api/quote','http://localhost:4000/api/quote']
+        let sent = false
+        let lastErr = null
+        for(const ep of endpoints){
+          try{
+            const res = await fetch(ep,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(data)})
+            if(res.ok){
+              // try to parse json to find preview link
+              try{ const j = await res.json(); if(j && j.preview){ quoteStatus.dataset.preview = j.preview } }catch(e){}
+              sent = true
+              break
+            } else {
+              lastErr = new Error('server returned '+res.status)
+            }
+          }catch(err){ lastErr = err }
+        }
+        if(sent){
+          quoteStatus.style.display='block';
+          quoteStatus.className='text-success mt-2';
+          quoteStatus.textContent = "Thanks — we'll reach out with a quote shortly.";
+          // if server returned a preview URL include it
+          if(quoteStatus.dataset && quoteStatus.dataset.preview){
+            const a = document.createElement('a'); a.href = quoteStatus.dataset.preview; a.target='_blank'; a.style.display='block'; a.style.marginTop='8px'; a.textContent = 'Preview email (dev)'
+            quoteStatus.appendChild(a)
+            // clear dataset after showing
+            delete quoteStatus.dataset.preview
+          }
+          this.reset();
+          setTimeout(()=>{ quoteStatus.style.display='none'; quoteStatus.textContent=''; bsModal && bsModal.hide() },5000)
+        } else {
+          console.error(lastErr);
+          quoteStatus.style.display='block';
+          quoteStatus.className='text-danger mt-2';
+          quoteStatus.textContent = 'Failed to send quote — please try again later or call +91 9167558998'
+        }
+      }) }
+    })()
+
+    // Header Login / Signup handlers (demo)
+    (function(){
+      const loginBtn = document.getElementById('navLogin')
+      const signupBtn = document.getElementById('navSignup')
+      const loginModalEl = document.getElementById('loginModal')
+      const signupModalEl = document.getElementById('signupModal')
+      let loginModal = loginModalEl ? new bootstrap.Modal(loginModalEl) : null
+      let signupModal = signupModalEl ? new bootstrap.Modal(signupModalEl) : null
+      if(loginBtn) loginBtn.addEventListener('click', ()=> loginModal && loginModal.show())
+      if(signupBtn) signupBtn.addEventListener('click', ()=> signupModal && signupModal.show())
+
+      const loginForm = document.getElementById('loginForm')
+      const signupForm = document.getElementById('signupForm')
+      if(loginForm) loginForm.addEventListener('submit', function(e){ e.preventDefault(); document.getElementById('loginSuccess').style.display='block'; setTimeout(()=>loginModal.hide(),1200) })
+      if(signupForm) signupForm.addEventListener('submit', function(e){ e.preventDefault(); document.getElementById('signupSuccess').style.display='block'; setTimeout(()=>signupModal.hide(),1200) })
+    })()
+  </script>
+</body>
+</html>
