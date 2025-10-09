@@ -1,0 +1,14 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands: []
+    build:
+      commands: []
+  artifacts:
+    # Amplify will publish the contents of the `website` folder (static site)
+    baseDirectory: website
+    files:
+      - '**/*'
+  cache:
+    paths: []
