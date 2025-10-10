@@ -62,18 +62,17 @@ function parseMultipartForm(event) {
   });
 }
 
-// Generate Professional PDF Report with Rich Design
+// ========== CLEAN PROFESSIONAL PDF GENERATION ==========
 async function generatePDF(data) {
   return new Promise((resolve, reject) => {
     const doc = new PDFDocument({ 
-      size: 'A4', 
-      margin: 40,
+      size: 'A4',
+      margins: { top: 51, bottom: 51, left: 51, right: 51 },
       bufferPages: true,
       info: {
         Title: `Vehicle Inspection Report - ${data.registrationNumber}`,
         Author: 'InspectionWale',
-        Subject: 'Professional Vehicle Inspection',
-        Keywords: 'vehicle, inspection, report'
+        Subject: 'Professional Vehicle Inspection Report'
       }
     });
     
@@ -84,512 +83,308 @@ async function generatePDF(data) {
 
     const reportId = `INS-${Date.now()}`;
     const colors = {
-      primary: '#004a99',      // Professional Blue
-      secondary: '#0066cc',    // Lighter Blue
-      accent: '#00a8e8',       // Bright Blue
-      success: '#00c853',      // Green
-      warning: '#ff6f00',      // Orange
-      danger: '#d32f2f',       // Red
-      text: '#212121',         // Dark Gray
-      lightText: '#616161',    // Medium Gray
-      background: '#f5f7fa',   // Light Background
-      border: '#e0e0e0'        // Border Gray
+      heading: '#004a99',
+      text: '#000000',
+      label: '#333333',
+      lightText: '#666666',
+      border: '#cccccc',
+      background: '#f7f9fc',
+      danger: '#d32f2f'
     };
 
-    // Helper function to draw gradient background
-    function drawGradientBg(x, y, width, height, color1, color2) {
-      const steps = 20;
-      const stepHeight = height / steps;
-      
-      for (let i = 0; i < steps; i++) {
-        const ratio = i / steps;
-        doc.fillColor(color1, 1 - ratio).fillColor(color2, ratio)
-           .rect(x, y + (i * stepHeight), width, stepHeight)
-           .fill();
-      }
-    }
-
-    // Helper function to draw section header with icon
-    function drawSectionHeader(title, icon, yPos) {
-      // Background bar
-      doc.rect(40, yPos, 515, 35)
-         .fillAndStroke(colors.primary, colors.primary);
-      
-      // Title
-      doc.fillColor('#ffffff')
-         .fontSize(14)
-         .font('Helvetica-Bold')
-         .text(title, 50, yPos + 11);
-      
-      return yPos + 45;
-    }
-
-    // Helper function to add a labeled field
-    function addField(label, value, x, y, maxWidth = 200) {
-      doc.fillColor(colors.lightText)
-         .fontSize(9)
-         .font('Helvetica')
-         .text(label, x, y);
-      
-      doc.fillColor(colors.text)
-         .fontSize(10)
-         .font('Helvetica-Bold')
-         .text(value || 'N/A', x, y + 12, { width: maxWidth, ellipsis: true });
-      
-      return y + 32;
-    }
-
-    // Helper function to check if we need a new page
+    // ========== HELPER FUNCTIONS ==========
+    
     function checkNewPage(currentY, requiredSpace = 100) {
-      if (currentY + requiredSpace > 750) {
+      const pageHeight = 792;
+      const bottomMargin = 51;
+      
+      if (currentY + requiredSpace > pageHeight - bottomMargin) {
         doc.addPage();
-        return 40;
+        return 51;
       }
       return currentY;
     }
 
-    // Helper function to add image to PDF
-    function addImage(imageBuffer, x, y, maxWidth, maxHeight, caption) {
-      if (!imageBuffer) return y;
+    function drawSectionHeader(title, yPos) {
+      yPos = checkNewPage(yPos, 40);
+      
+      doc.fillColor(colors.heading)
+         .fontSize(14)
+         .font('Helvetica-Bold')
+         .text(title, 51, yPos);
+      
+      doc.moveTo(51, yPos + 18)
+         .lineTo(544, yPos + 18)
+         .lineWidth(1)
+         .stroke(colors.border);
+      
+      return yPos + 30;
+    }
+
+    function addTableRow(label, value, x, y, labelWidth = 150, valueWidth = 180) {
+      doc.fillColor(colors.label)
+         .fontSize(10)
+         .font('Helvetica-Bold')
+         .text(label, x, y, { width: labelWidth });
+      
+      doc.fillColor(colors.text)
+         .fontSize(10)
+         .font('Helvetica')
+         .text(value || 'N/A', x + labelWidth, y, { width: valueWidth });
+      
+      return y + 18;
+    }
+
+    function addImage(imageBuffer, x, y, width, height, caption) {
+      if (!imageBuffer || !Buffer.isBuffer(imageBuffer)) {
+        console.warn(`Invalid image buffer for: ${caption}`);
+        return y;
+      }
       
       try {
         doc.image(imageBuffer, x, y, {
-          fit: [maxWidth, maxHeight],
+          fit: [width, height],
           align: 'center',
           valign: 'center'
         });
         
-        // Add caption below image
         if (caption) {
           doc.fillColor(colors.lightText)
              .fontSize(8)
              .font('Helvetica')
-             .text(caption, x, y + maxHeight + 5, { 
-               width: maxWidth, 
-               align: 'center' 
+             .text(caption, x, y + height + 2, {
+               width: width,
+               align: 'center'
              });
         }
         
-        return y + maxHeight + (caption ? 20 : 10);
+        return y + height + (caption ? 15 : 5);
       } catch (error) {
-        console.error('Error embedding image:', caption, error);
-        return y;
+        console.error(`Failed to embed image ${caption}:`, error.message);
+        doc.rect(x, y, width, height).stroke(colors.border);
+        doc.fillColor(colors.lightText)
+           .fontSize(8)
+           .text('Image error', x, y + height/2, {width: width, align: 'center'});
+        return y + height + 5;
       }
     }
 
-    // Helper function to add image grid (multiple images in a row)
     function addImageGrid(images, yPos, columns = 3) {
       if (!images || images.length === 0) return yPos;
       
-      const imageWidth = (515 - ((columns - 1) * 10)) / columns;
-      const imageHeight = 120;
-      const rows = Math.ceil(images.length / columns);
+      const totalWidth = 493;
+      const gap = 10;
+      const imageWidth = (totalWidth - ((columns - 1) * gap)) / columns;
+      const imageHeight = 90;
       
-      for (let row = 0; row < rows; row++) {
-        yPos = checkNewPage(yPos, imageHeight + 30);
+      let currentCol = 0;
+      let rowStartY = yPos;
+      
+      for (let i = 0; i < images.length; i++) {
+        const img = images[i];
+        if (!img || !img.buffer) continue;
         
-        for (let col = 0; col < columns; col++) {
-          const index = row * columns + col;
-          if (index >= images.length) break;
-          
-          const img = images[index];
-          const x = 40 + (col * (imageWidth + 10));
-          
-          addImage(img.buffer, x, yPos, imageWidth, imageHeight, img.caption);
+        if (currentCol === 0) {
+          rowStartY = checkNewPage(rowStartY, imageHeight + 25);
         }
         
-        yPos += imageHeight + 30;
+        const x = 51 + (currentCol * (imageWidth + gap));
+        addImage(img.buffer, x, rowStartY, imageWidth, imageHeight, img.caption);
+        
+        currentCol++;
+        if (currentCol >= columns) {
+          currentCol = 0;
+          rowStartY += imageHeight + 25;
+        }
       }
       
-      return yPos;
+      if (currentCol > 0) {
+        rowStartY += imageHeight + 25;
+      }
+      
+      return rowStartY;
     }
 
-    let yPos = 40;
+    // ========== START PDF GENERATION ==========
+    let yPos = 51;
 
-    // ========== HEADER SECTION WITH GLOSSY EFFECT ==========
-    // Main header background with gradient effect
-    doc.rect(0, 0, 595, 140)
-       .fill(colors.primary);
+    // ========== HEADER ==========
+    doc.moveTo(51, yPos)
+       .lineTo(544, yPos)
+       .lineWidth(2)
+       .stroke(colors.heading);
     
-    // Add glossy effect overlay
-    for (let i = 0; i < 60; i++) {
-      const alpha = (60 - i) / 200;
-      doc.rect(0, i, 595, 1)
-         .fillOpacity(alpha)
-         .fill('#ffffff');
-    }
-    doc.fillOpacity(1);
+    yPos += 12;
 
-    // Company Logo/Brand Name
-    doc.fillColor('#ffffff')
-       .fontSize(32)
+    doc.fillColor(colors.heading)
+       .fontSize(18)
        .font('Helvetica-Bold')
-       .text('InspectionWale', 40, 30);
+       .text('InspectionWale - Vehicle Inspection Report', 51, yPos);
     
-    doc.fontSize(11)
-       .font('Helvetica')
-       .text('Professional Vehicle Inspection Services', 40, 68);
-    
-    // Report Info Box (Right side)
-    doc.roundedRect(380, 30, 175, 80, 5)
-       .fillAndStroke('#ffffff', '#ffffff');
-    
-    doc.fillColor(colors.primary)
+    yPos += 22;
+
+    doc.fillColor(colors.lightText)
        .fontSize(10)
-       .font('Helvetica-Bold')
-       .text('INSPECTION REPORT', 390, 40);
-    
-    doc.fontSize(9)
        .font('Helvetica')
-       .fillColor(colors.text)
-       .text(`Report ID: ${reportId}`, 390, 58)
-       .text(`Date: ${new Date().toLocaleDateString('en-IN', { 
-         day: '2-digit', month: 'short', year: 'numeric' 
-       })}`, 390, 72)
-       .text(`Inspector: ${data.inspectorName || 'N/A'}`, 390, 86);
+       .text('Rebranded from Whizzcheck', 51, yPos);
 
-    yPos = 160;
+    // Report metadata (right-aligned)
+    const reportDate = new Date().toLocaleDateString('en-IN', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    });
+    
+    doc.fillColor(colors.label)
+       .fontSize(10)
+       .font('Helvetica')
+       .text(`Inspection ID: ${reportId}`, 400, yPos - 32, {width: 144, align: 'right'})
+       .text(`Date: ${reportDate}`, 400, yPos - 18, {width: 144, align: 'right'});
 
-    // ========== KEY HIGHLIGHTS BANNER ==========
-    if (data.accidental || data.floodDamage || data.fireDamage) {
-      const isClean = data.accidental === 'No' && data.floodDamage === 'No' && data.fireDamage === 'No';
-      const bannerColor = isClean ? colors.success : colors.danger;
-      
-      doc.rect(40, yPos, 515, 45)
-         .fill(bannerColor);
-      
-      doc.fillColor('#ffffff')
-         .fontSize(12)
-         .font('Helvetica-Bold')
-         .text('KEY HIGHLIGHTS', 50, yPos + 8);
-      
-      const highlights = [
-        `Accident: ${data.accidental || 'N/A'}`,
-        `Flood: ${data.floodDamage || 'N/A'}`,
-        `Fire: ${data.fireDamage || 'N/A'}`
-      ];
-      
-      doc.fontSize(10)
-         .font('Helvetica')
-         .text(highlights.join('  |  '), 50, yPos + 26);
-      
-      yPos += 60;
-    }
+    yPos += 15;
+    doc.moveTo(51, yPos)
+       .lineTo(544, yPos)
+       .lineWidth(1)
+       .stroke(colors.border);
+    
+    yPos += 25;
 
     // ========== VEHICLE REGISTRATION DETAILS ==========
-    yPos = drawSectionHeader('VEHICLE REGISTRATION DETAILS', '🚗', yPos);
+    yPos = drawSectionHeader('Vehicle Registration Details', yPos);
     
-    // First Row
-    let tempY = addField('Registration Number', data.registrationNumber, 50, yPos);
-    addField('Make / Model', `${data.make || 'N/A'} ${data.model || 'N/A'}`, 200, yPos);
-    addField('Variant', data.variant, 400, yPos);
+    yPos = checkNewPage(yPos, 120);
     
-    yPos = tempY + 5;
+    // Column 1
+    yPos = addTableRow('Registration Number', data.registrationNumber, 51, yPos);
+    yPos = addTableRow('Make / Model', `${data.make || 'N/A'} ${data.model || ''}`.trim(), 51, yPos);
+    yPos = addTableRow('Variant', data.variant, 51, yPos);
+    yPos = addTableRow('Chassis Number', data.chassisNumber, 51, yPos);
+    yPos = addTableRow('Engine Number', data.engineNumber, 51, yPos);
     
-    // Second Row
-    tempY = addField('Chassis Number', data.chassisNumber, 50, yPos);
-    addField('Engine Number', data.engineNumber, 300, yPos);
+    // Column 2 (side by side)
+    let yPos2 = yPos - 90;
+    yPos2 = addTableRow('Year of Manufacture', data.manufactureYear, 310, yPos2, 110, 120);
+    yPos2 = addTableRow('Registration Date', data.registrationDate, 310, yPos2, 110, 120);
+    yPos2 = addTableRow('Color', data.color, 310, yPos2, 110, 120);
+    yPos2 = addTableRow('Fuel Type', data.fuelType, 310, yPos2, 110, 120);
+    yPos2 = addTableRow('Odometer Reading', `${data.odometerReading} km`, 310, yPos2, 110, 120);
     
-    yPos = tempY + 5;
-    
-    // Third Row
-    tempY = addField('Manufacture Year', data.manufactureYear, 50, yPos);
-    addField('Registration Date', data.registrationDate, 200, yPos);
-    addField('Color', data.color, 400, yPos);
-    
-    yPos = tempY + 5;
-    
-    // Fourth Row
-    tempY = addField('Fuel Type', data.fuelType, 50, yPos);
-    addField('Odometer Reading', `${data.odometerReading || 'N/A'} km`, 200, yPos);
-    addField('Number of Owners', data.ownersCount || '1', 400, yPos);
-    
-    yPos = tempY + 15;
-
-    // Vehicle Document Photos
-    if (data.imageBuffers && Object.keys(data.imageBuffers).length > 0) {
-      yPos = checkNewPage(yPos, 200);
-      const documentImages = [
-        {buffer: data.imageBuffers.rcBook, caption: 'RC Book'},
-        {buffer: data.imageBuffers.chassisPlate, caption: 'Chassis Plate'},
-        {buffer: data.imageBuffers.odometerPhoto, caption: 'Odometer Reading'}
-      ].filter(img => img.buffer);
-      
-      if (documentImages.length > 0) {
-        doc.fontSize(11).fillColor('#0b556b').text('Vehicle Document Photos:', 50, yPos, {underline: true});
-        yPos += 20;
-        yPos = addImageGrid(documentImages, yPos, 3);
-        yPos += 10;
-      }
-    }
+    yPos = Math.max(yPos, yPos2) + 10;
 
     // ========== OWNER DETAILS ==========
-    yPos = checkNewPage(yPos, 150);
-    yPos = drawSectionHeader('CURRENT OWNER DETAILS', '👤', yPos);
+    yPos = drawSectionHeader('Current Owner Details', yPos);
     
-    tempY = addField('Owner Name', data.ownerName, 50, yPos);
-    addField('Contact Number', data.ownerContact, 300, yPos);
-    
-    yPos = tempY + 5;
-    
-    tempY = addField('Email Address', data.ownerEmail, 50, yPos);
-    addField('Location', data.location, 300, yPos);
-    
-    yPos = tempY + 15;
+    yPos = checkNewPage(yPos, 60);
+    yPos = addTableRow('Owner Name', data.ownerName, 51, yPos);
+    yPos = addTableRow('Contact Number', data.ownerContact, 51, yPos);
+    yPos = addTableRow('Email Address', data.ownerEmail, 51, yPos);
+    yPos = addTableRow('Inspection Location', data.location, 51, yPos);
+    yPos += 10;
 
-    // ========== OVERALL ASSESSMENT ==========
-    if (data.overallRating) {
-      yPos = checkNewPage(yPos, 120);
-      yPos = drawSectionHeader('OVERALL ASSESSMENT', '⭐', yPos);
+    // ========== DOCUMENT PHOTOS ==========
+    if (data.imageBuffers && (data.imageBuffers.rcBook || data.imageBuffers.chassisPlate || data.imageBuffers.odometer)) {
+      yPos = drawSectionHeader('Vehicle Documents', yPos);
       
-      // Rating with colored box
-      const ratingColors = {
-        'Excellent': colors.success,
-        'Good': '#4caf50',
-        'Average': colors.warning,
-        'Poor': colors.danger
-      };
+      const docImages = [
+        {buffer: data.imageBuffers.rcBook, caption: 'RC Book'},
+        {buffer: data.imageBuffers.chassisPlate, caption: 'Chassis Plate'},
+        {buffer: data.imageBuffers.odometer, caption: 'Odometer Reading'}
+      ].filter(img => img.buffer);
       
-      const ratingColor = ratingColors[data.overallRating] || colors.secondary;
-      
-      doc.roundedRect(50, yPos, 200, 40, 5)
-         .fillAndStroke(ratingColor, ratingColor);
-      
-      doc.fillColor('#ffffff')
-         .fontSize(11)
-         .font('Helvetica')
-         .text('Overall Condition', 60, yPos + 8);
-      
-      doc.fontSize(14)
-         .font('Helvetica-Bold')
-         .text(data.overallRating, 60, yPos + 22);
-      
-      // Market Value (if provided)
-      if (data.marketValue) {
-        doc.roundedRect(270, yPos, 285, 40, 5)
-           .fillAndStroke(colors.accent, colors.accent);
-        
-        doc.fillColor('#ffffff')
-           .fontSize(11)
-           .font('Helvetica')
-           .text('Estimated Market Value', 280, yPos + 8);
-        
-        doc.fontSize(14)
-           .font('Helvetica-Bold')
-           .text(data.marketValue, 280, yPos + 22);
-      }
-      
-      yPos += 55;
-    }
-
-    // Top Comments/Highlights
-    if (data.highlights) {
-      doc.rect(50, yPos, 505, 'auto')
-         .fillColor(colors.background);
-      
-      doc.fillColor(colors.text)
-         .fontSize(10)
-         .font('Helvetica')
-         .text(data.highlights, 60, yPos + 10, { 
-           width: 485, 
-           align: 'justify' 
-         });
-      
-      yPos += doc.heightOfString(data.highlights, { width: 485 }) + 30;
-    }
-
-    // ========== EXTERIOR / BODY INSPECTION ==========
-    yPos = checkNewPage(yPos, 200);
-    yPos = drawSectionHeader('EXTERIOR / BODY INSPECTION', '🎨', yPos);
-    
-    const exteriorChecks = ensureArray(data.exteriorChecks);
-    if (exteriorChecks.length > 0) {
-      const checkboxSize = 8;
-      let checkY = yPos;
-      let checkX = 50;
-      const colWidth = 250;
-      
-      exteriorChecks.forEach((check, index) => {
-        if (index > 0 && index % 12 === 0) {
-          checkY = yPos;
-          checkX += colWidth;
-        }
-        
-        checkY = checkNewPage(checkY, 25);
-        
-        // Checkbox
-        doc.rect(checkX, checkY, checkboxSize, checkboxSize)
-           .fillAndStroke(colors.success, colors.success);
-        
-        // Checkmark
-        doc.fillColor('#ffffff')
-           .fontSize(10)
-           .text('✓', checkX + 1, checkY - 1);
-        
-        // Label
-        doc.fillColor(colors.text)
-           .fontSize(9)
-           .font('Helvetica')
-           .text(check, checkX + checkboxSize + 5, checkY, { 
-             width: colWidth - checkboxSize - 10 
-           });
-        
-        checkY += 18;
-        
-        if (index === exteriorChecks.length - 1) {
-          yPos = checkY;
-        }
-      });
-      
+      yPos = addImageGrid(docImages, yPos, 3);
       yPos += 10;
     }
 
-    // Paint Depth & Notes
-    if (data.paintDepth) {
-      yPos = checkNewPage(yPos, 60);
-      doc.fillColor(colors.lightText)
-         .fontSize(10)
-         .font('Helvetica-Bold')
-         .text('Paint Depth Readings:', 50, yPos);
+    // ========== EXTERIOR SECTION ==========
+    const exteriorChecks = ensureArray(data.exteriorChecks);
+    if (exteriorChecks.length > 0) {
+      yPos = drawSectionHeader('Exterior / Body', yPos);
       
-      yPos += 15;
+      yPos = checkNewPage(yPos, 40);
       
       doc.fillColor(colors.text)
-         .fontSize(9)
+         .fontSize(10)
          .font('Helvetica')
-         .text(data.paintDepth, 50, yPos, { width: 505 });
+         .text(exteriorChecks.join(', '), 51, yPos, {width: 493, align: 'justify'});
       
-      yPos += doc.heightOfString(data.paintDepth, { width: 505 }) + 15;
+      yPos += doc.heightOfString(exteriorChecks.join(', '), {width: 493}) + 15;
     }
 
     if (data.exteriorNotes) {
-      yPos = checkNewPage(yPos, 60);
-      const notesHeight = doc.heightOfString(data.exteriorNotes, { width: 485 });
-      doc.roundedRect(50, yPos, 505, notesHeight + 40, 5)
-         .fillColor('#f5f5f5');
+      yPos = checkNewPage(yPos, 40);
       
-      doc.fillColor(colors.lightText)
-         .fontSize(9)
-         .font('Helvetica-Bold')
-         .text('Additional Notes:', 60, yPos + 10);
+      doc.rect(51, yPos, 493, doc.heightOfString(data.exteriorNotes, {width: 473}) + 20)
+         .fill(colors.background);
       
       doc.fillColor(colors.text)
-         .fontSize(9)
+         .fontSize(10)
          .font('Helvetica')
-         .text(data.exteriorNotes, 60, yPos + 25, { 
-           width: 485,
-           align: 'justify'
-         });
+         .text(data.exteriorNotes, 61, yPos + 10, {width: 473, align: 'justify'});
       
-      yPos += notesHeight + 45;
-    } else {
-      yPos += 15;
+      yPos += doc.heightOfString(data.exteriorNotes, {width: 473}) + 30;
     }
 
     // Exterior Photos
-    if (data.imageBuffers && Object.keys(data.imageBuffers).length > 0) {
-      yPos = checkNewPage(yPos, 200);
+    if (data.imageBuffers) {
       const exteriorImages = [
         {buffer: data.imageBuffers.frontBumper, caption: 'Front Bumper'},
         {buffer: data.imageBuffers.bonnet, caption: 'Bonnet'},
-        {buffer: data.imageBuffers.grille, caption: 'Grille'},
-        {buffer: data.imageBuffers.headlightLeft, caption: 'Left Headlight'},
-        {buffer: data.imageBuffers.headlightRight, caption: 'Right Headlight'},
+        {buffer: data.imageBuffers.frontGrille, caption: 'Front Grille'},
+        {buffer: data.imageBuffers.headlights, caption: 'Headlights'},
         {buffer: data.imageBuffers.windshield, caption: 'Windshield'},
         {buffer: data.imageBuffers.wipers, caption: 'Wipers'},
-        {buffer: data.imageBuffers.doorFrontLeft, caption: 'Front Left Door'},
-        {buffer: data.imageBuffers.doorFrontRight, caption: 'Front Right Door'},
-        {buffer: data.imageBuffers.doorRearLeft, caption: 'Rear Left Door'},
-        {buffer: data.imageBuffers.doorRearRight, caption: 'Rear Right Door'},
+        {buffer: data.imageBuffers.doorDriverFront, caption: 'Driver Front Door'},
+        {buffer: data.imageBuffers.doorPassengerFront, caption: 'Passenger Front Door'},
+        {buffer: data.imageBuffers.doorDriverRear, caption: 'Driver Rear Door'},
+        {buffer: data.imageBuffers.doorPassengerRear, caption: 'Passenger Rear Door'},
         {buffer: data.imageBuffers.mirrorLeft, caption: 'Left Mirror'},
         {buffer: data.imageBuffers.mirrorRight, caption: 'Right Mirror'},
         {buffer: data.imageBuffers.rearBumper, caption: 'Rear Bumper'},
-        {buffer: data.imageBuffers.bootClosed, caption: 'Boot (Closed)'},
-        {buffer: data.imageBuffers.bootOpen, caption: 'Boot (Open)'},
-        {buffer: data.imageBuffers.taillightLeft, caption: 'Left Taillight'},
-        {buffer: data.imageBuffers.taillightRight, caption: 'Right Taillight'},
+        {buffer: data.imageBuffers.bootClosed, caption: 'Boot Closed'},
+        {buffer: data.imageBuffers.bootOpen, caption: 'Boot Open'},
+        {buffer: data.imageBuffers.taillights, caption: 'Taillights'},
         {buffer: data.imageBuffers.rearWindshield, caption: 'Rear Windshield'},
         {buffer: data.imageBuffers.roof, caption: 'Roof'}
       ].filter(img => img.buffer);
       
       if (exteriorImages.length > 0) {
-        doc.fontSize(11).fillColor('#0b556b').text('Exterior Photos:', 50, yPos, {underline: true});
-        yPos += 20;
         yPos = addImageGrid(exteriorImages, yPos, 3);
         yPos += 10;
       }
     }
 
-    // ========== INTERIOR INSPECTION ==========
-    yPos = checkNewPage(yPos, 200);
-    yPos = drawSectionHeader('INTERIOR INSPECTION', '🛋️', yPos);
-    
+    // ========== INTERIOR SECTION ==========
     const interiorChecks = ensureArray(data.interiorChecks);
     if (interiorChecks.length > 0) {
-      const checkboxSize = 8;
-      let checkY = yPos;
-      let checkX = 50;
-      const colWidth = 250;
+      yPos = drawSectionHeader('Interior', yPos);
       
-      interiorChecks.forEach((check, index) => {
-        if (index > 0 && index % 12 === 0) {
-          checkY = yPos;
-          checkX += colWidth;
-        }
-        
-        checkY = checkNewPage(checkY, 25);
-        
-        doc.rect(checkX, checkY, checkboxSize, checkboxSize)
-           .fillAndStroke(colors.success, colors.success);
-        
-        doc.fillColor('#ffffff')
-           .fontSize(10)
-           .text('✓', checkX + 1, checkY - 1);
-        
-        doc.fillColor(colors.text)
-           .fontSize(9)
-           .font('Helvetica')
-           .text(check, checkX + checkboxSize + 5, checkY, { 
-             width: colWidth - checkboxSize - 10 
-           });
-        
-        checkY += 18;
-        
-        if (index === interiorChecks.length - 1) {
-          yPos = checkY;
-        }
-      });
+      yPos = checkNewPage(yPos, 40);
       
-      yPos += 10;
+      doc.fillColor(colors.text)
+         .fontSize(10)
+         .font('Helvetica')
+         .text(interiorChecks.join(', '), 51, yPos, {width: 493, align: 'justify'});
+      
+      yPos += doc.heightOfString(interiorChecks.join(', '), {width: 493}) + 15;
     }
 
     if (data.interiorNotes) {
-      yPos = checkNewPage(yPos, 60);
-      const notesHeight = doc.heightOfString(data.interiorNotes, { width: 485 });
-      doc.roundedRect(50, yPos, 505, notesHeight + 40, 5)
-         .fillColor('#f5f5f5');
+      yPos = checkNewPage(yPos, 40);
+      const notesHeight = doc.heightOfString(data.interiorNotes, {width: 473});
       
-      doc.fillColor(colors.lightText)
-         .fontSize(9)
-         .font('Helvetica-Bold')
-         .text('Additional Notes:', 60, yPos + 10);
+      doc.rect(51, yPos, 493, notesHeight + 20)
+         .fill(colors.background);
       
       doc.fillColor(colors.text)
-         .fontSize(9)
+         .fontSize(10)
          .font('Helvetica')
-         .text(data.interiorNotes, 60, yPos + 25, { 
-           width: 485,
-           align: 'justify'
-         });
+         .text(data.interiorNotes, 61, yPos + 10, {width: 473, align: 'justify'});
       
-      yPos += notesHeight + 45;
-    } else {
-      yPos += 15;
+      yPos += notesHeight + 30;
     }
 
     // Interior Photos
-    if (data.imageBuffers && Object.keys(data.imageBuffers).length > 0) {
-      yPos = checkNewPage(yPos, 200);
+    if (data.imageBuffers) {
       const interiorImages = [
         {buffer: data.imageBuffers.dashboard, caption: 'Dashboard'},
         {buffer: data.imageBuffers.instrumentCluster, caption: 'Instrument Cluster'},
@@ -603,100 +398,43 @@ async function generatePDF(data) {
       ].filter(img => img.buffer);
       
       if (interiorImages.length > 0) {
-        doc.fontSize(11).fillColor('#0b556b').text('Interior Photos:', 50, yPos, {underline: true});
-        yPos += 20;
         yPos = addImageGrid(interiorImages, yPos, 3);
         yPos += 10;
       }
     }
 
     // ========== ENGINE & MECHANICAL ==========
-    yPos = checkNewPage(yPos, 200);
-    yPos = drawSectionHeader('ENGINE & MECHANICAL INSPECTION', '⚙️', yPos);
-    
     const engineChecks = ensureArray(data.engineChecks);
     if (engineChecks.length > 0) {
-      const checkboxSize = 8;
-      let checkY = yPos;
-      let checkX = 50;
-      const colWidth = 250;
+      yPos = drawSectionHeader('Engine & Mechanical', yPos);
       
-      engineChecks.forEach((check, index) => {
-        if (index > 0 && index % 12 === 0) {
-          checkY = yPos;
-          checkX += colWidth;
-        }
-        
-        checkY = checkNewPage(checkY, 25);
-        
-        doc.rect(checkX, checkY, checkboxSize, checkboxSize)
-           .fillAndStroke(colors.success, colors.success);
-        
-        doc.fillColor('#ffffff')
-           .fontSize(10)
-           .text('✓', checkX + 1, checkY - 1);
-        
-        doc.fillColor(colors.text)
-           .fontSize(9)
-           .font('Helvetica')
-           .text(check, checkX + checkboxSize + 5, checkY, { 
-             width: colWidth - checkboxSize - 10 
-           });
-        
-        checkY += 18;
-        
-        if (index === interiorChecks.length - 1) {
-          yPos = checkY;
-        }
-      });
-      
-      yPos += 10;
-    }
-
-    if (data.repairCost) {
       yPos = checkNewPage(yPos, 40);
-      doc.roundedRect(50, yPos, 200, 35, 5)
-         .fillAndStroke(colors.warning, colors.warning);
       
-      doc.fillColor('#ffffff')
-         .fontSize(9)
+      doc.fillColor(colors.text)
+         .fontSize(10)
          .font('Helvetica')
-         .text('Estimated Repair Cost', 60, yPos + 8);
+         .text(engineChecks.join(', '), 51, yPos, {width: 493, align: 'justify'});
       
-      doc.fontSize(12)
-         .font('Helvetica-Bold')
-         .text(data.repairCost, 60, yPos + 20);
-      
-      yPos += 50;
+      yPos += doc.heightOfString(engineChecks.join(', '), {width: 493}) + 15;
     }
 
     if (data.engineNotes) {
-      yPos = checkNewPage(yPos, 60);
-      const notesHeight = doc.heightOfString(data.engineNotes, { width: 485 });
-      doc.roundedRect(50, yPos, 505, notesHeight + 40, 5)
-         .fillColor('#f5f5f5');
+      yPos = checkNewPage(yPos, 40);
+      const notesHeight = doc.heightOfString(data.engineNotes, {width: 473});
       
-      doc.fillColor(colors.lightText)
-         .fontSize(9)
-         .font('Helvetica-Bold')
-         .text('Additional Notes:', 60, yPos + 10);
+      doc.rect(51, yPos, 493, notesHeight + 20)
+         .fill(colors.background);
       
       doc.fillColor(colors.text)
-         .fontSize(9)
+         .fontSize(10)
          .font('Helvetica')
-         .text(data.engineNotes, 60, yPos + 25, { 
-           width: 485,
-           align: 'justify'
-         });
+         .text(data.engineNotes, 61, yPos + 10, {width: 473, align: 'justify'});
       
-      yPos += notesHeight + 45;
-    } else {
-      yPos += 15;
+      yPos += notesHeight + 30;
     }
 
     // Engine Photos
-    if (data.imageBuffers && Object.keys(data.imageBuffers).length > 0) {
-      yPos = checkNewPage(yPos, 200);
+    if (data.imageBuffers) {
       const engineImages = [
         {buffer: data.imageBuffers.engineBay, caption: 'Engine Bay'},
         {buffer: data.imageBuffers.engineBlock, caption: 'Engine Block'},
@@ -707,398 +445,259 @@ async function generatePDF(data) {
       ].filter(img => img.buffer);
       
       if (engineImages.length > 0) {
-        doc.fontSize(11).fillColor('#0b556b').text('Engine & Mechanical Photos:', 50, yPos, {underline: true});
-        yPos += 20;
         yPos = addImageGrid(engineImages, yPos, 3);
         yPos += 10;
       }
     }
 
     // ========== TIRES & WHEELS ==========
-    yPos = checkNewPage(yPos, 200);
-    yPos = drawSectionHeader('TIRES & WHEELS INSPECTION', '⭕', yPos);
-    
-    const tireFields = [
-      { label: 'Front LHS', value: data.tireFrontLHS },
-      { label: 'Front RHS', value: data.tireFrontRHS },
-      { label: 'Rear LHS', value: data.tireRearLHS },
-      { label: 'Rear RHS', value: data.tireRearRHS },
-      { label: 'Spare Tire', value: data.tireSpare }
-    ];
-    
-    tireFields.forEach((tire, index) => {
-      const row = Math.floor(index / 2);
-      const col = index % 2;
-      const x = 50 + (col * 260);
-      const y = yPos + (row * 35);
+    const tireChecks = ensureArray(data.tireChecks);
+    if (tireChecks.length > 0) {
+      yPos = drawSectionHeader('Tires & Wheels', yPos);
       
-      doc.fillColor(colors.lightText)
-         .fontSize(9)
-         .font('Helvetica')
-         .text(tire.label, x, y);
+      yPos = checkNewPage(yPos, 40);
       
       doc.fillColor(colors.text)
          .fontSize(10)
-         .font('Helvetica-Bold')
-         .text(tire.value || 'N/A', x, y + 12, { width: 240 });
-    });
-    
-    yPos += 90;
-
-    if (data.wheelCondition) {
-      doc.fillColor(colors.lightText)
-         .fontSize(9)
          .font('Helvetica')
-         .text('Alloy Wheels Condition', 50, yPos);
+         .text(tireChecks.join(', '), 51, yPos, {width: 493, align: 'justify'});
       
-      doc.fillColor(colors.text)
-         .fontSize(10)
-         .font('Helvetica-Bold')
-         .text(data.wheelCondition, 50, yPos + 12);
-      
-      yPos += 30;
+      yPos += doc.heightOfString(tireChecks.join(', '), {width: 493}) + 15;
     }
 
     if (data.tiresNotes) {
-      yPos = checkNewPage(yPos, 60);
-      const notesHeight = doc.heightOfString(data.tiresNotes, { width: 485 });
-      doc.roundedRect(50, yPos, 505, notesHeight + 40, 5)
-         .fillColor('#f5f5f5');
+      yPos = checkNewPage(yPos, 40);
+      const notesHeight = doc.heightOfString(data.tiresNotes, {width: 473});
       
-      doc.fillColor(colors.lightText)
-         .fontSize(9)
-         .font('Helvetica-Bold')
-         .text('Additional Notes:', 60, yPos + 10);
+      doc.rect(51, yPos, 493, notesHeight + 20)
+         .fill(colors.background);
       
       doc.fillColor(colors.text)
-         .fontSize(9)
+         .fontSize(10)
          .font('Helvetica')
-         .text(data.tiresNotes, 60, yPos + 25, { 
-           width: 485,
-           align: 'justify'
-         });
+         .text(data.tiresNotes, 61, yPos + 10, {width: 473, align: 'justify'});
       
-      yPos += notesHeight + 45;
-    } else {
-      yPos += 15;
+      yPos += notesHeight + 30;
     }
 
     // Tire Photos
-    if (data.imageBuffers && Object.keys(data.imageBuffers).length > 0) {
-      yPos = checkNewPage(yPos, 200);
+    if (data.imageBuffers) {
       const tireImages = [
         {buffer: data.imageBuffers.tireFrontLeft, caption: 'Front Left Tire'},
         {buffer: data.imageBuffers.tireFrontRight, caption: 'Front Right Tire'},
         {buffer: data.imageBuffers.tireRearLeft, caption: 'Rear Left Tire'},
         {buffer: data.imageBuffers.tireRearRight, caption: 'Rear Right Tire'},
-        {buffer: data.imageBuffers.tireSpare, caption: 'Spare Tire'},
-        {buffer: data.imageBuffers.alloyWheels, caption: 'Alloy Wheels'}
+        {buffer: data.imageBuffers.tireSpare, caption: 'Spare Tire'}
       ].filter(img => img.buffer);
       
       if (tireImages.length > 0) {
-        doc.fontSize(11).fillColor('#0b556b').text('Tire & Wheel Photos:', 50, yPos, {underline: true});
-        yPos += 20;
         yPos = addImageGrid(tireImages, yPos, 3);
         yPos += 10;
       }
     }
 
-    // ========== TEST DRIVE ==========
-    if (data.testDrive) {
-      yPos = checkNewPage(yPos, 150);
-      yPos = drawSectionHeader('TEST DRIVE ASSESSMENT', '🛣️', yPos);
+    // ========== STRUCTURE & UNDERCARRIAGE ==========
+    const structureChecks = ensureArray(data.structureChecks);
+    if (structureChecks.length > 0) {
+      yPos = drawSectionHeader('Structure & Undercarriage', yPos);
+      
+      yPos = checkNewPage(yPos, 40);
       
       doc.fillColor(colors.text)
          .fontSize(10)
          .font('Helvetica')
-         .text(`Test Drive Conducted: ${data.testDrive}`, 50, yPos);
+         .text(structureChecks.join(', '), 51, yPos, {width: 493, align: 'justify'});
       
-      yPos += 25;
-      
-      if (data.testDriveNotes) {
-        const notesHeight = doc.heightOfString(data.testDriveNotes, { width: 485 });
-        doc.roundedRect(50, yPos, 505, notesHeight + 25, 5)
-           .fillColor('#f5f5f5');
-        
-        doc.fillColor(colors.text)
-           .fontSize(9)
-           .font('Helvetica')
-           .text(data.testDriveNotes, 60, yPos + 10, { 
-             width: 485,
-             align: 'justify'
-           });
-        
-        yPos += notesHeight + 30;
-      }
-      
-      yPos += 15;
-    }
-
-    // ========== STRUCTURE & UNDERCARRIAGE ==========
-    const structureChecks = ensureArray(data.structureChecks);
-    if (structureChecks.length > 0) {
-      yPos = checkNewPage(yPos, 200);
-      yPos = drawSectionHeader('STRUCTURE & UNDERCARRIAGE', '🏗️', yPos);
-      
-      const checkboxSize = 8;
-      let checkY = yPos;
-      let checkX = 50;
-      const colWidth = 250;
-      
-      structureChecks.forEach((check, index) => {
-        if (index > 0 && index % 8 === 0) {
-          checkY = yPos;
-          checkX += colWidth;
-        }
-        
-        checkY = checkNewPage(checkY, 25);
-        
-        doc.rect(checkX, checkY, checkboxSize, checkboxSize)
-           .fillAndStroke(colors.success, colors.success);
-        
-        doc.fillColor('#ffffff')
-           .fontSize(10)
-           .text('✓', checkX + 1, checkY - 1);
-        
-        doc.fillColor(colors.text)
-           .fontSize(9)
-           .font('Helvetica')
-           .text(check, checkX + checkboxSize + 5, checkY, { 
-             width: colWidth - checkboxSize - 10 
-           });
-        
-        checkY += 18;
-        
-        if (index === structureChecks.length - 1) {
-          yPos = checkY;
-        }
-      });
-      
-      yPos += 10;
+      yPos += doc.heightOfString(structureChecks.join(', '), {width: 493}) + 15;
     }
 
     if (data.structureNotes) {
-      yPos = checkNewPage(yPos, 60);
-      const notesHeight = doc.heightOfString(data.structureNotes, { width: 485 });
-      doc.roundedRect(50, yPos, 505, notesHeight + 40, 5)
-         .fillColor('#f5f5f5');
+      yPos = checkNewPage(yPos, 40);
+      const notesHeight = doc.heightOfString(data.structureNotes, {width: 473});
       
-      doc.fillColor(colors.lightText)
-         .fontSize(9)
-         .font('Helvetica-Bold')
-         .text('Additional Notes:', 60, yPos + 10);
+      doc.rect(51, yPos, 493, notesHeight + 20)
+         .fill(colors.background);
       
       doc.fillColor(colors.text)
-         .fontSize(9)
+         .fontSize(10)
          .font('Helvetica')
-         .text(data.structureNotes, 60, yPos + 25, { 
-           width: 485,
-           align: 'justify'
-         });
+         .text(data.structureNotes, 61, yPos + 10, {width: 473, align: 'justify'});
       
-      yPos += notesHeight + 45;
-    } else {
-      yPos += 15;
+      yPos += notesHeight + 30;
     }
 
     // Undercarriage Photos
-    if (data.imageBuffers && Object.keys(data.imageBuffers).length > 0) {
-      yPos = checkNewPage(yPos, 200);
-      const undercarriageImages = [
+    if (data.imageBuffers) {
+      const structureImages = [
         {buffer: data.imageBuffers.undercarriageFront, caption: 'Front Undercarriage'},
         {buffer: data.imageBuffers.undercarriageRear, caption: 'Rear Undercarriage'},
-        {buffer: data.imageBuffers.exhaustSystem, caption: 'Exhaust System'},
+        {buffer: data.imageBuffers.exhaust, caption: 'Exhaust System'},
         {buffer: data.imageBuffers.suspensionFront, caption: 'Front Suspension'},
-        {buffer: data.imageBuffers.suspensionRear, caption: 'Rear Suspension'},
-        {buffer: data.imageBuffers.chassisFrame, caption: 'Chassis Frame'}
+        {buffer: data.imageBuffers.suspensionRear, caption: 'Rear Suspension'}
       ].filter(img => img.buffer);
       
-      if (undercarriageImages.length > 0) {
-        doc.fontSize(11).fillColor('#0b556b').text('Undercarriage & Structure Photos:', 50, yPos, {underline: true});
-        yPos += 20;
-        yPos = addImageGrid(undercarriageImages, yPos, 3);
+      if (structureImages.length > 0) {
+        yPos = addImageGrid(structureImages, yPos, 3);
         yPos += 10;
       }
     }
 
-    // ========== ISSUES FOUND & RECOMMENDATIONS ==========
+    // ========== TEST DRIVE ==========
+    if (data.testDrive || data.testDriveNotes) {
+      yPos = drawSectionHeader('Test Drive', yPos);
+      
+      yPos = checkNewPage(yPos, 40);
+      
+      if (data.testDrive) {
+        doc.fillColor(colors.label)
+           .fontSize(10)
+           .font('Helvetica-Bold')
+           .text('Test Drive Conducted: ', 51, yPos, {continued: true})
+           .fillColor(colors.text)
+           .font('Helvetica')
+           .text(data.testDrive);
+        
+        yPos += 20;
+      }
+
+      if (data.testDriveNotes) {
+        yPos = checkNewPage(yPos, 40);
+        const notesHeight = doc.heightOfString(data.testDriveNotes, {width: 473});
+        
+        doc.rect(51, yPos, 493, notesHeight + 20)
+           .fill(colors.background);
+        
+        doc.fillColor(colors.text)
+           .fontSize(10)
+           .font('Helvetica')
+           .text(data.testDriveNotes, 61, yPos + 10, {width: 473, align: 'justify'});
+        
+        yPos += notesHeight + 30;
+      }
+    }
+
+    // ========== ISSUES & RECOMMENDATIONS ==========
     if (data.issuesFound || data.recommendations) {
-      yPos = checkNewPage(yPos, 200);
-      yPos = drawSectionHeader('ISSUES FOUND & RECOMMENDATIONS', '📋', yPos);
+      yPos = drawSectionHeader('Issues Found & Recommendations', yPos);
       
       if (data.issuesFound) {
-        const issuesHeight = doc.heightOfString(data.issuesFound, { width: 485 });
-        doc.roundedRect(50, yPos, 505, issuesHeight + 43, 5)
+        yPos = checkNewPage(yPos, 60);
+        const issuesHeight = doc.heightOfString(data.issuesFound, {width: 473});
+        
+        doc.rect(51, yPos, 493, issuesHeight + 30)
            .fillAndStroke(colors.danger, colors.danger);
         
         doc.fillColor('#ffffff')
-           .fontSize(10)
+           .fontSize(11)
            .font('Helvetica-Bold')
-           .text('Major Issues Found:', 60, yPos + 10);
+           .text('Major Issues Found:', 61, yPos + 10);
         
-        doc.fontSize(9)
+        doc.fontSize(10)
            .font('Helvetica')
-           .text(data.issuesFound, 60, yPos + 28, { 
-             width: 485,
-             align: 'justify'
-           });
+           .text(data.issuesFound, 61, yPos + 26, {width: 473, align: 'justify'});
         
-        yPos += issuesHeight + 48;
+        yPos += issuesHeight + 40;
       }
-      
+
       if (data.recommendations) {
-        yPos = checkNewPage(yPos, 80);
+        yPos = checkNewPage(yPos, 60);
+        const recHeight = doc.heightOfString(data.recommendations, {width: 473});
         
-        const recommendationsHeight = doc.heightOfString(data.recommendations, { width: 485 });
-        doc.roundedRect(50, yPos, 505, recommendationsHeight + 43, 5)
-           .fillAndStroke(colors.accent, colors.accent);
+        doc.rect(51, yPos, 493, recHeight + 30)
+           .fill(colors.background);
         
-        doc.fillColor('#ffffff')
-           .fontSize(10)
+        doc.fillColor(colors.heading)
+           .fontSize(11)
            .font('Helvetica-Bold')
-           .text('Recommendations:', 60, yPos + 10);
+           .text('Recommendations:', 61, yPos + 10);
         
-        doc.fontSize(9)
+        doc.fillColor(colors.text)
+           .fontSize(10)
            .font('Helvetica')
-           .text(data.recommendations, 60, yPos + 28, { 
-             width: 485,
-             align: 'justify'
-           });
+           .text(data.recommendations, 61, yPos + 26, {width: 473, align: 'justify'});
         
-        yPos += recommendationsHeight + 48;
+        yPos += recHeight + 40;
       }
+    }
+
+    // ========== OVERALL CONDITION ==========
+    if (data.overallCondition) {
+      yPos = checkNewPage(yPos, 40);
+      
+      doc.fillColor(colors.label)
+         .fontSize(11)
+         .font('Helvetica-Bold')
+         .text('Overall Condition: ', 51, yPos, {continued: true})
+         .fillColor(colors.text)
+         .font('Helvetica')
+         .text(data.overallCondition);
+      
+      yPos += 30;
     }
 
     // ========== FOOTER ON ALL PAGES ==========
     const pageCount = doc.bufferedPageRange().count;
-    for (let i = 1; i <= pageCount; i++) {
+    for (let i = 0; i < pageCount; i++) {
       doc.switchToPage(i);
       
-      // Footer background
-      doc.rect(0, 780, 595, 62)
-         .fillAndStroke(colors.primary, colors.primary);
+      const footerY = 780;
       
-      // Footer text
-      doc.fillColor('#ffffff')
-         .fontSize(8)
+      doc.moveTo(51, footerY)
+         .lineTo(544, footerY)
+         .lineWidth(1)
+         .stroke(colors.border);
+      
+      doc.fillColor(colors.lightText)
+         .fontSize(9)
          .font('Helvetica')
-         .text(
-           'InspectionWale - Professional Vehicle Inspection Services | www.inspectionwale.com',
-           40,
-           792,
-           { align: 'center', width: 515 }
-         );
-      
-      doc.fontSize(7)
-         .text(
-           'Disclaimer: This report is based on visual inspection only. Mechanical condition beyond visual inspection is not guaranteed.',
-           40,
-           808,
-           { align: 'center', width: 515 }
-         );
-      
-      doc.fontSize(8)
-         .font('Helvetica-Bold')
-         .text(
-           `Page ${i} of ${pageCount}`,
-           40,
-           824,
-           { align: 'center', width: 515 }
-         );
+         .text('Disclaimer: InspectionWale offers visual inspection reports. Mechanical condition beyond visual inspection is not guaranteed.', 51, footerY + 8, {width: 493, align: 'center'})
+         .text(`Report generated by InspectionWale | Page ${i + 1} of ${pageCount}`, 51, footerY + 22, {width: 493, align: 'center'});
     }
 
     doc.end();
   });
 }
 
-// Main Lambda Handler
+// ========== MAIN HANDLER ==========
 exports.handler = async (event) => {
-  console.log('Event:', JSON.stringify(event));
+  console.log('Starting report generation...');
+  console.log('Content-Type:', event.headers['content-type'] || event.headers['Content-Type']);
   
   try {
-    const contentType = event.headers['content-type'] || event.headers['Content-Type'] || '';
-    console.log('Content-Type:', contentType);
+    const { fields, files } = await parseMultipartForm(event);
+    console.log('Files count:', files.length);
     
-    let fields = {};
-    let files = [];
-    
-    if (contentType.includes('application/json')) {
-      console.log('Parsing JSON body...');
-      fields = JSON.parse(event.body);
-    } else if (contentType.includes('multipart/form-data')) {
-      console.log('Parsing multipart form data...');
-      const parsed = await parseMultipartForm(event);
-      fields = parsed.fields;
-      files = parsed.files;
-    } else {
-      return {
-        statusCode: 400,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          message: `Unsupported content type: ${contentType}. Use application/json or multipart/form-data` 
-        })
-      };
+    // Compress and store images
+    const imageBuffers = {};
+    for (const file of files) {
+      const fieldName = file.fieldname.replace('photo_', '');
+      imageBuffers[fieldName] = file.buffer;
     }
     
-    console.log('Fields:', Object.keys(fields));
-    console.log('Files count:', files.length);
-    console.log('Field values:', JSON.stringify(fields, null, 4));
+    // Upload photos to S3
+    console.log('Uploading images to S3...');
+    const timestamp = Date.now();
+    for (const [key, buffer] of Object.entries(imageBuffers)) {
+      const fileName = `inspections/${fields.registrationNumber}/${timestamp}/${key}.jpg`;
+      await s3Client.send(new PutObjectCommand({
+        Bucket: process.env.REPORTS_BUCKET,
+        Key: fileName,
+        Body: buffer,
+        ContentType: 'image/jpeg'
+      }));
+    }
+    console.log(`Uploaded ${Object.keys(imageBuffers).length} images successfully`);
     
-    // Convert checkbox arrays properly
-    ['exteriorChecks', 'interiorChecks', 'engineChecks', 'structureChecks'].forEach(key => {
-      if (fields[key]) {
-        fields[key] = ensureArray(fields[key]);
-      }
+    // Generate PDF
+    console.log('Generating PDF with', Object.keys(imageBuffers).length, 'embedded images...');
+    const pdfBuffer = await generatePDF({
+      ...fields,
+      imageBuffers
     });
     
-    // Process and upload images to S3
-    const imageUrls = {};
-    const inspectionTimestamp = Date.now();
-    
-    if (files.length > 0) {
-      console.log('Uploading', files.length, 'images to S3...');
-      
-      for (const file of files) {
-        if (file.fieldname.startsWith('photo_')) {
-          const photoKey = file.fieldname.replace('photo_', '');
-          const imageFileName = `images/${fields.registrationNumber}/${inspectionTimestamp}/${photoKey}.jpg`;
-          
-          try {
-            await s3Client.send(new PutObjectCommand({
-              Bucket: process.env.REPORTS_BUCKET,
-              Key: imageFileName,
-              Body: file.buffer,
-              ContentType: file.mimeType || 'image/jpeg'
-            }));
-            
-            imageUrls[photoKey] = `https://${process.env.REPORTS_BUCKET}.s3.amazonaws.com/${imageFileName}`;
-            console.log('Uploaded:', photoKey);
-          } catch (uploadError) {
-            console.error('Error uploading image:', photoKey, uploadError);
-          }
-        }
-      }
-      
-      console.log('Uploaded', Object.keys(imageUrls).length, 'images successfully');
-    }
-    
-    // Pass images to PDF generator
-    fields.images = imageUrls;
-    fields.imageBuffers = files.reduce((acc, file) => {
-      if (file.fieldname.startsWith('photo_')) {
-        const photoKey = file.fieldname.replace('photo_', '');
-        acc[photoKey] = file.buffer;
-      }
-      return acc;
-    }, {});
-    
-    console.log('Generating PDF with', Object.keys(fields.imageBuffers || {}).length, 'embedded images...');
-    const pdfBuffer = await generatePDF(fields);
-    
-    const timestamp = Date.now();
     const fileName = `reports/${fields.registrationNumber}_${timestamp}.pdf`;
     
-    console.log('Uploading to S3:', fileName);
+    console.log('Uploading PDF to S3:', fileName);
     await s3Client.send(new PutObjectCommand({
       Bucket: process.env.REPORTS_BUCKET,
       Key: fileName,
