@@ -207,25 +207,14 @@ console.log('Password Hash:', hash);
 
 3. Create deployment package:
    
-   **Option A - Windows PowerShell (Recommended for Windows):**
+   **Windows PowerShell:**
    ```powershell
    Compress-Archive -Path * -DestinationPath ../function.zip -Force
    ```
    
-   **Option B - Git Bash on Windows (requires 7-Zip installed):**
-   ```bash
-   # If you have 7-Zip installed
-   /c/Program\ Files/7-Zip/7z.exe a -tzip ../function.zip .
-   ```
-   
-   **Option C - Git Bash / Linux / Mac (native zip):**
+   **Git Bash / Linux / Mac:**
    ```bash
    zip -r ../function.zip .
-   ```
-   
-   **Option D - Node.js script (works everywhere):**
-   ```bash
-   node -e "const fs=require('fs');const archiver=require('archiver');const output=fs.createWriteStream('../function.zip');const archive=archiver('zip');output.on('close',()=>console.log('Done'));archive.pipe(output);archive.directory('./',false);archive.finalize();"
    ```
 
 4. Upload to Lambda:
@@ -246,6 +235,7 @@ console.log('Password Hash:', hash);
   "Statement": [
     {
       "Effect": "Allow",
+      
       "Action": [
         "s3:PutObject",
         "s3:PutObjectAcl"

@@ -47,15 +47,22 @@ exports.handler = async (event) => {
 
     // Get inspector from DynamoDB
     const tableName = process.env.INSPECTORS_TABLE || 'inspectionwale-inspectors';
+
+    // Since table uses 'id' as partition key, we need to scan for username
+    const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
+    const { ScanCommand } = require('@aws-sdk/lib-dynamodb');
     
-    const command = new GetCommand({
+    const scanCommand = new ScanCommand({
       TableName: tableName,
-      Key: { username }
+      FilterExpression: 'username = :username',
+      ExpressionAttributeValues: {
+        ':username': username
+      }
     });
 
-    const response = await docClient.send(command);
+    const response = await docClient.send(scanCommand);
 
-    if (!response.Item) {
+    if (!response.Items || response.Items.length === 0) {
       console.log('Inspector not found:', username);
       return {
         statusCode: 401,
@@ -67,7 +74,7 @@ exports.handler = async (event) => {
       };
     }
 
-    const inspector = response.Item;
+    const inspector = response.Items[0];
     
     // Check if account is active
     if (inspector.status !== 'active') {
