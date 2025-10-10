@@ -308,8 +308,28 @@ exports.handler = async (event) => {
   }
 
   try {
-    console.log('Parsing form data...');
-    const { fields, files } = await parseMultipartForm(event);
+    const contentType = event.headers['content-type'] || event.headers['Content-Type'] || '';
+    console.log('Content-Type:', contentType);
+    
+    let fields = {};
+    let files = [];
+    
+    // Handle both JSON and multipart/form-data
+    if (contentType.includes('application/json')) {
+      // Parse JSON body (when sent through Amplify)
+      console.log('Parsing JSON body...');
+      const body = JSON.parse(event.body || '{}');
+      fields = body;
+      files = []; // No file uploads in JSON mode
+    } else if (contentType.includes('multipart/form-data')) {
+      // Parse multipart form data (direct Function URL)
+      console.log('Parsing multipart form data...');
+      const parsed = await parseMultipartForm(event);
+      fields = parsed.fields;
+      files = parsed.files;
+    } else {
+      throw new Error(`Unsupported content type: ${contentType}`);
+    }
     
     console.log('Fields:', Object.keys(fields));
     console.log('Files count:', files.length);
