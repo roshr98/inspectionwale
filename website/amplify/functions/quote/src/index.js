@@ -2,7 +2,7 @@ const { DynamoDBClient } = require('@aws-sdk/client-dynamodb')
 const { DynamoDBDocumentClient, PutCommand } = require('@aws-sdk/lib-dynamodb')
 const { SESClient, SendEmailCommand } = require('@aws-sdk/client-ses')
 
-const REGION = process.env.AWS_REGION || 'ap-south-1'
+const REGION = process.env.AWS_REGION || 'us-east-1'
 const QUOTES_TABLE = process.env.QUOTES_TABLE || process.env.STORAGE_QUOTES_NAME
 
 const ddb = new DynamoDBClient({ region: REGION })
