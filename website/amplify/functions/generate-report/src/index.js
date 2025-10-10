@@ -464,7 +464,8 @@ async function generatePDF(data) {
 
     if (data.exteriorNotes) {
       yPos = checkNewPage(yPos, 60);
-      doc.roundedRect(50, yPos, 505, 'auto', 5)
+      const notesHeight = doc.heightOfString(data.exteriorNotes, { width: 485 });
+      doc.roundedRect(50, yPos, 505, notesHeight + 40, 5)
          .fillColor('#f5f5f5');
       
       doc.fillColor(colors.lightText)
@@ -480,7 +481,7 @@ async function generatePDF(data) {
            align: 'justify'
          });
       
-      yPos += doc.heightOfString(data.exteriorNotes, { width: 485 }) + 45;
+      yPos += notesHeight + 45;
     } else {
       yPos += 15;
     }
@@ -564,7 +565,8 @@ async function generatePDF(data) {
 
     if (data.interiorNotes) {
       yPos = checkNewPage(yPos, 60);
-      doc.roundedRect(50, yPos, 505, 'auto', 5)
+      const notesHeight = doc.heightOfString(data.interiorNotes, { width: 485 });
+      doc.roundedRect(50, yPos, 505, notesHeight + 40, 5)
          .fillColor('#f5f5f5');
       
       doc.fillColor(colors.lightText)
@@ -580,7 +582,7 @@ async function generatePDF(data) {
            align: 'justify'
          });
       
-      yPos += doc.heightOfString(data.interiorNotes, { width: 485 }) + 45;
+      yPos += notesHeight + 45;
     } else {
       yPos += 15;
     }
@@ -670,7 +672,8 @@ async function generatePDF(data) {
 
     if (data.engineNotes) {
       yPos = checkNewPage(yPos, 60);
-      doc.roundedRect(50, yPos, 505, 'auto', 5)
+      const notesHeight = doc.heightOfString(data.engineNotes, { width: 485 });
+      doc.roundedRect(50, yPos, 505, notesHeight + 40, 5)
          .fillColor('#f5f5f5');
       
       doc.fillColor(colors.lightText)
@@ -686,7 +689,7 @@ async function generatePDF(data) {
            align: 'justify'
          });
       
-      yPos += doc.heightOfString(data.engineNotes, { width: 485 }) + 45;
+      yPos += notesHeight + 45;
     } else {
       yPos += 15;
     }
@@ -758,7 +761,8 @@ async function generatePDF(data) {
 
     if (data.tiresNotes) {
       yPos = checkNewPage(yPos, 60);
-      doc.roundedRect(50, yPos, 505, 'auto', 5)
+      const notesHeight = doc.heightOfString(data.tiresNotes, { width: 485 });
+      doc.roundedRect(50, yPos, 505, notesHeight + 40, 5)
          .fillColor('#f5f5f5');
       
       doc.fillColor(colors.lightText)
@@ -774,7 +778,7 @@ async function generatePDF(data) {
            align: 'justify'
          });
       
-      yPos += doc.heightOfString(data.tiresNotes, { width: 485 }) + 45;
+      yPos += notesHeight + 45;
     } else {
       yPos += 15;
     }
@@ -812,7 +816,8 @@ async function generatePDF(data) {
       yPos += 25;
       
       if (data.testDriveNotes) {
-        doc.roundedRect(50, yPos, 505, 'auto', 5)
+        const notesHeight = doc.heightOfString(data.testDriveNotes, { width: 485 });
+        doc.roundedRect(50, yPos, 505, notesHeight + 25, 5)
            .fillColor('#f5f5f5');
         
         doc.fillColor(colors.text)
@@ -823,7 +828,7 @@ async function generatePDF(data) {
              align: 'justify'
            });
         
-        yPos += doc.heightOfString(data.testDriveNotes, { width: 485 }) + 30;
+        yPos += notesHeight + 30;
       }
       
       yPos += 15;
@@ -874,7 +879,8 @@ async function generatePDF(data) {
 
     if (data.structureNotes) {
       yPos = checkNewPage(yPos, 60);
-      doc.roundedRect(50, yPos, 505, 'auto', 5)
+      const notesHeight = doc.heightOfString(data.structureNotes, { width: 485 });
+      doc.roundedRect(50, yPos, 505, notesHeight + 40, 5)
          .fillColor('#f5f5f5');
       
       doc.fillColor(colors.lightText)
@@ -890,7 +896,7 @@ async function generatePDF(data) {
            align: 'justify'
          });
       
-      yPos += doc.heightOfString(data.structureNotes, { width: 485 }) + 45;
+      yPos += notesHeight + 45;
     } else {
       yPos += 15;
     }
@@ -921,7 +927,8 @@ async function generatePDF(data) {
       yPos = drawSectionHeader('ISSUES FOUND & RECOMMENDATIONS', '📋', yPos);
       
       if (data.issuesFound) {
-        doc.roundedRect(50, yPos, 505, 'auto', 5)
+        const issuesHeight = doc.heightOfString(data.issuesFound, { width: 485 });
+        doc.roundedRect(50, yPos, 505, issuesHeight + 43, 5)
            .fillAndStroke(colors.danger, colors.danger);
         
         doc.fillColor('#ffffff')
@@ -936,13 +943,14 @@ async function generatePDF(data) {
              align: 'justify'
            });
         
-        yPos += doc.heightOfString(data.issuesFound, { width: 485 }) + 48;
+        yPos += issuesHeight + 48;
       }
       
       if (data.recommendations) {
         yPos = checkNewPage(yPos, 80);
         
-        doc.roundedRect(50, yPos, 505, 'auto', 5)
+        const recommendationsHeight = doc.heightOfString(data.recommendations, { width: 485 });
+        doc.roundedRect(50, yPos, 505, recommendationsHeight + 43, 5)
            .fillAndStroke(colors.accent, colors.accent);
         
         doc.fillColor('#ffffff')
@@ -957,7 +965,7 @@ async function generatePDF(data) {
              align: 'justify'
            });
         
-        yPos += doc.heightOfString(data.recommendations, { width: 485 }) + 48;
+        yPos += recommendationsHeight + 48;
       }
     }
 
