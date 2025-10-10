@@ -285,13 +285,13 @@ async function generatePDF(data) {
     
     // Footer on each page
     const totalPages = doc.bufferedPageRange().count;
-    for (let i = 0; i < totalPages; i++) {
+    for (let i = 1; i <= totalPages; i++) {
       doc.switchToPage(i);
       doc.fillColor('#999')
          .fontSize(8)
          .font('Helvetica')
          .text(
-           `InspectionWale - Professional Vehicle Inspection Services | Page ${i + 1} of ${totalPages}`,
+           `InspectionWale - Professional Vehicle Inspection Services | Page ${i} of ${totalPages}`,
            50,
            doc.page.height - 50,
            { align: 'center', width: 495 }
@@ -340,6 +340,15 @@ exports.handler = async (event) => {
     
     console.log('Fields:', Object.keys(fields));
     console.log('Files count:', files.length);
+    console.log('Field values:', JSON.stringify(fields, null, 2));
+    
+    // Validate required fields
+    if (!fields.registrationNumber) {
+      throw new Error('Registration number is required');
+    }
+    if (!fields.make || !fields.model || !fields.year) {
+      throw new Error('Vehicle make, model, and year are required');
+    }
     
     // Generate PDF
     console.log('Generating PDF...');
