@@ -15,8 +15,29 @@ exports.handler = async (event) => {
   try {
     if (key && placeId) {
       const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${encodeURIComponent(placeId)}&fields=name,rating,user_ratings_total,reviews,photos&key=${encodeURIComponent(key)}`
+      console.log('Fetching from Google Places API...')
+      console.log('Place ID:', placeId)
+      console.log('API Key (first 10 chars):', key.substring(0, 10) + '...')
+      
       const r = await fetch(url)
       const j = await r.json()
+      
+      console.log('Google API Response:', JSON.stringify(j, null, 2))
+      
+      // Check for API errors
+      if (j.status && j.status !== 'OK') {
+        console.error('Google API Error:', j.status, j.error_message || '')
+        return { 
+          statusCode: 200, 
+          headers,
+          body: JSON.stringify({ 
+            ok: false, 
+            error: 'google_api_error',
+            status: j.status,
+            message: j.error_message || 'No error message provided'
+          }) 
+        }
+      }
       
       if (j && j.result) {
         const businessName = j.result.name || 'InspectionWale'
@@ -50,10 +71,16 @@ exports.handler = async (event) => {
           }) 
         }
       }
+      
+      console.warn('No result object in Google API response')
       return { 
         statusCode: 200, 
         headers,
-        body: JSON.stringify({ ok: false, error: 'no_result' }) 
+        body: JSON.stringify({ 
+          ok: false, 
+          error: 'no_result',
+          debug: 'No result object in API response'
+        }) 
       }
     }
 
