@@ -508,6 +508,65 @@
         } else {
             document.getElementById('inspectorName').textContent = name || 'Inspector';
         }
+        
+        // Restore cached form data on page load (if exists)
+        window.addEventListener('DOMContentLoaded', function() {
+            const cachedData = sessionStorage.getItem('inspection_form_backup');
+            const cacheTimestamp = sessionStorage.getItem('inspection_form_timestamp');
+            
+            if (cachedData && cacheTimestamp) {
+                const cacheAge = Date.now() - new Date(cacheTimestamp).getTime();
+                const cacheAgeMinutes = Math.floor(cacheAge / 60000);
+                
+                // Only restore if cache is less than 30 minutes old
+                if (cacheAgeMinutes < 30) {
+                    const shouldRestore = confirm(
+                        `Found unsaved inspection data from ${cacheAgeMinutes} minute(s) ago.\n\n` +
+                        'Would you like to restore it?'
+                    );
+                    
+                    if (shouldRestore) {
+                        try {
+                            const data = JSON.parse(cachedData);
+                            const form = document.getElementById('inspectionForm');
+                            
+                            // Restore form fields
+                            for (let key in data) {
+                                const element = form.elements[key];
+                                if (element) {
+                                    if (element.type === 'checkbox') {
+                                        // Handle checkbox arrays
+                                        if (Array.isArray(data[key])) {
+                                            data[key].forEach(val => {
+                                                const checkbox = form.querySelector(`input[name="${key}"][value="${val}"]`);
+                                                if (checkbox) checkbox.checked = true;
+                                            });
+                                        }
+                                    } else if (element.type === 'radio') {
+                                        const radio = form.querySelector(`input[name="${key}"][value="${data[key]}"]`);
+                                        if (radio) radio.checked = true;
+                                    } else {
+                                        element.value = data[key];
+                                    }
+                                }
+                            }
+                            
+                            alert('Form data restored successfully!');
+                        } catch (error) {
+                            console.error('Failed to restore form data:', error);
+                        }
+                    } else {
+                        // Clear cache if user doesn't want to restore
+                        sessionStorage.removeItem('inspection_form_backup');
+                        sessionStorage.removeItem('inspection_form_timestamp');
+                    }
+                } else {
+                    // Cache too old, remove it
+                    sessionStorage.removeItem('inspection_form_backup');
+                    sessionStorage.removeItem('inspection_form_timestamp');
+                }
+            }
+        });
 
         function logout() {
             sessionStorage.removeItem('inspector_token');
@@ -564,30 +623,49 @@
             try {
                 const formData = new FormData(form);
                 
-                // Add selected photos to FormData
-                selectedFiles.forEach((file, index) => {
-                    formData.append(`photo_${index}`, file);
-                });
+                // Convert FormData to JSON object
+                const data = {};
+                for (let [key, value] of formData.entries()) {
+                    // Handle checkboxes - collect multiple values into array
+                    if (form.elements[key] && form.elements[key].type === 'checkbox') {
+                        if (!data[key]) data[key] = [];
+                        if (value) data[key].push(value);
+                    } else {
+                        data[key] = value;
+                    }
+                }
                 
                 // Add token for authentication
-                formData.append('token', sessionStorage.getItem('inspector_token'));
+                data.token = sessionStorage.getItem('inspector_token');
+                data.inspectorName = sessionStorage.getItem('inspector_name');
+                
+                // Store form data in sessionStorage as backup
+                sessionStorage.setItem('inspection_form_backup', JSON.stringify(data));
+                sessionStorage.setItem('inspection_form_timestamp', new Date().toISOString());
                 
                 const response = await fetch('/api/generate-report', {
                     method: 'POST',
-                    body: formData
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
                 });
                 
-                const data = await response.json();
+                const result = await response.json();
                 
-                if (data.ok && data.reportUrl) {
+                if (result.ok && result.reportUrl) {
                     status.className = 'alert alert-success';
                     status.innerHTML = `
                         <strong>Success!</strong> Report generated successfully.<br>
-                        <a href="${data.reportUrl}" target="_blank" style="color: #155724; text-decoration: underline;">
+                        <a href="${result.reportUrl}" target="_blank" style="color: #155724; text-decoration: underline;">
                             <i class="fas fa-download"></i> Download Report PDF
                         </a>
                     `;
                     status.style.display = 'block';
+                    
+                    // Clear backup after successful submission
+                    sessionStorage.removeItem('inspection_form_backup');
+                    sessionStorage.removeItem('inspection_form_timestamp');
                     
                     // Reset form after 3 seconds
                     setTimeout(() => {
@@ -599,7 +677,7 @@
                         }
                     }, 3000);
                 } else {
-                    throw new Error(data.message || 'Failed to generate report');
+                    throw new Error(result.message || 'Failed to generate report');
                 }
                 
             } catch (error) {

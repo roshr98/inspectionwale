@@ -8,6 +8,13 @@ const s3Client = new S3Client({});
 const ddbClient = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(ddbClient);
 
+// Helper function to ensure items are arrays
+function ensureArray(value) {
+  if (!value) return [];
+  if (Array.isArray(value)) return value;
+  return [value];
+}
+
 // Parse multipart form data
 function parseMultipartForm(event) {
   return new Promise((resolve, reject) => {
@@ -174,10 +181,10 @@ async function generatePDF(data) {
     yPos += 30;
     
     const checklistSections = [
-      { title: 'Exterior Condition', items: data.exteriorChecks || [] },
-      { title: 'Interior Condition', items: data.interiorChecks || [] },
-      { title: 'Engine & Mechanical', items: data.engineChecks || [] },
-      { title: 'Tires & Wheels', items: data.tireChecks || [] }
+      { title: 'Exterior Condition', items: ensureArray(data.exteriorChecks) },
+      { title: 'Interior Condition', items: ensureArray(data.interiorChecks) },
+      { title: 'Engine & Mechanical', items: ensureArray(data.engineChecks) },
+      { title: 'Tires & Wheels', items: ensureArray(data.tireChecks) }
     ];
     
     checklistSections.forEach(section => {
@@ -392,10 +399,10 @@ exports.handler = async (event) => {
           location: fields.location
         },
         checklist: {
-          exterior: fields.exteriorChecks || [],
-          interior: fields.interiorChecks || [],
-          engine: fields.engineChecks || [],
-          tires: fields.tireChecks || []
+          exterior: ensureArray(fields.exteriorChecks),
+          interior: ensureArray(fields.interiorChecks),
+          engine: ensureArray(fields.engineChecks),
+          tires: ensureArray(fields.tireChecks)
         },
         notes: {
           condition: fields.overallCondition,
