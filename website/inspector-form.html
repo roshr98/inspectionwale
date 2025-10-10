@@ -26,6 +26,12 @@
             background: linear-gradient(135deg, #0b556b 0%, #0073bb 100%);
             min-height: 100vh;
             padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        body.authenticated {
+            opacity: 1;
         }
         
         .header-bar {
@@ -997,15 +1003,27 @@
     </div>
 
     <script>
+        // Check authentication before page loads
+        (function() {
+            const token = sessionStorage.getItem('inspectorToken');
+            if (!token) {
+                window.location.replace('inspector-login.html');
+                return;
+            }
+        })();
+
         // Load inspector name from sessionStorage
         document.addEventListener('DOMContentLoaded', () => {
             const token = sessionStorage.getItem('inspectorToken');
             const inspectorName = sessionStorage.getItem('inspectorName');
             
             if (!token) {
-                window.location.href = 'inspector-login.html';
+                window.location.replace('inspector-login.html');
                 return;
             }
+            
+            // Show page content
+            document.body.classList.add('authenticated');
             
             if (inspectorName) {
                 document.getElementById('inspectorName').textContent = `Inspector: ${inspectorName}`;

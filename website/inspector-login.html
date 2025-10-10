@@ -298,15 +298,13 @@
                 if (response.ok) {
                     showAlert('Login successful! Redirecting...', 'success');
                     
-                    // Store authentication data
-                    sessionStorage.setItem('inspector_token', data.token);
-                    sessionStorage.setItem('inspector_name', data.name);
-                    sessionStorage.setItem('inspector_username', data.username);
+                    // Store authentication data (using camelCase keys to match form)
+                    sessionStorage.setItem('inspectorToken', data.token);
+                    sessionStorage.setItem('inspectorName', data.name);
+                    sessionStorage.setItem('inspectorUsername', data.username);
                     
-                    // Redirect to inspector form
-                    setTimeout(() => {
-                        window.location.href = 'inspector-form.html';
-                    }, 1000);
+                    // Redirect to inspector form immediately
+                    window.location.href = 'inspector-form.html';
                 } else {
                     showAlert(data.message || 'Invalid credentials. Please try again.', 'danger');
                     loginBtn.disabled = false;
@@ -321,7 +319,7 @@
         });
         
         // Check if already logged in
-        if (sessionStorage.getItem('inspector_token')) {
+        if (sessionStorage.getItem('inspectorToken')) {
             window.location.href = 'inspector-form.html';
         }
     </script>
