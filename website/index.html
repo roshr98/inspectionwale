@@ -667,19 +667,53 @@
 
     <!-- Template Javascript -->
         <script>
-        // Booking form handler for InspectionWale booking panel
+        // Booking form handler for InspectionWale booking panel — posts to /api/quote
         (function(){
             const form = document.getElementById('bookingFormIW')
             const status = document.getElementById('bookingStatus')
             if(!form || !status) return
-            form.addEventListener('submit', function(e){
+
+            async function postJSON(url, data){
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                })
+                return res
+            }
+
+            form.addEventListener('submit', async function(e){
                 e.preventDefault()
-                // Simple client-side validation could go here
+                const fd = new FormData(this)
+                const payload = {
+                    firstName: fd.get('name') || '',
+                    mobile: fd.get('mobile') || fd.get('phone') || '',
+                    email: fd.get('email') || '',
+                    carType: fd.get('carType') || fd.get('carType'),
+                    make: fd.get('make') || '',
+                }
+
                 status.style.display = 'block'
-                status.className = 'text-success'
-                status.textContent = 'Thank you for the details, we will call you shortly'
-                this.reset()
-                // hide after a short delay
+                status.className = 'text-muted'
+                status.textContent = 'Sending...'
+
+                try{
+                    const res = await postJSON('/api/quote', payload)
+                    if(res.ok){
+                        status.className = 'text-success'
+                        status.textContent = 'Thank you — we will contact you shortly.'
+                        this.reset()
+                    } else {
+                        const j = await res.json().catch(()=>null)
+                        status.className = 'text-danger'
+                        status.textContent = (j && j.error) ? j.error : 'Server error — please try later.'
+                    }
+                }catch(err){
+                    console.error(err)
+                    status.className = 'text-danger'
+                    status.textContent = 'Unable to reach server.'
+                }
+
                 setTimeout(()=>{ status.style.display='none'; status.textContent=''; }, 5000)
             })
         })()
