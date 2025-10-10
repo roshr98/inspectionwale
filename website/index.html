@@ -134,16 +134,16 @@
     <!-- Carousel End -->
 
     <!-- About Start (moved here) -->
-    <div id="about-section" class="container-xxl py-5 section-dust">
+    <div id="" class="container-xxl py-5 section-dust">
         <div class="container">
             <div class="row g-5 align-items-stretch">
-                <div class="col-lg-6 h-100">
+                <div class="col-lg-6 ">
                     <div class="wow fadeIn h-100" data-wow-delay="0.1s">
                         <img class="img-fluid w-100 h-100 rounded" src="Images/banner_about.jpg" style="object-fit: cover; object-position: 35% 50%;" alt="About InspectionWale">
                     </div>
                 </div>
-                <div class="col-lg-6 d-flex flex-column justify-content-center">
-                    <h6 class="text-primary text-uppercase">// About Us //</h6>
+                <div class="col-lg-6 d-flex flex-column justify-content-top">
+                    
                     <h1 class="mb-4">“Inspect First. Drive Confidently.”</h1>
                     <p class="mb-4">Buying a car is a big decision — whether brand-new or pre-owned. A professional inspection makes sure you get exactly what you pay for.</p>
                     <ul>
@@ -151,7 +151,7 @@
                         <li>Used cars – Spot hidden issues, know the real value, and drive with confidence.</li>
                         <li>An inspection protects your money, your safety, and your peace of mind.</li>
                     </ul>
-                    <div class="row g-4 mb-3 pb-3">
+                    <div class="row g-4 mb-2">
                         <div class="col-6 wow fadeIn" data-wow-delay="0.1s">
                                 <div class="d-flex align-items-center">
                                     <div class="d-flex flex-shrink-0 align-items-center justify-content-center" style="width: 70px; height: 70px;">
@@ -200,11 +200,11 @@
     <!-- About End (moved) -->
 
     <!-- What Is Checked Start -->
-    <div id="what-checked" class="container-xxl py-4 section-dust">
+    <div id="what-checked" class="container-xxl  section-dust">
         <div class="container">
             <div class="text-center text-lg-start wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="text-primary text-uppercase">// What is checked //</h6>
-                <h2 class="mb-4 display-4 fw-bold" style="color:var(--secondary);">What is checked</h2>
+                
+                <h2 class="mb-5 display-4 fw-bold" style="color:var(--secondary);">What is checked</h2>
             </div>
             <div class="row g-4 justify-content-center">
                 <!-- item -->
@@ -584,6 +584,43 @@
     <!-- Testimonial End -->
 
 
+    <!-- Google Reviews Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="text-primary text-uppercase">// Google Reviews //</h6>
+                <h1 class="mb-3">What Our Customers Say on Google</h1>
+                <div id="googleRatingOverview" class="mb-4">
+                    <div class="d-flex justify-content-center align-items-center gap-3">
+                        <div class="text-center">
+                            <h2 class="mb-0 text-primary" id="overallRating">4.9</h2>
+                            <div id="overallStars" class="mb-1">
+                                ★★★★★
+                            </div>
+                            <small class="text-muted" id="totalReviews">127 reviews</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="googleReviewsContainer" class="row g-4">
+                <!-- Reviews will be loaded here dynamically -->
+                <div class="col-12 text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading reviews...</span>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <a href="https://www.google.com/maps/search/?api=1&query=InspectionWale" target="_blank" class="btn btn-primary py-3 px-5">
+                    Write a Review on Google
+                    <i class="fab fa-google ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- Google Reviews End -->
+
+
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
@@ -716,6 +753,78 @@
 
                 setTimeout(()=>{ status.style.display='none'; status.textContent=''; }, 5000)
             })
+        })()
+        </script>
+
+        <script>
+        // Google Reviews Loader
+        (async function(){
+            const container = document.getElementById('googleReviewsContainer')
+            if (!container) return
+
+            try {
+                const res = await fetch('/api/reviews')
+                const data = await res.json()
+                
+                if (data.ok && data.reviews && data.reviews.length) {
+                    // Update overall rating
+                    if (data.overallRating) {
+                        document.getElementById('overallRating').textContent = data.overallRating.toFixed(1)
+                    }
+                    if (data.totalReviews) {
+                        document.getElementById('totalReviews').textContent = data.totalReviews + ' reviews'
+                    }
+                    
+                    // Generate star HTML
+                    function getStars(rating) {
+                        const full = Math.floor(rating)
+                        const half = rating % 1 >= 0.5 ? 1 : 0
+                        const empty = 5 - full - half
+                        return '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(empty)
+                    }
+                    
+                    // Render reviews
+                    container.innerHTML = data.reviews.map(review => `
+                        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                            <div class="bg-light p-4 rounded h-100 d-flex flex-column">
+                                <div class="d-flex align-items-center mb-3">
+                                    ${review.profile_photo ? 
+                                        `<img src="${review.profile_photo}" class="rounded-circle me-3" style="width:50px;height:50px;object-fit:cover;" alt="${review.author}">` :
+                                        `<div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" style="width:50px;height:50px;font-size:20px;font-weight:bold;">${review.author.charAt(0)}</div>`
+                                    }
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">${review.author}</h6>
+                                        <small class="text-muted">${review.time || ''}</small>
+                                    </div>
+                                </div>
+                                <div class="mb-2" style="color:#ffc107;font-size:1.2em;">
+                                    ${getStars(review.rating)}
+                                </div>
+                                <p class="mb-0 flex-grow-1">${review.text}</p>
+                                <div class="mt-3 pt-3 border-top">
+                                    <small class="text-muted">
+                                        <i class="fab fa-google me-1"></i> Posted on Google
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')
+                } else {
+                    // Show fallback message
+                    container.innerHTML = `
+                        <div class="col-12 text-center">
+                            <p class="text-muted">Reviews will appear here once configured.</p>
+                        </div>
+                    `
+                }
+            } catch (err) {
+                console.error('Failed to load reviews:', err)
+                container.innerHTML = `
+                    <div class="col-12 text-center">
+                        <p class="text-danger">Unable to load reviews. Please try again later.</p>
+                    </div>
+                `
+            }
         })()
         </script>
         <script src="js/main.js"></script>
