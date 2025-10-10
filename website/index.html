@@ -535,83 +535,34 @@
     <!-- Booking End -->
 
 
-    <!-- Team/Technicians section removed for InspectionWale -->
-
-
-    <!-- Testimonial Start -->
+    <!-- Google Reviews Start -->
     <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
         <div class="container">
             <div class="text-center">
-                <h6 class="text-primary text-uppercase">// Testimonial //</h6>
-                <h1 class="mb-5">Our Clients Say!</h1>
-            </div>
-            <div class="owl-carousel testimonial-carousel position-relative">
-                <div class="testimonial-item text-center">
-                    <img class="bg-light rounded-circle p-2 mx-auto mb-3" src="img/testimonial-1.jpg" style="width: 80px; height: 80px;">
-                    <h5 class="mb-0">Client Name</h5>
-                    <p>Profession</p>
-                    <div class="testimonial-text bg-light text-center p-4">
-                    <p class="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                    </div>
-                </div>
-                <div class="testimonial-item text-center">
-                    <img class="bg-light rounded-circle p-2 mx-auto mb-3" src="img/testimonial-2.jpg" style="width: 80px; height: 80px;">
-                    <h5 class="mb-0">Client Name</h5>
-                    <p>Profession</p>
-                    <div class="testimonial-text bg-light text-center p-4">
-                    <p class="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                    </div>
-                </div>
-                <div class="testimonial-item text-center">
-                    <img class="bg-light rounded-circle p-2 mx-auto mb-3" src="img/testimonial-3.jpg" style="width: 80px; height: 80px;">
-                    <h5 class="mb-0">Client Name</h5>
-                    <p>Profession</p>
-                    <div class="testimonial-text bg-light text-center p-4">
-                    <p class="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                    </div>
-                </div>
-                <div class="testimonial-item text-center">
-                    <img class="bg-light rounded-circle p-2 mx-auto mb-3" src="img/testimonial-4.jpg" style="width: 80px; height: 80px;">
-                    <h5 class="mb-0">Client Name</h5>
-                    <p>Profession</p>
-                    <div class="testimonial-text bg-light text-center p-4">
-                    <p class="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Testimonial End -->
-
-
-    <!-- Google Reviews Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
                 <h6 class="text-primary text-uppercase">// Google Reviews //</h6>
-                <h1 class="mb-3">What Our Customers Say on Google</h1>
+                <h1 class="mb-4">What Our Customers Say on Google</h1>
                 <div id="googleRatingOverview" class="mb-4">
                     <div class="d-flex justify-content-center align-items-center gap-3">
                         <div class="text-center">
                             <h2 class="mb-0 text-primary" id="overallRating">4.9</h2>
-                            <div id="overallStars" class="mb-1">
+                            <div id="overallStars" class="mb-1" style="color:#ffc107;font-size:1.5em;">
                                 ★★★★★
                             </div>
-                            <small class="text-muted" id="totalReviews">127 reviews</small>
+                            <small class="text-muted" id="totalReviews">Loading...</small>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="googleReviewsContainer" class="row g-4">
+            <div id="googleReviewsContainer" class="owl-carousel google-reviews-carousel position-relative">
                 <!-- Reviews will be loaded here dynamically -->
-                <div class="col-12 text-center">
+                <div class="text-center p-4">
                     <div class="spinner-border text-primary" role="status">
                         <span class="visually-hidden">Loading reviews...</span>
                     </div>
                 </div>
             </div>
             <div class="text-center mt-4">
-                <a href="https://www.google.com/maps/search/?api=1&query=InspectionWale" target="_blank" class="btn btn-primary py-3 px-5">
+                <a href="https://www.google.com/maps/search/?api=1&query=Whizzcheck" target="_blank" class="btn btn-primary py-3 px-5">
                     Write a Review on Google
                     <i class="fab fa-google ms-2"></i>
                 </a>
@@ -757,7 +708,7 @@
         </script>
 
         <script>
-        // Google Reviews Loader
+        // Google Reviews Loader with Carousel
         (async function(){
             const container = document.getElementById('googleReviewsContainer')
             if (!container) return
@@ -775,33 +726,40 @@
                         document.getElementById('totalReviews').textContent = data.totalReviews + ' reviews'
                     }
                     
-                    // Generate star HTML
+                    // Update overall stars display
+                    if (data.overallRating) {
+                        const rating = data.overallRating
+                        const full = Math.floor(rating)
+                        const half = rating % 1 >= 0.5 ? 1 : 0
+                        const empty = 5 - full - half
+                        document.getElementById('overallStars').innerHTML = '★'.repeat(full) + (half ? '⯨' : '') + '☆'.repeat(empty)
+                    }
+                    
+                    // Generate star HTML for individual reviews
                     function getStars(rating) {
                         const full = Math.floor(rating)
                         const half = rating % 1 >= 0.5 ? 1 : 0
                         const empty = 5 - full - half
-                        return '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(empty)
+                        return '★'.repeat(full) + (half ? '⯨' : '') + '☆'.repeat(empty)
                     }
                     
-                    // Render reviews
+                    // Render reviews as carousel items
                     container.innerHTML = data.reviews.map(review => `
-                        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                            <div class="bg-light p-4 rounded h-100 d-flex flex-column">
-                                <div class="d-flex align-items-center mb-3">
+                        <div class="google-review-item text-center">
+                            <div class="bg-light p-4 rounded mx-2" style="min-height: 300px;">
+                                <div class="d-flex align-items-center justify-content-center mb-3">
                                     ${review.profile_photo ? 
-                                        `<img src="${review.profile_photo}" class="rounded-circle me-3" style="width:50px;height:50px;object-fit:cover;" alt="${review.author}">` :
-                                        `<div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" style="width:50px;height:50px;font-size:20px;font-weight:bold;">${review.author.charAt(0)}</div>`
+                                        `<img src="${review.profile_photo}" class="rounded-circle" style="width:60px;height:60px;object-fit:cover;" alt="${review.author}">` :
+                                        `<div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:60px;height:60px;font-size:24px;font-weight:bold;">${review.author.charAt(0)}</div>`
                                     }
-                                    <div class="flex-grow-1">
-                                        <h6 class="mb-0">${review.author}</h6>
-                                        <small class="text-muted">${review.time || ''}</small>
-                                    </div>
                                 </div>
-                                <div class="mb-2" style="color:#ffc107;font-size:1.2em;">
+                                <h5 class="mb-1">${review.author}</h5>
+                                <small class="text-muted d-block mb-2">${review.time || ''}</small>
+                                <div class="mb-3" style="color:#ffc107;font-size:1.3em;">
                                     ${getStars(review.rating)}
                                 </div>
-                                <p class="mb-0 flex-grow-1">${review.text}</p>
-                                <div class="mt-3 pt-3 border-top">
+                                <p class="mb-3" style="min-height: 80px;">${review.text.length > 150 ? review.text.substring(0, 150) + '...' : review.text}</p>
+                                <div class="pt-2 border-top">
                                     <small class="text-muted">
                                         <i class="fab fa-google me-1"></i> Posted on Google
                                     </small>
@@ -809,10 +767,39 @@
                             </div>
                         </div>
                     `).join('')
+                    
+                    // Initialize Owl Carousel after reviews are loaded
+                    setTimeout(() => {
+                        $('.google-reviews-carousel').owlCarousel({
+                            autoplay: true,
+                            autoplayTimeout: 5000,
+                            autoplayHoverPause: true,
+                            smartSpeed: 1000,
+                            center: false,
+                            dots: true,
+                            loop: true,
+                            nav: true,
+                            navText: [
+                                '<i class="bi bi-arrow-left"></i>',
+                                '<i class="bi bi-arrow-right"></i>'
+                            ],
+                            responsive: {
+                                0: {
+                                    items: 1
+                                },
+                                768: {
+                                    items: 2
+                                },
+                                992: {
+                                    items: 3
+                                }
+                            }
+                        });
+                    }, 100);
                 } else {
                     // Show fallback message
                     container.innerHTML = `
-                        <div class="col-12 text-center">
+                        <div class="text-center p-4">
                             <p class="text-muted">Reviews will appear here once configured.</p>
                         </div>
                     `
@@ -820,7 +807,7 @@
             } catch (err) {
                 console.error('Failed to load reviews:', err)
                 container.innerHTML = `
-                    <div class="col-12 text-center">
+                    <div class="text-center p-4">
                         <p class="text-danger">Unable to load reviews. Please try again later.</p>
                     </div>
                 `
