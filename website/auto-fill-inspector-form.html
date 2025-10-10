@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto-Fill Inspector Form - Testing Tool</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #0b556b;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .warning {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .warning h3 {
+            margin-top: 0;
+            color: #856404;
+        }
+        .info {
+            background: #d1ecf1;
+            border: 2px solid #0c5460;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .step {
+            background: #f8f9fa;
+            border-left: 4px solid #0b556b;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .step h4 {
+            margin-top: 0;
+            color: #0b556b;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #0b556b, #0073bb);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px 0;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(11, 85, 107, 0.3);
+        }
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .code-block {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        .status {
+            text-align: center;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+        .copy-btn {
+            background: #28a745;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        .copy-btn:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Inspector Form Auto-Fill Tool</h1>
+        <p class="subtitle">Instantly fill and submit the form with test data and 46 photos</p>
+
+        <div class="warning">
+            <h3>⚠️ Important Prerequisites:</h3>
+            <ul>
+                <li>✅ Generate 46+ test images first using <code>generate-test-images.html</code></li>
+                <li>✅ All 46 images must be in your Downloads folder</li>
+                <li>✅ Inspector form must be open in the same browser</li>
+                <li>✅ You must be logged in as inspector (inspector1 / Google@123455)</li>
+            </ul>
+        </div>
+
+        <div class="info">
+            <h3>📋 How It Works:</h3>
+            <ol>
+                <li>Copy the auto-fill script below (click 📋 Copy button)</li>
+                <li>Open inspector form: <a href="https://www.inspectionwale.com/inspector-form.html" target="_blank">inspector-form.html</a></li>
+                <li>Open browser console (F12)</li>
+                <li>Paste and run the script (Ctrl+V, Enter)</li>
+                <li>Click green "Auto-Fill Form" button that appears at top-right</li>
+                <li>Select all 46+ images from Downloads folder (Ctrl+A or Shift+Click)</li>
+                <li>Script fills ALL fields (including mandatory ones) and submits!</li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <h4>Step 1: Copy This Script</h4>
+            <div class="code-block" id="autoFillScript">// InspectionWale Auto-Fill Script
+(function() {
+    // Test data
+    const testData = {
+        registrationNumber: 'MH01AB1234',
+        vehicleNumber: 'MH01AB1234',
+        make: 'Honda',
+        model: 'City',
+        variant: 'VX CVT',
+        chassisNumber: 'MABCD1234ABCD5678',
+        engineNumber: 'L15Z987654',
+        manufactureYear: '2020',
+        registrationDate: '2020-06-15',
+        color: 'White Pearl',
+        fuelType: 'Petrol',
+        odometerReading: '45000',
+        ownersCount: '1',
+        ownerName: 'Test Owner',
+        ownerContact: '9876543210',
+        ownerEmail: 'test@example.com',
+        location: 'Mumbai, Maharashtra',
+        inspectorName: sessionStorage.getItem('inspectorName') || 'Test Inspector',
+        
+        // Inspection details
+        exteriorChecks: [
+            'All lights working',
+            'No dents or scratches',
+            'Paint condition good',
+            'Windshield clear',
+            'All mirrors intact'
+        ],
+        interiorChecks: [
+            'Dashboard intact',
+            'All controls functional',
+            'Seats in good condition',
+            'AC working properly',
+            'Entertainment system operational'
+        ],
+        engineChecks: [
+            'No oil leaks',
+            'Engine runs smoothly',
+            'No abnormal sounds',
+            'Battery healthy',
+            'All fluids at proper levels'
+        ],
+        tireChecks: [
+            'Good tread depth',
+            'No sidewall damage',
+            'Proper inflation',
+            'Wheels undamaged',
+            'Spare tire available'
+        ],
+        structureChecks: [
+            'No rust on chassis',
+            'Undercarriage intact',
+            'Suspension working properly',
+            'No frame damage',
+            'Exhaust system good'
+        ],
+        
+        overallCondition: 'Excellent',
+        issuesFound: 'Minor wear on brake pads, recommend replacement within 5000 km',
+        recommendations: 'Overall vehicle in excellent condition. Regular maintenance up to date. Safe for purchase.'
+    };
+
+    // Create floating button
+    const button = document.createElement('button');
+    button.textContent = '🚀 Auto-Fill Form with 46 Photos';
+    button.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 10000;
+        padding: 15px 25px;
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        transition: all 0.3s;
+    `;
+    button.onmouseover = () => button.style.transform = 'translateY(-2px)';
+    button.onmouseout = () => button.style.transform = 'translateY(0)';
+    
+    document.body.appendChild(button);
+
+    button.onclick = async () => {
+        console.log('🚀 Starting auto-fill...');
+        
+        // Fill text fields
+        const fields = {
+            registrationNumber: testData.registrationNumber,
+            make: testData.make,
+            model: testData.model,
+            variant: testData.variant,
+            chassisNumber: testData.chassisNumber,
+            engineNumber: testData.engineNumber,
+            manufactureYear: testData.manufactureYear,
+            registrationDate: testData.registrationDate,
+            color: testData.color,
+            fuelType: testData.fuelType,
+            odometerReading: testData.odometerReading,
+            ownersCount: testData.ownersCount,
+            ownerName: testData.ownerName,
+            ownerContact: testData.ownerContact,
+            ownerEmail: testData.ownerEmail,
+            location: testData.location,
+            exteriorChecks: testData.exteriorChecks.join('\\n'),
+            interiorChecks: testData.interiorChecks.join('\\n'),
+            engineChecks: testData.engineChecks.join('\\n'),
+            tireChecks: testData.tireChecks.join('\\n'),
+            structureChecks: testData.structureChecks.join('\\n'),
+            overallCondition: testData.overallCondition,
+            issuesFound: testData.issuesFound,
+            recommendations: testData.recommendations
+        };
+
+        // Fill all text fields (including vehicleNumber for mandatory validation)
+        fields.vehicleNumber = testData.vehicleNumber;
+        fields.inspectorName = testData.inspectorName;
+        
+        for (const [id, value] of Object.entries(fields)) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.value = value;
+                element.dispatchEvent(new Event('input', { bubbles: true }));
+                element.dispatchEvent(new Event('change', { bubbles: true }));
+                console.log(`✅ Filled: ${id}`);
+            } else {
+                console.warn(`⚠️ Field not found: ${id}`);
+            }
+        }
+
+        console.log('✅ All text fields filled!');
+        
+        // Create a visible button for file upload (required for browser security)
+        const uploadBtn = document.createElement('button');
+        uploadBtn.textContent = '📷 Click to Select 46 Photos';
+        uploadBtn.style.cssText = `
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 10001;
+            padding: 20px 30px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255,107,107,0.5);
+            animation: pulse 1s infinite;
+        `;
+        
+        // Add pulsing animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+            }
+        `;
+        document.head.appendChild(style);
+        document.body.appendChild(uploadBtn);
+        
+        uploadBtn.onclick = () => {
+            // Prompt for photo upload
+            const photoInput = document.createElement('input');
+            photoInput.type = 'file';
+            photoInput.multiple = true;
+            photoInput.accept = 'image/*';
+            photoInput.style.display = 'none';
+            document.body.appendChild(photoInput);
+
+            photoInput.onchange = async (e) => {
+                document.body.removeChild(uploadBtn);
+            const files = Array.from(e.target.files);
+            console.log(`📷 Selected ${files.length} files`);
+
+            if (files.length < 46) {
+                alert(`⚠️ Warning: Only ${files.length} files selected. Form requires 46 photos.\\nContinuing with available photos...`);
+            }
+
+            // Map ALL 46 REQUIRED photo fields (exact names from form)
+            const photoFields = [
+                'rcBook', 'chassisPlate', 'odometer',
+                'frontBumper', 'bonnet', 'frontGrille', 'headlights', 'windshield', 'wipers',
+                'doorDriverFront', 'doorDriverRear', 'doorPassengerFront', 'doorPassengerRear', 
+                'mirrorLeft', 'mirrorRight',
+                'rearBumper', 'bootClosed', 'bootOpen', 'taillights', 'rearWindshield', 'roof',
+                'dashboard', 'instrumentCluster', 'steeringWheel', 'frontSeats', 'rearSeats', 
+                'acPanel', 'musicSystem', 'gearLever', 'interiorRoof',
+                'engineBay', 'engineBlock', 'battery', 'radiator', 'oilCap', 'beltsHoses',
+                'tireFrontLeft', 'tireFrontRight', 'tireRearLeft', 'tireRearRight', 'tireSpare',
+                'undercarriageFront', 'undercarriageRear', 'exhaust', 'suspensionFront', 'suspensionRear'
+            ];
+
+            let fileIndex = 0;
+            let successCount = 0;
+            
+            for (const fieldName of photoFields) {
+                if (fileIndex >= files.length) {
+                    console.warn(`⚠️ Ran out of files at field: ${fieldName}`);
+                    break;
+                }
+                
+                const input = document.querySelector(`input[name="photo_${fieldName}"]`);
+                if (input) {
+                    try {
+                        const dataTransfer = new DataTransfer();
+                        dataTransfer.items.add(files[fileIndex]);
+                        input.files = dataTransfer.files;
+                        
+                        // Trigger change event to activate compression
+                        input.dispatchEvent(new Event('change', { bubbles: true }));
+                        
+                        // Trigger preview
+                        const preview = document.getElementById(`preview_${fieldName}`);
+                        if (preview) {
+                            const reader = new FileReader();
+                            reader.onload = (e) => {
+                                preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                                preview.classList.remove('empty');
+                            };
+                            reader.readAsDataURL(files[fileIndex]);
+                        }
+                        
+                        console.log(`✅ [${successCount + 1}/47] Uploaded: photo_${fieldName} ← ${files[fileIndex].name}`);
+                        successCount++;
+                    } catch (err) {
+                        console.error(`❌ Error uploading ${fieldName}:`, err);
+                    }
+                    fileIndex++;
+                } else {
+                    console.error(`❌ Input not found: photo_${fieldName}`);
+                }
+            }
+
+            console.log(`\\n✅ Successfully uploaded ${successCount}/46 photos!`);
+            if (successCount < 46) {
+                console.warn(`⚠️ Missing ${46 - successCount} photos`)
+            }
+            
+            // Ask to submit
+            if (confirm(`✅ Form filled successfully!\\n\\n• Text fields: ✅\\n• Photos: ${successCount}/46\\n\\nSubmit now?`)) {
+                console.log('📤 Submitting form...');
+                const submitBtn = document.getElementById('submitBtn');
+                if (submitBtn) {
+                    submitBtn.click();
+                    console.log('✅ Form submitted!');
+                } else {
+                    console.error('❌ Submit button not found');
+                    alert('❌ Submit button not found. Please scroll down and click "Generate Report" manually.');
+                }
+            } else {
+                alert('✅ Form filled! Review and submit manually when ready.');
+            }
+            
+                document.body.removeChild(photoInput);
+            };
+
+            photoInput.click();
+        };
+    };
+
+    console.log('✅ Auto-fill script loaded! Click the green button at top-right to start.');
+    alert('✅ Auto-fill script ready!\\n\\nClick the green "Auto-Fill Form" button at the top-right corner to begin.');
+})();</div>
+            <button class="copy-btn" onclick="copyScript()">📋 Copy Script</button>
+        </div>
+
+        <div class="step">
+            <h4>Step 2: Open Inspector Form</h4>
+            <p>Open the form in a new tab:</p>
+            <a href="https://www.inspectionwale.com/inspector-form.html" target="_blank" class="btn">
+                🔗 Open Inspector Form
+            </a>
+        </div>
+
+        <div class="step">
+            <h4>Step 3: Run Script</h4>
+            <ol>
+                <li>Press <kbd>F12</kbd> to open browser console</li>
+                <li>Paste the copied script</li>
+                <li>Press <kbd>Enter</kbd></li>
+                <li>You'll see a green button appear at top-right</li>
+                <li>Click it to start auto-fill</li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <h4>Step 4: Select Photos</h4>
+            <p><strong>File Picker Tips:</strong></p>
+            <ul>
+                <li>Navigate to your Downloads folder</li>
+                <li>Look for files: <code>photo_rcBook.jpg</code>, <code>photo_odometer.jpg</code>, <code>photo_frontGrille.jpg</code>, etc.</li>
+                <li><strong>Quick select all:</strong> Click first photo, then press <kbd>Ctrl+A</kbd> (or <kbd>Cmd+A</kbd> on Mac)</li>
+                <li><strong>Or manual select:</strong> Click first photo, scroll to bottom, hold <kbd>Shift</kbd>, click last photo</li>
+                <li>All 46+ photos will be selected (extras are OK, only first 46 used)</li>
+                <li>Click "Open"</li>
+                <li><strong>Console will show:</strong> "✅ [1/46] Uploaded...", "✅ [2/46]...", etc.</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h4>Step 5: Submit</h4>
+            <p>Script will ask if you want to submit. Click <strong>OK</strong> and watch the magic happen! 🎉</p>
+        </div>
+
+        <div id="status"></div>
+
+        <div class="warning">
+            <h3>🔧 Troubleshooting:</h3>
+            <ul>
+                <li><strong>Script not running?</strong> Make sure you're on the inspector form page</li>
+                <li><strong>Can't find photos?</strong> Run <code>generate-test-images.html</code> first</li>
+                <li><strong>Not logged in?</strong> Login at inspector-login.html first</li>
+                <li><strong>Form validation errors?</strong> Check console for missing required fields</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function copyScript() {
+            const scriptText = document.getElementById('autoFillScript').textContent;
+            
+            // Try modern clipboard API first
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(scriptText).then(() => {
+                    showCopySuccess();
+                }).catch(err => {
+                    console.log('Clipboard API failed, trying fallback...', err);
+                    fallbackCopy(scriptText);
+                });
+            } else {
+                // Use fallback for older browsers or restricted contexts
+                fallbackCopy(scriptText);
+            }
+        }
+        
+        function fallbackCopy(text) {
+            // Create temporary textarea
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            textarea.setSelectionRange(0, 99999); // For mobile
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showCopySuccess();
+                } else {
+                    throw new Error('execCommand returned false');
+                }
+            } catch (err) {
+                console.error('Copy failed:', err);
+                // Final fallback - select the text for manual copying
+                const scriptDiv = document.getElementById('autoFillScript');
+                const range = document.createRange();
+                range.selectNodeContents(scriptDiv);
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+                alert('⚠️ Auto-copy failed. The script is now SELECTED for you.\\n\\nPress Ctrl+C (or Cmd+C on Mac) to copy it manually.');
+            } finally {
+                document.body.removeChild(textarea);
+            }
+        }
+        
+        function showCopySuccess() {
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = '✅ Copied!';
+            btn.style.background = '#28a745';
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = '';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
