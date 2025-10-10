@@ -253,17 +253,18 @@
     border: 1px solid rgba(255,255,255,0.02);
 }
 
-/* booking button: transparent background, red text and border (text is red as requested) */
+/* booking button: solid red background with white text */
 .btn-booking {
-    background: transparent;
-    color: var(--primary);
-    border: 2px solid var(--primary);
+    background: #D81324;
+    color: #FFFFFF;
+    border: 2px solid #D81324;
     font-weight: 700;
     border-radius: 8px;
 }
 .btn-booking:hover{
-    background: rgba(216,19,36,0.06);
-    color: var(--primary);
+    background: #B00F1E;
+    color: #FFFFFF;
+    border-color: #B00F1E;
 }
 
 .bootstrap-datetimepicker-widget.bottom {
