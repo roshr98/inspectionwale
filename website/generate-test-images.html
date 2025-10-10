@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Test Images for Inspection Form</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #0b556b;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #0b556b;
+        }
+        .section h3 {
+            color: #0b556b;
+            margin-top: 0;
+        }
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .image-item {
+            text-align: center;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .image-item img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 8px;
+        }
+        .image-item span {
+            font-size: 11px;
+            color: #666;
+            display: block;
+        }
+        .download-btn {
+            display: block;
+            width: 100%;
+            max-width: 400px;
+            margin: 30px auto;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #0b556b, #0073bb);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(11, 85, 107, 0.3);
+            transition: all 0.3s;
+        }
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(11, 85, 107, 0.4);
+        }
+        .download-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .progress {
+            width: 100%;
+            max-width: 400px;
+            margin: 20px auto;
+            height: 30px;
+            background: #f0f0f0;
+            border-radius: 15px;
+            overflow: hidden;
+            display: none;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #0b556b, #0073bb);
+            width: 0%;
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        .info-box {
+            background: #e7f3ff;
+            border: 2px solid #0073bb;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .info-box h4 {
+            margin-top: 0;
+            color: #0b556b;
+        }
+        .status {
+            text-align: center;
+            margin: 20px 0;
+            font-weight: bold;
+            color: #0b556b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚗 Test Images Generator</h1>
+        <p class="subtitle">Generate 48 placeholder images for testing the inspection form</p>
+
+        <div class="info-box">
+            <h4>📋 What This Does:</h4>
+            <ul>
+                <li>Generates 48 unique test images matching all inspection form fields</li>
+                <li>Each image is labeled with the component name (e.g., "Front Bumper", "Engine Bay")</li>
+                <li>Images are 800x600px, optimized for upload testing</li>
+                <li>Downloads as individual files ready to use</li>
+            </ul>
+        </div>
+
+        <button class="download-btn" onclick="generateAndDownloadImages()">
+            📥 Generate & Download All 48 Images
+        </button>
+
+        <div class="progress" id="progress">
+            <div class="progress-bar" id="progressBar">0%</div>
+        </div>
+
+        <div class="status" id="status"></div>
+
+        <div id="preview"></div>
+    </div>
+
+    <script>
+        const imageCategories = {
+            'Vehicle Documents': [
+                'RC Book',
+                'Chassis Plate',
+                'Odometer Reading'
+            ],
+            'Front Exterior': [
+                'Front Bumper',
+                'Bonnet',
+                'Grille',
+                'Left Headlight',
+                'Right Headlight',
+                'Windshield',
+                'Wipers'
+            ],
+            'Sides': [
+                'Front Left Door',
+                'Front Right Door',
+                'Rear Left Door',
+                'Rear Right Door',
+                'Left Mirror',
+                'Right Mirror'
+            ],
+            'Rear': [
+                'Rear Bumper',
+                'Boot (Closed)',
+                'Boot (Open)',
+                'Left Taillight',
+                'Right Taillight',
+                'Rear Windshield',
+                'Roof'
+            ],
+            'Interior': [
+                'Dashboard',
+                'Instrument Cluster',
+                'Steering Wheel',
+                'Front Seats',
+                'Rear Seats',
+                'AC Control Panel',
+                'Music System',
+                'Gear Lever',
+                'Interior Roof'
+            ],
+            'Engine & Mechanical': [
+                'Engine Bay',
+                'Engine Block',
+                'Battery',
+                'Radiator',
+                'Oil Cap',
+                'Belts & Hoses'
+            ],
+            'Tires & Wheels': [
+                'Front Left Tire',
+                'Front Right Tire',
+                'Rear Left Tire',
+                'Rear Right Tire',
+                'Spare Tire',
+                'Alloy Wheels'
+            ],
+            'Undercarriage': [
+                'Front Undercarriage',
+                'Rear Undercarriage',
+                'Exhaust System',
+                'Front Suspension',
+                'Rear Suspension',
+                'Chassis Frame'
+            ]
+        };
+
+        const fieldNameMap = {
+            'RC Book': 'rcBook',
+            'Chassis Plate': 'chassisPlate',
+            'Odometer Reading': 'odometerPhoto',
+            'Front Bumper': 'frontBumper',
+            'Bonnet': 'bonnet',
+            'Grille': 'grille',
+            'Left Headlight': 'headlightLeft',
+            'Right Headlight': 'headlightRight',
+            'Windshield': 'windshield',
+            'Wipers': 'wipers',
+            'Front Left Door': 'doorFrontLeft',
+            'Front Right Door': 'doorFrontRight',
+            'Rear Left Door': 'doorRearLeft',
+            'Rear Right Door': 'doorRearRight',
+            'Left Mirror': 'mirrorLeft',
+            'Right Mirror': 'mirrorRight',
+            'Rear Bumper': 'rearBumper',
+            'Boot (Closed)': 'bootClosed',
+            'Boot (Open)': 'bootOpen',
+            'Left Taillight': 'taillightLeft',
+            'Right Taillight': 'taillightRight',
+            'Rear Windshield': 'rearWindshield',
+            'Roof': 'roof',
+            'Dashboard': 'dashboard',
+            'Instrument Cluster': 'instrumentCluster',
+            'Steering Wheel': 'steeringWheel',
+            'Front Seats': 'frontSeats',
+            'Rear Seats': 'rearSeats',
+            'AC Control Panel': 'acPanel',
+            'Music System': 'musicSystem',
+            'Gear Lever': 'gearLever',
+            'Interior Roof': 'interiorRoof',
+            'Engine Bay': 'engineBay',
+            'Engine Block': 'engineBlock',
+            'Battery': 'battery',
+            'Radiator': 'radiator',
+            'Oil Cap': 'oilCap',
+            'Belts & Hoses': 'beltsHoses',
+            'Front Left Tire': 'tireFrontLeft',
+            'Front Right Tire': 'tireFrontRight',
+            'Rear Left Tire': 'tireRearLeft',
+            'Rear Right Tire': 'tireRearRight',
+            'Spare Tire': 'tireSpare',
+            'Alloy Wheels': 'alloyWheels',
+            'Front Undercarriage': 'undercarriageFront',
+            'Rear Undercarriage': 'undercarriageRear',
+            'Exhaust System': 'exhaustSystem',
+            'Front Suspension': 'suspensionFront',
+            'Rear Suspension': 'suspensionRear',
+            'Chassis Frame': 'chassisFrame'
+        };
+
+        const colors = [
+            '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8',
+            '#F7DC6F', '#BB8FCE', '#85C1E2', '#F8B739', '#52BE80'
+        ];
+
+        function createImageCanvas(text, width = 800, height = 600) {
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, width, height);
+            const color1 = colors[Math.floor(Math.random() * colors.length)];
+            const color2 = colors[Math.floor(Math.random() * colors.length)];
+            gradient.addColorStop(0, color1);
+            gradient.addColorStop(1, color2);
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+
+            // Add some decorative elements
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+            for (let i = 0; i < 5; i++) {
+                ctx.beginPath();
+                ctx.arc(
+                    Math.random() * width,
+                    Math.random() * height,
+                    Math.random() * 100 + 50,
+                    0,
+                    Math.PI * 2
+                );
+                ctx.fill();
+            }
+
+            // Add text
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 48px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // Add shadow for better readability
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+            ctx.shadowBlur = 10;
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 2;
+            
+            // Wrap text if too long
+            const maxWidth = width - 100;
+            const words = text.split(' ');
+            let line = '';
+            let y = height / 2;
+            
+            if (ctx.measureText(text).width > maxWidth) {
+                y = height / 2 - 30;
+                for (let i = 0; i < words.length; i++) {
+                    const testLine = line + words[i] + ' ';
+                    if (ctx.measureText(testLine).width > maxWidth && i > 0) {
+                        ctx.fillText(line, width / 2, y);
+                        line = words[i] + ' ';
+                        y += 60;
+                    } else {
+                        line = testLine;
+                    }
+                }
+                ctx.fillText(line, width / 2, y);
+            } else {
+                ctx.fillText(text, width / 2, y);
+            }
+
+            // Add label at bottom
+            ctx.font = '24px Arial';
+            ctx.fillText('TEST IMAGE', width / 2, height - 30);
+
+            return canvas;
+        }
+
+        async function generateAndDownloadImages() {
+            const btn = document.querySelector('.download-btn');
+            const progressDiv = document.getElementById('progress');
+            const progressBar = document.getElementById('progressBar');
+            const statusDiv = document.getElementById('status');
+            const previewDiv = document.getElementById('preview');
+
+            btn.disabled = true;
+            btn.textContent = 'Generating Images...';
+            progressDiv.style.display = 'block';
+            previewDiv.innerHTML = '';
+
+            let allImages = [];
+            Object.entries(imageCategories).forEach(([category, items]) => {
+                items.forEach(item => allImages.push({ category, item }));
+            });
+
+            const totalImages = allImages.length;
+            let processed = 0;
+
+            statusDiv.textContent = `Processing: 0/${totalImages}`;
+
+            // Create preview sections
+            Object.keys(imageCategories).forEach(category => {
+                const section = document.createElement('div');
+                section.className = 'section';
+                section.innerHTML = `<h3>${category}</h3><div class="image-grid" id="grid-${category.replace(/\s+/g, '-')}"></div>`;
+                previewDiv.appendChild(section);
+            });
+
+            for (const { category, item } of allImages) {
+                const canvas = createImageCanvas(item);
+                const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.9));
+                
+                // Create download link with proper delay
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                const fieldName = fieldNameMap[item];
+                a.href = url;
+                a.download = `photo_${fieldName}.jpg`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
+                // Add to preview (keep URL for preview)
+                const gridId = `grid-${category.replace(/\s+/g, '-')}`;
+                const grid = document.getElementById(gridId);
+                const imageItem = document.createElement('div');
+                imageItem.className = 'image-item';
+                const imgUrl = URL.createObjectURL(blob);
+                imageItem.innerHTML = `
+                    <img src="${imgUrl}" alt="${item}">
+                    <span>${item}</span>
+                `;
+                grid.appendChild(imageItem);
+                
+                // Don't revoke URL immediately - let browser download first
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+                
+                processed++;
+                const progress = Math.round((processed / totalImages) * 100);
+                progressBar.style.width = progress + '%';
+                progressBar.textContent = progress + '%';
+                statusDiv.textContent = `Processing: ${processed}/${totalImages}`;
+                
+                // Delay between downloads to prevent browser blocking
+                await new Promise(resolve => setTimeout(resolve, 300));
+            }
+
+            statusDiv.textContent = `✅ Complete! Downloaded ${totalImages} images to your Downloads folder`;
+            btn.textContent = '✓ All Images Downloaded!';
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.textContent = '📥 Generate & Download All 48 Images';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

@@ -148,6 +148,62 @@ async function generatePDF(data) {
       return currentY;
     }
 
+    // Helper function to add image to PDF
+    function addImage(imageBuffer, x, y, maxWidth, maxHeight, caption) {
+      if (!imageBuffer) return y;
+      
+      try {
+        doc.image(imageBuffer, x, y, {
+          fit: [maxWidth, maxHeight],
+          align: 'center',
+          valign: 'center'
+        });
+        
+        // Add caption below image
+        if (caption) {
+          doc.fillColor(colors.lightText)
+             .fontSize(8)
+             .font('Helvetica')
+             .text(caption, x, y + maxHeight + 5, { 
+               width: maxWidth, 
+               align: 'center' 
+             });
+        }
+        
+        return y + maxHeight + (caption ? 20 : 10);
+      } catch (error) {
+        console.error('Error embedding image:', caption, error);
+        return y;
+      }
+    }
+
+    // Helper function to add image grid (multiple images in a row)
+    function addImageGrid(images, yPos, columns = 3) {
+      if (!images || images.length === 0) return yPos;
+      
+      const imageWidth = (515 - ((columns - 1) * 10)) / columns;
+      const imageHeight = 120;
+      const rows = Math.ceil(images.length / columns);
+      
+      for (let row = 0; row < rows; row++) {
+        yPos = checkNewPage(yPos, imageHeight + 30);
+        
+        for (let col = 0; col < columns; col++) {
+          const index = row * columns + col;
+          if (index >= images.length) break;
+          
+          const img = images[index];
+          const x = 40 + (col * (imageWidth + 10));
+          
+          addImage(img.buffer, x, yPos, imageWidth, imageHeight, img.caption);
+        }
+        
+        yPos += imageHeight + 30;
+      }
+      
+      return yPos;
+    }
+
     let yPos = 40;
 
     // ========== HEADER SECTION WITH GLOSSY EFFECT ==========
@@ -249,6 +305,23 @@ async function generatePDF(data) {
     addField('Number of Owners', data.ownersCount || '1', 400, yPos);
     
     yPos = tempY + 15;
+
+    // Vehicle Document Photos
+    if (data.imageBuffers && Object.keys(data.imageBuffers).length > 0) {
+      yPos = checkNewPage(yPos, 200);
+      const documentImages = [
+        {buffer: data.imageBuffers.rcBook, caption: 'RC Book'},
+        {buffer: data.imageBuffers.chassisPlate, caption: 'Chassis Plate'},
+        {buffer: data.imageBuffers.odometerPhoto, caption: 'Odometer Reading'}
+      ].filter(img => img.buffer);
+      
+      if (documentImages.length > 0) {
+        doc.fontSize(11).fillColor('#0b556b').text('Vehicle Document Photos:', 50, yPos, {underline: true});
+        yPos += 20;
+        yPos = addImageGrid(documentImages, yPos, 3);
+        yPos += 10;
+      }
+    }
 
     // ========== OWNER DETAILS ==========
     yPos = checkNewPage(yPos, 150);
@@ -412,6 +485,40 @@ async function generatePDF(data) {
       yPos += 15;
     }
 
+    // Exterior Photos
+    if (data.imageBuffers && Object.keys(data.imageBuffers).length > 0) {
+      yPos = checkNewPage(yPos, 200);
+      const exteriorImages = [
+        {buffer: data.imageBuffers.frontBumper, caption: 'Front Bumper'},
+        {buffer: data.imageBuffers.bonnet, caption: 'Bonnet'},
+        {buffer: data.imageBuffers.grille, caption: 'Grille'},
+        {buffer: data.imageBuffers.headlightLeft, caption: 'Left Headlight'},
+        {buffer: data.imageBuffers.headlightRight, caption: 'Right Headlight'},
+        {buffer: data.imageBuffers.windshield, caption: 'Windshield'},
+        {buffer: data.imageBuffers.wipers, caption: 'Wipers'},
+        {buffer: data.imageBuffers.doorFrontLeft, caption: 'Front Left Door'},
+        {buffer: data.imageBuffers.doorFrontRight, caption: 'Front Right Door'},
+        {buffer: data.imageBuffers.doorRearLeft, caption: 'Rear Left Door'},
+        {buffer: data.imageBuffers.doorRearRight, caption: 'Rear Right Door'},
+        {buffer: data.imageBuffers.mirrorLeft, caption: 'Left Mirror'},
+        {buffer: data.imageBuffers.mirrorRight, caption: 'Right Mirror'},
+        {buffer: data.imageBuffers.rearBumper, caption: 'Rear Bumper'},
+        {buffer: data.imageBuffers.bootClosed, caption: 'Boot (Closed)'},
+        {buffer: data.imageBuffers.bootOpen, caption: 'Boot (Open)'},
+        {buffer: data.imageBuffers.taillightLeft, caption: 'Left Taillight'},
+        {buffer: data.imageBuffers.taillightRight, caption: 'Right Taillight'},
+        {buffer: data.imageBuffers.rearWindshield, caption: 'Rear Windshield'},
+        {buffer: data.imageBuffers.roof, caption: 'Roof'}
+      ].filter(img => img.buffer);
+      
+      if (exteriorImages.length > 0) {
+        doc.fontSize(11).fillColor('#0b556b').text('Exterior Photos:', 50, yPos, {underline: true});
+        yPos += 20;
+        yPos = addImageGrid(exteriorImages, yPos, 3);
+        yPos += 10;
+      }
+    }
+
     // ========== INTERIOR INSPECTION ==========
     yPos = checkNewPage(yPos, 200);
     yPos = drawSectionHeader('INTERIOR INSPECTION', '🛋️', yPos);
@@ -476,6 +583,29 @@ async function generatePDF(data) {
       yPos += doc.heightOfString(data.interiorNotes, { width: 485 }) + 45;
     } else {
       yPos += 15;
+    }
+
+    // Interior Photos
+    if (data.imageBuffers && Object.keys(data.imageBuffers).length > 0) {
+      yPos = checkNewPage(yPos, 200);
+      const interiorImages = [
+        {buffer: data.imageBuffers.dashboard, caption: 'Dashboard'},
+        {buffer: data.imageBuffers.instrumentCluster, caption: 'Instrument Cluster'},
+        {buffer: data.imageBuffers.steeringWheel, caption: 'Steering Wheel'},
+        {buffer: data.imageBuffers.frontSeats, caption: 'Front Seats'},
+        {buffer: data.imageBuffers.rearSeats, caption: 'Rear Seats'},
+        {buffer: data.imageBuffers.acPanel, caption: 'AC Control Panel'},
+        {buffer: data.imageBuffers.musicSystem, caption: 'Music System'},
+        {buffer: data.imageBuffers.gearLever, caption: 'Gear Lever'},
+        {buffer: data.imageBuffers.interiorRoof, caption: 'Interior Roof'}
+      ].filter(img => img.buffer);
+      
+      if (interiorImages.length > 0) {
+        doc.fontSize(11).fillColor('#0b556b').text('Interior Photos:', 50, yPos, {underline: true});
+        yPos += 20;
+        yPos = addImageGrid(interiorImages, yPos, 3);
+        yPos += 10;
+      }
     }
 
     // ========== ENGINE & MECHANICAL ==========
@@ -561,6 +691,26 @@ async function generatePDF(data) {
       yPos += 15;
     }
 
+    // Engine Photos
+    if (data.imageBuffers && Object.keys(data.imageBuffers).length > 0) {
+      yPos = checkNewPage(yPos, 200);
+      const engineImages = [
+        {buffer: data.imageBuffers.engineBay, caption: 'Engine Bay'},
+        {buffer: data.imageBuffers.engineBlock, caption: 'Engine Block'},
+        {buffer: data.imageBuffers.battery, caption: 'Battery'},
+        {buffer: data.imageBuffers.radiator, caption: 'Radiator'},
+        {buffer: data.imageBuffers.oilCap, caption: 'Oil Cap'},
+        {buffer: data.imageBuffers.beltsHoses, caption: 'Belts & Hoses'}
+      ].filter(img => img.buffer);
+      
+      if (engineImages.length > 0) {
+        doc.fontSize(11).fillColor('#0b556b').text('Engine & Mechanical Photos:', 50, yPos, {underline: true});
+        yPos += 20;
+        yPos = addImageGrid(engineImages, yPos, 3);
+        yPos += 10;
+      }
+    }
+
     // ========== TIRES & WHEELS ==========
     yPos = checkNewPage(yPos, 200);
     yPos = drawSectionHeader('TIRES & WHEELS INSPECTION', '⭕', yPos);
@@ -627,6 +777,26 @@ async function generatePDF(data) {
       yPos += doc.heightOfString(data.tiresNotes, { width: 485 }) + 45;
     } else {
       yPos += 15;
+    }
+
+    // Tire Photos
+    if (data.imageBuffers && Object.keys(data.imageBuffers).length > 0) {
+      yPos = checkNewPage(yPos, 200);
+      const tireImages = [
+        {buffer: data.imageBuffers.tireFrontLeft, caption: 'Front Left Tire'},
+        {buffer: data.imageBuffers.tireFrontRight, caption: 'Front Right Tire'},
+        {buffer: data.imageBuffers.tireRearLeft, caption: 'Rear Left Tire'},
+        {buffer: data.imageBuffers.tireRearRight, caption: 'Rear Right Tire'},
+        {buffer: data.imageBuffers.tireSpare, caption: 'Spare Tire'},
+        {buffer: data.imageBuffers.alloyWheels, caption: 'Alloy Wheels'}
+      ].filter(img => img.buffer);
+      
+      if (tireImages.length > 0) {
+        doc.fontSize(11).fillColor('#0b556b').text('Tire & Wheel Photos:', 50, yPos, {underline: true});
+        yPos += 20;
+        yPos = addImageGrid(tireImages, yPos, 3);
+        yPos += 10;
+      }
     }
 
     // ========== TEST DRIVE ==========
@@ -723,6 +893,26 @@ async function generatePDF(data) {
       yPos += doc.heightOfString(data.structureNotes, { width: 485 }) + 45;
     } else {
       yPos += 15;
+    }
+
+    // Undercarriage Photos
+    if (data.imageBuffers && Object.keys(data.imageBuffers).length > 0) {
+      yPos = checkNewPage(yPos, 200);
+      const undercarriageImages = [
+        {buffer: data.imageBuffers.undercarriageFront, caption: 'Front Undercarriage'},
+        {buffer: data.imageBuffers.undercarriageRear, caption: 'Rear Undercarriage'},
+        {buffer: data.imageBuffers.exhaustSystem, caption: 'Exhaust System'},
+        {buffer: data.imageBuffers.suspensionFront, caption: 'Front Suspension'},
+        {buffer: data.imageBuffers.suspensionRear, caption: 'Rear Suspension'},
+        {buffer: data.imageBuffers.chassisFrame, caption: 'Chassis Frame'}
+      ].filter(img => img.buffer);
+      
+      if (undercarriageImages.length > 0) {
+        doc.fontSize(11).fillColor('#0b556b').text('Undercarriage & Structure Photos:', 50, yPos, {underline: true});
+        yPos += 20;
+        yPos = addImageGrid(undercarriageImages, yPos, 3);
+        yPos += 10;
+      }
     }
 
     // ========== ISSUES FOUND & RECOMMENDATIONS ==========
@@ -853,7 +1043,48 @@ exports.handler = async (event) => {
       }
     });
     
-    console.log('Generating PDF...');
+    // Process and upload images to S3
+    const imageUrls = {};
+    const inspectionTimestamp = Date.now();
+    
+    if (files.length > 0) {
+      console.log('Uploading', files.length, 'images to S3...');
+      
+      for (const file of files) {
+        if (file.fieldname.startsWith('photo_')) {
+          const photoKey = file.fieldname.replace('photo_', '');
+          const imageFileName = `images/${fields.registrationNumber}/${inspectionTimestamp}/${photoKey}.jpg`;
+          
+          try {
+            await s3Client.send(new PutObjectCommand({
+              Bucket: process.env.REPORTS_BUCKET,
+              Key: imageFileName,
+              Body: file.buffer,
+              ContentType: file.mimeType || 'image/jpeg'
+            }));
+            
+            imageUrls[photoKey] = `https://${process.env.REPORTS_BUCKET}.s3.amazonaws.com/${imageFileName}`;
+            console.log('Uploaded:', photoKey);
+          } catch (uploadError) {
+            console.error('Error uploading image:', photoKey, uploadError);
+          }
+        }
+      }
+      
+      console.log('Uploaded', Object.keys(imageUrls).length, 'images successfully');
+    }
+    
+    // Pass images to PDF generator
+    fields.images = imageUrls;
+    fields.imageBuffers = files.reduce((acc, file) => {
+      if (file.fieldname.startsWith('photo_')) {
+        const photoKey = file.fieldname.replace('photo_', '');
+        acc[photoKey] = file.buffer;
+      }
+      return acc;
+    }, {});
+    
+    console.log('Generating PDF with', Object.keys(fields.imageBuffers || {}).length, 'embedded images...');
     const pdfBuffer = await generatePDF(fields);
     
     const timestamp = Date.now();
