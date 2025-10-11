@@ -1163,15 +1163,25 @@
                 
                 const result = await response.json();
                 
-                if (response.ok && result.pdfUrl) {
+                if (response.ok && result.success && result.pdfData) {
                     progressBar.style.width = '100%';
                     progressBar.textContent = '100%';
                     progressText.textContent = 'Complete!';
                     
+                    // Convert base64 to blob and download
+                    const byteCharacters = atob(result.pdfData);
+                    const byteNumbers = new Array(byteCharacters.length);
+                    for (let i = 0; i < byteCharacters.length; i++) {
+                        byteNumbers[i] = byteCharacters.charCodeAt(i);
+                    }
+                    const byteArray = new Uint8Array(byteNumbers);
+                    const blob = new Blob([byteArray], {type: 'application/pdf'});
+                    const blobUrl = URL.createObjectURL(blob);
+                    
                     // Automatically download PDF
                     const link = document.createElement('a');
-                    link.href = result.pdfUrl;
-                    link.download = `Inspection_Report_${result.reportId || Date.now()}.pdf`;
+                    link.href = blobUrl;
+                    link.download = result.filename || `Inspection_Report_${result.reportId || Date.now()}.pdf`;
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
@@ -1180,7 +1190,7 @@
                     statusDiv.innerHTML = `
                         <i class="fas fa-check-circle"></i> Report generated successfully!<br>
                         <strong>PDF is downloading automatically...</strong><br>
-                        <a href="${result.pdfUrl}" download="Inspection_Report_${result.reportId || Date.now()}.pdf" style="color: #155724; text-decoration: underline; font-weight: bold; margin-top: 10px; display: inline-block;">
+                        <a href="${blobUrl}" download="${result.filename || 'Inspection_Report_' + (result.reportId || Date.now()) + '.pdf'}" style="color: #155724; text-decoration: underline; font-weight: bold; margin-top: 10px; display: inline-block;">
                             <i class="fas fa-download"></i> Click here if download doesn't start
                         </a><br>
                         <button onclick="if(confirm('Start a new inspection?')){location.reload();}" style="margin-top: 15px; padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">

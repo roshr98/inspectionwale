@@ -168,8 +168,7 @@
                 'Front Bumper',
                 'Bonnet',
                 'Grille',
-                'Left Headlight',
-                'Right Headlight',
+                'Headlights',
                 'Windshield',
                 'Wipers'
             ],
@@ -185,8 +184,7 @@
                 'Rear Bumper',
                 'Boot (Closed)',
                 'Boot (Open)',
-                'Left Taillight',
-                'Right Taillight',
+                'Taillights',
                 'Rear Windshield',
                 'Roof'
             ],
@@ -209,46 +207,42 @@
                 'Oil Cap',
                 'Belts & Hoses'
             ],
-            'Tires & Wheels': [
+            'Tires': [
                 'Front Left Tire',
                 'Front Right Tire',
                 'Rear Left Tire',
                 'Rear Right Tire',
-                'Spare Tire',
-                'Alloy Wheels'
+                'Spare Tire'
             ],
             'Undercarriage': [
                 'Front Undercarriage',
                 'Rear Undercarriage',
                 'Exhaust System',
                 'Front Suspension',
-                'Rear Suspension',
-                'Chassis Frame'
+                'Rear Suspension'
             ]
         };
 
         const fieldNameMap = {
             'RC Book': 'rcBook',
             'Chassis Plate': 'chassisPlate',
-            'Odometer Reading': 'odometerPhoto',
+            'Odometer Reading': 'odometer',
             'Front Bumper': 'frontBumper',
             'Bonnet': 'bonnet',
-            'Grille': 'grille',
-            'Left Headlight': 'headlightLeft',
-            'Right Headlight': 'headlightRight',
+            'Grille': 'frontGrille',
+            'Headlights': 'headlights',
             'Windshield': 'windshield',
             'Wipers': 'wipers',
-            'Front Left Door': 'doorFrontLeft',
-            'Front Right Door': 'doorFrontRight',
-            'Rear Left Door': 'doorRearLeft',
-            'Rear Right Door': 'doorRearRight',
+            'Front Left Door': 'doorDriverFront',
+            'Front Right Door': 'doorPassengerFront',
+            'Rear Left Door': 'doorDriverRear',
+            'Rear Right Door': 'doorPassengerRear',
             'Left Mirror': 'mirrorLeft',
             'Right Mirror': 'mirrorRight',
             'Rear Bumper': 'rearBumper',
             'Boot (Closed)': 'bootClosed',
             'Boot (Open)': 'bootOpen',
-            'Left Taillight': 'taillightLeft',
-            'Right Taillight': 'taillightRight',
+            'Taillights': 'taillights',
             'Rear Windshield': 'rearWindshield',
             'Roof': 'roof',
             'Dashboard': 'dashboard',
@@ -271,14 +265,18 @@
             'Rear Left Tire': 'tireRearLeft',
             'Rear Right Tire': 'tireRearRight',
             'Spare Tire': 'tireSpare',
-            'Alloy Wheels': 'alloyWheels',
             'Front Undercarriage': 'undercarriageFront',
             'Rear Undercarriage': 'undercarriageRear',
-            'Exhaust System': 'exhaustSystem',
+            'Exhaust System': 'exhaust',
             'Front Suspension': 'suspensionFront',
-            'Rear Suspension': 'suspensionRear',
-            'Chassis Frame': 'chassisFrame'
+            'Rear Suspension': 'suspensionRear'
         };
+        
+        // Verify we have exactly 47 unique photo fields
+        const uniqueFields = new Set(Object.values(fieldNameMap));
+        console.log(`Total image types: ${Object.keys(fieldNameMap).length}`);
+        console.log(`Unique photo fields: ${uniqueFields.size}`);
+        console.log('Field names:', Array.from(uniqueFields).sort());
 
         const colors = [
             '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8',
