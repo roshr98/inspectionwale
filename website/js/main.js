@@ -622,7 +622,8 @@
         hiddenId.value = listingId
         summary.textContent = `${buildListingTitle(listing)} • ${buildListingStats(listing)} • ${formatPrice(listing.car && listing.car.expectedPrice)}`
 
-        const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('reserveListingModal'))
+        const modalEl = document.getElementById('reserveListingModal')
+        const modal = new bootstrap.Modal(modalEl)
         modal.show()
     }
 
@@ -718,7 +719,8 @@
             })
         }
 
-        const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('listingDetailModal'))
+        const modalEl = document.getElementById('listingDetailModal')
+        const modal = new bootstrap.Modal(modalEl)
         modal.show()
     }
 
