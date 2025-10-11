@@ -243,7 +243,13 @@ async function handleSubmitListing(body) {
 
   await ddb.send(new PutCommand({ TableName: LISTINGS_TABLE, Item: item }))
 
-  await sendNewListingEmail(item)
+  // Send email notification (don't fail if email fails)
+  try {
+    await sendNewListingEmail(item)
+  } catch (emailErr) {
+    console.error('Failed to send listing submission email:', emailErr)
+    // Continue anyway - listing is saved
+  }
 
   return response(200, {
     ok: true,
@@ -282,7 +288,13 @@ async function handleReserve(body) {
 
   await ddb.send(new PutCommand({ TableName: RESERVATIONS_TABLE, Item: reservation }))
 
-  await sendReservationEmail(listingResult.Item, reservation)
+  // Send email notification (don't fail if email fails)
+  try {
+    await sendReservationEmail(listingResult.Item, reservation)
+  } catch (emailErr) {
+    console.error('Failed to send reservation email:', emailErr)
+    // Continue anyway - reservation is saved
+  }
 
   return response(200, {
     ok: true,

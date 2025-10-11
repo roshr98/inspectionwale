@@ -571,30 +571,88 @@ body {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Fix modal footer visibility on mobile */
+/* Fix modal footer visibility on mobile - CRITICAL */
+.modal-dialog-scrollable .modal-content {
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+}
+
+.modal-dialog-scrollable .modal-body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    max-height: calc(90vh - 140px);
+}
+
 .modal-dialog-scrollable .modal-footer {
     flex-shrink: 0;
     position: sticky;
     bottom: 0;
     background: white;
-    z-index: 10;
+    z-index: 1050;
     border-top: 1px solid #dee2e6;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    display: flex !important;
+    gap: 10px;
 }
 
-/* Ensure modal body has proper padding on mobile */
+/* Ensure buttons are always visible and tappable */
+.modal-footer .btn {
+    white-space: nowrap;
+}
+
+/* Mobile specific fixes - CRITICAL for submit button */
 @media (max-width: 768px) {
-    .modal-dialog-scrollable .modal-body {
-        padding-bottom: 20px;
-        max-height: calc(100vh - 250px);
+    .modal-dialog-scrollable {
+        max-height: 95vh !important;
+        margin: 0.5rem;
     }
     
-    .modal-footer {
-        padding: 15px;
+    .modal-dialog-scrollable .modal-content {
+        max-height: 95vh !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    
+    .modal-dialog-scrollable .modal-body {
+        flex: 1 1 auto !important;
+        overflow-y: auto !important;
+        max-height: calc(95vh - 130px) !important;
+        padding-bottom: 30px !important;
+    }
+    
+    .modal-dialog-scrollable .modal-footer {
+        flex-shrink: 0 !important;
+        position: sticky !important;
+        bottom: 0 !important;
+        background: white !important;
+        z-index: 1051 !important;
+        padding: 12px 15px !important;
+        border-top: 2px solid #dee2e6 !important;
+        box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.15) !important;
+        display: flex !important;
+        gap: 8px !important;
     }
     
     .modal-footer .btn {
-        padding: 12px 20px;
-        font-size: 16px;
+        padding: 14px 20px !important;
+        font-size: 16px !important;
+        min-height: 48px !important;
+        flex: 1 !important;
+        font-weight: 600 !important;
+    }
+    
+    /* Ensure all photo upload sections including RC are visible */
+    #listingPhotoInputs .col-sm-6,
+    #listingPhotoInputs .col-md-4 {
+        margin-bottom: 25px !important;
+    }
+    
+    /* Make form labels more visible on mobile */
+    .form-label {
+        font-weight: 600;
+        margin-bottom: 8px;
     }
 }
 
