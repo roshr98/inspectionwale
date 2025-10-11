@@ -384,11 +384,26 @@
 
             if (!form.checkValidity()) {
                 form.classList.add('was-validated')
+                
+                // Find first invalid field and scroll to it
+                const firstInvalid = form.querySelector(':invalid')
+                if (firstInvalid) {
+                    firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                    firstInvalid.focus()
+                }
+                
+                showAlert(alertBox, 'danger', 'Please fill in all required fields marked with *')
                 return
             }
 
             if (!validateRequiredPhotos()) {
                 showAlert(alertBox, 'danger', 'Please attach all required photos before submitting.')
+                
+                // Scroll to photo section
+                const photoSection = document.getElementById('listingPhotoInputs')
+                if (photoSection) {
+                    photoSection.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                }
                 return
             }
 
@@ -428,8 +443,13 @@
                 // Show success popup and close modal
                 setTimeout(() => {
                     alert('Thank you for listing your car! We have received your submission and will verify it shortly. You will be contacted once approved.')
-                    const listCarModal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl)
-                    listCarModal.hide()
+                    
+                    // Safely close modal
+                    const listCarModal = bootstrap.Modal.getInstance(modalEl)
+                    if (listCarModal) {
+                        listCarModal.hide()
+                    }
+                    
                     form.reset()
                     resetPhotoPreviews(form)
                     hideAlert(alertBox)
@@ -450,6 +470,17 @@
                 form.reset()
                 resetPhotoPreviews(form)
                 form.classList.remove('was-validated')
+                
+                // Clean up any stray modal backdrops safely
+                const backdrops = document.querySelectorAll('.modal-backdrop')
+                backdrops.forEach(backdrop => {
+                    if (backdrop && backdrop.parentNode) {
+                        backdrop.parentNode.removeChild(backdrop)
+                    }
+                })
+                document.body.classList.remove('modal-open')
+                document.body.style.overflow = ''
+                document.body.style.paddingRight = ''
             })
         }
     }
@@ -599,9 +630,13 @@
                 submitBtn.disabled = false
                 submitBtn.innerText = 'Reserve Now'
                 
-                // Clean up any stray modal backdrops
+                // Clean up any stray modal backdrops safely
                 const backdrops = document.querySelectorAll('.modal-backdrop')
-                backdrops.forEach(backdrop => backdrop.remove())
+                backdrops.forEach(backdrop => {
+                    if (backdrop && backdrop.parentNode) {
+                        backdrop.parentNode.removeChild(backdrop)
+                    }
+                })
                 document.body.classList.remove('modal-open')
                 document.body.style.overflow = ''
                 document.body.style.paddingRight = ''
@@ -707,9 +742,17 @@
         if (priceEl) priceEl.textContent = formatPrice(listing.car && listing.car.expectedPrice)
 
         const photos = []
+        const seenUrls = new Set()
         const photoEntries = listing.photos ? Object.entries(listing.photos) : []
+        
+        // Only add photos with unique URLs
         photoEntries.forEach(([slot, meta]) => {
-            if (meta && meta.url && slot !== DOCUMENT_SLOT) photos.push({ slot, url: meta.url })
+            if (meta && meta.url && slot !== DOCUMENT_SLOT) {
+                if (!seenUrls.has(meta.url)) {
+                    photos.push({ slot, url: meta.url })
+                    seenUrls.add(meta.url)
+                }
+            }
         })
 
         if (!photos.length) {
@@ -723,40 +766,61 @@
 
         if (thumbContainer) {
             thumbContainer.innerHTML = ''
-            photos.forEach((photo, idx) => {
-                const btn = document.createElement('button')
-                btn.type = 'button'
-                btn.className = 'btn btn-outline-secondary p-0'
-                btn.style.width = '90px'
-                btn.style.height = '60px'
-                btn.style.overflow = 'hidden'
-                btn.title = `View ${photo.slot}`
-                const img = document.createElement('img')
-                img.src = photo.url
-                img.alt = `${photo.slot} view`
-                img.className = 'w-100 h-100'
-                img.style.objectFit = 'cover'
-                btn.appendChild(img)
-                btn.addEventListener('click', () => {
-                    if (heroImg) {
-                        heroImg.src = photo.url
-                        heroImg.alt = `${buildListingTitle(listing)} photo`
-                    }
-                    thumbContainer.querySelectorAll('button').forEach(el => el.classList.remove('active'))
-                    btn.classList.add('active')
+            
+            // Only show thumbnails if there are multiple unique photos
+            if (photos.length > 1) {
+                photos.forEach((photo, idx) => {
+                    const btn = document.createElement('button')
+                    btn.type = 'button'
+                    btn.className = 'btn btn-outline-secondary p-0'
+                    btn.style.width = '90px'
+                    btn.style.height = '60px'
+                    btn.style.overflow = 'hidden'
+                    
+                    // Create friendly label for photo slot
+                    const slotLabel = photo.slot
+                        .replace(/([A-Z])/g, ' $1')
+                        .replace(/^./, str => str.toUpperCase())
+                        .trim()
+                    btn.title = `View ${slotLabel}`
+                    
+                    const img = document.createElement('img')
+                    img.src = photo.url
+                    img.alt = `${slotLabel}`
+                    img.className = 'w-100 h-100'
+                    img.style.objectFit = 'cover'
+                    btn.appendChild(img)
+                    btn.addEventListener('click', () => {
+                        if (heroImg) {
+                            heroImg.src = photo.url
+                            heroImg.alt = `${buildListingTitle(listing)} photo`
+                        }
+                        thumbContainer.querySelectorAll('button').forEach(el => el.classList.remove('active'))
+                        btn.classList.add('active')
+                    })
+                    if (idx === 0) btn.classList.add('active')
+                    thumbContainer.appendChild(btn)
                 })
-                if (idx === 0) btn.classList.add('active')
-                thumbContainer.appendChild(btn)
-            })
+            } else {
+                // Show message when only one photo available
+                const message = document.createElement('p')
+                message.className = 'text-muted small mb-0'
+                message.textContent = 'Only one photo available for this listing'
+                thumbContainer.appendChild(message)
+            }
         }
 
         const modalEl = document.getElementById('listingDetailModal')
         const modal = new bootstrap.Modal(modalEl)
         
-        // Clean up backdrop on modal hide
+        // Clean up backdrop on modal hide safely
         modalEl.addEventListener('hidden.bs.modal', function cleanupBackdrop() {
             const backdrops = document.querySelectorAll('.modal-backdrop')
-            backdrops.forEach(backdrop => backdrop.remove())
+            backdrops.forEach(backdrop => {
+                if (backdrop && backdrop.parentNode) {
+                    backdrop.parentNode.removeChild(backdrop)
+                }
+            })
             document.body.classList.remove('modal-open')
             document.body.style.overflow = ''
             document.body.style.paddingRight = ''
