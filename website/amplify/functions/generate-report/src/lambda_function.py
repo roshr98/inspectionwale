@@ -640,7 +640,22 @@ def generate_pdf(data, image_files):
 def lambda_handler(event, context):
     """Main Lambda handler"""
     try:
+        # Handle OPTIONS request for CORS preflight
+        if event.get('requestContext', {}).get('http', {}).get('method') == 'OPTIONS':
+            return {
+                'statusCode': 200,
+                'headers': {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+                    'Access-Control-Allow-Headers': 'Content-Type',
+                    'Access-Control-Max-Age': '86400'
+                },
+                'body': ''
+            }
+        
         print("📄 Starting PDF generation...")
+        print(f"Event keys: {event.keys()}")
+        print(f"Request method: {event.get('requestContext', {}).get('http', {}).get('method')}")
         
         # Parse form data
         fields, files = parse_multipart(event)
@@ -694,6 +709,9 @@ def lambda_handler(event, context):
         import traceback
         traceback.print_exc()
         
+        # Print full event for debugging
+        print(f"Full event: {json.dumps(event, default=str)}")
+        
         return {
             'statusCode': 500,
             'headers': {
@@ -702,6 +720,7 @@ def lambda_handler(event, context):
             },
             'body': json.dumps({
                 'success': False,
-                'error': str(e)
+                'error': str(e),
+                'traceback': traceback.format_exc()
             })
         }
