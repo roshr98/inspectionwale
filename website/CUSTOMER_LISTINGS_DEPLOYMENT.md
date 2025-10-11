@@ -318,7 +318,7 @@ powershell Compress-Archive -Path src/index.js,src/package.json,src/node_modules
 4. Click **Deploy**
 5. **Copy the Invoke URL** - it will look like:
    ```
-   https://abc123xyz.execute-api.us-east-1.amazonaws.com/prod
+  https://423cmvhw3g.execute-api.us-east-1.amazonaws.com/prod
    ```
    ⚠️ **Important:** Save this URL - you'll need it for the next step!
 

@@ -286,7 +286,7 @@ async function handleReserve(body) {
 
   return response(200, {
     ok: true,
-    message: 'Thank you! We will share your offer with the seller and call you with the next steps.'
+    message: 'Thank you for your interest! We have received your reservation request and will share your offer with the seller. Our team will contact you shortly to discuss the next steps.'
   })
 }
 

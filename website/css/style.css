@@ -570,3 +570,124 @@ body {
     transform: translateY(-5px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
+
+/* Sand Background for Sections */
+.sand-background {
+    position: relative;
+    overflow: hidden;
+    background: #ffffff !important;
+}
+
+.sand-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../Images/sand.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.15;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.sand-background .container,
+.sand-background .container-fluid {
+    position: relative;
+    z-index: 1;
+}
+
+.sand-background h1,
+.sand-background h2,
+.sand-background h3,
+.sand-background h4,
+.sand-background h5,
+.sand-background h6,
+.sand-background p,
+.sand-background .fa,
+.sand-background i {
+    position: relative;
+    z-index: 2;
+}
+
+/* Fix modal footer visibility on mobile */
+.modal-dialog-scrollable .modal-footer {
+    flex-shrink: 0;
+    position: sticky;
+    bottom: 0;
+    background: white;
+    z-index: 10;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Ensure modal body has proper padding on mobile */
+@media (max-width: 768px) {
+    .modal-dialog-scrollable .modal-body {
+        padding-bottom: 20px;
+        max-height: calc(100vh - 250px);
+    }
+    
+    .modal-footer {
+        padding: 15px;
+    }
+    
+    .modal-footer .btn {
+        padding: 12px 20px;
+        font-size: 16px;
+    }
+}
+
+/* Sand background for specific sections */
+.sand-background {
+    position: relative;
+    overflow: hidden;
+}
+
+.sand-background::before {
+    content: '';
+    position: absolute;
+    bottom: -5%;
+    left: 0;
+    width: 100%;
+    height: 55%;
+    background-image: url('../Images/sand.jpg');
+    background-size: cover;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    opacity: 0.35;
+    z-index: 0;
+    animation: sandSway 20s ease-in-out infinite;
+}
+
+.sand-background::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(
+        to top,
+        rgba(218, 165, 32, 0.15) 0%,
+        rgba(255, 215, 0, 0.08) 30%,
+        transparent 60%
+    );
+    z-index: 0;
+}
+
+.sand-background > .container {
+    position: relative;
+    z-index: 2;
+}
+
+@keyframes sandSway {
+    0%, 100% {
+        transform: translateX(0) scale(1);
+    }
+    50% {
+        transform: translateX(15px) scale(1.01);
+    }
+}

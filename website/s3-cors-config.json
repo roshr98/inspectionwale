@@ -1,0 +1,16 @@
+{
+    "CORSRules": [
+        {
+            "AllowedHeaders": ["*"],
+            "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD"],
+            "AllowedOrigins": [
+                "https://www.inspectionwale.com",
+                "https://inspectionwale.com",
+                "http://localhost:3000",
+                "http://127.0.0.1:5500"
+            ],
+            "ExposeHeaders": ["ETag", "x-amz-server-side-encryption", "x-amz-request-id", "x-amz-id-2"],
+            "MaxAgeSeconds": 3000
+        }
+    ]
+}
