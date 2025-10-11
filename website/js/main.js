@@ -424,8 +424,16 @@
 
                 const submitResult = await apiPost('submitListing', payload)
                 showAlert(alertBox, 'success', submitResult.message || 'Submitted successfully. Our team will verify and publish the listing.')
-                form.reset()
-                resetPhotoPreviews(form)
+                
+                // Show success popup and close modal
+                setTimeout(() => {
+                    alert('Thank you for listing your car! We have received your submission and will verify it shortly. You will be contacted once approved.')
+                    const listCarModal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl)
+                    listCarModal.hide()
+                    form.reset()
+                    resetPhotoPreviews(form)
+                    hideAlert(alertBox)
+                }, 1500)
             } catch (error) {
                 console.error('Listing submission failed', error)
                 showAlert(alertBox, 'danger', friendlyError(error))
