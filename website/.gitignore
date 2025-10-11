@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Temp files
+*.tmp
+temp-*
+listing-*.json
+response.json
+test-lambda-*.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# AWS Lambda packages (node_modules will be zipped separately)
+amplify/functions/*/node_modules/
+
+# Build artifacts
+*.zip
+customer-listings.zip
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Scripts (optional - uncomment if you don't want to commit helper scripts)
+# add-placeholder-*.ps1
+# add-placeholder-*.py
+# verify-deployment.ps1

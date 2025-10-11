@@ -35,6 +35,28 @@
         html, body, h1, h2, h3, h4, h5, h6, p, a, li, span, input, button {
             font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
         }
+        .services-hero {
+            position: relative;
+            border-radius: 18px;
+            overflow: hidden;
+            min-height: 420px;
+        }
+        .services-hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(11, 33, 84, 0.25) 0%, rgba(11, 33, 84, 0.85) 100%);
+        }
+        .services-hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        .customer-highlight-card {
+            border-radius: 18px;
+            border: 1px solid rgba(11, 33, 84, 0.12);
+            background: #ffffff;
+            box-shadow: 0 18px 45px rgba(11, 33, 84, 0.08);
+        }
     </style>
 </head>
 
@@ -84,7 +106,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0 d-flex align-items-center">
-                <i class="fa fa-map-marker-alt text-primary me-3" style="font-size:1.2rem;"></i>
+                <i class="fa fa-map-marker-alt text-primary me-4" style="font-size:1.2rem;"></i>
                 <a href="inspector-login.html" title="Inspector Login" class="text-decoration-none">
                     <i class="fa fa-user text-primary me-4" style="font-size:1.2rem; cursor: pointer;"></i>
                 </a>
@@ -100,14 +122,14 @@
         <div id="header-carousel" class="carousel" aria-hidden="false">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="w-100" src="Images/banner_new.avif" alt="InspectionWale banner" style="height:80vh; max-height:900px; object-fit:cover; object-position:50% 20%;">
+                    <img class="w-100" src="Images/banner_new.avif" alt="InspectionWale banner" style="height:632px; width:100%; object-fit:cover; object-position:right center;">
                     <div class="carousel-caption d-flex align-items-center">
                         <div class="container">
-                            <div class="row align-items-center justify-content-center justify-content-lg-start">
+                            <div class="row align-items-center justify-content-center justify-content-lg-start" >
                                 <div class="col-12 col-lg-7 text-center text-lg-start">
                                     <!-- heading reduced to single H1 for clarity -->
-                                    <h1 class="display-3 text-white mb-4 pb-3 animated slideInDown">Checked. Cleared. Yours.</h1>
-                                    <a href="#book" class="btn btn-primary py-3 px-5 animated slideInDown">Book Inspection Now<i class="fa fa-arrow-right ms-3"></i></a>
+                                    <h1 class="display-3 text-white mb-4 pb-3 animated slideInDown" style="margin-top:1.5rem;">Inspect First. Drive Confidently</h1>
+                                    <a href="#book" class="btn btn-primary rounded-pill py-3 px-5 animated slideInDown"  >Book Inspection Now<i class="fa fa-arrow-right ms-3"></i></a>
                                 </div>
                                 <!-- side image removed to keep only the original banner -->
                             </div>
@@ -119,337 +141,439 @@
     </div>
     <!-- Carousel End -->
 
-    <!-- About Start (moved here) -->
-    <div id="" class="container-xxl py-5 section-dust">
-        <div class="container">
-            <div class="row g-5 align-items-stretch">
-                <div class="col-lg-6 ">
-                    <div class="wow fadeIn h-100" data-wow-delay="0.1s">
-                        <img class="img-fluid w-100 h-100 rounded" src="Images/banner_about.jpg" style="object-fit: cover; object-position: 35% 50%;" alt="About InspectionWale">
-                    </div>
-                </div>
-                <div class="col-lg-6 d-flex flex-column justify-content-top">
-                    
-                    <h1 class="mb-4">“Inspect First. Drive Confidently.”</h1>
-                    <p class="mb-4">Buying a car is a big decision — whether brand-new or pre-owned. A professional inspection makes sure you get exactly what you pay for.</p>
-                    <ul>
-                        <li>New cars – Catch transit damage, manufacturing faults, or missed dealer checks before delivery.</li>
-                        <li>Used cars – Spot hidden issues, know the real value, and drive with confidence.</li>
-                        <li>An inspection protects your money, your safety, and your peace of mind.</li>
-                    </ul>
-                    <div class="row g-4 mb-2">
-                        <div class="col-6 wow fadeIn" data-wow-delay="0.1s">
-                                <div class="d-flex align-items-center">
-                                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center" style="width: 70px; height: 70px;">
-                                        <i class="fa fa-check-circle fa-2x about-icon" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="ps-3">
-                                        <h5 class="mb-0 fw-bold">160+ Checks</h5>
-                                    </div>
-                                </div>
-                        </div>
-                        <div class="col-6 wow fadeIn" data-wow-delay="0.3s">
-                            <div class="d-flex align-items-center">
-                                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center" style="width: 70px; height: 70px;">
-                                    <i class="fa fa-file-alt fa-2x about-icon" aria-hidden="true"></i>
-                                </div>
-                                <div class="ps-3">
-                                    <h5 class="mb-0 fw-bold">Clear Report</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6 wow fadeIn" data-wow-delay="0.5s">
-                            <div class="d-flex align-items-center">
-                                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center" style="width: 70px; height: 70px;">
-                                    <i class="fa fa-balance-scale fa-2x about-icon" aria-hidden="true"></i>
-                                </div>
-                                <div class="ps-3">
-                                    <h5 class="mb-0 fw-bold">Unbiased</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6 wow fadeIn" data-wow-delay="0.7s">
-                            <div class="d-flex align-items-center">
-                                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center" style="width: 70px; height: 70px;">
-                                    <i class="fa fa-stopwatch fa-2x about-icon" aria-hidden="true"></i>
-                                </div>
-                                <div class="ps-3">
-                                    <h5 class="mb-0 fw-bold">Quick Turnaround</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- About End (moved) -->
+    <!-- ============================================ -->
+    <!-- FACT SECTION - SELECTED DESIGN -->
+    <!-- ============================================ -->
 
-    <!-- What Is Checked Start -->
-    <div id="what-checked" class="container-xxl  section-dust">
+    <!-- Option 8: White with Subtle Shadow -->
+    <div class="container-fluid fact my-5 py-5" style="font-family: 'Montserrat', sans-serif; background: #ffffff; box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.06);">
         <div class="container">
-            <div class="text-center text-lg-start wow fadeInUp" data-wow-delay="0.1s">
-                
-                <h2 class="mb-5 display-4 fw-bold" style="color:var(--secondary);">What is checked</h2>
-            </div>
+            <h3 class="text-center mb-5" style="font-family: 'Montserrat', sans-serif; color: #0B2154;">Comprehensive Inspection Coverage</h3>
             <div class="row g-4 justify-content-center">
-                <!-- item -->
-                <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center wc-engine">
-                    <div class="p-2 h-100">
-                        <i class="fa fa-cogs fa-2x what-icon mb-3" aria-hidden="true"></i>
-                        <p class="mb-0">Engine</p>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.1s">
+                    <i class="fa fa-cogs fa-2x mb-3" style="color: #0B2154;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Engine</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.15s">
+                    <i class="fa fa-road fa-2x mb-3" style="color: #0B2154;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Test Drive</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.2s">
+                    <i class="fa fa-tools fa-2x mb-3" style="color: #0B2154;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Suspension</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.25s">
+                    <i class="fa fa-dot-circle fa-2x mb-3" style="color: #0B2154;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Tyres</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.3s">
+                    <i class="fa fa-bolt fa-2x mb-3" style="color: #0B2154;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Electricals</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.35s">
+                    <i class="fa fa-couch fa-2x mb-3" style="color: #0B2154;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Interior</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.4s">
+                    <i class="fa fa-spray-can fa-2x mb-3" style="color: #0B2154;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Paint</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.45s">
+                    <i class="fa fa-car-crash fa-2x mb-3" style="color: #0B2154;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Accident</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.5s">
+                    <i class="fa fa-fire fa-2x mb-3" style="color: #0B2154;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Fire</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.55s">
+                    <i class="fa fa-water fa-2x mb-3" style="color: #0B2154;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Flood</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.6s">
+                    <i class="fa fa-eye fa-2x mb-3" style="color: #0B2154;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Exterior</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.65s">
+                    <i class="fa fa-file-alt fa-2x mb-3" style="color: #0B2154;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Documents</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fact Section End -->
+
+    <!-- About Section -->
+    <div class="container-xxl py-4" style="background: white;">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 text-center">
+                    <h2 class="mb-4">"Checked. Cleared. Yours."</h2>
+                    <p class="lead mb-0">Buying a car is a big decision — whether brand-new or pre-owned. A professional inspection makes sure you get exactly what you pay for.</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="text-center border-start border-5 border-danger ps-4 pe-4 pb-4 pt-4">
+                        <i class="fa fa-check-circle fa-3x mb-3" style="color: #D81324;"></i>
+                        <h5 class="mb-2">160+ Checks</h5>
+                        <p class="text-muted mb-0">Every detail inspected thoroughly</p>
                     </div>
                 </div>
-                <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center">
-                    <div class="p-2 h-100">
-                        <i class="fa fa-road fa-2x what-icon mb-3" aria-hidden="true"></i>
-                        <p class="mb-0">Test Drive</p>
+                <div class="col-lg-3 col-md-6">
+                    <div class="text-center border-start border-5 border-info ps-4 pe-4 pb-4 pt-4">
+                        <i class="fa fa-file-alt fa-3x mb-3" style="color: #00b8b8;"></i>
+                        <h5 class="mb-2">Clear Report</h5>
+                        <p class="text-muted mb-0">Easy to understand documentation</p>
                     </div>
                 </div>
-                <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center">
-                    <div class="p-2 h-100">
-                        <i class="fa fa-tools fa-2x what-icon mb-3" aria-hidden="true"></i>
-                        <p class="mb-0">Suspension</p>
+                <div class="col-lg-3 col-md-6">
+                    <div class="text-center border-start border-5 border-primary ps-4 pe-4 pb-4 pt-4">
+                        <i class="fa fa-balance-scale fa-3x mb-3" style="color: #0B2154;"></i>
+                        <h5 class="mb-2">Unbiased</h5>
+                        <p class="text-muted mb-0">Independent third-party inspection</p>
                     </div>
                 </div>
-                <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center">
-                    <div class="p-2 h-100">
-                        <i class="fa fa-dot-circle fa-2x what-icon mb-3" aria-hidden="true"></i>
-                        <p class="mb-0">Tyres</p>
-                    </div>
-                </div>
-                <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center">
-                    <div class="p-2 h-100">
-                        <i class="fa fa-bolt fa-2x what-icon mb-3" aria-hidden="true"></i>
-                        <p class="mb-0">Electricals</p>
-                    </div>
-                </div>
-                <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center">
-                    <div class="p-2 h-100">
-                        <!-- Interior icon: inline SVG to ensure consistent display -->
-                        <svg class="what-icon mb-3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                            <path d="M3 13v4a1 1 0 0 0 1 1h1v1a1 1 0 0 0 1 1h1v-2h8v2h1a1 1 0 0 0 1-1v-1h1a1 1 0 0 0 1-1v-4a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4zM7 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
-                        </svg>
-                        <p class="mb-0">Interior</p>
-                    </div>
-                </div>
-                <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center">
-                    <div class="p-2 h-100">
-                        <i class="fa fa-spray-can fa-2x what-icon mb-3" aria-hidden="true"></i>
-                        <p class="mb-0">Paint</p>
-                    </div>
-                </div>
-                <!-- Accidental Damage -->
-                <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center wc-accident">
-                    <div class="p-2 h-100">
-                        <i class="fa fa-car-crash fa-2x what-icon mb-3" aria-hidden="true"></i>
-                        <p class="mb-0">Accidental Damage</p>
-                    </div>
-                </div>
-                <!-- Fire Damage -->
-                <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center">
-                    <div class="p-2 h-100">
-                        <i class="fa fa-fire fa-2x what-icon mb-3" aria-hidden="true"></i>
-                        <p class="mb-0">Fire Damage</p>
-                    </div>
-                </div>
-                <!-- Flood Damage -->
-                <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center">
-                    <div class="p-2 h-100">
-                        <i class="fa fa-water fa-2x what-icon mb-3" aria-hidden="true"></i>
-                        <p class="mb-0">Flood Damage</p>
-                    </div>
-                </div>
-                <!-- Exterior Condition -->
-                <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center">
-                    <div class="p-2 h-100">
-                        <i class="fa fa-eye fa-2x what-icon mb-3" aria-hidden="true"></i>
-                        <p class="mb-0">Exterior Condition</p>
-                    </div>
-                </div>
-                <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center wc-docs">
-                    <div class="p-2 h-100">
-                        <i class="fa fa-file-alt fa-2x what-icon mb-3" aria-hidden="true"></i>
-                        <p class="mb-0">Documents</p>
+                <div class="col-lg-3 col-md-6">
+                    <div class="text-center border-start border-5 border-success ps-4 pe-4 pb-4 pt-4">
+                        <i class="fa fa-stopwatch fa-3x mb-3" style="color: #10b981;"></i>
+                        <h5 class="mb-2">Quick</h5>
+                        <p class="text-muted mb-0">Fast turnaround time</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- What Is Checked End -->
 
-    <!-- Features Row removed per request -->
+    <!-- What Is Reported -->
+    <div class="container-xxl py-5" style="background: white;">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="mb-3">What is Reported</h2>
+                <p class="lead text-muted">5 key insights in every report</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="position-relative p-4 border-start border-5 border-danger">
+                        <div class="position-absolute top-0 start-0 translate-middle-x">
+                            <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                <span class="fw-bold fs-4">1</span>
+                            </div>
+                        </div>
+                        <div class="ps-4">
+                            <i class="fa fa-check-circle fa-2x mb-2" style="color: #D81324;"></i>
+                            <h5 class="mb-2">True Vehicle Condition</h5>
+                            <p class="text-muted mb-0">Show the true condition with comprehensive data and photos</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="position-relative p-4 border-start border-5 border-info">
+                        <div class="position-absolute top-0 start-0 translate-middle-x">
+                            <div class="bg-info text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                <span class="fw-bold fs-4">2</span>
+                            </div>
+                        </div>
+                        <div class="ps-4">
+                            <i class="fa fa-wrench fa-2x mb-2" style="color: #00b8b8;"></i>
+                            <h5 class="mb-2">Repair Cost Estimates</h5>
+                            <p class="text-muted mb-0">Estimate repair costs so you know what to expect</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="position-relative p-4 border-start border-5 border-primary">
+                        <div class="position-absolute top-0 start-0 translate-middle-x">
+                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                <span class="fw-bold fs-4">3</span>
+                            </div>
+                        </div>
+                        <div class="ps-4">
+                            <i class="fa fa-tag fa-2x mb-2" style="color: #0B2154;"></i>
+                            <h5 class="mb-2">Right Market Value</h5>
+                            <p class="text-muted mb-0">Get the right market value based on condition</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="position-relative p-4 border-start border-5 border-success">
+                        <div class="position-absolute top-0 start-0 translate-middle-x">
+                            <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                <span class="fw-bold fs-4">4</span>
+                            </div>
+                        </div>
+                        <div class="ps-4">
+                            <i class="fa fa-handshake fa-2x mb-2" style="color: #10b981;"></i>
+                            <h5 class="mb-2">Negotiation Power</h5>
+                            <p class="text-muted mb-0">Negotiate confidently with factual data</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="position-relative p-4 border-start border-5 border-warning">
+                        <div class="position-absolute top-0 start-0 translate-middle-x">
+                            <div class="bg-warning text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                <span class="fw-bold fs-4">5</span>
+                            </div>
+                        </div>
+                        <div class="ps-4">
+                            <i class="fa fa-car fa-2x mb-2" style="color: #fbbf24;"></i>
+                            <h5 class="mb-2">Clarity & Confidence</h5>
+                            <p class="text-muted mb-0">Drive away with clarity and the right deal</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <!-- InspectionWale Get Quote Modal -->
-        <div class="modal fade" id="quoteModalIW" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-sm modal-dialog-centered">
-                <div class="modal-content" style="background:#fff;border:none;color:#222">
-                    <div class="modal-header border-0">
-                        <h5 class="modal-title">Get a Quick Quote — InspectionWale</h5>
+
+    <!-- Customer-to-Customer: Featured Owner Deals (Option 4) -->
+    <section class="container-xxl py-5" style="background:#f8f9fa;">
+        <div class="container">
+            <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-lg-between mb-4">
+                <div>
+                    <h2 class="mb-1" style="font-family: 'Montserrat', sans-serif; color: #0B2154;">Featured Owner Deals</h2>
+                    <p class="text-muted mb-0">Verified customer-to-customer listings inspected by InspectionWale.</p>
+                </div>
+                <button type="button" class="btn btn-outline-primary btn-sm mt-3 mt-lg-0" data-bs-toggle="modal" data-bs-target="#listCarModal">List Your Car</button>
+            </div>
+            <div id="customerListingsCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators" id="customerListingsIndicators"></div>
+                <div class="carousel-inner" id="customerListingsInner">
+                    <div class="carousel-item active">
+                        <div class="row g-4">
+                            <div class="col-12">
+                                <div class="customer-highlight-card p-4 h-100 text-center">
+                                    <p class="text-muted mb-0">Approved customer listings will appear here once they are verified by our team.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#customerListingsCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#customerListingsCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+        <!-- Customer Listing Modals -->
+        <div class="modal fade" id="listCarModal" tabindex="-1" aria-labelledby="listCarModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="listCarModalLabel">Submit Your Car for Customer-to-Customer Listing</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="listCarForm" class="needs-validation" novalidate>
+                        <div class="modal-body">
+                            <div id="listCarFormAlert" class="alert d-none" role="alert"></div>
+                            <h6 class="text-uppercase text-muted mb-3">Seller Details</h6>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-4">
+                                    <label for="sellerName" class="form-label">Name<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="sellerName" name="sellerName" placeholder="Your full name" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="sellerMobile" class="form-label">Mobile Number<span class="text-danger">*</span></label>
+                                    <input type="tel" class="form-control" id="sellerMobile" name="sellerMobile" placeholder="10-digit mobile" pattern="^0?\d{10}$" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="sellerEmail" class="form-label">Email ID</label>
+                                    <input type="email" class="form-control" id="sellerEmail" name="sellerEmail" placeholder="name@example.com">
+                                </div>
+                            </div>
+
+                            <h6 class="text-uppercase text-muted mb-3">Car Details</h6>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-4">
+                                    <label for="carMake" class="form-label">Car Make<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="carMake" name="carMake" placeholder="e.g. Honda" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="carModel" class="form-label">Car Model<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="carModel" name="carModel" placeholder="e.g. City VX" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="carEdition" class="form-label">Edition / Trim (optional)</label>
+                                    <input type="text" class="form-control" id="carEdition" name="carEdition" placeholder="e.g. Automatic">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="registrationYear" class="form-label">Registration Year<span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="registrationYear" name="registrationYear" min="1990" max="2100" placeholder="e.g. 2019" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="kmsDriven" class="form-label">KMs Driven<span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="kmsDriven" name="kmsDriven" min="0" step="1" placeholder="e.g. 42000" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="expectedPrice" class="form-label">Expected Price (Rs.)<span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="expectedPrice" name="expectedPrice" min="0" step="1000" placeholder="e.g. 650000" required>
+                                </div>
+                            </div>
+
+                            <h6 class="text-uppercase text-muted mb-3">Upload Required Photos</h6>
+                            <p class="small text-muted">Capture clear, well-lit photos. Tap a tile again to replace and use the "Clear photo" link if you want to retake.</p>
+                            <div class="row g-3" id="listingPhotoInputs">
+                                <div class="col-md-4 col-sm-6">
+                                    <label class="form-label fw-semibold" for="photoExteriorFront">Exterior &mdash; Front<span class="text-danger">*</span></label>
+                                    <input type="file" class="form-control list-car-photo" id="photoExteriorFront" data-slot="exteriorFront" accept="image/*" capture="environment" required>
+                                    <div class="form-text">Front 3/4th angle preferred.</div>
+                                    <div class="mt-2">
+                                        <img class="img-fluid rounded d-none" data-preview="exteriorFront" alt="Exterior front preview">
+                                    </div>
+                                    <button type="button" class="btn btn-link p-0 small text-danger d-none" data-clear="exteriorFront">Clear photo</button>
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <label class="form-label fw-semibold" for="photoExteriorBack">Exterior &mdash; Back<span class="text-danger">*</span></label>
+                                    <input type="file" class="form-control list-car-photo" id="photoExteriorBack" data-slot="exteriorBack" accept="image/*" capture="environment" required>
+                                    <div class="form-text">Rear 3/4th shot.</div>
+                                    <div class="mt-2">
+                                        <img class="img-fluid rounded d-none" data-preview="exteriorBack" alt="Exterior back preview">
+                                    </div>
+                                    <button type="button" class="btn btn-link p-0 small text-danger d-none" data-clear="exteriorBack">Clear photo</button>
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <label class="form-label fw-semibold" for="photoExteriorLeft">Exterior &mdash; Left Side<span class="text-danger">*</span></label>
+                                    <input type="file" class="form-control list-car-photo" id="photoExteriorLeft" data-slot="exteriorLeft" accept="image/*" capture="environment" required>
+                                    <div class="form-text">Driver side profile.</div>
+                                    <div class="mt-2">
+                                        <img class="img-fluid rounded d-none" data-preview="exteriorLeft" alt="Exterior left preview">
+                                    </div>
+                                    <button type="button" class="btn btn-link p-0 small text-danger d-none" data-clear="exteriorLeft">Clear photo</button>
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <label class="form-label fw-semibold" for="photoExteriorRight">Exterior &mdash; Right Side<span class="text-danger">*</span></label>
+                                    <input type="file" class="form-control list-car-photo" id="photoExteriorRight" data-slot="exteriorRight" accept="image/*" capture="environment" required>
+                                    <div class="form-text">Passenger side profile.</div>
+                                    <div class="mt-2">
+                                        <img class="img-fluid rounded d-none" data-preview="exteriorRight" alt="Exterior right preview">
+                                    </div>
+                                    <button type="button" class="btn btn-link p-0 small text-danger d-none" data-clear="exteriorRight">Clear photo</button>
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <label class="form-label fw-semibold" for="photoInteriorSeat">Interior &mdash; Seats<span class="text-danger">*</span></label>
+                                    <input type="file" class="form-control list-car-photo" id="photoInteriorSeat" data-slot="interiorSeat" accept="image/*" capture="environment" required>
+                                    <div class="form-text">Include dashboard + seats.</div>
+                                    <div class="mt-2">
+                                        <img class="img-fluid rounded d-none" data-preview="interiorSeat" alt="Interior seat preview">
+                                    </div>
+                                    <button type="button" class="btn btn-link p-0 small text-danger d-none" data-clear="interiorSeat">Clear photo</button>
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <label class="form-label fw-semibold" for="photoInteriorCluster">Interior &mdash; Instrument Cluster<span class="text-danger">*</span></label>
+                                    <input type="file" class="form-control list-car-photo" id="photoInteriorCluster" data-slot="interiorCluster" accept="image/*" capture="environment" required>
+                                    <div class="form-text">Clear odometer reading.</div>
+                                    <div class="mt-2">
+                                        <img class="img-fluid rounded d-none" data-preview="interiorCluster" alt="Instrument cluster preview">
+                                    </div>
+                                    <button type="button" class="btn btn-link p-0 small text-danger d-none" data-clear="interiorCluster">Clear photo</button>
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <label class="form-label fw-semibold" for="photoRcDocument">RC Document<span class="text-danger">*</span></label>
+                                    <input type="file" class="form-control list-car-photo" id="photoRcDocument" data-slot="rcDocument" accept="image/*" capture="environment" required>
+                                    <div class="form-text">Only for verification &mdash; never published.</div>
+                                    <div class="mt-2">
+                                        <img class="img-fluid rounded d-none" data-preview="rcDocument" alt="RC preview">
+                                    </div>
+                                    <button type="button" class="btn btn-link p-0 small text-danger d-none" data-clear="rcDocument">Clear photo</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary" id="listCarSubmitBtn">Submit for Verification</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="reserveListingModal" tabindex="-1" aria-labelledby="reserveListingModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="reserveListingModalLabel">Reserve This Car</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="reserveListingForm" class="needs-validation" novalidate>
+                        <div class="modal-body">
+                            <div id="reserveFormAlert" class="alert d-none" role="alert"></div>
+                            <input type="hidden" id="reserveListingId" name="listingId">
+                            <p class="small text-muted" id="reserveListingSummary"></p>
+                            <div class="mb-3">
+                                <label for="reserveName" class="form-label">Name<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="reserveName" name="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="reserveEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="reserveEmail" name="email" placeholder="name@example.com">
+                            </div>
+                            <div class="mb-3">
+                                <label for="reserveMobile" class="form-label">Mobile Number<span class="text-danger">*</span></label>
+                                <input type="tel" class="form-control" id="reserveMobile" name="mobile" pattern="^0?\d{10}$" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="reserveOffer" class="form-label">Offer Price (Rs.)</label>
+                                <input type="number" class="form-control" id="reserveOffer" name="offerPrice" min="0" step="1000" placeholder="Your best offer">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success" id="reserveSubmitBtn">Reserve Now</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="listingDetailModal" tabindex="-1" aria-labelledby="listingDetailModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div>
+                            <h5 class="modal-title" id="listingDetailModalLabel">Listing Details</h5>
+                            <p class="text-muted mb-0 small" id="listingDetailMeta"></p>
+                        </div>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="quoteFormIW">
-                            <div class="row gx-2">
-                                <div class="col-6 mb-2"><input name="firstName" placeholder="First name" class="form-control" required></div>
-                                <div class="col-6 mb-2"><input name="lastName" placeholder="Last name" class="form-control"></div>
-                            </div>
-                            <div class="mb-2"><input name="mobile" placeholder="Mobile" class="form-control" pattern="^0?\d{10}$" required></div>
-                            <div class="mb-2"><input name="email" type="email" placeholder="Email" class="form-control" required></div>
-                            <div class="mb-2">
-                                <select name="location" class="form-select mb-2">
-                                    <option>Mumbai</option>
-                                    <option>Navi Mumbai</option>
-                                    <option>Thane</option>
-                                    <option>Other</option>
-                                </select>
-                                <input name="locationOther" class="form-control" placeholder="If Other, enter city" style="display:none" />
-                            </div>
-                            <div class="mb-2">
-                                <select name="carType" class="form-select">
-                                    <option value="used">Used Car</option>
-                                    <option value="new">New Car</option>
-                                </select>
-                            </div>
-                            <div class="d-grid"><button class="btn btn-primary" type="submit">Request Quote</button></div>
-                        </form>
-                        <div id="quoteStatusIW" role="status" aria-live="polite" class="mt-2" style="display:none"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <script>
-            // minimal show/hide for location Other
-            (function(){
-                const modal = document.getElementById('quoteModalIW')
-                const qForm = document.getElementById('quoteFormIW')
-                if(!qForm) return
-                const loc = qForm.querySelector('select[name="location"]')
-                const locOther = qForm.querySelector('input[name="locationOther"]')
-                loc.addEventListener('change', ()=>{ locOther.style.display = loc.value === 'Other' ? 'block' : 'none' })
-
-                qForm.addEventListener('submit', async function(e){
-                    e.preventDefault()
-                    const fd = new FormData(this)
-                    const data = {
-                        firstName: fd.get('firstName') || '',
-                        lastName: fd.get('lastName') || '',
-                        mobile: fd.get('mobile') || '',
-                        email: fd.get('email') || '',
-                        location: fd.get('location') === 'Other' ? (fd.get('locationOther') || '') : fd.get('location'),
-                        carType: fd.get('carType') || ''
-                    }
-                    const status = document.getElementById('quoteStatusIW')
-                    status.style.display = 'block'; status.className='text-muted'; status.textContent = 'Sending...'
-                    try{
-                        const res = await fetch('/api/quote',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(data)})
-                        if(res.ok){
-                            status.className='text-success'; status.textContent = 'Thanks — we will contact you shortly.'
-                            this.reset();
-                            setTimeout(()=>{ const bs = bootstrap.Modal.getInstance(modal); bs && bs.hide(); status.style.display='none' },3000)
-                        } else {
-                            status.className='text-danger'; status.textContent = 'Server error — please try later.'
-                        }
-                    }catch(err){ console.error(err); status.className='text-danger'; status.textContent = 'Unable to reach server.' }
-                })
-            })()
-        </script>
-
-    <!-- About block moved earlier; original removed to avoid duplication -->
-
-
-    <!-- Fact Start -->
-    <div class="container-fluid fact bg-dark my-5 py-5">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-6 col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.1s">
-                    <i class="fa fa-check fa-2x text-white mb-3"></i>
-                    <h2 class="text-white mb-2">10+</h2>
-                    <p class="text-white mb-0">Years Experience</p>
-                </div>
-                <div class="col-6 col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.3s">
-                    <i class="fa fa-smile fa-2x text-white mb-3"></i>
-                    <h2 class="text-white mb-2">100%</h2>
-                    <p class="text-white mb-0">Client Satisfaction</p>
-                </div>
-                <div class="col-6 col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.5s">
-                    <i class="fa fa-car-side fa-2x text-white mb-3"></i>
-                    <h2 class="text-white mb-2">2100+</h2>
-                    <p class="text-white mb-0">Cars inspected</p>
-                </div>
-                <div class="col-6 col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.7s">
-                    <i class="fa fa-water fa-2x text-white mb-3"></i>
-                    <h2 class="text-white mb-2">89+ / 200+</h2>
-                    <p class="text-white mb-0">Cars found Flooded / Accidental</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Fact End -->
-
-
-    <!-- Service Start -->
-    <div class="container-xxl service py-5">
-        <div class="container">
-            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="text-primary text-uppercase">Our Services</h6>
-                <h1 class="mb-5">Explore Our Services</h1>
-            </div>
-            <div class="row g-4 wow fadeInUp" data-wow-delay="0.3s">
-                <div class="col-lg-4">
-                    <div class="nav w-100 nav-pills me-4">
-                        <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-4 active" data-bs-toggle="pill" data-bs-target="#tab-pane-1" type="button">
-                            <i class="fa fa-car-side fa-2x me-3"></i>
-                            <h4 class="m-0">New Car Inspection</h4>
-                        </button>
-                        <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-4" data-bs-toggle="pill" data-bs-target="#tab-pane-2" type="button">
-                            <i class="fa fa-car fa-2x me-3"></i>
-                            <h4 class="m-0">Pre-Purchase Inspection (Used Cars)</h4>
-                        </button>
-                        <!-- Customer-to-Customer Buying removed -->
-                    </div>
-                </div>
-                <div class="col-lg-8">
-                    <div class="tab-content w-100">
-                        <div class="tab-pane fade show active" id="tab-pane-1">
-                            <div class="row g-4">
-                                <div class="col-md-6" style="min-height: 350px;">
-                                    <div class="position-relative h-100">
-                                        <img class="position-absolute img-fluid w-100 h-100" src="Images/Finalimg.jpeg"
-                                            style="object-fit: cover;" alt="New Car Inspection">
-                                    </div>
+                        <div class="row g-4">
+                            <div class="col-lg-7">
+                                <div class="ratio ratio-16x9 bg-light rounded border">
+                                    <img id="listingDetailHero" src="" alt="Selected car photo" class="img-fluid rounded" style="object-fit:cover;">
                                 </div>
-                                <div class="col-md-6">
-                                    <h3 class="mb-3">New Car Inspection</h3>
-                                    <p class="mb-4">Even a brand-new car can occasionally have minor issues from transit or manufacturing. This doesn’t mean dealers sell faulty cars—they always aim to deliver the best service. A third-party pre-purchase inspection helps catch any hidden issues early, giving you and the dealership a chance to resolve them promptly. With a clear, detailed report in hand, you can drive home confidently, knowing your new car is exactly as it should be. Book your inspection now for complete peace of mind.</p>
-                                    <a href="#book" class="btn btn-primary py-3 px-5 mt-3">Book Inspection Now<i class="fa fa-arrow-right ms-3"></i></a>
+                                <div class="d-flex flex-wrap gap-2 mt-3" id="listingDetailThumbnails"></div>
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="border rounded p-3 h-100">
+                                    <h5 class="fw-semibold" id="listingDetailTitle"></h5>
+                                    <p class="text-muted" id="listingDetailSummary"></p>
+                                    <dl class="row mb-0 small">
+                                        <dt class="col-5">Registration Year</dt>
+                                        <dd class="col-7" id="detailYear"></dd>
+                                        <dt class="col-5">KMs Driven</dt>
+                                        <dd class="col-7" id="detailKms"></dd>
+                                        <dt class="col-5">Expected Price</dt>
+                                        <dd class="col-7" id="detailPrice"></dd>
+                                    </dl>
+                                    <div class="mt-4 d-grid gap-2">
+                                        <button type="button" class="btn btn-success" id="detailReserveBtn">Reserve Now</button>
+                                        <button type="button" class="btn btn-outline-primary" id="detailBookInspectionBtn">Book an Inspection</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="tab-pane-2">
-                            <div class="row g-4">
-                                <div class="col-md-6" style="min-height: 350px;">
-                                    <div class="position-relative h-100">
-                                        <img class="position-absolute img-fluid w-100 h-100" src="Images/Newimg.jpeg"
-                                            style="object-fit: cover;" alt="Used Car Inspection">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <h3 class="mb-3">Pre-Purchase Inspection for Used Cars</h3>
-                                    <p class="mb-4">Buying a pre-owned car comes with risks, but a thorough pre-purchase inspection gives you complete peace of mind. Our third-party inspection uncovers hidden issues, estimates repair costs, and verifies the car’s true condition. This helps you make a confident decision and gives the seller a chance to address any problems. Book your pre-purchase inspection now and buy your used car with confidence.</p>
-                                    <a href="#book" class="btn btn-primary py-3 px-5 mt-3">Book Inspection Now<i class="fa fa-arrow-right ms-3"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Customer-to-Customer Buying tab removed -->
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Service End -->
-
 
     <!-- Booking Start -->
     <div id="book" class="container-fluid booking my-5 wow fadeInUp" data-wow-delay="0.1s">
@@ -457,13 +581,13 @@
             <div class="row gx-5">
                 <div class="col-lg-6 py-5">
                     <div class="py-5">
-                        <h1 class="mb-4 text-white">InspectionWale — Professional Vehicle Inspections</h1>
+                        <h2 class="mb-4 text-white">InspectionWale — Professional Vehicle Inspections</h2>
                         <p class="mb-0 text-white">InspectionWale provides professional, unbiased vehicle inspections with photo-backed 160+ point reports, odometer validation, and clear repair estimates — helping buyers make confident decisions.</p>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="h-100 d-flex flex-column justify-content-center text-center p-5 wow zoomIn booking-panel" data-wow-delay="0.6s">
-                        <h1 class="text-white mb-4">Book an Inspection</h1>
+                        <h2 class="text-white mb-4">Book an Inspection</h2>
                         <form id="bookingFormIW">
                             <div class="row g-3 text-start">
                                 <div class="col-12">
@@ -486,24 +610,16 @@
                                     </select>
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <label class="form-label visually-hidden" for="bk_make">Make</label>
-                                    <input id="bk_make" name="make" class="form-control border-0" list="makeList" placeholder="Make (start typing...)" style="height:55px;">
-                                    <datalist id="makeList">
-                                        <option>Maruti Suzuki</option>
-                                        <option>Tata Motors</option>
-                                        <option>Mahindra</option>
-                                        <option>Hyundai</option>
-                                        <option>Honda</option>
-                                        <option>Toyota</option>
-                                        <option>Kia</option>
-                                        <option>Ford</option>
-                                        <option>Renault</option>
-                                        <option>Skoda</option>
-                                        <option>Volkswagen</option>
-                                        <option>Nissan</option>
-                                        <option>MG</option>
-                                        <option>Isuzu</option>
-                                    </datalist>
+                                    <label class="form-label visually-hidden" for="bk_make">Make and Model</label>
+                                    <input id="bk_make" name="make" type="text" class="form-control border-0" placeholder="Make and model" style="height:55px;">
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <label class="form-label visually-hidden" for="bk_year">Registration Year</label>
+                                    <input id="bk_year" name="registrationYear" type="number" min="1990" max="2100" class="form-control border-0" placeholder="Registration year" style="height:55px;">
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <label class="form-label visually-hidden" for="bk_kms">KMs Driven</label>
+                                    <input id="bk_kms" name="kmsDriven" type="number" min="0" step="1" class="form-control border-0" placeholder="KMs driven" style="height:55px;">
                                 </div>
                                 <div class="col-12">
                                     <button id="bk_submit" class="btn btn-booking w-100 py-3" type="submit">Book Inspection</button>
@@ -522,11 +638,11 @@
 
 
     <!-- Google Reviews Start -->
-    <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container-xxl py-4 wow fadeInUp" data-wow-delay="0.1s">
         <div class="container">
             <div class="text-center">
                 <h6 class="text-primary text-uppercase">Google Reviews</h6>
-                <h1 class="mb-4">What Our Customers Say on Google</h1>
+                <h2 class="mb-4">What Our Customers Say on Google</h2>
                 <div id="googleRatingOverview" class="mb-4">
                     <div class="d-flex justify-content-center align-items-center gap-3">
                         <div class="text-center">
@@ -615,8 +731,10 @@
                     firstName: fd.get('name') || '',
                     mobile: fd.get('mobile') || fd.get('phone') || '',
                     email: fd.get('email') || '',
-                    carType: fd.get('carType') || fd.get('carType'),
+                    carType: fd.get('carType') || '',
                     make: fd.get('make') || '',
+                    registrationYear: fd.get('registrationYear') || fd.get('year') || '',
+                    kmsDriven: fd.get('kmsDriven') || fd.get('kms') || ''
                 }
 
                 status.style.display = 'block'

@@ -4,6 +4,17 @@
     --secondary: #0B2154;
     --light: #F2F2F2;
     --dark: #111111;
+    --text-color: #333333;
+}
+
+* {
+    font-family: LatoGoogle, Lato, LatoWeb, sans-serif;
+}
+
+body {
+    font-family: LatoGoogle, Lato, LatoWeb, sans-serif;
+    color: var(--text-color);
+    background-color: #ffffff;
 }
 
 .fw-medium {
