@@ -1,25 +1,27 @@
 """
-Professional Vehicle Inspection Report Generator - Python Lambda
-Uses ReportLab for precise PDF generation matching template exactly
-Handles large phone images (S23 Ultra) with Pillow compression
+Professional Vehicle Inspection Report Generator - FINAL VERSION
+- Vibrant colorful footer icons (red/green/blue)
+- 2-column layout for efficient space
+- Actual drawn star shapes (golden)
+- Light blue background on all pages
+- Square corners, no row borders
+- Dark gray labels, dark black values
 """
 
 import json
 import boto3
 import io
 import base64
+import math
 from datetime import datetime
 from PIL import Image
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
-from reportlab.lib import colors as rlcolors
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image as RLImage, PageBreak
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_RIGHT
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image as RLImage, KeepTogether
+from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfgen import canvas
 from reportlab.lib.colors import HexColor
-import cgi
-import uuid
+from reportlab.graphics.shapes import Drawing, Polygon, String
 
 # AWS clients
 s3_client = boto3.client('s3')
@@ -29,39 +31,35 @@ dynamodb = boto3.resource('dynamodb')
 BUCKET_NAME = 'inspectionwale-reports'
 TABLE_NAME = 'InspectionReports'
 
-# EXACT TEMPLATE COLORS
-COLOR_PRIMARY = HexColor('#004a99')      # Main blue - exact from template
-COLOR_TEXT = HexColor('#222222')         # Body text
-COLOR_LABEL = HexColor('#333333')        # Labels
-COLOR_META = HexColor('#555555')         # Meta info
-COLOR_FOOTER = HexColor('#666666')       # Footer text
-COLOR_NOTE_BG = HexColor('#f7f9fc')      # Notes background
-COLOR_BORDER = HexColor('#cccccc')       # Borders
+# VIBRANT COLOR PALETTE
+COLOR_PRIMARY = HexColor('#004a99')      # Primary blue
+COLOR_TEXT = HexColor('#000000')         # Dark black for values
+COLOR_LABEL = HexColor('#4a4a4a')        # Dark gray for labels
+COLOR_META = HexColor('#555555')         # Meta
+COLOR_FOOTER = HexColor('#666666')       # Footer
+COLOR_PAGE_BG = HexColor('#e8f4f8')      # Light blue page background
+COLOR_CARD_BG = HexColor('#ffffff')      # White card background
+COLOR_BORDER = HexColor('#e0e0e0')       # Light border
+COLOR_STAR_GOLD = HexColor('#fbbf24')    # Vibrant golden star
 
-# EXACT TEMPLATE FONT SIZES (pt conversion: 1px ≈ 0.75pt)
-FONT_TITLE = 18 * 0.75      # 13.5pt (18px)
-FONT_HEADER = 14 * 0.75     # 10.5pt (14px)
-FONT_BODY = 12 * 0.75       # 9pt (12px)
-FONT_SMALL = 11 * 0.75      # 8.25pt (11px)
+# EXACT FONT SIZES
+FONT_FAMILY = 'Helvetica'
+FONT_TITLE = 18 * 0.75       # 13.5pt
+FONT_SECTION = 14 * 0.75     # 10.5pt  
+FONT_BODY = 12 * 0.75        # 9pt
+FONT_SMALL = 11 * 0.75       # 8.25pt
 
-# EXACT TEMPLATE MARGINS (18mm all sides)
+# PAGE SETUP
 PAGE_MARGIN = 18 * mm
-
-# A4 dimensions
 PAGE_WIDTH, PAGE_HEIGHT = A4
-CONTENT_WIDTH = PAGE_WIDTH - (2 * PAGE_MARGIN)  # 174mm usable width
+CONTENT_WIDTH = PAGE_WIDTH - (2 * PAGE_MARGIN)
 
 
 def compress_image(image_data, max_width=1200, max_height=1200, quality=85):
-    """
-    Compress large phone images (S23 Ultra, iPhone Pro, etc.)
-    Maintains aspect ratio and converts to JPEG
-    """
+    """Compress large phone images"""
     try:
-        # Open image
         img = Image.open(io.BytesIO(image_data))
         
-        # Convert RGBA to RGB if necessary
         if img.mode in ('RGBA', 'LA', 'P'):
             background = Image.new('RGB', img.size, (255, 255, 255))
             if img.mode == 'P':
@@ -69,78 +67,62 @@ def compress_image(image_data, max_width=1200, max_height=1200, quality=85):
             background.paste(img, mask=img.split()[-1] if img.mode in ('RGBA', 'LA') else None)
             img = background
         
-        # Calculate new size maintaining aspect ratio
         img.thumbnail((max_width, max_height), Image.Resampling.LANCZOS)
         
-        # Save to bytes
         output = io.BytesIO()
         img.save(output, format='JPEG', quality=quality, optimize=True)
         compressed_data = output.getvalue()
         
-        print(f"✅ Image compressed: {len(image_data)/1024:.0f}KB → {len(compressed_data)/1024:.0f}KB")
+        print(f"✅ Compressed: {len(image_data)/1024:.0f}KB → {len(compressed_data)/1024:.0f}KB")
         return compressed_data
         
     except Exception as e:
-        print(f"⚠️ Image compression failed: {e}, using original")
+        print(f"⚠️ Compression failed: {e}")
         return image_data
 
 
 def parse_multipart(event):
-    """Parse multipart/form-data from API Gateway event"""
+    """Parse multipart/form-data"""
     content_type = event['headers'].get('content-type') or event['headers'].get('Content-Type', '')
-    
-    # Decode body
     body = base64.b64decode(event['body']) if event.get('isBase64Encoded') else event['body'].encode()
-    
-    # Parse boundary
     boundary = content_type.split('boundary=')[1].encode()
     
     fields = {}
     files = {}
     
-    # Split by boundary
     parts = body.split(b'--' + boundary)
     
-    for part in parts[1:-1]:  # Skip first empty and last closing boundary
+    for part in parts[1:-1]:
         if not part.strip():
             continue
             
-        # Split headers and content
         header_end = part.find(b'\r\n\r\n')
         if header_end == -1:
             continue
             
         headers = part[:header_end].decode('utf-8', errors='ignore')
-        content = part[header_end+4:-2]  # Remove \r\n at end
+        content = part[header_end+4:-2]
         
-        # Parse Content-Disposition
         if 'Content-Disposition' in headers:
-            # Extract field name
             name_match = headers.split('name="')[1].split('"')[0] if 'name="' in headers else None
             
             if not name_match:
                 continue
             
-            # Check if it's a file
             if 'filename="' in headers:
                 filename = headers.split('filename="')[1].split('"')[0]
-                # Compress if it's an image
                 if any(ext in filename.lower() for ext in ['.jpg', '.jpeg', '.png', '.heic']):
                     content = compress_image(content)
-                files[name_match] = {
-                    'filename': filename,
-                    'content': content
-                }
+                files[name_match] = {'filename': filename, 'content': content}
             else:
-                # Regular field
                 fields[name_match] = content.decode('utf-8', errors='ignore')
     
-    print(f"✅ Parsed {len(fields)} fields and {len(files)} files")
+    print(f"✅ Parsed {len(fields)} fields, {len(files)} files")
     return fields, files
 
 
 class FooterCanvas(canvas.Canvas):
-    """Custom canvas to add footer on every page"""
+    """Custom canvas with colorful icons and light blue background"""
     
     def __init__(self, *args, **kwargs):
         canvas.Canvas.__init__(self, *args, **kwargs)
@@ -157,45 +139,80 @@ class FooterCanvas(canvas.Canvas):
             self.draw_footer(page_num, num_pages)
             canvas.Canvas.showPage(self)
         canvas.Canvas.save(self)
-        
+    
+    def _startPage(self):
+        """Draw light blue background on EVERY page"""
+        canvas.Canvas._startPage(self)
+        self.setFillColor(COLOR_PAGE_BG)
+        self.rect(0, 0, PAGE_WIDTH, PAGE_HEIGHT, fill=1, stroke=0)
+    
     def draw_footer(self, page_num, total_pages):
-        """Draw footer with contact details - HORIZONTAL LAYOUT, SMALL SIZE"""
-        footer_y = PAGE_MARGIN - 5 * mm  # Position at bottom margin
+        """Draw footer with COLORFUL ICONS"""
+        footer_y = PAGE_MARGIN - 5 * mm
         
-        # Top border line
+        # White footer box
+        self.setFillColor(COLOR_CARD_BG)
         self.setStrokeColor(COLOR_BORDER)
         self.setLineWidth(0.5)
-        self.line(PAGE_MARGIN, footer_y + 8 * mm, PAGE_WIDTH - PAGE_MARGIN, footer_y + 8 * mm)
+        self.rect(PAGE_MARGIN, footer_y - 3 * mm, 
+                 PAGE_WIDTH - 2 * PAGE_MARGIN, 12 * mm, fill=1, stroke=1)
         
-        # Contact details - HORIZONTAL, EXACT TEMPLATE FONT SIZE (11px = 8.25pt)
-        self.setFont('Helvetica', FONT_SMALL)
+        # RED ENVELOPE ICON
+        icon_x = PAGE_MARGIN + 3 * mm
+        icon_y = footer_y + 5.5 * mm
+        self.setFillColor(HexColor('#ef4444'))
+        self.rect(icon_x - 2, icon_y - 1.5, 4 * mm, 3 * mm, fill=1, stroke=0)
+        self.setStrokeColor(HexColor('#dc2626'))
+        self.setLineWidth(0.8)
+        self.rect(icon_x - 1.5, icon_y - 1, 3 * mm, 2 * mm, fill=0, stroke=1)
+        self.line(icon_x - 1.5, icon_y + 1, icon_x, icon_y - 0.2)
+        self.line(icon_x + 1.5, icon_y + 1, icon_x, icon_y - 0.2)
+        self.setFont(FONT_FAMILY, FONT_SMALL)
         self.setFillColor(COLOR_FOOTER)
+        self.drawString(icon_x + 3 * mm, footer_y + 5 * mm, 'hello@inspectionwale.com')
         
-        # Email - LEFT
-        self.drawString(PAGE_MARGIN, footer_y + 4 * mm, 'Email: hello@inspectionwale.com')
+        # GREEN PHONE ICON
+        center_x = PAGE_WIDTH / 2
+        icon_x = center_x - 30 * mm
+        self.setFillColor(HexColor('#22c55e'))
+        self.circle(icon_x, icon_y, 2 * mm, fill=1, stroke=0)
+        self.setFillColor(HexColor('#ffffff'))
+        self.roundRect(icon_x - 1 * mm, icon_y - 1.2 * mm, 2 * mm, 2.4 * mm, 0.3, fill=1, stroke=0)
+        self.setFillColor(HexColor('#16a34a'))
+        self.rect(icon_x - 0.5 * mm, icon_y + 0.7 * mm, 1 * mm, 0.3 * mm, fill=1, stroke=0)
+        self.setFont(FONT_FAMILY, FONT_SMALL)
+        self.setFillColor(COLOR_FOOTER)
+        self.drawString(icon_x + 3 * mm, footer_y + 5 * mm, '9167558998')
         
-        # Mobile - CENTER
-        self.drawCentredString(PAGE_WIDTH / 2, footer_y + 4 * mm, 'Mobile: 9167558998')
+        # BLUE GLOBE ICON
+        icon_x = PAGE_WIDTH - PAGE_MARGIN - 55 * mm
+        self.setFillColor(HexColor('#3b82f6'))
+        self.circle(icon_x, icon_y, 2 * mm, fill=1, stroke=0)
+        self.setStrokeColor(HexColor('#ffffff'))
+        self.setLineWidth(0.6)
+        self.circle(icon_x, icon_y, 1.3 * mm, fill=0, stroke=1)
+        self.line(icon_x, icon_y - 1.3 * mm, icon_x, icon_y + 1.3 * mm)
+        self.line(icon_x - 1.3 * mm, icon_y, icon_x + 1.3 * mm, icon_y)
+        self.setFont(FONT_FAMILY, FONT_SMALL)
+        self.setFillColor(COLOR_FOOTER)
+        self.drawString(icon_x + 3 * mm, footer_y + 5 * mm, 'inspectionwale.com')
         
-        # Website - RIGHT
-        self.drawRightString(PAGE_WIDTH - PAGE_MARGIN, footer_y + 4 * mm, 'Web: inspectionwale.com')
-        
-        # Page number - CENTER, smaller
-        self.setFont('Helvetica', FONT_SMALL - 1)
+        # Page number
+        self.setFont(FONT_FAMILY, FONT_SMALL - 1)
+        self.setFillColor(COLOR_META)
         self.drawCentredString(PAGE_WIDTH / 2, footer_y + 1 * mm, f'Page {page_num} of {total_pages}')
         
-        # Disclaimer - VERY SMALL, CENTER
-        self.setFont('Helvetica', FONT_SMALL - 2)
-        self.drawCentredString(PAGE_WIDTH / 2, footer_y - 2 * mm, 
+        # Disclaimer
+        self.setFont(FONT_FAMILY, FONT_SMALL - 2)
+        self.drawCentredString(PAGE_WIDTH / 2, footer_y - 1.5 * mm, 
                                'Professional vehicle inspection report. Valid for 2 days or 20 km.')
 
 
 def create_header(data):
-    """Create header matching template exactly"""
+    """Create header with vibrant blue border"""
     report_id = f"INS-{int(datetime.now().timestamp())}"
     report_date = datetime.now().strftime('%d %b %Y')
     
-    # Header table with 3 columns: Logo/Brand | Title | Meta
     header_data = [
         ['InspectionWale\nRebranded from Whizzcheck', 
          'Vehicle Inspection Report', 
@@ -204,310 +221,471 @@ def create_header(data):
     
     header_table = Table(header_data, colWidths=[60*mm, 80*mm, 34*mm])
     header_table.setStyle(TableStyle([
-        # Logo/Brand (LEFT)
-        ('FONT', (0, 0), (0, 0), 'Helvetica-Bold', FONT_TITLE),
+        ('FONT', (0, 0), (0, 0), f'{FONT_FAMILY}-Bold', FONT_TITLE),
         ('TEXTCOLOR', (0, 0), (0, 0), COLOR_PRIMARY),
         ('VALIGN', (0, 0), (0, 0), 'TOP'),
-        
-        # Title (CENTER)
-        ('FONT', (1, 0), (1, 0), 'Helvetica-Bold', FONT_TITLE),
+        ('FONT', (1, 0), (1, 0), f'{FONT_FAMILY}-Bold', FONT_TITLE),
         ('TEXTCOLOR', (1, 0), (1, 0), COLOR_PRIMARY),
         ('ALIGN', (1, 0), (1, 0), 'CENTER'),
         ('VALIGN', (1, 0), (1, 0), 'MIDDLE'),
-        
-        # Meta (RIGHT)
-        ('FONT', (2, 0), (2, 0), 'Helvetica', FONT_SMALL),
+        ('FONT', (2, 0), (2, 0), FONT_FAMILY, FONT_SMALL),
         ('TEXTCOLOR', (2, 0), (2, 0), COLOR_META),
         ('ALIGN', (2, 0), (2, 0), 'RIGHT'),
         ('VALIGN', (2, 0), (2, 0), 'TOP'),
-        
-        # No borders
-        ('LINEBELOW', (0, 0), (-1, -1), 2, COLOR_PRIMARY),
+        ('LINEBELOW', (0, 0), (-1, -1), 3, HexColor('#3b82f6')),
         ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
+        ('BACKGROUND', (0, 0), (-1, -1), COLOR_CARD_BG),
+        ('BOX', (0, 0), (-1, -1), 1, COLOR_BORDER),
+        ('LEFTPADDING', (0, 0), (-1, -1), 10),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 10),
+        ('TOPPADDING', (0, 0), (-1, -1), 10),
     ]))
     
     return header_table, report_id
 
 
 def create_section_header(title):
-    """Create section header matching template (14px, #004a99, 8px margin)"""
+    """Section header with blue accent bar"""
     style = ParagraphStyle(
         'SectionHeader',
-        fontSize=FONT_HEADER,
+        fontSize=FONT_SECTION,
         textColor=COLOR_PRIMARY,
-        fontName='Helvetica-Bold',
-        spaceAfter=4,
-        spaceBefore=8
+        fontName=f'{FONT_FAMILY}-Bold',
+        spaceAfter=6,
+        spaceBefore=8,
+        leftIndent=8,
     )
-    return Paragraph(title, style)
-
-
-def create_data_table(data_rows):
-    """Create data table with label/value pairs matching template exactly"""
-    # Convert rows to table format
-    table_data = []
-    for label, value in data_rows:
-        table_data.append([label, value or 'N/A'])
     
-    # 40% width for labels, 60% for values (template spec)
-    col_widths = [CONTENT_WIDTH * 0.4, CONTENT_WIDTH * 0.6]
+    header_para = Paragraph(title, style)
+    
+    accent_bar = Table([['']], colWidths=[3])
+    accent_bar.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (0, 0), HexColor('#3b82f6')),
+        ('LEFTPADDING', (0, 0), (0, 0), 0),
+        ('RIGHTPADDING', (0, 0), (0, 0), 0),
+    ]))
+    
+    header_table = Table([[accent_bar, header_para]], colWidths=[3, CONTENT_WIDTH - 3])
+    header_table.setStyle(TableStyle([
+        ('LEFTPADDING', (0, 0), (-1, -1), 0),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+        ('TOPPADDING', (0, 0), (-1, -1), 0),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+    ]))
+    
+    return header_table
+
+
+def create_two_column_card_table(data_rows, card_padding=14):
+    """2-COLUMN layout - NO BORDERS, SQUARE CORNERS"""
+    table_data = []
+    
+    for i in range(0, len(data_rows), 2):
+        row = []
+        if i < len(data_rows):
+            row.extend([data_rows[i][0], data_rows[i][1] or 'N/A'])
+        
+        if i + 1 < len(data_rows):
+            row.extend([data_rows[i+1][0], data_rows[i+1][1] or 'N/A'])
+        else:
+            row.extend(['', ''])
+        
+        table_data.append(row)
+    
+    available_width = CONTENT_WIDTH - 2*card_padding
+    col_widths = [
+        available_width * 0.20,
+        available_width * 0.30,
+        available_width * 0.20,
+        available_width * 0.30,
+    ]
     
     table = Table(table_data, colWidths=col_widths)
     table.setStyle(TableStyle([
-        # Font: 12px = 9pt
-        ('FONT', (0, 0), (0, -1), 'Helvetica-Bold', FONT_BODY),  # Labels bold
-        ('FONT', (1, 0), (1, -1), 'Helvetica', FONT_BODY),       # Values normal
-        
-        # Colors from template
-        ('TEXTCOLOR', (0, 0), (0, -1), COLOR_LABEL),  # Labels #333
-        ('TEXTCOLOR', (1, 0), (1, -1), COLOR_TEXT),   # Values #222
-        
-        # Padding: 6px from template
-        ('LEFTPADDING', (0, 0), (-1, -1), 6),
-        ('RIGHTPADDING', (0, 0), (-1, -1), 6),
-        ('TOPPADDING', (0, 0), (-1, -1), 6),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
-        
-        # Alignment
+        ('FONT', (0, 0), (0, -1), f'{FONT_FAMILY}-Bold', FONT_BODY),
+        ('FONT', (1, 0), (1, -1), FONT_FAMILY, FONT_BODY),
+        ('TEXTCOLOR', (0, 0), (0, -1), COLOR_LABEL),
+        ('TEXTCOLOR', (1, 0), (1, -1), COLOR_TEXT),
+        ('FONT', (2, 0), (2, -1), f'{FONT_FAMILY}-Bold', FONT_BODY),
+        ('FONT', (3, 0), (3, -1), FONT_FAMILY, FONT_BODY),
+        ('TEXTCOLOR', (2, 0), (2, -1), COLOR_LABEL),
+        ('TEXTCOLOR', (3, 0), (3, -1), COLOR_TEXT),
+        ('LEFTPADDING', (0, 0), (-1, -1), 0),
+        ('RIGHTPADDING', (0, 0), (1, -1), 12),
+        ('RIGHTPADDING', (2, 0), (3, -1), 0),
+        ('TOPPADDING', (0, 0), (-1, -1), 8),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-        
-        # Border
-        ('LINEBELOW', (0, 0), (-1, -1), 0.5, COLOR_BORDER),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
     ]))
     
-    return table
+    card_data = [[table]]
+    card_table = Table(card_data, colWidths=[CONTENT_WIDTH])
+    card_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (0, 0), COLOR_CARD_BG),
+        ('BOX', (0, 0), (0, 0), 1, COLOR_BORDER),
+        ('LEFTPADDING', (0, 0), (0, 0), card_padding),
+        ('RIGHTPADDING', (0, 0), (0, 0), card_padding),
+        ('TOPPADDING', (0, 0), (0, 0), card_padding),
+        ('BOTTOMPADDING', (0, 0), (0, 0), card_padding),
+    ]))
+    
+    return card_table
+
+
+def create_star_shape(x, y, size):
+    """Create 5-pointed star polygon"""
+    points = []
+    for i in range(10):
+        angle = (i * 36 - 90) * math.pi / 180
+        r = size if i % 2 == 0 else size * 0.4
+        points.append(x + r * math.cos(angle))
+        points.append(y + r * math.sin(angle))
+    return points
+
+
+def create_star_drawing(rating):
+    """Draw actual star shapes"""
+    full_stars = int(rating)
+    half_star = (rating % 1) >= 0.5
+    empty_stars = 5 - full_stars - (1 if half_star else 0)
+    
+    d = Drawing(120, 16)
+    star_size = 6
+    x_start = 0
+    y_center = 8
+    
+    vibrant_gold = HexColor('#fbbf24')
+    
+    for i in range(full_stars):
+        x = x_start + i * 14
+        star = Polygon(create_star_shape(x + star_size, y_center, star_size))
+        star.fillColor = vibrant_gold
+        star.strokeColor = HexColor('#f59e0b')
+        star.strokeWidth = 0.8
+        d.add(star)
+    
+    if half_star:
+        x = x_start + full_stars * 14
+        star = Polygon(create_star_shape(x + star_size, y_center, star_size))
+        star.fillColor = vibrant_gold
+        star.strokeColor = HexColor('#f59e0b')
+        star.strokeWidth = 0.8
+        d.add(star)
+    
+    for i in range(empty_stars):
+        x = x_start + (full_stars + (1 if half_star else 0) + i) * 14
+        star = Polygon(create_star_shape(x + star_size, y_center, star_size))
+        star.fillColor = HexColor('#f3f4f6')
+        star.strokeColor = HexColor('#d1d5db')
+        star.strokeWidth = 0.8
+        d.add(star)
+    
+    text = String(75, 4, f'({rating}/5)', fontSize=8, fillColor=HexColor('#6b7280'))
+    d.add(text)
+    
+    return d
+
+
+def create_star_rating_table(label, rating):
+    """Star rating with drawn stars"""
+    star_drawing = create_star_drawing(rating)
+    return [label, star_drawing]
+
+
+def create_ratings_card():
+    """Ratings card with actual drawn stars"""
+    ratings_data = [
+        create_star_rating_table('Interior', 4.0),
+        create_star_rating_table('Exterior / Body', 4.5),
+        create_star_rating_table('Engine', 4.0),
+        create_star_rating_table('Structure', 5.0),
+        create_star_rating_table('Test Drive', 4.5),
+        create_star_rating_table('Electrical', 4.0),
+    ]
+    
+    col_widths = [(CONTENT_WIDTH - 28) * 0.36, (CONTENT_WIDTH - 28) * 0.64]
+    
+    table = Table(ratings_data, colWidths=col_widths)
+    table.setStyle(TableStyle([
+        ('FONT', (0, 0), (0, -1), f'{FONT_FAMILY}-Bold', FONT_BODY),
+        ('TEXTCOLOR', (0, 0), (0, -1), COLOR_LABEL),
+        ('LEFTPADDING', (0, 0), (-1, -1), 0),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+        ('TOPPADDING', (0, 0), (-1, -1), 8),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+    ]))
+    
+    card_data = [[table]]
+    card_table = Table(card_data, colWidths=[CONTENT_WIDTH])
+    card_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (0, 0), COLOR_CARD_BG),
+        ('BOX', (0, 0), (0, 0), 1, COLOR_BORDER),
+        ('LEFTPADDING', (0, 0), (0, 0), 14),
+        ('RIGHTPADDING', (0, 0), (0, 0), 14),
+        ('TOPPADDING', (0, 0), (0, 0), 14),
+        ('BOTTOMPADDING', (0, 0), (0, 0), 14),
+    ]))
+    
+    return card_table
+
+
+def create_notes_card(content):
+    """Notes card - square corners"""
+    style = ParagraphStyle(
+        'Notes',
+        fontSize=FONT_BODY,
+        fontName=FONT_FAMILY,
+        textColor=COLOR_TEXT,
+        leading=14
+    )
+    
+    notes_para = Paragraph(content, style)
+    
+    card_data = [[notes_para]]
+    card_table = Table(card_data, colWidths=[CONTENT_WIDTH])
+    card_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (0, 0), COLOR_CARD_BG),
+        ('BOX', (0, 0), (0, 0), 1, COLOR_BORDER),
+        ('LEFTPADDING', (0, 0), (0, 0), 14),
+        ('RIGHTPADDING', (0, 0), (0, 0), 14),
+        ('TOPPADDING', (0, 0), (0, 0), 14),
+        ('BOTTOMPADDING', (0, 0), (0, 0), 14),
+    ]))
+    
+    return card_table
 
 
 def create_image_grid(image_files, captions):
-    """Create 3-column image grid matching template (90px height, 6px gap)"""
+    """3-column image grid"""
     if not image_files:
         return None
     
     elements = []
-    images_per_row = 3
-    image_width = (CONTENT_WIDTH - (2 * 6)) / 3  # 6px gap between images
-    image_height = 90 * 0.75  # 90px = 67.5pt
+    image_width = (CONTENT_WIDTH - 24) / 3
+    image_height = 90 * 0.75
     
     row_data = []
     for i, (field_name, img_data) in enumerate(image_files.items()):
-        # Create image
         img_obj = io.BytesIO(img_data['content'])
         img = RLImage(img_obj, width=image_width, height=image_height)
         
-        # Caption
         caption = captions[i] if i < len(captions) else field_name.replace('_', ' ').title()
         
-        # Cell with image and caption
-        cell_data = [[img], [caption]]
+        caption_style = ParagraphStyle(
+            'Caption',
+            fontSize=FONT_SMALL,
+            fontName=FONT_FAMILY,
+            textColor=COLOR_LABEL,
+            alignment=1
+        )
+        caption_para = Paragraph(caption, caption_style)
+        
+        cell_data = [[caption_para], [img]]
         cell_table = Table(cell_data, colWidths=[image_width])
         cell_table.setStyle(TableStyle([
-            ('FONT', (0, 1), (0, 1), 'Helvetica', FONT_SMALL),
-            ('TEXTCOLOR', (0, 1), (0, 1), COLOR_FOOTER),
+            ('BACKGROUND', (0, 0), (0, 1), COLOR_CARD_BG),
+            ('BOX', (0, 0), (0, 1), 1, COLOR_BORDER),
             ('ALIGN', (0, 0), (0, 1), 'CENTER'),
-            ('VALIGN', (0, 0), (0, 0), 'TOP'),
+            ('VALIGN', (0, 0), (0, 1), 'MIDDLE'),
+            ('TOPPADDING', (0, 0), (0, 0), 10),
+            ('BOTTOMPADDING', (0, 0), (0, 0), 6),
+            ('TOPPADDING', (0, 1), (0, 1), 6),
+            ('BOTTOMPADDING', (0, 1), (0, 1), 10),
         ]))
         
         row_data.append(cell_table)
         
-        # Complete row of 3
-        if len(row_data) == images_per_row or i == len(image_files) - 1:
-            # Pad row if needed
-            while len(row_data) < images_per_row:
+        if len(row_data) == 3 or i == len(image_files) - 1:
+            while len(row_data) < 3:
                 row_data.append('')
             
-            # Create row table
-            row_table = Table([row_data], colWidths=[image_width] * images_per_row)
+            row_table = Table([row_data], colWidths=[image_width] * 3)
             row_table.setStyle(TableStyle([
                 ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
                 ('VALIGN', (0, 0), (-1, -1), 'TOP'),
             ]))
             elements.append(row_table)
-            elements.append(Spacer(1, 6))  # 6px gap between rows
+            elements.append(Spacer(1, 12))
             row_data = []
     
     return elements
 
 
-def generate_pdf(form_data, image_files):
-    """Generate PDF matching template exactly with ReportLab"""
-    
+def generate_pdf(data, image_files):
+    """Generate PDF with final design"""
     buffer = io.BytesIO()
     
-    # Create PDF with custom footer canvas
     doc = SimpleDocTemplate(
         buffer,
         pagesize=A4,
         leftMargin=PAGE_MARGIN,
         rightMargin=PAGE_MARGIN,
         topMargin=PAGE_MARGIN,
-        bottomMargin=PAGE_MARGIN + 15*mm,  # Extra space for footer
-        title=f"Vehicle Inspection Report - {form_data.get('registrationNumber', 'Unknown')}"
+        bottomMargin=PAGE_MARGIN + 15*mm,
+        title=f"Vehicle Inspection Report - {data.get('registrationNumber', 'UNKNOWN')}"
     )
     
-    # Story elements
     story = []
     
     # HEADER
-    header, report_id = create_header(form_data)
-    story.append(header)
-    story.append(Spacer(1, 10))  # 10px margin after header
-    
-    # VEHICLE REGISTRATION DETAILS
-    story.append(create_section_header('Vehicle Registration Details'))
-    
-    vehicle_data = [
-        ('Vehicle Number', form_data.get('registrationNumber')),
-        ('Make / Model', f"{form_data.get('make')} {form_data.get('model')}"),
-        ('Variant', form_data.get('variant')),
-        ('Chassis Number', form_data.get('chassisNumber')),
-        ('Engine Number', form_data.get('engineNumber')),
-        ('Manufacture Year', form_data.get('manufactureYear')),
-        ('Registration Date', form_data.get('registrationDate')),
-        ('Fuel Type', form_data.get('fuelType')),
-        ('Color', form_data.get('color')),
-        ('Odometer Reading', f"{form_data.get('odometerReading')} km"),
-        ('Number of Owners', form_data.get('ownersCount')),
-    ]
-    
-    story.append(create_data_table(vehicle_data))
-    story.append(Spacer(1, 10))  # 10px between sections
-    
-    # CURRENT OWNER DETAILS
-    story.append(create_section_header('Current Owner Details'))
-    
-    owner_data = [
-        ('Owner Name', form_data.get('ownerName')),
-        ('Contact Number', form_data.get('ownerContact')),
-        ('Email Address', form_data.get('ownerEmail')),
-        ('Inspection Location', form_data.get('location')),
-    ]
-    
-    story.append(create_data_table(owner_data))
+    header_table, report_id = create_header(data)
+    story.append(header_table)
     story.append(Spacer(1, 10))
     
-    # INSPECTION DETAILS
-    story.append(create_section_header('Inspection Details'))
+    # VEHICLE DETAILS - 2 COLUMN
+    story.append(create_section_header('Vehicle Registration Details'))
+    vehicle_data = [
+        ('Vehicle Number', data.get('registrationNumber')),
+        ('Make / Model', f"{data.get('make', '')} {data.get('model', '')}"),
+        ('Variant', data.get('variant')),
+        ('Chassis Number', data.get('chassisNumber') or data.get('vinNumber')),
+        ('Engine Number', data.get('engineNumber')),
+        ('Manufacture Year', data.get('manufactureYear')),
+        ('Registration Date', data.get('registrationDate')),
+        ('Fuel Type', data.get('fuelType')),
+        ('Color', data.get('color')),
+        ('Odometer Reading', f"{data.get('odometerReading', '')} km"),
+        ('Number of Owners', data.get('ownersCount')),
+    ]
+    story.append(create_two_column_card_table(vehicle_data))
+    story.append(Spacer(1, 12))
     
+    # OWNER DETAILS - 2 COLUMN
+    story.append(create_section_header('Current Owner Details'))
+    owner_data = [
+        ('Owner Name', data.get('ownerName')),
+        ('Contact Number', data.get('ownerContact')),
+        ('Email Address', data.get('ownerEmail')),
+        ('Inspection Location', data.get('location')),
+    ]
+    story.append(create_two_column_card_table(owner_data))
+    story.append(Spacer(1, 12))
+    
+    # INSPECTOR DETAILS - 2 COLUMN
+    story.append(create_section_header('Inspection Details'))
     inspector_data = [
-        ('Inspector Name', form_data.get('inspectorName')),
+        ('Inspector Name', data.get('inspectorName')),
         ('Inspection Date', datetime.now().strftime('%d %b %Y')),
     ]
+    story.append(create_two_column_card_table(inspector_data))
+    story.append(Spacer(1, 12))
     
-    story.append(create_data_table(inspector_data))
-    story.append(Spacer(1, 10))
+    # KEY HIGHLIGHTS
+    story.append(create_section_header('Key Highlights'))
+    highlights = data.get('highlights', 'No highlights provided.')
+    highlights_text = f'<font face="Helvetica">{highlights}</font>'
+    story.append(create_notes_card(highlights_text))
+    story.append(Spacer(1, 12))
     
-    # KEY HIGHLIGHTS (if provided)
-    if any(form_data.get(f) for f in ['exteriorChecks', 'interiorChecks', 'engineChecks']):
-        story.append(create_section_header('Key Highlights'))
-        
-        # Create notes paragraph with background color
-        notes_style = ParagraphStyle(
-            'Notes',
-            fontSize=FONT_BODY,
-            textColor=COLOR_TEXT,
-            backColor=COLOR_NOTE_BG,
-            borderPadding=6,
-            borderColor=COLOR_BORDER,
-            borderWidth=1
-        )
-        
-        highlights_text = f"""
-        <b>Exterior:</b> {form_data.get('exteriorChecks', 'N/A')}<br/>
-        <b>Interior:</b> {form_data.get('interiorChecks', 'N/A')}<br/>
-        <b>Engine:</b> {form_data.get('engineChecks', 'N/A')}
-        """
-        
-        story.append(Paragraph(highlights_text, notes_style))
-        story.append(Spacer(1, 10))
+    # DETAILED NOTES
+    if data.get('paintNotes') or data.get('interiorNotes') or data.get('engineNotes'):
+        story.append(create_section_header('Detailed Inspection Notes'))
+        notes_text = ""
+        if data.get('paintNotes'):
+            notes_text += f"<b>Exterior/Paint:</b> {data.get('paintNotes')}<br/><br/>"
+        if data.get('interiorNotes'):
+            notes_text += f"<b>Interior:</b> {data.get('interiorNotes')}<br/><br/>"
+        if data.get('engineNotes'):
+            notes_text += f"<b>Engine:</b> {data.get('engineNotes')}<br/><br/>"
+        if data.get('tiresNotes'):
+            notes_text += f"<b>Tires & Wheels:</b> {data.get('tiresNotes')}<br/><br/>"
+        if data.get('structureNotes'):
+            notes_text += f"<b>Structure:</b> {data.get('structureNotes')}<br/><br/>"
+        if data.get('testDriveNotes'):
+            notes_text += f"<b>Test Drive:</b> {data.get('testDriveNotes')}<br/><br/>"
+        story.append(create_notes_card(f'<font face="Helvetica">{notes_text.rstrip("<br/><br/>")}</font>'))
+        story.append(Spacer(1, 12))
     
-    # VEHICLE PHOTOS (3-column grid, 90px height, 6px gap)
+    # ISSUES & RECOMMENDATIONS
+    if data.get('issuesFound') or data.get('recommendations'):
+        story.append(create_section_header('Issues & Recommendations'))
+        issues_text = ""
+        if data.get('issuesFound'):
+            issues_text += f"<b>Issues Found:</b><br/>{data.get('issuesFound')}<br/><br/>"
+        if data.get('recommendations'):
+            issues_text += f"<b>Recommendations:</b><br/>{data.get('recommendations')}"
+        story.append(create_notes_card(f'<font face="Helvetica">{issues_text}</font>'))
+        story.append(Spacer(1, 12))
+    
+    # RATINGS - Keep together
+    ratings_section = [
+        create_section_header('Overall Ratings'),
+        create_ratings_card()
+    ]
+    story.append(KeepTogether(ratings_section))
+    story.append(Spacer(1, 16))
+    
+    # PHOTOS
     if image_files:
         story.append(create_section_header('Vehicle Photos'))
-        
-        # Organize images by category
-        doc_images = {k: v for k, v in image_files.items() if 'rc' in k.lower() or 'chassis' in k.lower() or 'odometer' in k.lower()}
-        other_images = {k: v for k, v in image_files.items() if k not in doc_images}
-        
-        # Documents section
-        if doc_images:
-            doc_captions = ['RC Book', 'Chassis Plate', 'Odometer Reading']
-            doc_grid = create_image_grid(doc_images, doc_captions)
-            if doc_grid:
-                for element in doc_grid:
-                    story.append(element)
-                story.append(Spacer(1, 10))
-        
-        # Other photos
-        if other_images:
-            photo_captions = [k.replace('_', ' ').title() for k in other_images.keys()]
-            photo_grid = create_image_grid(other_images, photo_captions)
-            if photo_grid:
-                for element in photo_grid:
-                    story.append(element)
-                story.append(Spacer(1, 10))
+        captions = ['RC Book', 'Chassis Plate', 'Odometer', 'Front Bumper', 'Bonnet', 
+                   'Grille', 'Dashboard', 'Seats', 'Engine Bay']
+        image_elements = create_image_grid(image_files, captions)
+        if image_elements:
+            for elem in image_elements:
+                story.append(elem)
     
-    # Build PDF with custom footer canvas
+    # Build PDF
     doc.build(story, canvasmaker=FooterCanvas)
     
-    pdf_bytes = buffer.getvalue()
+    pdf_data = buffer.getvalue()
     buffer.close()
     
-    return pdf_bytes, report_id
+    return pdf_data, report_id
 
 
 def lambda_handler(event, context):
-    """AWS Lambda handler"""
-    print("🚀 Starting Python PDF generation...")
-    
+    """Main Lambda handler"""
     try:
-        # Parse multipart form data
+        print("📄 Starting PDF generation...")
+        
+        # Parse form data
         fields, files = parse_multipart(event)
         
-        print(f"✅ Received {len(files)} images")
-        
-        # Generate PDF with exact template styling
-        pdf_bytes, report_id = generate_pdf(fields, files)
-        
-        print(f"✅ PDF generated: {len(pdf_bytes)/1024:.2f}KB")
+        # Generate PDF
+        pdf_data, report_id = generate_pdf(fields, files)
         
         # Upload to S3
-        pdf_key = f"reports/{fields.get('registrationNumber', 'unknown')}_{int(datetime.now().timestamp())}.pdf"
-        
+        pdf_key = f"reports/{report_id}.pdf"
         s3_client.put_object(
             Bucket=BUCKET_NAME,
             Key=pdf_key,
-            Body=pdf_bytes,
+            Body=pdf_data,
             ContentType='application/pdf'
         )
         
         pdf_url = f"https://{BUCKET_NAME}.s3.amazonaws.com/{pdf_key}"
+        
         print(f"✅ PDF uploaded: {pdf_url}")
         
-        # Save metadata to DynamoDB
+        # Save to DynamoDB
         table = dynamodb.Table(TABLE_NAME)
         table.put_item(
             Item={
                 'reportId': report_id,
-                'vehicleNumber': fields.get('registrationNumber'),
-                'inspectorName': fields.get('inspectorName'),
+                'registrationNumber': fields.get('registrationNumber', 'UNKNOWN'),
+                'ownerName': fields.get('ownerName', 'UNKNOWN'),
+                'inspectorName': fields.get('inspectorName', 'UNKNOWN'),
                 'createdAt': datetime.now().isoformat(),
                 'pdfUrl': pdf_url,
-                'photoCount': len(files)
+                'status': 'completed'
             }
         )
         
         return {
             'statusCode': 200,
             'headers': {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
             },
             'body': json.dumps({
                 'success': True,
-                'message': 'Report generated successfully',
-                'pdfUrl': pdf_url,
                 'reportId': report_id,
-                'photoCount': len(files)
+                'pdfUrl': pdf_url,
+                'message': 'Report generated successfully!'
             })
         }
         
@@ -519,8 +697,8 @@ def lambda_handler(event, context):
         return {
             'statusCode': 500,
             'headers': {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
             },
             'body': json.dumps({
                 'success': False,

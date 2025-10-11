@@ -8,6 +8,7 @@
     "@aws-sdk/client-dynamodb": "^3.0.0",
     "@aws-sdk/lib-dynamodb": "^3.0.0",
     "pdfkit": "^0.13.0",
-    "busboy": "^1.6.0"
+    "busboy": "^1.6.0",
+    "sharp": "^0.33.0"
   }
 }
