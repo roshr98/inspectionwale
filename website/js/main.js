@@ -598,6 +598,13 @@
                 hideAlert(alertBox)
                 submitBtn.disabled = false
                 submitBtn.innerText = 'Reserve Now'
+                
+                // Clean up any stray modal backdrops
+                const backdrops = document.querySelectorAll('.modal-backdrop')
+                backdrops.forEach(backdrop => backdrop.remove())
+                document.body.classList.remove('modal-open')
+                document.body.style.overflow = ''
+                document.body.style.paddingRight = ''
             })
         }
     }
@@ -633,7 +640,21 @@
 
         if (detailReserveBtn) {
             detailReserveBtn.addEventListener('click', () => {
-                if (currentListingId) openReserveModal(currentListingId)
+                if (!currentListingId) return
+                
+                // Close detail modal first
+                const detailModalEl = document.getElementById('listingDetailModal')
+                if (detailModalEl) {
+                    const detailModal = bootstrap.Modal.getInstance(detailModalEl)
+                    if (detailModal) {
+                        detailModal.hide()
+                    }
+                }
+                
+                // Wait for modal to close, then open reserve modal
+                setTimeout(() => {
+                    openReserveModal(currentListingId)
+                }, 300)
             })
         }
 
@@ -642,14 +663,24 @@
                 if (!currentListingId) return
                 const listing = listingsCache.get(currentListingId)
                 if (!listing) return
-                prefillBookingForm(listing)
+                
+                // Close detail modal first
                 const modalEl = document.getElementById('listingDetailModal')
                 if (modalEl) {
                     const modal = bootstrap.Modal.getInstance(modalEl)
-                    if (modal) modal.hide()
+                    if (modal) {
+                        modal.hide()
+                    }
                 }
-                const bookingSection = document.getElementById('book')
-                if (bookingSection) bookingSection.scrollIntoView({ behavior: 'smooth' })
+                
+                // Prefill and scroll to booking form after modal closes
+                setTimeout(() => {
+                    prefillBookingForm(listing)
+                    const bookingSection = document.getElementById('book')
+                    if (bookingSection) {
+                        bookingSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                    }
+                }, 300)
             })
         }
     }
@@ -721,6 +752,16 @@
 
         const modalEl = document.getElementById('listingDetailModal')
         const modal = new bootstrap.Modal(modalEl)
+        
+        // Clean up backdrop on modal hide
+        modalEl.addEventListener('hidden.bs.modal', function cleanupBackdrop() {
+            const backdrops = document.querySelectorAll('.modal-backdrop')
+            backdrops.forEach(backdrop => backdrop.remove())
+            document.body.classList.remove('modal-open')
+            document.body.style.overflow = ''
+            document.body.style.paddingRight = ''
+        }, { once: true })
+        
         modal.show()
     }
 
