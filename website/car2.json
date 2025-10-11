@@ -1,0 +1,64 @@
+{
+  "listingId": {"S": "placeholder-002"},
+  "status": {"S": "approved"},
+  "isPlaceholder": {"BOOL": true},
+  "createdAt": {"S": "2025-01-15T12:02:00.000Z"},
+  "updatedAt": {"S": "2025-01-15T12:03:00.000Z"},
+  "seller": {
+    "M": {
+      "name": {"S": "Inpectionwale Team"},
+      "email": {"S": "info@inpectionwale.com"},
+      "mobile": {"S": "+91-9876543210"}
+    }
+  },
+  "car": {
+    "M": {
+      "make": {"S": "Hyundai"},
+      "model": {"S": "i10"},
+      "edition": {"S": "Sportz"},
+      "registrationYear": {"S": "2020"},
+      "kmsDriven": {"S": "38000"},
+      "expectedPrice": {"S": "525000"}
+    }
+  },
+  "photos": {
+    "M": {
+      "exteriorFront": {
+        "M": {
+          "key": {"S": "Images/Car-4.jpg"},
+          "publicUrl": {"S": "Images/Car-4.jpg"}
+        }
+      },
+      "exteriorBack": {
+        "M": {
+          "key": {"S": "Images/Car-4.jpg"},
+          "publicUrl": {"S": "Images/Car-4.jpg"}
+        }
+      },
+      "exteriorLeft": {
+        "M": {
+          "key": {"S": "Images/Car-4.jpg"},
+          "publicUrl": {"S": "Images/Car-4.jpg"}
+        }
+      },
+      "exteriorRight": {
+        "M": {
+          "key": {"S": "Images/Car-4.jpg"},
+          "publicUrl": {"S": "Images/Car-4.jpg"}
+        }
+      },
+      "interiorSeat": {
+        "M": {
+          "key": {"S": "Images/Car-4.jpg"},
+          "publicUrl": {"S": "Images/Car-4.jpg"}
+        }
+      },
+      "interiorCluster": {
+        "M": {
+          "key": {"S": "Images/Car-4.jpg"},
+          "publicUrl": {"S": "Images/Car-4.jpg"}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "listingId": {"S": "placeholder-004"},
+  "status": {"S": "approved"},
+  "isPlaceholder": {"BOOL": true},
+  "createdAt": {"S": "2025-01-15T12:06:00.000Z"},
+  "updatedAt": {"S": "2025-01-15T12:07:00.000Z"},
+  "seller": {
+    "M": {
+      "name": {"S": "Inpectionwale Team"},
+      "email": {"S": "info@inpectionwale.com"},
+      "mobile": {"S": "+91-9876543210"}
+    }
+  },
+  "car": {
+    "M": {
+      "make": {"S": "Honda"},
+      "model": {"S": "Amaze"},
+      "edition": {"S": "VX Petrol"},
+      "registrationYear": {"S": "2021"},
+      "kmsDriven": {"S": "22000"},
+      "expectedPrice": {"S": "695000"}
+    }
+  },
+  "photos": {
+    "M": {
+      "exteriorFront": {
+        "M": {
+          "key": {"S": "Images/Car-2.jpg"},
+          "publicUrl": {"S": "Images/Car-2.jpg"}
+        }
+      },
+      "exteriorBack": {
+        "M": {
+          "key": {"S": "Images/Car-2.jpg"},
+          "publicUrl": {"S": "Images/Car-2.jpg"}
+        }
+      },
+      "exteriorLeft": {
+        "M": {
+          "key": {"S": "Images/Car-2.jpg"},
+          "publicUrl": {"S": "Images/Car-2.jpg"}
+        }
+      },
+      "exteriorRight": {
+        "M": {
+          "key": {"S": "Images/Car-2.jpg"},
+          "publicUrl": {"S": "Images/Car-2.jpg"}
+        }
+      },
+      "interiorSeat": {
+        "M": {
+          "key": {"S": "Images/Car-2.jpg"},
+          "publicUrl": {"S": "Images/Car-2.jpg"}
+        }
+      },
+      "interiorCluster": {
+        "M": {
+          "key": {"S": "Images/Car-2.jpg"},
+          "publicUrl": {"S": "Images/Car-2.jpg"}
+        }
+      }
+    }
+  }
+}

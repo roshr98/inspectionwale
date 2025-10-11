@@ -1,0 +1,288 @@
+=== CONTINUATION OF FACT SECTIONS (OPTIONS 6-10) ===
+
+    <!-- OPTION 6: Light Mint/Green with Green Icons -->
+    <div class="container-fluid fact my-5 py-5" style="font-family: 'Montserrat', sans-serif; background: #f0fdf4;">
+        <div class="container">
+            <h3 class="text-center mb-5" style="font-family: 'Montserrat', sans-serif; color: #0B2154;">Option 6: Light Mint Fresh</h3>
+            <div class="row g-4 justify-content-center">
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.1s">
+                    <i class="fa fa-cogs fa-2x mb-3" style="color: #10b981;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Engine</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.15s">
+                    <i class="fa fa-road fa-2x mb-3" style="color: #10b981;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Test Drive</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.2s">
+                    <i class="fa fa-tools fa-2x mb-3" style="color: #10b981;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Suspension</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.25s">
+                    <i class="fa fa-dot-circle fa-2x mb-3" style="color: #10b981;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Tyres</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.3s">
+                    <i class="fa fa-bolt fa-2x mb-3" style="color: #10b981;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Electricals</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.35s">
+                    <i class="fa fa-couch fa-2x mb-3" style="color: #10b981;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Interior</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.4s">
+                    <i class="fa fa-spray-can fa-2x mb-3" style="color: #10b981;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Paint</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.45s">
+                    <i class="fa fa-car-crash fa-2x mb-3" style="color: #10b981;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Accident</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.5s">
+                    <i class="fa fa-fire fa-2x mb-3" style="color: #10b981;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Fire</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.55s">
+                    <i class="fa fa-water fa-2x mb-3" style="color: #10b981;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Flood</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.6s">
+                    <i class="fa fa-eye fa-2x mb-3" style="color: #10b981;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Exterior</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.65s">
+                    <i class="fa fa-file-alt fa-2x mb-3" style="color: #10b981;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Documents</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OPTION 7: Soft Peach with Orange Icons -->
+    <div class="container-fluid fact my-5 py-5" style="font-family: 'Montserrat', sans-serif; background: #fff7ed;">
+        <div class="container">
+            <h3 class="text-center mb-5" style="font-family: 'Montserrat', sans-serif; color: #0B2154;">Option 7: Soft Peach Warm</h3>
+            <div class="row g-4 justify-content-center">
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.1s">
+                    <i class="fa fa-cogs fa-2x mb-3" style="color: #ea580c;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Engine</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.15s">
+                    <i class="fa fa-road fa-2x mb-3" style="color: #ea580c;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Test Drive</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.2s">
+                    <i class="fa fa-tools fa-2x mb-3" style="color: #ea580c;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Suspension</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.25s">
+                    <i class="fa fa-dot-circle fa-2x mb-3" style="color: #ea580c;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Tyres</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.3s">
+                    <i class="fa fa-bolt fa-2x mb-3" style="color: #ea580c;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Electricals</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.35s">
+                    <i class="fa fa-couch fa-2x mb-3" style="color: #ea580c;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Interior</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.4s">
+                    <i class="fa fa-spray-can fa-2x mb-3" style="color: #ea580c;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Paint</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.45s">
+                    <i class="fa fa-car-crash fa-2x mb-3" style="color: #ea580c;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Accident</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.5s">
+                    <i class="fa fa-fire fa-2x mb-3" style="color: #ea580c;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Fire</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.55s">
+                    <i class="fa fa-water fa-2x mb-3" style="color: #ea580c;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Flood</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.6s">
+                    <i class="fa fa-eye fa-2x mb-3" style="color: #ea580c;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Exterior</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.65s">
+                    <i class="fa fa-file-alt fa-2x mb-3" style="color: #ea580c;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Documents</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OPTION 8: Pure White with Subtle Shadow -->
+    <div class="container-fluid fact my-5 py-5" style="font-family: 'Montserrat', sans-serif; background: #ffffff; box-shadow: inset 0 2px 12px rgba(0,0,0,0.06);">
+        <div class="container">
+            <h3 class="text-center mb-5" style="font-family: 'Montserrat', sans-serif; color: #0B2154;">Option 8: White with Shadow</h3>
+            <div class="row g-4 justify-content-center">
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.1s">
+                    <i class="fa fa-cogs fa-2x mb-3" style="color: #0B2154;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Engine</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.15s">
+                    <i class="fa fa-road fa-2x mb-3" style="color: #0B2154;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Test Drive</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.2s">
+                    <i class="fa fa-tools fa-2x mb-3" style="color: #0B2154;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Suspension</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.25s">
+                    <i class="fa fa-dot-circle fa-2x mb-3" style="color: #0B2154;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Tyres</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.3s">
+                    <i class="fa fa-bolt fa-2x mb-3" style="color: #0B2154;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Electricals</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.35s">
+                    <i class="fa fa-couch fa-2x mb-3" style="color: #0B2154;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Interior</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.4s">
+                    <i class="fa fa-spray-can fa-2x mb-3" style="color: #0B2154;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Paint</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.45s">
+                    <i class="fa fa-car-crash fa-2x mb-3" style="color: #0B2154;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Accident</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.5s">
+                    <i class="fa fa-fire fa-2x mb-3" style="color: #0B2154;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Fire</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.55s">
+                    <i class="fa fa-water fa-2x mb-3" style="color: #0B2154;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Flood</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.6s">
+                    <i class="fa fa-eye fa-2x mb-3" style="color: #0B2154;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Exterior</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.65s">
+                    <i class="fa fa-file-alt fa-2x mb-3" style="color: #0B2154;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Documents</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OPTION 9: Light Sage/Green with Emerald Icons -->
+    <div class="container-fluid fact my-5 py-5" style="font-family: 'Montserrat', sans-serif; background: #f7fee7;">
+        <div class="container">
+            <h3 class="text-center mb-5" style="font-family: 'Montserrat', sans-serif; color: #0B2154;">Option 9: Light Sage Natural</h3>
+            <div class="row g-4 justify-content-center">
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.1s">
+                    <i class="fa fa-cogs fa-2x mb-3" style="color: #22c55e;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Engine</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.15s">
+                    <i class="fa fa-road fa-2x mb-3" style="color: #22c55e;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Test Drive</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.2s">
+                    <i class="fa fa-tools fa-2x mb-3" style="color: #22c55e;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Suspension</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.25s">
+                    <i class="fa fa-dot-circle fa-2x mb-3" style="color: #22c55e;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Tyres</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.3s">
+                    <i class="fa fa-bolt fa-2x mb-3" style="color: #22c55e;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Electricals</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.35s">
+                    <i class="fa fa-couch fa-2x mb-3" style="color: #22c55e;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Interior</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.4s">
+                    <i class="fa fa-spray-can fa-2x mb-3" style="color: #22c55e;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Paint</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.45s">
+                    <i class="fa fa-car-crash fa-2x mb-3" style="color: #22c55e;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Accident</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.5s">
+                    <i class="fa fa-fire fa-2x mb-3" style="color: #22c55e;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Fire</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.55s">
+                    <i class="fa fa-water fa-2x mb-3" style="color: #22c55e;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Flood</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.6s">
+                    <i class="fa fa-eye fa-2x mb-3" style="color: #22c55e;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Exterior</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.65s">
+                    <i class="fa fa-file-alt fa-2x mb-3" style="color: #22c55e;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Documents</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OPTION 10: Soft Lavender with Purple Icons -->
+    <div class="container-fluid fact my-5 py-5" style="font-family: 'Montserrat', sans-serif; background: #faf5ff;">
+        <div class="container">
+            <h3 class="text-center mb-5" style="font-family: 'Montserrat', sans-serif; color: #0B2154;">Option 10: Soft Lavender Elegant</h3>
+            <div class="row g-4 justify-content-center">
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.1s">
+                    <i class="fa fa-cogs fa-2x mb-3" style="color: #8b5cf6;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Engine</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.15s">
+                    <i class="fa fa-road fa-2x mb-3" style="color: #8b5cf6;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Test Drive</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.2s">
+                    <i class="fa fa-tools fa-2x mb-3" style="color: #8b5cf6;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Suspension</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.25s">
+                    <i class="fa fa-dot-circle fa-2x mb-3" style="color: #8b5cf6;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Tyres</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.3s">
+                    <i class="fa fa-bolt fa-2x mb-3" style="color: #8b5cf6;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Electricals</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.35s">
+                    <i class="fa fa-couch fa-2x mb-3" style="color: #8b5cf6;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Interior</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.4s">
+                    <i class="fa fa-spray-can fa-2x mb-3" style="color: #8b5cf6;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Paint</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.45s">
+                    <i class="fa fa-car-crash fa-2x mb-3" style="color: #8b5cf6;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Accident</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.5s">
+                    <i class="fa fa-fire fa-2x mb-3" style="color: #8b5cf6;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Fire</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.55s">
+                    <i class="fa fa-water fa-2x mb-3" style="color: #8b5cf6;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Flood</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.6s">
+                    <i class="fa fa-eye fa-2x mb-3" style="color: #8b5cf6;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Exterior</p>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.65s">
+                    <i class="fa fa-file-alt fa-2x mb-3" style="color: #8b5cf6;"></i>
+                    <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Documents</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fact Comparison End -->

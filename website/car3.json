@@ -1,0 +1,64 @@
+{
+  "listingId": {"S": "placeholder-003"},
+  "status": {"S": "approved"},
+  "isPlaceholder": {"BOOL": true},
+  "createdAt": {"S": "2025-01-15T12:04:00.000Z"},
+  "updatedAt": {"S": "2025-01-15T12:05:00.000Z"},
+  "seller": {
+    "M": {
+      "name": {"S": "Inpectionwale Team"},
+      "email": {"S": "info@inpectionwale.com"},
+      "mobile": {"S": "+91-9876543210"}
+    }
+  },
+  "car": {
+    "M": {
+      "make": {"S": "Maruti Suzuki"},
+      "model": {"S": "Baleno"},
+      "edition": {"S": "Delta CVT"},
+      "registrationYear": {"S": "2022"},
+      "kmsDriven": {"S": "15000"},
+      "expectedPrice": {"S": "825000"}
+    }
+  },
+  "photos": {
+    "M": {
+      "exteriorFront": {
+        "M": {
+          "key": {"S": "Images/Car-1.jpg"},
+          "publicUrl": {"S": "Images/Car-1.jpg"}
+        }
+      },
+      "exteriorBack": {
+        "M": {
+          "key": {"S": "Images/Car-1.jpg"},
+          "publicUrl": {"S": "Images/Car-1.jpg"}
+        }
+      },
+      "exteriorLeft": {
+        "M": {
+          "key": {"S": "Images/Car-1.jpg"},
+          "publicUrl": {"S": "Images/Car-1.jpg"}
+        }
+      },
+      "exteriorRight": {
+        "M": {
+          "key": {"S": "Images/Car-1.jpg"},
+          "publicUrl": {"S": "Images/Car-1.jpg"}
+        }
+      },
+      "interiorSeat": {
+        "M": {
+          "key": {"S": "Images/Car-1.jpg"},
+          "publicUrl": {"S": "Images/Car-1.jpg"}
+        }
+      },
+      "interiorCluster": {
+        "M": {
+          "key": {"S": "Images/Car-1.jpg"},
+          "publicUrl": {"S": "Images/Car-1.jpg"}
+        }
+      }
+    }
+  }
+}

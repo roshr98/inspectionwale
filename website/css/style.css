@@ -549,3 +549,24 @@ body {
 /* Apply the dust overlay to What is checked and About sections */
 #what-checked.section-dust::before,
 #about-section.section-dust::before { display: block; }
+
+/* Ensure modals are scrollable */
+.modal-dialog-scrollable {
+    max-height: calc(100vh - 3.5rem);
+}
+
+.modal-dialog-scrollable .modal-body {
+    overflow-y: auto;
+    max-height: calc(100vh - 210px);
+}
+
+/* Customer listing cards hover effect */
+.customer-highlight-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.customer-highlight-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}

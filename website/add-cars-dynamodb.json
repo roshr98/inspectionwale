@@ -1,0 +1,170 @@
+[
+  {
+    "PutRequest": {
+      "Item": {
+        "listingId": {"S": "placeholder-001"},
+        "status": {"S": "approved"},
+        "isPlaceholder": {"BOOL": true},
+        "submittedAt": {"S": "2025-01-15T12:00:00.000Z"},
+        "approvedAt": {"S": "2025-01-15T12:01:00.000Z"},
+        "seller": {
+          "M": {
+            "name": {"S": "Inpectionwale Team"},
+            "email": {"S": "info@inpectionwale.com"},
+            "phone": {"S": "+91-9876543210"}
+          }
+        },
+        "car": {
+          "M": {
+            "make": {"S": "Tata"},
+            "model": {"S": "Altroz"},
+            "year": {"N": "2021"},
+            "kms": {"N": "32000"},
+            "price": {"N": "750000"},
+            "transmission": {"S": "Manual"},
+            "fuelType": {"S": "Petrol"},
+            "owners": {"N": "1"},
+            "registrationNumber": {"S": "DL01AB1234"},
+            "description": {"S": "Well maintained Tata Altroz with complete service history. Single owner, excellent condition."}
+          }
+        },
+        "photos": {
+          "M": {
+            "main": {"S": "Images/Car-3.jpg"},
+            "gallery": {
+              "L": [
+                {"S": "Images/Car-3.jpg"}
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "PutRequest": {
+      "Item": {
+        "listingId": {"S": "placeholder-002"},
+        "status": {"S": "approved"},
+        "isPlaceholder": {"BOOL": true},
+        "submittedAt": {"S": "2025-01-15T12:02:00.000Z"},
+        "approvedAt": {"S": "2025-01-15T12:03:00.000Z"},
+        "seller": {
+          "M": {
+            "name": {"S": "Inpectionwale Team"},
+            "email": {"S": "info@inpectionwale.com"},
+            "phone": {"S": "+91-9876543210"}
+          }
+        },
+        "car": {
+          "M": {
+            "make": {"S": "Hyundai"},
+            "model": {"S": "i10"},
+            "year": {"N": "2020"},
+            "kms": {"N": "38000"},
+            "price": {"N": "525000"},
+            "transmission": {"S": "Manual"},
+            "fuelType": {"S": "Petrol"},
+            "owners": {"N": "1"},
+            "registrationNumber": {"S": "DL02CD5678"},
+            "description": {"S": "Perfect city car with low maintenance. Well kept and regularly serviced Hyundai i10."}
+          }
+        },
+        "photos": {
+          "M": {
+            "main": {"S": "Images/Car-4.jpg"},
+            "gallery": {
+              "L": [
+                {"S": "Images/Car-4.jpg"}
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "PutRequest": {
+      "Item": {
+        "listingId": {"S": "placeholder-003"},
+        "status": {"S": "approved"},
+        "isPlaceholder": {"BOOL": true},
+        "submittedAt": {"S": "2025-01-15T12:04:00.000Z"},
+        "approvedAt": {"S": "2025-01-15T12:05:00.000Z"},
+        "seller": {
+          "M": {
+            "name": {"S": "Inpectionwale Team"},
+            "email": {"S": "info@inpectionwale.com"},
+            "phone": {"S": "+91-9876543210"}
+          }
+        },
+        "car": {
+          "M": {
+            "make": {"S": "Maruti"},
+            "model": {"S": "Baleno"},
+            "year": {"N": "2022"},
+            "kms": {"N": "15000"},
+            "price": {"N": "825000"},
+            "transmission": {"S": "Automatic"},
+            "fuelType": {"S": "Petrol"},
+            "owners": {"N": "1"},
+            "registrationNumber": {"S": "DL03EF9012"},
+            "description": {"S": "Almost new Maruti Baleno with very low mileage. Premium automatic variant in pristine condition."}
+          }
+        },
+        "photos": {
+          "M": {
+            "main": {"S": "Images/Car-1.jpg"},
+            "gallery": {
+              "L": [
+                {"S": "Images/Car-1.jpg"}
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "PutRequest": {
+      "Item": {
+        "listingId": {"S": "placeholder-004"},
+        "status": {"S": "approved"},
+        "isPlaceholder": {"BOOL": true},
+        "submittedAt": {"S": "2025-01-15T12:06:00.000Z"},
+        "approvedAt": {"S": "2025-01-15T12:07:00.000Z"},
+        "seller": {
+          "M": {
+            "name": {"S": "Inpectionwale Team"},
+            "email": {"S": "info@inpectionwale.com"},
+            "phone": {"S": "+91-9876543210"}
+          }
+        },
+        "car": {
+          "M": {
+            "make": {"S": "Honda"},
+            "model": {"S": "Amaze"},
+            "year": {"N": "2021"},
+            "kms": {"N": "22000"},
+            "price": {"N": "695000"},
+            "transmission": {"S": "Manual"},
+            "fuelType": {"S": "Diesel"},
+            "owners": {"N": "1"},
+            "registrationNumber": {"S": "DL04GH3456"},
+            "description": {"S": "Fuel efficient Honda Amaze diesel. Perfect for long drives with spacious interiors."}
+          }
+        },
+        "photos": {
+          "M": {
+            "main": {"S": "Images/Car-2.jpg"},
+            "gallery": {
+              "L": [
+                {"S": "Images/Car-2.jpg"}
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+]
