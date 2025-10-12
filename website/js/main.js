@@ -341,25 +341,28 @@
     function pickHeroImage(listing, index) {
         const photos = listing.photos || {}
         
-        // Try multiple possible photo structures
-        // 1. New structure: photos.exteriorFront.url
-        if (photos.exteriorFront && photos.exteriorFront.url) {
-            return photos.exteriorFront.url
+        // Helper to extract string value from potential object
+        const getString = (val) => {
+            if (!val) return null
+            if (typeof val === 'string') return val
+            if (typeof val === 'object' && val.S) return val.S // DynamoDB format
+            if (typeof val === 'object' && val.url) return val.url
+            return null
         }
         
+        // Try multiple possible photo structures
+        // 1. New structure: photos.exteriorFront.url
+        const extFront = getString(photos.exteriorFront)
+        if (extFront) return extFront
+        
         // 2. Old structure: photos.main (for manually added listings)
-        if (photos.main) {
-            return photos.main
-        }
+        const main = getString(photos.main)
+        if (main) return main
         
         // 3. Gallery array structure
         if (photos.gallery && Array.isArray(photos.gallery) && photos.gallery.length > 0) {
-            return photos.gallery[0]
-        }
-        
-        // 4. Direct photo slots
-        if (photos.exteriorFront) {
-            return photos.exteriorFront
+            const firstGallery = getString(photos.gallery[0])
+            if (firstGallery) return firstGallery
         }
         
         // Fallback to placeholder
@@ -813,12 +816,22 @@
         const seenUrls = new Set()
         const photoEntries = listing.photos ? Object.entries(listing.photos) : []
         
+        // Helper to extract string URL
+        const extractUrl = (val) => {
+            if (!val) return null
+            if (typeof val === 'string') return val
+            if (typeof val === 'object' && val.S) return val.S // DynamoDB format
+            if (typeof val === 'object' && val.url) return val.url
+            return null
+        }
+        
         // Only add photos with unique URLs
         photoEntries.forEach(([slot, meta]) => {
-            if (meta && meta.url && slot !== DOCUMENT_SLOT) {
-                if (!seenUrls.has(meta.url)) {
-                    photos.push({ slot, url: meta.url })
-                    seenUrls.add(meta.url)
+            const url = extractUrl(meta)
+            if (url && slot !== DOCUMENT_SLOT) {
+                if (!seenUrls.has(url)) {
+                    photos.push({ slot, url })
+                    seenUrls.add(url)
                 }
             }
         })
@@ -827,7 +840,7 @@
             photos.push({ slot: 'exteriorFront', url: pickHeroImage(listing, 0) })
         }
 
-        if (heroImg) {
+        if (heroImg && photos[0] && photos[0].url) {
             heroImg.src = photos[0].url
             heroImg.alt = `${buildListingTitle(listing)} photo`
         }
