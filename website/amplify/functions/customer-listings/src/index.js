@@ -150,7 +150,8 @@ async function handleRequestUpload(body) {
     const putCommand = new PutObjectCommand({
       Bucket: LISTINGS_BUCKET,
       Key: key,
-      ContentType: contentType
+      ContentType: contentType,
+      ACL: 'public-read'  // Make uploaded photos publicly readable
     })
     const getCommand = new GetObjectCommand({
       Bucket: LISTINGS_BUCKET,

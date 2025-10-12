@@ -113,11 +113,75 @@
     const REQUIRED_PHOTO_SLOTS = ['exteriorFront', 'exteriorBack', 'exteriorLeft', 'exteriorRight', 'interiorSeat', 'interiorCluster']
     const DOCUMENT_SLOT = 'rcDocument'
     const FALLBACK_IMAGES = ['Images/car-1.jpg', 'Images/car-2.jpg', 'Images/car-3.jpg', 'Images/car-4.jpg']
+    
+    // Image compression settings
+    const MAX_IMAGE_WIDTH = 1920
+    const MAX_IMAGE_HEIGHT = 1440
+    const JPEG_QUALITY = 0.85
+    const MAX_FILE_SIZE_MB = 2
 
     const listingsCache = new Map()
     const selectedPhotos = new Map()
     const previewUrls = new Map()
     let currentListingId = null
+    
+    // Image compression function
+    async function compressImage(file) {
+        return new Promise((resolve, reject) => {
+            // Skip if file is already small
+            if (file.size < 500 * 1024) { // Less than 500KB
+                resolve(file)
+                return
+            }
+            
+            const reader = new FileReader()
+            reader.onload = (e) => {
+                const img = new Image()
+                img.onload = () => {
+                    // Calculate new dimensions
+                    let width = img.width
+                    let height = img.height
+                    
+                    if (width > MAX_IMAGE_WIDTH || height > MAX_IMAGE_HEIGHT) {
+                        const ratio = Math.min(MAX_IMAGE_WIDTH / width, MAX_IMAGE_HEIGHT / height)
+                        width = Math.floor(width * ratio)
+                        height = Math.floor(height * ratio)
+                    }
+                    
+                    // Create canvas and compress
+                    const canvas = document.createElement('canvas')
+                    canvas.width = width
+                    canvas.height = height
+                    
+                    const ctx = canvas.getContext('2d')
+                    ctx.imageSmoothingEnabled = true
+                    ctx.imageSmoothingQuality = 'high'
+                    ctx.drawImage(img, 0, 0, width, height)
+                    
+                    // Convert to blob
+                    canvas.toBlob((blob) => {
+                        if (!blob) {
+                            resolve(file)
+                            return
+                        }
+                        
+                        // Create new file with compressed blob
+                        const compressedFile = new File([blob], file.name, {
+                            type: 'image/jpeg',
+                            lastModified: Date.now()
+                        })
+                        
+                        // Use compressed if it's smaller
+                        resolve(compressedFile.size < file.size ? compressedFile : file)
+                    }, 'image/jpeg', JPEG_QUALITY)
+                }
+                img.onerror = () => resolve(file)
+                img.src = e.target.result
+            }
+            reader.onerror = () => resolve(file)
+            reader.readAsDataURL(file)
+        })
+    }
 
     document.addEventListener('DOMContentLoaded', () => {
         initListCarForm()
@@ -273,6 +337,8 @@
         heroImg.style.objectFit = 'cover'
         heroImg.alt = `${buildListingTitle(listing)} photo`
         heroImg.src = pickHeroImage(listing, index)
+        heroImg.loading = 'lazy'
+        heroImg.decoding = 'async'
         imageWrapper.appendChild(heroImg)
 
         header.appendChild(info)
@@ -539,7 +605,7 @@
         }
     }
 
-    function handlePhotoChange(input) {
+    async function handlePhotoChange(input) {
         const slot = input.getAttribute('data-slot')
         if (!slot) return
         const previewImg = input.form ? input.form.querySelector(`img[data-preview="${slot}"]`) : null
@@ -560,19 +626,47 @@
         }
 
         const file = input.files[0]
-        selectedPhotos.set(slot, file)
-
-        if (previewUrls.has(slot)) {
-            URL.revokeObjectURL(previewUrls.get(slot))
-        }
-        const url = URL.createObjectURL(file)
-        previewUrls.set(slot, url)
-
+        
+        // Show loading state on preview
         if (previewImg) {
-            previewImg.src = url
-            previewImg.classList.remove('d-none')
+            previewImg.style.opacity = '0.5'
         }
-        if (clearBtn) clearBtn.classList.remove('d-none')
+        
+        try {
+            // Compress image before storing
+            const compressedFile = await compressImage(file)
+            selectedPhotos.set(slot, compressedFile)
+
+            if (previewUrls.has(slot)) {
+                URL.revokeObjectURL(previewUrls.get(slot))
+            }
+            const url = URL.createObjectURL(compressedFile)
+            previewUrls.set(slot, url)
+
+            if (previewImg) {
+                previewImg.src = url
+                previewImg.classList.remove('d-none')
+                previewImg.style.opacity = '1'
+            }
+            if (clearBtn) clearBtn.classList.remove('d-none')
+        } catch (error) {
+            console.error('Error compressing image:', error)
+            // Fallback to original file if compression fails
+            selectedPhotos.set(slot, file)
+            
+            if (previewUrls.has(slot)) {
+                URL.revokeObjectURL(previewUrls.get(slot))
+            }
+            const url = URL.createObjectURL(file)
+            previewUrls.set(slot, url)
+
+            if (previewImg) {
+                previewImg.src = url
+                previewImg.classList.remove('d-none')
+                previewImg.style.opacity = '1'
+            }
+            if (clearBtn) clearBtn.classList.remove('d-none')
+        }
     }
 
     function clearPhotoInput(slot, form) {
@@ -843,6 +937,8 @@
         if (heroImg && photos[0] && photos[0].url) {
             heroImg.src = photos[0].url
             heroImg.alt = `${buildListingTitle(listing)} photo`
+            heroImg.loading = 'lazy'
+            heroImg.decoding = 'async'
         }
 
         if (thumbContainer) {
@@ -870,6 +966,8 @@
                     img.alt = `${slotLabel}`
                     img.className = 'w-100 h-100'
                     img.style.objectFit = 'cover'
+                    img.loading = 'lazy'
+                    img.decoding = 'async'
                     btn.appendChild(img)
                     btn.addEventListener('click', () => {
                         if (heroImg) {

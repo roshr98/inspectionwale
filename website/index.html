@@ -996,7 +996,7 @@
                             <div class="bg-light p-4 rounded mx-2" style="min-height: 300px;">
                                 <div class="d-flex align-items-center justify-content-center mb-3">
                                     ${review.profile_photo ? 
-                                        `<img src="${review.profile_photo}" class="rounded-circle" style="width:60px;height:60px;object-fit:cover;" alt="${review.author}">` :
+                                        `<img src="${review.profile_photo}" class="rounded-circle" style="width:60px;height:60px;object-fit:cover;" alt="${review.author}" loading="lazy" decoding="async">` :
                                         `<div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:60px;height:60px;font-size:24px;font-weight:bold;">${review.author.charAt(0)}</div>`
                                     }
                                 </div>

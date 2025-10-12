@@ -19,6 +19,7 @@
     "@aws-sdk/client-ses": "^3.908.0",
     "@aws-sdk/lib-dynamodb": "^3.908.0",
     "@aws-sdk/s3-request-presigner": "^3.908.0",
-    "aws-sdk": "^2.1691.0"
+    "aws-sdk": "^2.1691.0",
+    "sharp": "^0.33.0"
   }
 }
