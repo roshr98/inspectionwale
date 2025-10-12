@@ -1,5 +1,5 @@
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb')
-const { DynamoDBDocumentClient, PutCommand, GetCommand, ScanCommand } = require('@aws-sdk/lib-dynamodb')
+const { DynamoDBDocumentClient, PutCommand, GetCommand, ScanCommand, QueryCommand } = require('@aws-sdk/lib-dynamodb')
 const { S3Client, PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3')
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner')
 const { SESClient, SendEmailCommand } = require('@aws-sdk/client-ses')
@@ -67,6 +67,45 @@ function guessExtension(contentType = '') {
 
 function isEmail(value = '') {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+}
+
+async function checkDuplicateSeller(email, mobile) {
+  if (!LISTINGS_TABLE) {
+    return { ok: true } // Skip check if table not configured
+  }
+
+  try {
+    // Scan for any approved listing with same email or mobile
+    const scanResult = await ddb.send(new ScanCommand({
+      TableName: LISTINGS_TABLE,
+      FilterExpression: '#status = :approved AND (#email = :email OR #mobile = :mobile)',
+      ExpressionAttributeNames: {
+        '#status': 'status',
+        '#email': 'sellerEmail',
+        '#mobile': 'sellerMobile'
+      },
+      ExpressionAttributeValues: {
+        ':approved': 'approved',
+        ':email': email || 'NO_EMAIL',
+        ':mobile': mobile || 'NO_MOBILE'
+      }
+    }))
+
+    if (scanResult.Items && scanResult.Items.length > 0) {
+      const existingListing = scanResult.Items[0]
+      return {
+        ok: false,
+        error: 'duplicate_seller_detected',
+        message: `A listing already exists with this ${existingListing.sellerEmail === email ? 'email' : 'mobile number'}. Only one active listing per seller is allowed. Contact support if you need assistance.`
+      }
+    }
+
+    return { ok: true }
+  } catch (error) {
+    console.error('Error checking duplicate seller:', error)
+    // Don't fail submission if duplicate check fails
+    return { ok: true }
+  }
 }
 
 exports.handler = async (event) => {
@@ -208,6 +247,12 @@ async function handleSubmitListing(body) {
   // RC document is now optional - no validation required
   // if (!documentPhotos.length) return fail(400, 'rc_required')
 
+  // Check for duplicate seller with approved listing
+  const duplicateCheck = await checkDuplicateSeller(sellerEmail, sellerMobile)
+  if (!duplicateCheck.ok) {
+    return fail(400, duplicateCheck.error)
+  }
+
   const now = new Date().toISOString()
   const listingId = submissionId
   const item = {
@@ -216,6 +261,10 @@ async function handleSubmitListing(body) {
     status: 'pending',
     createdAt: now,
     updatedAt: now,
+    // Top-level seller fields for queries
+    sellerName,
+    sellerEmail,
+    sellerMobile,
     seller: {
       name: sellerName,
       mobile: sellerMobile,
@@ -359,22 +408,22 @@ async function sendNewListingEmail(item) {
 
   const car = item.car || {}
   const seller = item.seller || {}
-
-  const lines = [
-    'New customer-to-customer listing submission',
-    '',
-    `Submission ID: ${item.submissionId}`,
-    `Seller: ${seller.name} (${seller.mobile}${seller.email ? `, ${seller.email}` : ''})`,
-    `Car: ${car.make} ${car.model} ${car.edition || ''}`.trim(),
-    `Registration year: ${car.registrationYear}`,
-    `KMs driven: ${car.kmsDriven}`,
-    `Expected price: ${car.expectedPrice}`,
-    item.notes ? `Notes: ${item.notes}` : null,
-    '',
-    'Photos:'
-  ].filter(Boolean)
-
+  const carTitle = `${car.make} ${car.model} ${car.edition || ''}`.trim()
+  
+  // Generate secure tokens for approve/reject links
+  const SECRET_KEY = process.env.APPROVAL_SECRET_KEY || 'CHANGE_THIS_IN_PRODUCTION'
+  const APPROVAL_URL = process.env.APPROVAL_URL || 'https://YOUR_APPROVAL_LAMBDA_URL'
+  
+  const approveToken = generateApprovalToken(item.listingId, 'approve', SECRET_KEY)
+  const rejectToken = generateApprovalToken(item.listingId, 'reject', SECRET_KEY)
+  
+  const approveUrl = `${APPROVAL_URL}?token=${approveToken}`
+  const rejectUrl = `${APPROVAL_URL}?token=${rejectToken}`
+  
+  // Build photo gallery HTML
+  let photoGalleryHtml = ''
   if (LISTINGS_BUCKET) {
+    const photoUrls = []
     for (const slot of Object.keys(item.photos || {})) {
       const photo = item.photos[slot]
       try {
@@ -382,26 +431,165 @@ async function sendNewListingEmail(item) {
           Bucket: LISTINGS_BUCKET,
           Key: photo.key
         })
-        const url = await getSignedUrl(s3Client, command, { expiresIn: 86400 })
-        lines.push(` - ${slot}: ${url}`)
+        const url = await getSignedUrl(s3Client, command, { expiresIn: 604800 }) // 7 days
+        const label = slot.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase()).trim()
+        photoUrls.push({ label, url })
       } catch (err) {
         console.error('Failed to build signed URL for photo', slot, err)
       }
     }
+    
+    if (photoUrls.length > 0) {
+      photoGalleryHtml = photoUrls.map(({ label, url }) => `
+        <div style="margin-bottom: 15px;">
+          <p style="margin: 5px 0; font-weight: 600; color: #333;">${label}</p>
+          <a href="${url}" target="_blank">
+            <img src="${url}" alt="${label}" style="max-width: 100%; height: auto; border-radius: 8px; border: 2px solid #e0e0e0;">
+          </a>
+        </div>
+      `).join('')
+    }
   }
+
+  const htmlBody = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; padding: 20px; margin: 0;">
+      <div style="max-width: 700px; margin: 0 auto; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <!-- Header -->
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center;">
+          <h1 style="color: white; margin: 0; font-size: 24px;">🚗 New Car Listing Request</h1>
+          <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0;">Review and approve or reject this listing</p>
+        </div>
+        
+        <!-- Content -->
+        <div style="padding: 40px;">
+          <!-- Car Details -->
+          <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+            <h2 style="margin: 0 0 15px 0; color: #333; font-size: 20px;">🚘 Car Details</h2>
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr>
+                <td style="padding: 8px 0; color: #666; width: 40%;"><strong>Make & Model:</strong></td>
+                <td style="padding: 8px 0; color: #333;">${carTitle}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0; color: #666;"><strong>Year:</strong></td>
+                <td style="padding: 8px 0; color: #333;">${car.registrationYear}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0; color: #666;"><strong>Kilometers:</strong></td>
+                <td style="padding: 8px 0; color: #333;">${car.kmsDriven} km</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0; color: #666;"><strong>Expected Price:</strong></td>
+                <td style="padding: 8px 0; color: #27ae60; font-weight: 600;">₹${car.expectedPrice}</td>
+              </tr>
+            </table>
+          </div>
+          
+          <!-- Seller Details -->
+          <div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid #ffc107;">
+            <h2 style="margin: 0 0 15px 0; color: #333; font-size: 20px;">👤 Seller Information</h2>
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr>
+                <td style="padding: 8px 0; color: #666; width: 40%;"><strong>Name:</strong></td>
+                <td style="padding: 8px 0; color: #333;">${seller.name}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0; color: #666;"><strong>Mobile:</strong></td>
+                <td style="padding: 8px 0; color: #333;">${seller.mobile}</td>
+              </tr>
+              ${seller.email ? `
+              <tr>
+                <td style="padding: 8px 0; color: #666;"><strong>Email:</strong></td>
+                <td style="padding: 8px 0; color: #333;">${seller.email}</td>
+              </tr>
+              ` : ''}
+            </table>
+          </div>
+          
+          ${item.notes ? `
+          <!-- Additional Notes -->
+          <div style="background: #e3f2fd; padding: 20px; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid #2196f3;">
+            <h2 style="margin: 0 0 10px 0; color: #333; font-size: 18px;">📝 Additional Notes</h2>
+            <p style="margin: 0; color: #555; line-height: 1.6;">${item.notes}</p>
+          </div>
+          ` : ''}
+          
+          <!-- Photo Gallery -->
+          ${photoGalleryHtml ? `
+          <div style="margin-bottom: 30px;">
+            <h2 style="margin: 0 0 20px 0; color: #333; font-size: 20px;">📸 Photos</h2>
+            ${photoGalleryHtml}
+          </div>
+          ` : ''}
+          
+          <!-- Action Buttons -->
+          <div style="background: #f8f9fa; padding: 30px; border-radius: 8px; text-align: center;">
+            <p style="margin: 0 0 20px 0; color: #555; font-size: 16px;">
+              <strong>Review the listing and take action:</strong>
+            </p>
+            <div style="display: inline-block;">
+              <a href="${approveUrl}" style="display: inline-block; padding: 15px 40px; background: #27ae60; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px; margin: 0 10px; box-shadow: 0 4px 6px rgba(39,174,96,0.3);">
+                ✅ APPROVE
+              </a>
+              <a href="${rejectUrl}" style="display: inline-block; padding: 15px 40px; background: #e74c3c; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px; margin: 0 10px; box-shadow: 0 4px 6px rgba(231,76,60,0.3);">
+                ❌ REJECT
+              </a>
+            </div>
+            <p style="margin: 20px 0 0 0; color: #999; font-size: 13px;">
+              These links are valid for 7 days
+            </p>
+          </div>
+          
+          <!-- Metadata -->
+          <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
+            <p style="margin: 5px 0; color: #999; font-size: 13px;">
+              <strong>Submission ID:</strong> ${item.submissionId}
+            </p>
+            <p style="margin: 5px 0; color: #999; font-size: 13px;">
+              <strong>Listing ID:</strong> ${item.listingId}
+            </p>
+            <p style="margin: 5px 0; color: #999; font-size: 13px;">
+              <strong>Submitted:</strong> ${new Date(item.createdAt).toLocaleString('en-IN')}
+            </p>
+          </div>
+        </div>
+        
+        <!-- Footer -->
+        <div style="background: #f8f9fa; padding: 20px; text-align: center; border-top: 1px solid #e0e0e0;">
+          <p style="margin: 0; color: #666; font-size: 14px;">
+            InspectionWale Admin Notification<br>
+            <a href="https://www.inspectionwale.com" style="color: #3498db;">www.inspectionwale.com</a>
+          </p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `
 
   const command = new SendEmailCommand({
     Source: SES_SOURCE,
     Destination: { ToAddresses: [REVIEW_EMAIL] },
     Message: {
-      Subject: { Data: `InspectionWale listing verification required: ${car.make} ${car.model}`.trim() },
+      Subject: { Data: `🚗 Car Listing Request Received: ${carTitle} - ${car.registrationYear}` },
       Body: {
-        Text: { Data: lines.join('\n') }
+        Html: { Data: htmlBody }
       }
     }
   })
 
   await sesClient.send(command)
+}
+
+function generateApprovalToken(listingId, action, secretKey) {
+  const data = `${listingId}:${action}:${Date.now()}`
+  const hash = crypto.createHmac('sha256', secretKey).update(data).digest('hex')
+  return Buffer.from(`${data}:${hash}`).toString('base64url')
 }
 
 async function sendReservationEmail(listing, reservation) {
