@@ -908,6 +908,36 @@
         }
     }
 
+    // Lazy load images with Intersection Observer
+    function lazyLoadThumbnails(container) {
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src
+                            delete img.dataset.src
+                        }
+                        observer.unobserve(img)
+                    }
+                })
+            }, {
+                rootMargin: '50px' // Start loading 50px before image enters viewport
+            })
+
+            container.querySelectorAll('img[data-src]').forEach(img => {
+                imageObserver.observe(img)
+            })
+        } else {
+            // Fallback for older browsers
+            container.querySelectorAll('img[data-src]').forEach(img => {
+                img.src = img.dataset.src
+                delete img.dataset.src
+            })
+        }
+    }
+
     function openDetailModal(listingId) {
         const listing = listingsCache.get(listingId)
         if (!listing) return
@@ -970,10 +1000,18 @@
         }
 
         if (heroImg && photos[0] && photos[0].url) {
+            // Progressive loading with blur effect
+            heroImg.style.filter = 'blur(10px)'
+            heroImg.style.transition = 'filter 0.3s ease-in-out'
             heroImg.src = photos[0].url
             heroImg.alt = `${buildListingTitle(listing)} photo`
-            heroImg.loading = 'lazy'
+            heroImg.loading = 'eager' // Load first image immediately
             heroImg.decoding = 'async'
+            
+            // Remove blur when image loads
+            heroImg.onload = () => {
+                heroImg.style.filter = 'none'
+            }
         }
 
         if (thumbContainer) {
@@ -997,7 +1035,15 @@
                     btn.title = `View ${slotLabel}`
                     
                     const img = document.createElement('img')
-                    img.src = photo.url
+                    // Use data-src for even lazier loading of thumbnails
+                    if (idx < 3) {
+                        // Load first 3 thumbnails immediately
+                        img.src = photo.url
+                    } else {
+                        // Defer loading of remaining thumbnails
+                        img.dataset.src = photo.url
+                        img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 60"%3E%3Crect fill="%23ddd" width="90" height="60"/%3E%3C/svg%3E'
+                    }
                     img.alt = `${slotLabel}`
                     img.className = 'w-100 h-100'
                     img.style.objectFit = 'cover'
@@ -1006,8 +1052,19 @@
                     btn.appendChild(img)
                     btn.addEventListener('click', () => {
                         if (heroImg) {
+                            // Load actual thumbnail image if not already loaded
+                            if (img.dataset.src) {
+                                img.src = img.dataset.src
+                                delete img.dataset.src
+                            }
+                            
+                            // Show loading state on hero image
+                            heroImg.style.filter = 'blur(10px)'
                             heroImg.src = photo.url
                             heroImg.alt = `${buildListingTitle(listing)} photo`
+                            heroImg.onload = () => {
+                                heroImg.style.filter = 'none'
+                            }
                         }
                         thumbContainer.querySelectorAll('button').forEach(el => el.classList.remove('active'))
                         btn.classList.add('active')
@@ -1015,6 +1072,9 @@
                     if (idx === 0) btn.classList.add('active')
                     thumbContainer.appendChild(btn)
                 })
+                
+                // Initialize lazy loading for thumbnails
+                lazyLoadThumbnails(thumbContainer)
             } else {
                 // Show message when only one photo available
                 const message = document.createElement('p')
