@@ -79,9 +79,13 @@
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
     <style>
-        /* Force Montserrat across this template */
-        html, body, h1, h2, h3, h4, h5, h6, p, a, li, span, input, button {
-            font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+        /* Professional industry-standard font family */
+        html, body, h1, h2, h3, h4, h5, h6, p, a, li, span, input, button, select, textarea, label, div {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        * {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
         }
         .services-hero {
             position: relative;
@@ -500,70 +504,105 @@
                             </div>
 
                             <h6 class="text-uppercase text-muted mb-3">Upload Required Photos</h6>
-                            <p class="small text-muted">Capture clear, well-lit photos. Tap a tile again to replace and use the "Clear photo" link if you want to retake.</p>
+                            <p class="small text-muted">Capture clear, well-lit photos using your camera. Click × to remove a photo and retake.</p>
                             <div class="row g-3" id="listingPhotoInputs">
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold" for="photoExteriorFront">Exterior &mdash; Front<span class="text-danger">*</span></label>
+                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoExteriorFront">
+                                        <i class="fas fa-camera text-primary me-2"></i>
+                                        Exterior &mdash; Front<span class="text-danger">*</span>
+                                    </label>
                                     <input type="file" class="form-control list-car-photo" id="photoExteriorFront" data-slot="exteriorFront" accept="image/*" capture="environment" required>
                                     <div class="form-text">Front 3/4th angle preferred.</div>
-                                    <div class="mt-2">
+                                    <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="exteriorFront" alt="Exterior front preview">
+                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="exteriorFront" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo">
+                                            <i class="fas fa-times"></i>
+                                        </button>
                                     </div>
-                                    <button type="button" class="btn btn-link p-0 small text-danger d-none" data-clear="exteriorFront">Clear photo</button>
                                 </div>
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold" for="photoExteriorBack">Exterior &mdash; Back<span class="text-danger">*</span></label>
+                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoExteriorBack">
+                                        <i class="fas fa-camera text-primary me-2"></i>
+                                        Exterior &mdash; Back<span class="text-danger">*</span>
+                                    </label>
                                     <input type="file" class="form-control list-car-photo" id="photoExteriorBack" data-slot="exteriorBack" accept="image/*" capture="environment" required>
                                     <div class="form-text">Rear 3/4th shot.</div>
-                                    <div class="mt-2">
+                                    <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="exteriorBack" alt="Exterior back preview">
+                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="exteriorBack" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo">
+                                            <i class="fas fa-times"></i>
+                                        </button>
                                     </div>
-                                    <button type="button" class="btn btn-link p-0 small text-danger d-none" data-clear="exteriorBack">Clear photo</button>
                                 </div>
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold" for="photoExteriorLeft">Exterior &mdash; Left Side<span class="text-danger">*</span></label>
+                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoExteriorLeft">
+                                        <i class="fas fa-camera text-primary me-2"></i>
+                                        Exterior &mdash; Left Side<span class="text-danger">*</span>
+                                    </label>
                                     <input type="file" class="form-control list-car-photo" id="photoExteriorLeft" data-slot="exteriorLeft" accept="image/*" capture="environment" required>
                                     <div class="form-text">Driver side profile.</div>
-                                    <div class="mt-2">
+                                    <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="exteriorLeft" alt="Exterior left preview">
+                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="exteriorLeft" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo">
+                                            <i class="fas fa-times"></i>
+                                        </button>
                                     </div>
-                                    <button type="button" class="btn btn-link p-0 small text-danger d-none" data-clear="exteriorLeft">Clear photo</button>
                                 </div>
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold" for="photoExteriorRight">Exterior &mdash; Right Side<span class="text-danger">*</span></label>
+                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoExteriorRight">
+                                        <i class="fas fa-camera text-primary me-2"></i>
+                                        Exterior &mdash; Right Side<span class="text-danger">*</span>
+                                    </label>
                                     <input type="file" class="form-control list-car-photo" id="photoExteriorRight" data-slot="exteriorRight" accept="image/*" capture="environment" required>
                                     <div class="form-text">Passenger side profile.</div>
-                                    <div class="mt-2">
+                                    <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="exteriorRight" alt="Exterior right preview">
+                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="exteriorRight" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo">
+                                            <i class="fas fa-times"></i>
+                                        </button>
                                     </div>
-                                    <button type="button" class="btn btn-link p-0 small text-danger d-none" data-clear="exteriorRight">Clear photo</button>
                                 </div>
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold" for="photoInteriorSeat">Interior &mdash; Seats<span class="text-danger">*</span></label>
+                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoInteriorSeat">
+                                        <i class="fas fa-camera text-primary me-2"></i>
+                                        Interior &mdash; Seats<span class="text-danger">*</span>
+                                    </label>
                                     <input type="file" class="form-control list-car-photo" id="photoInteriorSeat" data-slot="interiorSeat" accept="image/*" capture="environment" required>
                                     <div class="form-text">Include dashboard + seats.</div>
-                                    <div class="mt-2">
+                                    <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="interiorSeat" alt="Interior seat preview">
+                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="interiorSeat" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo">
+                                            <i class="fas fa-times"></i>
+                                        </button>
                                     </div>
-                                    <button type="button" class="btn btn-link p-0 small text-danger d-none" data-clear="interiorSeat">Clear photo</button>
                                 </div>
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold" for="photoInteriorCluster">Interior &mdash; Instrument Cluster<span class="text-danger">*</span></label>
+                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoInteriorCluster">
+                                        <i class="fas fa-camera text-primary me-2"></i>
+                                        Interior &mdash; Instrument Cluster<span class="text-danger">*</span>
+                                    </label>
                                     <input type="file" class="form-control list-car-photo" id="photoInteriorCluster" data-slot="interiorCluster" accept="image/*" capture="environment" required>
                                     <div class="form-text">Clear odometer reading.</div>
-                                    <div class="mt-2">
+                                    <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="interiorCluster" alt="Instrument cluster preview">
+                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="interiorCluster" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo">
+                                            <i class="fas fa-times"></i>
+                                        </button>
                                     </div>
-                                    <button type="button" class="btn btn-link p-0 small text-danger d-none" data-clear="interiorCluster">Clear photo</button>
                                 </div>
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold" for="photoRcDocument">RC Document<span class="text-danger">*</span></label>
-                                    <input type="file" class="form-control list-car-photo" id="photoRcDocument" data-slot="rcDocument" accept="image/*" capture="environment" required>
+                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoRcDocument">
+                                        <i class="fas fa-camera text-primary me-2"></i>
+                                        RC Document <span class="text-muted small">(Optional)</span>
+                                    </label>
+                                    <input type="file" class="form-control list-car-photo" id="photoRcDocument" data-slot="rcDocument" accept="image/*" capture="environment">
                                     <div class="form-text">Only for verification &mdash; never published.</div>
-                                    <div class="mt-2">
+                                    <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="rcDocument" alt="RC preview">
+                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="rcDocument" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo">
+                                            <i class="fas fa-times"></i>
+                                        </button>
                                     </div>
-                                    <button type="button" class="btn btn-link p-0 small text-danger d-none" data-clear="rcDocument">Clear photo</button>
                                 </div>
                             </div>
                         </div>

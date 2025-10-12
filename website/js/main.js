@@ -340,8 +340,29 @@
 
     function pickHeroImage(listing, index) {
         const photos = listing.photos || {}
-        const primary = photos.exteriorFront && photos.exteriorFront.url
-        if (primary) return primary
+        
+        // Try multiple possible photo structures
+        // 1. New structure: photos.exteriorFront.url
+        if (photos.exteriorFront && photos.exteriorFront.url) {
+            return photos.exteriorFront.url
+        }
+        
+        // 2. Old structure: photos.main (for manually added listings)
+        if (photos.main) {
+            return photos.main
+        }
+        
+        // 3. Gallery array structure
+        if (photos.gallery && Array.isArray(photos.gallery) && photos.gallery.length > 0) {
+            return photos.gallery[0]
+        }
+        
+        // 4. Direct photo slots
+        if (photos.exteriorFront) {
+            return photos.exteriorFront
+        }
+        
+        // Fallback to placeholder
         const fallback = FALLBACK_IMAGES[index % FALLBACK_IMAGES.length]
         return fallback
     }
@@ -382,28 +403,52 @@
             event.preventDefault()
             event.stopPropagation()
 
+            // Check form field validity first
             if (!form.checkValidity()) {
                 form.classList.add('was-validated')
                 
                 // Find first invalid field and scroll to it
                 const firstInvalid = form.querySelector(':invalid')
                 if (firstInvalid) {
+                    // Scroll to the invalid field
                     firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' })
-                    firstInvalid.focus()
+                    
+                    // Focus after scroll completes
+                    setTimeout(() => {
+                        firstInvalid.focus()
+                    }, 300)
+                    
+                    // Show specific error message based on field
+                    let fieldName = 'this field'
+                    const label = firstInvalid.previousElementSibling
+                    if (label && label.tagName === 'LABEL') {
+                        fieldName = label.textContent.replace('*', '').trim()
+                    } else if (firstInvalid.labels && firstInvalid.labels[0]) {
+                        fieldName = firstInvalid.labels[0].textContent.replace('*', '').trim()
+                    }
+                    
+                    showAlert(alertBox, 'danger', `Please fill in: ${fieldName}`)
                 }
                 
-                showAlert(alertBox, 'danger', 'Please fill in all required fields marked with *')
                 return
             }
 
-            if (!validateRequiredPhotos()) {
-                showAlert(alertBox, 'danger', 'Please attach all required photos before submitting.')
+            // Check required photos
+            const photoValidation = validateRequiredPhotos()
+            if (!photoValidation.valid) {
+                const missingPhotoNames = photoValidation.missingSlots.map(slot => getPhotoLabelFromSlot(slot)).join(', ')
+                showAlert(alertBox, 'danger', `Missing required photos: ${missingPhotoNames}`)
                 
-                // Scroll to photo section
-                const photoSection = document.getElementById('listingPhotoInputs')
-                if (photoSection) {
-                    photoSection.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                // Scroll to first missing photo
+                const firstMissingSlot = photoValidation.missingSlots[0]
+                const firstMissingInput = form.querySelector(`input[data-slot="${firstMissingSlot}"]`)
+                if (firstMissingInput) {
+                    firstMissingInput.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                    setTimeout(() => {
+                        firstMissingInput.focus()
+                    }, 300)
                 }
+                
                 return
             }
 
@@ -456,7 +501,13 @@
                 }, 1500)
             } catch (error) {
                 console.error('Listing submission failed', error)
-                showAlert(alertBox, 'danger', friendlyError(error))
+                const errorMessage = friendlyError(error)
+                showAlert(alertBox, 'danger', errorMessage)
+                
+                // Scroll to alert box to show error
+                if (alertBox) {
+                    alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                }
             } finally {
                 submitBtn.disabled = false
                 submitBtn.innerText = 'Submit for Verification'
@@ -542,10 +593,26 @@
     }
 
     function validateRequiredPhotos() {
-        for (const slot of [...REQUIRED_PHOTO_SLOTS, DOCUMENT_SLOT]) {
-            if (!selectedPhotos.has(slot)) return false
+        // Only check required photo slots, RC document is now optional
+        const missingSlots = []
+        for (const slot of REQUIRED_PHOTO_SLOTS) {
+            if (!selectedPhotos.has(slot)) {
+                missingSlots.push(slot)
+            }
         }
-        return true
+        return { valid: missingSlots.length === 0, missingSlots }
+    }
+    
+    function getPhotoLabelFromSlot(slot) {
+        const labels = {
+            'exteriorFront': 'Exterior - Front',
+            'exteriorBack': 'Exterior - Back',
+            'exteriorLeft': 'Exterior - Left Side',
+            'exteriorRight': 'Exterior - Right Side',
+            'interiorSeat': 'Interior - Seats',
+            'interiorCluster': 'Interior - Instrument Cluster'
+        }
+        return labels[slot] || slot
     }
 
     function buildListingPayload(form, uploadMeta) {
