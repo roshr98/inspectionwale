@@ -38,7 +38,7 @@ After setup, you'll have these email addresses:
 3. Click **"Sign Up Now"**
 
 #### 1.2 Create Zoho Account
-1. Enter your email: `prasad.devadiga333@gmail.com`
+1. Enter your email: `inspectionwale@zohomail.in`
 2. Choose password (strong password!)
 3. Complete verification (check Gmail for code)
 4. Sign in to Zoho
@@ -64,27 +64,25 @@ TTL: 3600 (or 1 hour)
 
 **Copy this value!** You'll need it in the next step.
 
-#### 2.2 Add TXT Record to Your DNS Provider
+#### 2.2 Add TXT Record to AWS Route 53
 
-**Where is your domain registered?**
-- GoDaddy? → Go to GoDaddy DNS Manager
-- Namecheap? → Go to Namecheap Advanced DNS
-- Cloudflare? → Go to Cloudflare DNS
-- Other? → Login to your domain registrar
+**Since your DNS is managed by AWS Route 53:**
 
-**Add the TXT record:**
-
-1. Login to your domain registrar (where you bought inspectionwale.com)
-2. Find **DNS Management** or **DNS Settings**
-3. Click **"Add Record"** or **"Add TXT Record"**
-4. Fill in:
+1. **Open Route 53 Console**: https://console.aws.amazon.com/route53/
+2. Click **"Hosted zones"** in left menu
+3. Click on **"inspectionwale.com"** domain
+4. Click **"Create record"**
+5. Fill in the form:
    ```
-   Type: TXT
-   Name: @ (or leave blank, or root domain)
-   Value: [PASTE THE ZOHO VERIFICATION CODE]
-   TTL: 3600
+   Record name: (leave blank for root domain @)
+   Record type: TXT
+   Value: "zoho-verification=zb12345678.zmverify.zoho.com"
+          (replace with actual code from Zoho - include quotes)
+   TTL: 300 (5 minutes)
+   Routing policy: Simple routing
    ```
-5. **Save** the record
+6. Click **"Create records"**
+7. Record will appear in your hosted zone immediately
 
 #### 2.3 Wait and Verify (10-30 minutes)
 
@@ -120,54 +118,49 @@ Value: mx3.zoho.com
 TTL: 3600
 ```
 
-#### 3.2 Add MX Records to DNS
+#### 3.2 Add MX Records to AWS Route 53
 
-1. Go back to your DNS provider
-2. Find **MX Records** section
-3. **Remove any existing MX records** (important!)
-4. Add all 3 Zoho MX records:
+1. **Open Route 53**: https://console.aws.amazon.com/route53/
+2. Click **"Hosted zones"** → **"inspectionwale.com"**
+3. **⚠️ IMPORTANT: Delete any existing MX records first!**
+   - Look for existing MX records
+   - Select them and click **"Delete"**
+4. Click **"Create record"** to add Zoho MX records
 
-**Record 1:**
+**Add all 3 MX records in ONE record:**
 ```
-Type: MX
-Name: @ (or leave blank)
-Priority: 10
-Value: mx.zoho.com
-TTL: 3600
-```
-
-**Record 2:**
-```
-Type: MX
-Name: @
-Priority: 20
-Value: mx2.zoho.com
-TTL: 3600
+Record name: (leave blank for root domain)
+Record type: MX
+Value: (enter all 3 lines below)
+   10 mx.zoho.com
+   20 mx2.zoho.com
+   50 mx3.zoho.com
+TTL: 300
+Routing policy: Simple routing
 ```
 
-**Record 3:**
-```
-Type: MX
-Name: @
-Priority: 50
-Value: mx3.zoho.com
-TTL: 3600
-```
+**Note:** In Route 53, you add all MX records as separate lines in ONE record, each with format: `priority hostname`
 
-5. **Save** all records
+5. Click **"Create records"**
+6. You should see one MX record with 3 values listed
 
-#### 3.3 Add SPF Record (Prevents Spam)
+#### 3.3 Add SPF Record to Route 53 (Prevents Spam)
 
-Add this TXT record to prevent your emails being marked as spam:
+1. In Route 53 → Hosted zones → inspectionwale.com
+2. Click **"Create record"**
+3. Fill in:
+   ```
+   Record name: (leave blank for root domain)
+   Record type: TXT
+   Value: "v=spf1 include:zoho.com include:amazonses.com ~all"
+          (include quotes - this allows both Zoho AND AWS SES to send)
+   TTL: 300
+   ```
+4. Click **"Create records"**
 
-```
-Type: TXT
-Name: @
-Value: v=spf1 include:zoho.com ~all
-TTL: 3600
-```
+**Note:** This SPF record includes BOTH Zoho and AWS SES, so emails from your website (via SES) and Zoho won't be marked as spam.
 
-#### 3.4 Add DKIM Record (Email Authentication)
+#### 3.4 Add DKIM Record to Route 53 (Email Authentication)
 
 1. In Zoho Mail setup, go to **"Email Configuration"** → **"DKIM"**
 2. Zoho will generate a DKIM record like:
@@ -177,15 +170,25 @@ TTL: 3600
    Value: v=DKIM1; k=rsa; p=MIGfMA0GCSq... (very long string)
    TTL: 3600
    ```
-3. **Copy the record**
-4. Add it to your DNS provider
-5. Go back to Zoho and click **"Verify DKIM"**
+3. **Copy the record details**
+4. **Add to Route 53:**
+   - Go to Route 53 → Hosted zones → inspectionwale.com
+   - Click **"Create record"**
+   - Fill in:
+     ```
+     Record name: zoho._domainkey
+     Record type: TXT
+     Value: "v=DKIM1; k=rsa; p=MIGfMA0GCSq..." (include quotes, paste full value)
+     TTL: 300
+     ```
+   - Click **"Create records"**
+5. Wait 5-10 minutes, then go back to Zoho and click **"Verify DKIM"**
 
 ---
 
 ### STEP 4: Create Email Accounts (10 minutes)
 
-#### 4.1 Create First User (Admin)
+#### 4.1 Create First User 
 
 1. In Zoho Mail admin panel, go to **"Users"**
 2. Click **"Add User"**
@@ -218,11 +221,11 @@ Email: roshan.kutty@inspectionwale.com
 Password: [Strong password]
 ```
 
-**User 4: Martin**
+**User 4: inspectionWale** (Admin)
 ```
-First Name: Martin
-Last Name: Doon
-Email: martin.doon@inspectionwale.com
+First Name: inspectionWale
+Last Name: 
+Email: inspectionwale@zohomail.in
 Password: [Strong password]
 ```
 
@@ -250,7 +253,7 @@ Now we'll configure AWS SES to send emails through your Zoho domain.
 6. Check: ✅ **"Generate DKIM settings"**
 7. Click **"Create identity"**
 
-#### 5.2 Add AWS SES DNS Records
+#### 5.2 Add AWS SES DNS Records to Route 53
 
 AWS will show you 3 CNAME records for DKIM:
 
@@ -265,7 +268,43 @@ Name: ghi789._domainkey.inspectionwale.com
 Value: ghi789.dkim.amazonses.com
 ```
 
-**Add all 3 CNAME records to your DNS provider!**
+**Add all 3 CNAME records to AWS Route 53:**
+
+1. **Open Route 53 Console**: https://console.aws.amazon.com/route53/
+2. Click **"Hosted zones"** in left menu
+3. Click on **"inspectionwale.com"** domain
+4. For each CNAME record, click **"Create record"**:
+   
+   **Record 1:**
+   ```
+   Record name: abc123._domainkey (replace with actual value from SES)
+   Record type: CNAME
+   Value: abc123.dkim.amazonses.com (replace with actual value from SES)
+   TTL: 300 (or keep default)
+   Routing policy: Simple routing
+   ```
+   Click **"Create records"**
+   
+   **Record 2:**
+   ```
+   Record name: def456._domainkey
+   Record type: CNAME
+   Value: def456.dkim.amazonses.com
+   TTL: 300
+   ```
+   Click **"Create records"**
+   
+   **Record 3:**
+   ```
+   Record name: ghi789._domainkey
+   Record type: CNAME
+   Value: ghi789.dkim.amazonses.com
+   TTL: 300
+   ```
+   Click **"Create records"**
+
+5. **Wait 5-10 minutes** for DNS propagation
+6. Go back to SES console and refresh - domain should show **"Verified"** ✅
 
 #### 5.3 Verify Individual Email Addresses in SES
 
