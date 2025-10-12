@@ -45,6 +45,19 @@
     <link rel="dns-prefetch" href="//code.jquery.com">
     <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    
+    <!-- Google Analytics - Replace G-XXXXXXXXXX with your Measurement ID from Google Analytics -->
+    <!-- Follow ANALYTICS_SETUP_GUIDE.md to get your Measurement ID -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    
+    <!-- Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://423cmvhw3g.execute-api.us-east-1.amazonaws.com https://inspectionwale-car-listings.s3.amazonaws.com https://www.google-analytics.com; frame-src 'self' https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -923,6 +936,131 @@
         })()
         </script>
         <script src="js/main.js"></script>
+        
+        <!-- Schema.org Structured Data (JSON-LD) for SEO -->
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          "@id": "https://www.inspectionwale.com/#organization",
+          "name": "InspectionWale",
+          "alternateName": "Inspection Wale",
+          "description": "Professional pre-purchase car inspection services in Delhi NCR. 160+ point inspection with same-day reports by certified inspectors.",
+          "url": "https://www.inspectionwale.com",
+          "telephone": "+91-9876543210",
+          "email": "hello@inspectionwale.com",
+          "priceRange": "₹₹",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Delhi",
+            "addressRegion": "Delhi NCR",
+            "addressCountry": "IN"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 28.6139,
+            "longitude": 77.2090
+          },
+          "areaServed": {
+            "@type": "GeoCircle",
+            "geoMidpoint": {
+              "@type": "GeoCoordinates",
+              "latitude": 28.6139,
+              "longitude": 77.2090
+            },
+            "geoRadius": "50000"
+          },
+          "serviceType": [
+            "Pre-Purchase Car Inspection",
+            "Vehicle Inspection",
+            "Auto Inspection Services",
+            "Used Car Inspection",
+            "Car Evaluation"
+          ],
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "reviewCount": "150"
+          },
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Car Inspection Services",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Standard Car Inspection",
+                  "description": "160+ point comprehensive inspection of used cars"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Premium Car Inspection",
+                  "description": "Detailed inspection with diagnostic scan and test drive"
+                }
+              }
+            ]
+          },
+          "openingHoursSpecification": {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+              "Sunday"
+            ],
+            "opens": "09:00",
+            "closes": "20:00"
+          },
+          "sameAs": [
+            "https://www.facebook.com/inspectionwale",
+            "https://www.instagram.com/inspectionwale"
+          ]
+        }
+        </script>
+        
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "serviceType": "Pre-Purchase Car Inspection",
+          "provider": {
+            "@id": "https://www.inspectionwale.com/#organization"
+          },
+          "areaServed": {
+            "@type": "City",
+            "name": "Delhi NCR"
+          },
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Inspection Services",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "160+ Point Inspection",
+                  "description": "Comprehensive inspection covering engine, transmission, suspension, brakes, electrical, body, interior"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Same-Day Report",
+                  "description": "Detailed inspection report with photos delivered within 24 hours"
+                }
+              }
+            ]
+          }
+        }
+        </script>
 </body>
 
 </html>
