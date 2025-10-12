@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Disallow: /amplify/
+Disallow: /*.json$
+Disallow: /*-backup.html$
+Disallow: /inspector-*.html$
+Disallow: /test-*.html$
+Disallow: /auto-*.html$
+Disallow: /generate-*.js$
+Disallow: /deploy-*.ps1$
+Disallow: /deploy-*.sh$
+
+Sitemap: https://www.inspectionwale.com/sitemap.xml
