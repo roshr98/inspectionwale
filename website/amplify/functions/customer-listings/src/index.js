@@ -308,15 +308,30 @@ function sanitizeListingForPublic(item) {
   for (const slot of REQUIRED_PHOTO_SLOTS) {
     const photo = item.photos && item.photos[slot]
     if (!photo) continue
+    
     let url = ''
-    if (photo.publicUrl) {
+    
+    // Handle different photo formats
+    if (typeof photo === 'string') {
+      // Direct string path (for manually added listings with local images)
+      url = photo
+    } else if (photo.publicUrl) {
+      // Explicitly set public URL
       url = photo.publicUrl
-    } else if (CDN_BASE_URL) {
+    } else if (photo.url) {
+      // Pre-built URL
+      url = photo.url
+    } else if (photo.key && CDN_BASE_URL) {
+      // Build URL from CDN + key
       url = `${CDN_BASE_URL}/${photo.key}`
+    } else if (photo.key && LISTINGS_BUCKET) {
+      // Build URL from S3 bucket (fallback)
+      url = `https://${LISTINGS_BUCKET}.s3.amazonaws.com/${photo.key}`
     }
+    
     publicPhotos[slot] = {
       url,
-      key: photo.key
+      key: photo.key || photo
     }
   }
 
