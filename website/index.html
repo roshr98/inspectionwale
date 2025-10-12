@@ -45,14 +45,39 @@
     <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     
-    <!-- Google Analytics - Replace G-XXXXXXXXXX with your Measurement ID from Google Analytics -->
-    <!-- Follow ANALYTICS_SETUP_GUIDE.md to get your Measurement ID -->
+    <!-- Google Analytics 4 - REPLACE G-XXXXXXXXXX with your Measurement ID -->
+    <!-- Get your Measurement ID from: https://analytics.google.com/analytics/web/#/a{accountId}/admin/streams/table -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-XXXXXXXXXX');
+      
+      // Main configuration
+      gtag('config', 'G-XXXXXXXXXX', {
+        'send_page_view': true,
+        'page_title': document.title,
+        'page_location': window.location.href
+      });
+      
+      // Custom event tracking helper
+      window.trackEvent = function(eventName, eventParams) {
+        if (typeof gtag === 'function') {
+          gtag('event', eventName, eventParams || {});
+        }
+      };
+      
+      // Track page performance
+      window.addEventListener('load', function() {
+        if (window.performance && window.performance.timing) {
+          const timing = window.performance.timing;
+          const loadTime = timing.loadEventEnd - timing.navigationStart;
+          gtag('event', 'page_performance', {
+            'load_time_ms': loadTime,
+            'page_path': window.location.pathname
+          });
+        }
+      });
     </script>
     
     <!-- Content Security Policy -->

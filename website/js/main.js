@@ -554,6 +554,18 @@
                 const submitResult = await apiPost('submitListing', payload)
                 showAlert(alertBox, 'success', submitResult.message || 'Submitted successfully. Our team will verify and publish the listing.')
                 
+                // Track listing submission
+                if (window.trackEvent) {
+                    window.trackEvent('submit_listing', {
+                        'car_make': payload.car.make,
+                        'car_model': payload.car.model,
+                        'car_year': payload.car.registrationYear,
+                        'price': payload.car.expectedPrice,
+                        'kms_driven': payload.car.kmsDriven,
+                        'photos_count': payload.photos.length
+                    })
+                }
+                
                 // Show success popup and close modal
                 setTimeout(() => {
                     alert('Thank you for listing your car! We have received your submission and will verify it shortly. You will be contacted once approved.')
@@ -778,6 +790,17 @@
                 const result = await apiPost('reserve', payload)
                 showAlert(alertBox, 'success', result.message || 'Thank you! We will share your offer with the seller and call you shortly.')
                 submitBtn.innerText = 'Submitted'
+                
+                // Track reservation event
+                if (window.trackEvent) {
+                    const listing = listingsCache.get(payload.listingId)
+                    window.trackEvent('reserve_listing', {
+                        'listing_id': payload.listingId,
+                        'car_make': listing ? listing.car.make : '',
+                        'car_model': listing ? listing.car.model : '',
+                        'offer_price': payload.offerPrice || ''
+                    })
+                }
             } catch (error) {
                 console.error('Reserve request failed', error)
                 showAlert(alertBox, 'danger', friendlyError(error))
@@ -889,6 +912,18 @@
         const listing = listingsCache.get(listingId)
         if (!listing) return
         currentListingId = listingId
+
+        // Track listing view event
+        if (window.trackEvent) {
+            window.trackEvent('view_listing', {
+                'listing_id': listingId,
+                'car_make': listing.car.make,
+                'car_model': listing.car.model,
+                'car_year': listing.car.registrationYear,
+                'price': listing.car.expectedPrice,
+                'kms_driven': listing.car.kmsDriven
+            })
+        }
 
         const titleEl = document.getElementById('listingDetailTitle')
         const summaryEl = document.getElementById('listingDetailSummary')
