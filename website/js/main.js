@@ -593,7 +593,7 @@
     }
 
     function validateRequiredPhotos() {
-        // Only check required photo slots, RC document is now optional
+        // Only check required photo slots - RC document is now optional
         const missingSlots = []
         for (const slot of REQUIRED_PHOTO_SLOTS) {
             if (!selectedPhotos.has(slot)) {
@@ -610,7 +610,8 @@
             'exteriorLeft': 'Exterior - Left Side',
             'exteriorRight': 'Exterior - Right Side',
             'interiorSeat': 'Interior - Seats',
-            'interiorCluster': 'Interior - Instrument Cluster'
+            'interiorCluster': 'Interior - Instrument Cluster',
+            'rcDocument': 'RC Document (Optional)'
         }
         return labels[slot] || slot
     }

@@ -12,7 +12,6 @@
     
     <!-- Security Headers -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
     <meta name="robots" content="index, follow">
@@ -57,7 +56,7 @@
     </script>
     
     <!-- Content Security Policy -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://423cmvhw3g.execute-api.us-east-1.amazonaws.com https://inspectionwale-car-listings.s3.amazonaws.com https://inspectionwale-car-listings.s3.us-east-1.amazonaws.com https://*.s3.amazonaws.com https://*.s3.*.amazonaws.com https://www.google-analytics.com https://cdn.jsdelivr.net; frame-src 'self' https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://423cmvhw3g.execute-api.us-east-1.amazonaws.com https://inspectionwale-car-listings.s3.amazonaws.com https://inspectionwale-car-listings.s3.us-east-1.amazonaws.com https://inspectionwale-car-listings.s3-us-east-1.amazonaws.com https://www.google-analytics.com https://cdn.jsdelivr.net; frame-src 'self' https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -107,11 +106,35 @@
             border-radius: 18px;
             border: 1px solid rgba(11, 33, 84, 0.12);
             background: #ffffff;
-            
+            box-shadow: 0 18px 45px rgba(11, 33, 84, 0.08);
         }
         
         /* Mobile-specific styling for hero banner */
         @media (max-width: 767px) {
+            /* Modal footer fix for mobile */
+            #listCarModal .modal-body {
+                padding-bottom: 120px !important;
+                max-height: calc(100vh - 150px);
+                overflow-y: auto;
+            }
+            
+            #listCarModal .modal-footer {
+                position: fixed !important;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: white;
+                z-index: 1055;
+                border-top: 2px solid #dee2e6;
+                padding: 1rem;
+                box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+                margin: 0;
+            }
+            
+            #listingPhotoInputs .col-md-4:last-child,
+            #listingPhotoInputs .col-sm-6:last-child {
+                margin-bottom: 3rem !important;
+            }
             .carousel-item img {
                 object-fit: cover;
                 object-position: center center !important;
@@ -597,7 +620,7 @@
                                     </label>
                                     <input type="file" class="form-control list-car-photo" id="photoRcDocument" data-slot="rcDocument" accept="image/*" capture="environment">
                                     <div class="form-text">Only for verification &mdash; never published.</div>
-                                    <div class="mt-2 position-relative">
+                                    <div class="mt-2 position-relative mb-3">
                                         <img class="img-fluid rounded d-none" data-preview="rcDocument" alt="RC preview">
                                         <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="rcDocument" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo">
                                             <i class="fas fa-times"></i>
@@ -606,7 +629,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
+                        <div class="modal-footer" style="position: sticky; bottom: 0; background: white; z-index: 10; border-top: 2px solid #dee2e6; padding: 1rem;">
                             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-primary" id="listCarSubmitBtn">Submit for Verification</button>
                         </div>

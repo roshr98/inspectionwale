@@ -204,7 +204,8 @@ async function handleSubmitListing(body) {
 
   if (exteriorPhotos.length !== REQUIRED_PHOTO_SLOTS.length) return fail(400, 'photos_incomplete')
 
-  if (!documentPhotos.length) return fail(400, 'rc_required')
+  // RC document is now optional - no validation required
+  // if (!documentPhotos.length) return fail(400, 'rc_required')
 
   const now = new Date().toISOString()
   const listingId = submissionId
