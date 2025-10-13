@@ -16,9 +16,9 @@
       "make": {"S": "Hyundai"},
       "model": {"S": "i10"},
       "edition": {"S": "Sportz"},
-      "registrationYear": {"S": "2020"},
-      "kmsDriven": {"S": "38000"},
-      "expectedPrice": {"S": "525000"}
+      "registrationYear": {"S": "2012"},
+      "kmsDriven": {"S": "85000"},
+      "expectedPrice": {"S": "230000"}
     }
   },
   "photos": {

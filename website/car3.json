@@ -13,12 +13,12 @@
   },
   "car": {
     "M": {
-      "make": {"S": "Maruti Suzuki"},
-      "model": {"S": "Baleno"},
-      "edition": {"S": "Delta CVT"},
-      "registrationYear": {"S": "2022"},
-      "kmsDriven": {"S": "15000"},
-      "expectedPrice": {"S": "825000"}
+      "make": {"S": "Hyundai"},
+      "model": {"S": "Elantra"},
+      "edition": {"S": "1.6 SX"},
+      "registrationYear": {"S": "2012"},
+      "kmsDriven": {"S": "150000"},
+      "expectedPrice": {"S": "310000"}
     }
   },
   "photos": {

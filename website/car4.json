@@ -13,12 +13,12 @@
   },
   "car": {
     "M": {
-      "make": {"S": "Honda"},
-      "model": {"S": "Amaze"},
-      "edition": {"S": "VX Petrol"},
-      "registrationYear": {"S": "2021"},
-      "kmsDriven": {"S": "22000"},
-      "expectedPrice": {"S": "695000"}
+      "make": {"S": "Hyundai"},
+      "model": {"S": "Grand i10"},
+      "edition": {"S": "Sportz"},
+      "registrationYear": {"S": "2017"},
+      "kmsDriven": {"S": "25000"},
+      "expectedPrice": {"S": "400000"}
     }
   },
   "photos": {
