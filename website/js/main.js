@@ -305,16 +305,24 @@
         const article = document.createElement('article')
         article.className = 'customer-highlight-card p-4 h-100'
         article.dataset.listingId = listing.listingId
-        article.setAttribute('role', 'button')
-        article.setAttribute('tabindex', '0')
-
-        article.addEventListener('click', () => openDetailModal(listing.listingId))
-        article.addEventListener('keypress', (event) => {
-            if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault()
-                openDetailModal(listing.listingId)
-            }
-        })
+        
+        // Check if car is sold out
+        const isSoldOut = listing.status === 'soldout' || listing.status === 'sold'
+        
+        if (isSoldOut) {
+            article.classList.add('sold-out')
+            // Don't add click handlers for sold out cars
+        } else {
+            article.setAttribute('role', 'button')
+            article.setAttribute('tabindex', '0')
+            article.addEventListener('click', () => openDetailModal(listing.listingId))
+            article.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault()
+                    openDetailModal(listing.listingId)
+                }
+            })
+        }
 
         const header = document.createElement('div')
         header.className = 'd-flex justify-content-between align-items-start mb-3'
@@ -330,6 +338,9 @@
         info.appendChild(stats)
 
         const imageWrapper = document.createElement('div')
+        imageWrapper.style.position = 'relative'
+        imageWrapper.className = 'img-placeholder rounded'
+        
         const heroImg = document.createElement('img')
         heroImg.className = 'rounded'
         heroImg.style.width = '110px'
@@ -339,6 +350,22 @@
         heroImg.src = pickHeroImage(listing, index)
         heroImg.loading = 'lazy'
         heroImg.decoding = 'async'
+        
+        // Add sold out banner if car is sold
+        if (isSoldOut) {
+            imageWrapper.classList.add('sold-out-overlay')
+            const soldBanner = document.createElement('div')
+            soldBanner.className = 'sold-out-banner'
+            soldBanner.textContent = 'SOLD OUT'
+            imageWrapper.appendChild(soldBanner)
+        }
+        
+        // Optimize image loading with load event
+        heroImg.addEventListener('load', function() {
+            this.classList.add('loaded')
+            imageWrapper.classList.remove('img-placeholder')
+        })
+        
         imageWrapper.appendChild(heroImg)
 
         header.appendChild(info)
@@ -1170,6 +1197,43 @@
             }
         }
         return 'Unable to process your request right now. Please try again shortly.'
+    }
+    
+    // Lazy load thumbnails using Intersection Observer
+    function lazyLoadThumbnails(container) {
+        if (!container) return
+        
+        const images = container.querySelectorAll('img[data-src]')
+        if (!images.length) return
+        
+        // Check if IntersectionObserver is supported
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src
+                            delete img.dataset.src
+                        }
+                        observer.unobserve(img)
+                    }
+                })
+            }, {
+                rootMargin: '50px 0px', // Start loading 50px before image comes into view
+                threshold: 0.01
+            })
+            
+            images.forEach(img => imageObserver.observe(img))
+        } else {
+            // Fallback for older browsers - load all images immediately
+            images.forEach(img => {
+                if (img.dataset.src) {
+                    img.src = img.dataset.src
+                    delete img.dataset.src
+                }
+            })
+        }
     }
 })()
 

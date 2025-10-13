@@ -329,32 +329,24 @@ For sending emails via SES, verify these:
 
 ---
 
-### STEP 6: Update Lambda Environment Variables (5 minutes)
+### STEP 6: Update Lambda Environment Variables (When You Deploy Them)
 
-#### 6.1 Update customer-listings Lambda
+**⚠️ NOTE: You'll do this AFTER deploying the Lambda functions (Steps 3-4 of main E2E guide)**
 
-1. Go to: https://console.aws.amazon.com/lambda/
-2. Click on **customer-listings** function
-3. Go to **"Configuration"** → **"Environment variables"**
-4. Click **"Edit"**
-5. Change `SES_FROM`:
-   ```
-   OLD: hello@inspectionwale.com (or prasad.devadiga333@gmail.com)
-   NEW: no-reply@inspectionwale.com
-   ```
-6. Click **"Save"**
+#### 6.1 For customer-listings Lambda (when you update it)
 
-#### 6.2 Update listing-approval Lambda
+When you update the customer-listings Lambda in Step 4:
+- Set `SES_FROM` to: `hello@inspectionwale.com`
 
-1. Click on **InspectionWale-ListingApproval** function
-2. Go to **"Configuration"** → **"Environment variables"**
-3. Click **"Edit"**
-4. Change `SES_FROM`:
-   ```
-   OLD: hello@inspectionwale.com
-   NEW: no-reply@inspectionwale.com
-   ```
-5. Click **"Save"**
+#### 6.2 For listing-approval Lambda (when you create it)
+
+When you create the NEW listing-approval Lambda in Step 3:
+- Set `SES_FROM` to: `no-reply@inspectionwale.com`
+
+**You don't need to do this now!** Just remember:
+- Use `hello@inspectionwale.com` or `no-reply@inspectionwale.com` 
+- Both are verified in SES ✅
+- Both will work perfectly with Zoho
 
 ---
 
@@ -604,10 +596,10 @@ Value: ghi789.dkim.amazonses.com
 - [ ] Verified hello@inspectionwale.com in SES
 - [ ] Verified prasad.devadiga@inspectionwale.com in SES
 
-**Lambda Configuration:**
-- [ ] Updated customer-listings SES_FROM to no-reply@inspectionwale.com
-- [ ] Updated listing-approval SES_FROM to no-reply@inspectionwale.com
-- [ ] Tested email sending from website
+**Lambda Configuration (Do this during E2E deployment):**
+- [ ] When creating listing-approval: Set SES_FROM to no-reply@inspectionwale.com
+- [ ] When updating customer-listings: Set SES_FROM to hello@inspectionwale.com
+- [ ] After Lambda deployment: Test email sending from website
 
 **Email Forwarding:**
 - [ ] Setup forwarding: hello@ → prasad.devadiga333@gmail.com

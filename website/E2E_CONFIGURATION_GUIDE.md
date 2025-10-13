@@ -262,7 +262,9 @@ Value: us-east-1
 }
 ```
 4. Click **"Review policy"**
-5. Name: `ListingApprovalPolicy`
+5. Name: `
+
+`
 6. Click **"Create policy"**
 
 ### 3.6 Test Function URL
@@ -336,13 +338,57 @@ Value: [PASTE THE FUNCTION URL FROM STEP 3.4]
 
 1. Click **"Configuration"** → **"Permissions"**
 2. Click on execution role name
-3. **Verify it has**:
-   - DynamoDB access (Scan, Query, PutItem, GetItem, UpdateItem)
-   - SES access (SendEmail, SendRawEmail)
-   - S3 access (GetObject, PutObject) - for photos
-   - CloudWatch Logs access
+3. Click **"Add permissions"** → **"Create inline policy"**
+4. Click **"JSON"** tab
+5. **Paste this exact policy** (or verify existing policy matches):
 
-4. If missing, add policies like in Step 3.5
+```json
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Effect": "Allow",
+			"Action": [
+				"dynamodb:PutItem",
+				"dynamodb:GetItem",
+				"dynamodb:Scan",
+				"dynamodb:UpdateItem"
+			],
+			"Resource": [
+				"arn:aws:dynamodb:us-east-1:*:table/CarListings",
+				"arn:aws:dynamodb:us-east-1:*:table/CarReservations"
+			]
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"s3:PutObject",
+				"s3:GetObject"
+			],
+			"Resource": "arn:aws:s3:::inspectionwale-car-listings/*"
+		},
+		{
+			"Effect": "Allow",
+			"Action": "ses:SendEmail",
+			"Resource": "*",
+			"Condition": {
+				"StringEquals": {
+					"ses:FromAddress": "hello@inspectionwale.com"
+				}
+			}
+		}
+	]
+}
+```
+
+6. Click **"Review policy"**
+7. Name: `CustomerListingsPolicy`
+8. Click **"Create policy"**
+
+**✅ This policy allows:**
+- DynamoDB: Read/Write to CarListings and CarReservations tables
+- S3: Upload/Download car photos
+- SES: Send emails ONLY from hello@inspectionwale.com (security best practice)
 
 ### 4.6 Test Existing Functionality
 
