@@ -47,7 +47,7 @@
     
     <!-- Google Analytics 4 - REPLACE G-XXXXXXXXXX with your Measurement ID -->
     <!-- Get your Measurement ID from: https://analytics.google.com/analytics/web/#/a{accountId}/admin/streams/table -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script defer src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
@@ -89,13 +89,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet"></noscript>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet"></noscript>
 
     <!-- Libraries Stylesheet -->
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+    <link href="lib/animate/animate.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="lib/animate/animate.min.css" rel="stylesheet"></noscript>
+    
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet"></noscript>
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -286,7 +291,7 @@
         <div id="header-carousel" class="carousel" aria-hidden="false">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="w-100" src="Images/banner_new.avif" alt="InspectionWale banner" style="width:100%; object-fit:cover;">
+                    <img class="w-100" src="Images/banner_new.avif" alt="InspectionWale banner" width="1920" height="600" fetchpriority="high" style="width:100%; object-fit:cover;">
                     <p style="position: absolute; bottom: 10px; right: 15px; margin: 0; font-size: 11px; color: rgba(255,255,255,0.7); background: rgba(0,0,0,0.3); padding: 3px 8px; border-radius: 3px; z-index: 5;">Image courtesy: Peugeot</p>
                     <div class="carousel-caption d-flex align-items-center">
                         <div class="container">
@@ -336,7 +341,7 @@
                     <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Electricals</p>
                 </div>
                 <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.35s">
-                    <i class="fa fa-steering-wheel fa-2x mb-3" style="color: #0B2154;"></i>
+                    <i class="fa fa-couch fa-2x mb-3" style="color: #0B2154;"></i>
                     <p class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #333;">Interior</p>
                 </div>
                 <div class="col-6 col-md-4 col-lg-2 text-center wow fadeIn" data-wow-delay="0.4s">
@@ -914,17 +919,14 @@
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/counterup/counterup.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/tempusdominus/js/moment.min.js"></script>
-    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- JavaScript Libraries - Deferred for better performance -->
+    <script defer src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="lib/wow/wow.min.js"></script>
+    <script defer src="lib/easing/easing.min.js"></script>
+    <script defer src="lib/waypoints/waypoints.min.js"></script>
+    <script defer src="lib/counterup/counterup.min.js"></script>
+    <script defer src="lib/owlcarousel/owl.carousel.min.js"></script>
 
     <!-- Template Javascript -->
         <script>
@@ -1089,7 +1091,7 @@
             }
         })()
         </script>
-        <script src="js/main.js"></script>
+        <script defer src="js/main.js"></script>
         
         <!-- Schema.org Structured Data (JSON-LD) for SEO -->
         <script type="application/ld+json">

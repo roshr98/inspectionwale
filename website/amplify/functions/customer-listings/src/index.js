@@ -602,8 +602,8 @@ async function sendReservationEmail(listing, reservation) {
   const car = listing.car || {}
   const seller = listing.seller || {}
 
+  // Only send to admin, not to customer/seller
   const recipients = new Set([REVIEW_EMAIL])
-  if (seller.email && isEmail(seller.email)) recipients.add(seller.email)
 
   const lines = [
     'New reservation request for a customer listing',
