@@ -75,13 +75,8 @@
     });
 
 
-    // Date and time picker
-    $('.date').datetimepicker({
-        format: 'L'
-    });
-    $('.time').datetimepicker({
-        format: 'LT'
-    });
+    // Date and time picker removed - tempusdominus library not needed
+    // Booking form uses native HTML5 date inputs instead
 
 
     // Testimonials carousel
