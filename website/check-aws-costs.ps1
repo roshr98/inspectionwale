@@ -10,7 +10,7 @@ Write-Host ""
 $startDate = Get-Date -Day 1 -Hour 0 -Minute 0 -Second 0 -Format "yyyy-MM-dd"
 $endDate = Get-Date -Format "yyyy-MM-dd"
 
-Write-Host "📅 Report Period: $startDate to $endDate" -ForegroundColor Yellow
+Write-Host "[DATE] Report Period: $startDate to $endDate" -ForegroundColor Yellow
 Write-Host ""
 
 # Check if AWS CLI is configured
