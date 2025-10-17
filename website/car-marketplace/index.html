@@ -470,8 +470,10 @@
     const API_ENDPOINT = 'https://423cmvhw3g.execute-api.us-east-1.amazonaws.com/prod/customer-listings';
     const INQUIRY_ENDPOINT = '/api/c2cInquiry';
     const FALLBACK_IMAGE = '/Images/brand_logo.png';
+    const LISTINGS_ASSET_BASE = 'https://inspectionwale-car-listings.s3.amazonaws.com/';
     const SOLD_KEYWORDS = ['sold', 'sold out', 'sold-out', 'soldout', 'sold_out', 'booked', 'reserved', 'unavailable', 'not available', 'pending sale', 'pending-sale', 'under offer', 'deposit taken'];
     const listingMap = new Map();
+    let listingEventsBound = false;
 
     function ensureAbsoluteUrl(value) {
         if (!value) return '';
@@ -497,7 +499,12 @@
         if (trimmed.startsWith('//')) return `https:${trimmed}`;
         const withoutDots = trimmed.replace(/^\.\//, '');
         if (withoutDots.startsWith('/')) return withoutDots;
-        return `/${withoutDots.replace(/^\/+/, '')}`;
+        const lower = withoutDots.toLowerCase();
+        const localPrefixes = ['images/', 'css/', 'js/', 'lib/', 'assets/', 'static/'];
+        if (localPrefixes.some(prefix => lower.startsWith(prefix))) {
+            return `/${withoutDots.replace(/^\/+/, '')}`;
+        }
+        return LISTINGS_ASSET_BASE + withoutDots.replace(/^\/+/, '');
     }
 
     function listingStatusTokens(listing) {
@@ -553,7 +560,7 @@
                 const imageWrapperClass = `car-card-img-wrapper${isSoldOut ? ' sold-out-overlay' : ''}`;
                 const actionButton = isSoldOut
                     ? `<button class="btn view-more-btn w-100 mt-3" type="button" disabled aria-disabled="true">Sold Out</button>`
-                    : `<button class="btn view-more-btn w-100 mt-3" type="button" onclick="showCarDetails('${listing.listingId}')">View Details</button>`;
+                    : `<button class="btn view-more-btn w-100 mt-3 js-view-details" type="button" data-listing-id="${listing.listingId}">View Details</button>`;
 
                 return `
                     <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
@@ -595,6 +602,7 @@
                     });
                     window.carListingsData = data.items;
                     grid.innerHTML = data.items.map(buildCard).join('');
+                    bindListingEvents();
                     grid.classList.remove('d-none');
                     noCarMsg.classList.add('d-none');
                 } else {
@@ -608,8 +616,25 @@
                         <p class="text-danger">Unable to load cars. Please try again later.</p>
                     </div>
                 `;
+                bindListingEvents();
             }
         })();
+
+        function bindListingEvents() {
+            if (listingEventsBound) return;
+            const grid = document.getElementById('carListingsGrid');
+            if (!grid) return;
+            grid.addEventListener('click', function (event) {
+                const target = event.target.closest('.js-view-details');
+                if (!target) return;
+                event.preventDefault();
+                const listingId = target.getAttribute('data-listing-id');
+                if (listingId) {
+                    showCarDetails(listingId);
+                }
+            });
+            listingEventsBound = true;
+        }
 
         function isListingSold(listing) {
             return listingStatusTokens(listing).some(status =>

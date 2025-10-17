@@ -59,7 +59,7 @@
         if ($(this).scrollTop() > 300) {
             $('.back-to-top').fadeIn('slow');
         } else {
-            heroImg.src = ensureAbsoluteAssetUrl(photos[0].url)
+            $('.back-to-top').fadeOut('slow');
         }
     });
     $('.back-to-top').click(function () {
@@ -108,6 +108,7 @@
     const REQUIRED_PHOTO_SLOTS = ['exteriorFront', 'exteriorBack', 'exteriorLeft', 'exteriorRight', 'interiorSeat', 'interiorCluster']
     const DOCUMENT_SLOT = 'rcDocument'
     const FALLBACK_IMAGES = ['/Images/Car-1.jpg', '/Images/Car-2.jpg', '/Images/Car-3.jpg', '/Images/Car-4.jpg']
+    const LISTINGS_ASSET_BASE = 'https://inspectionwale-car-listings.s3.amazonaws.com/'
     const SOLD_KEYWORDS = ['sold', 'sold out', 'sold-out', 'soldout', 'sold_out', 'booked', 'reserved', 'unavailable', 'not available', 'pending sale', 'pending-sale', 'under offer', 'deposit taken']
     
     // Image compression settings
@@ -145,7 +146,12 @@
         if (trimmed.startsWith('//')) return `https:${trimmed}`
         const withoutDots = trimmed.replace(/^\.\//, '')
         if (withoutDots.startsWith('/')) return withoutDots
-        return `/${withoutDots.replace(/^\/+/, '')}`
+        const lower = withoutDots.toLowerCase()
+        const localPrefixes = ['images/', 'css/', 'js/', 'lib/', 'assets/', 'static/']
+        if (localPrefixes.some(prefix => lower.startsWith(prefix))) {
+            return `/${withoutDots.replace(/^\/+/, '')}`
+        }
+        return LISTINGS_ASSET_BASE + withoutDots.replace(/^\/+/, '')
     }
 
     function isListingSold(listing) {
@@ -1131,11 +1137,11 @@
                     const img = document.createElement('img')
                     // Use data-src for even lazier loading of thumbnails
                     if (idx < 3) {
-                        // Load first 3 thumbnails immediately
-                        img.src = photo.url
+                            // Load first 3 thumbnails immediately
+                            img.src = ensureAbsoluteAssetUrl(photo.url)
                     } else {
-                        // Defer loading of remaining thumbnails
-                        img.dataset.src = photo.url
+                            // Defer loading of remaining thumbnails
+                            img.dataset.src = ensureAbsoluteAssetUrl(photo.url)
                         img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 60"%3E%3Crect fill="%23ddd" width="90" height="60"/%3E%3C/svg%3E'
                     }
                     img.alt = `${slotLabel}`
@@ -1154,7 +1160,7 @@
                             
                             // Show loading state on hero image
                             heroImg.style.filter = 'blur(10px)'
-                            heroImg.src = photo.url
+                            heroImg.src = ensureAbsoluteAssetUrl(photo.url)
                             heroImg.alt = `${buildListingTitle(listing)} photo`
                             heroImg.onload = () => {
                                 heroImg.style.filter = 'none'
