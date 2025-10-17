@@ -470,8 +470,72 @@
     const API_ENDPOINT = 'https://423cmvhw3g.execute-api.us-east-1.amazonaws.com/prod/customer-listings';
     const INQUIRY_ENDPOINT = '/api/c2cInquiry';
     const FALLBACK_IMAGE = '/Images/brand_logo.png';
-    const SOLD_STATUSES = new Set(['sold', 'soldout', 'sold-out', 'sold out', 'booked', 'reserved']);
+    const SOLD_KEYWORDS = ['sold', 'sold out', 'sold-out', 'soldout', 'sold_out', 'booked', 'reserved', 'unavailable', 'not available', 'pending sale', 'pending-sale', 'under offer', 'deposit taken'];
     const listingMap = new Map();
+
+    function ensureAbsoluteUrl(value) {
+        if (!value) return '';
+
+        let candidate = value;
+        if (typeof candidate === 'object' && candidate !== null) {
+            if (typeof candidate.url === 'string') {
+                candidate = candidate.url;
+            } else if (typeof candidate.S === 'string') {
+                candidate = candidate.S;
+            } else if (typeof candidate.key === 'string') {
+                candidate = candidate.key;
+            } else {
+                return '';
+            }
+        }
+
+        if (typeof candidate !== 'string') return '';
+        const trimmed = candidate.trim();
+        if (!trimmed) return '';
+        if (/^(data:|blob:)/i.test(trimmed)) return trimmed;
+        if (/^https?:\/\//i.test(trimmed)) return trimmed;
+        if (trimmed.startsWith('//')) return `https:${trimmed}`;
+        const withoutDots = trimmed.replace(/^\.\//, '');
+        if (withoutDots.startsWith('/')) return withoutDots;
+        return `/${withoutDots.replace(/^\/+/, '')}`;
+    }
+
+    function listingStatusTokens(listing) {
+        const tokens = [];
+        const push = (val) => {
+            if (typeof val === 'string') {
+                const normalised = val.trim().toLowerCase();
+                if (normalised) tokens.push(normalised);
+            }
+        };
+
+        if (!listing) return tokens;
+        push(listing.status);
+        push(listing.state);
+        push(listing.availability);
+
+        if (listing.metadata) {
+            push(listing.metadata.status);
+            push(listing.metadata.state);
+        }
+
+        const car = listing.car || {};
+        push(car.status);
+        push(car.availability);
+
+        const display = listing.display || {};
+        push(display.status);
+        push(display.statusText);
+        push(display.badge);
+        push(display.badgeText);
+        push(display.tagline);
+        push(display.highlight);
+
+        if (Array.isArray(listing.flags)) listing.flags.forEach(push);
+        if (Array.isArray(listing.tags)) listing.tags.forEach(push);
+
+        return tokens;
+    }
 
         // Load customer listings and display them as cards
         (async function loadListings() {
@@ -548,13 +612,9 @@
         })();
 
         function isListingSold(listing) {
-            if (!listing) return false;
-            const statusValue = normalizeStatus(listing.status || listing.car?.status);
-            return SOLD_STATUSES.has(statusValue);
-        }
-
-        function normalizeStatus(value) {
-            return value ? value.toString().trim().toLowerCase() : '';
+            return listingStatusTokens(listing).some(status =>
+                SOLD_KEYWORDS.some(keyword => status.includes(keyword))
+            );
         }
 
         function buildListingTitle(listing) {
@@ -587,17 +647,12 @@
         }
 
         function extractPhotoUrl(slotValue) {
-            if (!slotValue) return '';
-            if (typeof slotValue === 'string') return slotValue;
-            if (slotValue.url) return slotValue.url;
-            if (slotValue.key) return `https://inspectionwale-car-listings.s3.amazonaws.com/${slotValue.key}`;
-            if (slotValue.S) return slotValue.S;
-            return '';
+            return ensureAbsoluteUrl(slotValue);
         }
 
         function resolvePrimaryPhoto(listing) {
             if (!listing) return FALLBACK_IMAGE;
-            if (listing.heroUrl) return listing.heroUrl;
+            if (listing.heroUrl) return ensureAbsoluteUrl(listing.heroUrl) || FALLBACK_IMAGE;
             const photos = listing.photos || {};
             const preferredSlots = ['exteriorFront', 'exteriorBack', 'exteriorLeft', 'exteriorRight'];
             for (const slot of preferredSlots) {
@@ -656,7 +711,8 @@
             const heroImg = document.getElementById('carDetailHero');
             const photos = collectListingPhotos(listing);
             if (heroImg) {
-                heroImg.src = (photos[0] && photos[0].url) || FALLBACK_IMAGE;
+                const primary = photos[0] && photos[0].url ? ensureAbsoluteUrl(photos[0].url) : FALLBACK_IMAGE;
+                heroImg.src = primary || FALLBACK_IMAGE;
                 heroImg.alt = `${title} photo`;
                 heroImg.onerror = function() { this.src = FALLBACK_IMAGE; };
             }
@@ -664,7 +720,7 @@
             const thumbnailsContainer = document.getElementById('carDetailThumbnails');
             if (thumbnailsContainer) {
                 thumbnailsContainer.innerHTML = photos.map(photo => {
-                    const safeUrl = photo.url || FALLBACK_IMAGE;
+                    const safeUrl = ensureAbsoluteUrl(photo.url) || FALLBACK_IMAGE;
                     const slotLabel = photo.slot ? photo.slot.replace(/([A-Z])/g, ' $1') : 'Photo';
                     return `
                         <img src="${safeUrl}" class="img-thumbnail" style="width:80px;height:80px;object-fit:cover;cursor:pointer;"

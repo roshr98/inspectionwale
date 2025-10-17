@@ -59,7 +59,7 @@
         if ($(this).scrollTop() > 300) {
             $('.back-to-top').fadeIn('slow');
         } else {
-            $('.back-to-top').fadeOut('slow');
+            heroImg.src = ensureAbsoluteAssetUrl(photos[0].url)
         }
     });
     $('.back-to-top').click(function () {
@@ -107,8 +107,8 @@
     const API_ENDPOINT = 'https://423cmvhw3g.execute-api.us-east-1.amazonaws.com/prod/customer-listings'
     const REQUIRED_PHOTO_SLOTS = ['exteriorFront', 'exteriorBack', 'exteriorLeft', 'exteriorRight', 'interiorSeat', 'interiorCluster']
     const DOCUMENT_SLOT = 'rcDocument'
-    const FALLBACK_IMAGES = ['/Images/car-1.jpg', '/Images/car-2.jpg', '/Images/car-3.jpg', '/Images/car-4.jpg']
-    const SOLD_STATUSES = new Set(['sold', 'soldout', 'sold-out', 'sold out', 'booked', 'reserved'])
+    const FALLBACK_IMAGES = ['/Images/Car-1.jpg', '/Images/Car-2.jpg', '/Images/Car-3.jpg', '/Images/Car-4.jpg']
+    const SOLD_KEYWORDS = ['sold', 'sold out', 'sold-out', 'soldout', 'sold_out', 'booked', 'reserved', 'unavailable', 'not available', 'pending sale', 'pending-sale', 'under offer', 'deposit taken']
     
     // Image compression settings
     const MAX_IMAGE_WIDTH = 1920
@@ -120,6 +120,71 @@
     const selectedPhotos = new Map()
     const previewUrls = new Map()
     let currentListingId = null
+
+    function ensureAbsoluteAssetUrl(value) {
+        if (!value) return ''
+
+        let candidate = value
+        if (typeof candidate === 'object' && candidate !== null) {
+            if (typeof candidate.url === 'string') {
+                candidate = candidate.url
+            } else if (typeof candidate.S === 'string') {
+                candidate = candidate.S
+            } else if (typeof candidate.key === 'string') {
+                candidate = candidate.key
+            } else {
+                return ''
+            }
+        }
+
+        if (typeof candidate !== 'string') return ''
+        const trimmed = candidate.trim()
+        if (!trimmed) return ''
+        if (/^(data:|blob:)/i.test(trimmed)) return trimmed
+        if (/^https?:\/\//i.test(trimmed)) return trimmed
+        if (trimmed.startsWith('//')) return `https:${trimmed}`
+        const withoutDots = trimmed.replace(/^\.\//, '')
+        if (withoutDots.startsWith('/')) return withoutDots
+        return `/${withoutDots.replace(/^\/+/, '')}`
+    }
+
+    function isListingSold(listing) {
+        if (!listing) return false
+
+        const candidates = []
+        const pushString = (val) => {
+            if (typeof val === 'string') {
+                const normalised = val.trim().toLowerCase()
+                if (normalised) candidates.push(normalised)
+            }
+        }
+
+        pushString(listing.status)
+        pushString(listing.state)
+        pushString(listing.availability)
+
+        if (listing.metadata) {
+            pushString(listing.metadata.status)
+            pushString(listing.metadata.state)
+        }
+
+        const car = listing.car || {}
+        pushString(car.status)
+        pushString(car.availability)
+
+        const display = listing.display || {}
+        pushString(display.status)
+        pushString(display.statusText)
+        pushString(display.badge)
+        pushString(display.badgeText)
+        pushString(display.tagline)
+        pushString(display.highlight)
+
+        if (Array.isArray(listing.flags)) listing.flags.forEach(pushString)
+        if (Array.isArray(listing.tags)) listing.tags.forEach(pushString)
+
+        return candidates.some(value => SOLD_KEYWORDS.some(keyword => value.includes(keyword)))
+    }
     
     // Image compression function
     async function compressImage(file) {
@@ -302,9 +367,8 @@
         article.className = 'customer-highlight-card p-4 h-100'
         article.dataset.listingId = listing.listingId
         
-    // Check if car is sold out
-    const statusValue = (listing.status || listing.car?.status || '').toString().trim().toLowerCase()
-    const isSoldOut = SOLD_STATUSES.has(statusValue)
+        // Check if car is sold out
+        const isSoldOut = isListingSold(listing)
         
         if (isSoldOut) {
             article.classList.add('sold-out')
@@ -344,9 +408,12 @@
         heroImg.style.height = '80px'
         heroImg.style.objectFit = 'cover'
         heroImg.alt = `${buildListingTitle(listing)} photo`
-        heroImg.src = pickHeroImage(listing, index)
+    heroImg.src = pickHeroImage(listing, index)
         heroImg.loading = 'lazy'
         heroImg.decoding = 'async'
+            heroImg.onerror = () => {
+                heroImg.src = ensureAbsoluteAssetUrl(FALLBACK_IMAGES[0])
+            }
         
         // Add sold out banner if car is sold
         if (isSoldOut) {
@@ -437,34 +504,21 @@
 
     function pickHeroImage(listing, index) {
         const photos = listing.photos || {}
-        
-        // Helper to extract string value from potential object
-        const getString = (val) => {
-            if (!val) return null
-            if (typeof val === 'string') return val
-            if (typeof val === 'object' && val.S) return val.S // DynamoDB format
-            if (typeof val === 'object' && val.url) return val.url
-            return null
-        }
-        
-        // Try multiple possible photo structures
-        // 1. New structure: photos.exteriorFront.url
+        const getString = (val) => ensureAbsoluteAssetUrl(val)
+
         const extFront = getString(photos.exteriorFront)
         if (extFront) return extFront
-        
-        // 2. Old structure: photos.main (for manually added listings)
+
         const main = getString(photos.main)
         if (main) return main
-        
-        // 3. Gallery array structure
+
         if (photos.gallery && Array.isArray(photos.gallery) && photos.gallery.length > 0) {
             const firstGallery = getString(photos.gallery[0])
             if (firstGallery) return firstGallery
         }
-        
-        // Fallback to placeholder
+
         const fallback = FALLBACK_IMAGES[index % FALLBACK_IMAGES.length]
-        return fallback
+        return ensureAbsoluteAssetUrl(fallback)
     }
 
     function formatPrice(value) {
@@ -883,8 +937,7 @@
         submitBtn.disabled = false
         submitBtn.innerText = 'Reserve Now'
 
-        const statusValue = (listing.status || listing.car?.status || '').toString().trim().toLowerCase()
-        if (SOLD_STATUSES.has(statusValue)) {
+        if (isListingSold(listing)) {
             showAlert(alertBox, 'warning', 'This listing is no longer available.')
             alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' })
             return
@@ -1020,13 +1073,7 @@
         const photoEntries = listing.photos ? Object.entries(listing.photos) : []
         
         // Helper to extract string URL
-        const extractUrl = (val) => {
-            if (!val) return null
-            if (typeof val === 'string') return val
-            if (typeof val === 'object' && val.S) return val.S // DynamoDB format
-            if (typeof val === 'object' && val.url) return val.url
-            return null
-        }
+            const extractUrl = (val) => ensureAbsoluteAssetUrl(val)
         
         // Only add photos with unique URLs
         photoEntries.forEach(([slot, meta]) => {
@@ -1047,10 +1094,13 @@
             // Progressive loading with blur effect
             heroImg.style.filter = 'blur(10px)'
             heroImg.style.transition = 'filter 0.3s ease-in-out'
-            heroImg.src = photos[0].url
+                heroImg.src = ensureAbsoluteAssetUrl(photos[0].url)
             heroImg.alt = `${buildListingTitle(listing)} photo`
             heroImg.loading = 'eager' // Load first image immediately
             heroImg.decoding = 'async'
+                heroImg.onerror = () => {
+                    heroImg.src = ensureAbsoluteAssetUrl(FALLBACK_IMAGES[0])
+                }
             
             // Remove blur when image loads
             heroImg.onload = () => {
@@ -1098,7 +1148,7 @@
                         if (heroImg) {
                             // Load actual thumbnail image if not already loaded
                             if (img.dataset.src) {
-                                img.src = img.dataset.src
+                heroImg.src = ensureAbsoluteAssetUrl(pickHeroImage(listing, index))
                                 delete img.dataset.src
                             }
                             
