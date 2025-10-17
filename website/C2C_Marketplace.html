@@ -405,55 +405,63 @@
     <script>
         // Load customer listings and display them as cards
         (async function() {
+            const API_ENDPOINT = 'https://423cmvhw3g.execute-api.us-east-1.amazonaws.com/prod/customer-listings';
+            const FALLBACK_IMAGE = 'Images/brand_logo.png';
             const grid = document.getElementById('carListingsGrid');
             const noCarMsg = document.getElementById('noCarsMessage');
 
-            try {
-                const res = await fetch('/api/customerListings');
-                const data = await res.json();
+            function resolvePhoto(slotValue) {
+                if (!slotValue) return FALLBACK_IMAGE;
+                if (typeof slotValue === 'string') return slotValue;
+                if (slotValue.url) return slotValue.url;
+                if (slotValue.key) return `https://inspectionwale-car-listings.s3.amazonaws.com/${slotValue.key}`;
+                return FALLBACK_IMAGE;
+            }
 
-                if (data.ok && data.listings && data.listings.length > 0) {
-                    const approvedListings = data.listings.filter(l => l.status === 'approved');
-                    
-                    if (approvedListings.length > 0) {
-                        grid.innerHTML = approvedListings.map(car => {
-                            const primaryPhoto = car.photos?.exteriorFront || car.photos?.exteriorBack || 'Images/default-car.jpg';
-                            const title = `${car.carMake} ${car.carModel} ${car.carEdition || ''}`.trim();
-                            const kmsFormatted = parseInt(car.kmsDriven).toLocaleString('en-IN');
-                            const priceFormatted = '₹' + parseInt(car.expectedPrice).toLocaleString('en-IN');
+            function buildCard(listing) {
+                const car = listing.car || {};
+                const title = `${car.make || ''} ${car.model || ''} ${car.edition || ''}`.replace(/\s+/g, ' ').trim();
+                const kms = car.kmsDriven ? Number(car.kmsDriven.toString().replace(/[^0-9.]/g, '')) : 0;
+                const price = car.expectedPrice ? Number(car.expectedPrice.toString().replace(/[^0-9.]/g, '')) : 0;
+                const kmsFormatted = kms ? kms.toLocaleString('en-IN') : 'N/A';
+                const priceFormatted = price ? '₹' + price.toLocaleString('en-IN') : 'Price on request';
+                const primaryPhoto = listing.heroUrl || resolvePhoto(listing.photos?.exteriorFront) || resolvePhoto(listing.photos?.exteriorBack);
 
-                            return `
-                                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                                    <div class="car-card">
-                                        <img src="${primaryPhoto}" alt="${title}" class="car-card-img">
-                                        <div class="car-card-body">
-                                            <div class="car-price mb-2">${priceFormatted}</div>
-                                            <div class="car-title">${title}</div>
-                                            <div class="car-specs">
-                                                <div class="car-spec-item">
-                                                    <i class="fa fa-calendar text-primary"></i>
-                                                    <span>${car.registrationYear}</span>
-                                                </div>
-                                                <div class="car-spec-item">
-                                                    <i class="fa fa-road text-primary"></i>
-                                                    <span>${kmsFormatted} km</span>
-                                                </div>
-                                            </div>
-                                            <button class="btn view-more-btn w-100 mt-3" onclick="showCarDetails('${car.listingId}')">
-                                                View Details
-                                            </button>
-                                        </div>
+                return `
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="car-card">
+                            <img src="${primaryPhoto}" alt="${title || 'Car photo'}" class="car-card-img" onerror="this.src='${FALLBACK_IMAGE}'">
+                            <div class="car-card-body">
+                                <div class="car-price mb-2">${priceFormatted}</div>
+                                <div class="car-title">${title || 'Customer Listing'}</div>
+                                <div class="car-specs">
+                                    <div class="car-spec-item">
+                                        <i class="fa fa-calendar text-primary"></i>
+                                        <span>${car.registrationYear || 'N/A'}</span>
+                                    </div>
+                                    <div class="car-spec-item">
+                                        <i class="fa fa-road text-primary"></i>
+                                        <span>${kmsFormatted}${kms ? ' km' : ''}</span>
                                     </div>
                                 </div>
-                            `;
-                        }).join('');
+                                <button class="btn view-more-btn w-100 mt-3" onclick="showCarDetails('${listing.listingId}')">
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
 
-                        // Store listings data globally for detail view
-                        window.carListingsData = approvedListings;
-                    } else {
-                        grid.classList.add('d-none');
-                        noCarMsg.classList.remove('d-none');
-                    }
+            try {
+                const res = await fetch(API_ENDPOINT, { headers: { Accept: 'application/json' } });
+                const data = await res.json();
+
+                if (data.ok && Array.isArray(data.items) && data.items.length) {
+                    window.carListingsData = data.items;
+                    grid.innerHTML = data.items.map(buildCard).join('');
+                    grid.classList.remove('d-none');
+                    noCarMsg.classList.add('d-none');
                 } else {
                     grid.classList.add('d-none');
                     noCarMsg.classList.remove('d-none');
@@ -474,28 +482,38 @@
             if (!car) return;
 
             const modal = new bootstrap.Modal(document.getElementById('carDetailModal'));
-            const title = `${car.carMake} ${car.carModel} ${car.carEdition || ''}`.trim();
+            const carInfo = car.car || {};
+            const title = `${carInfo.make || ''} ${carInfo.model || ''} ${carInfo.edition || ''}`.replace(/\s+/g, ' ').trim();
             
             document.getElementById('carDetailModalLabel').textContent = title;
             document.getElementById('carDetailTitle').textContent = title;
-            document.getElementById('carDetailSummary').textContent = car.carEdition || '';
-            document.getElementById('detailYear').textContent = car.registrationYear;
-            document.getElementById('detailKms').textContent = parseInt(car.kmsDriven).toLocaleString('en-IN') + ' km';
-            document.getElementById('detailPrice').textContent = '₹' + parseInt(car.expectedPrice).toLocaleString('en-IN');
+            document.getElementById('carDetailSummary').textContent = car.summary || '';
+            document.getElementById('detailYear').textContent = carInfo.registrationYear || 'N/A';
+            const kms = carInfo.kmsDriven ? Number(carInfo.kmsDriven.toString().replace(/[^0-9.]/g, '')) : 0;
+            document.getElementById('detailKms').textContent = kms ? kms.toLocaleString('en-IN') + ' km' : 'N/A';
+            const price = carInfo.expectedPrice ? Number(carInfo.expectedPrice.toString().replace(/[^0-9.]/g, '')) : 0;
+            document.getElementById('detailPrice').textContent = price ? '₹' + price.toLocaleString('en-IN') : 'Price on request';
             
             // Set hero image
-            const primaryPhoto = car.photos?.exteriorFront || car.photos?.exteriorBack || 'Images/default-car.jpg';
-            document.getElementById('carDetailHero').src = primaryPhoto;
+            const FALLBACK_IMAGE = 'Images/brand_logo.png';
+            const hero = car.heroUrl || (car.photos?.exteriorFront && (car.photos.exteriorFront.url || car.photos.exteriorFront)) || (car.photos?.exteriorBack && (car.photos.exteriorBack.url || car.photos.exteriorBack)) || FALLBACK_IMAGE;
+            const heroImg = document.getElementById('carDetailHero');
+            heroImg.src = hero;
+            heroImg.onerror = function() { this.src = FALLBACK_IMAGE; };
 
             // Set thumbnails
             const thumbnailsContainer = document.getElementById('carDetailThumbnails');
-            const photoKeys = ['exteriorFront', 'exteriorBack', 'exteriorLeft', 'exteriorRight', 'interiorSeat', 'interiorCluster'];
-            thumbnailsContainer.innerHTML = photoKeys
-                .filter(key => car.photos?.[key])
-                .map(key => `
-                    <img src="${car.photos[key]}" class="img-thumbnail" style="width:80px;height:80px;object-fit:cover;cursor:pointer;" 
-                         onclick="document.getElementById('carDetailHero').src='${car.photos[key]}'" alt="Car photo">
-                `).join('');
+            const photoSlots = ['exteriorFront', 'exteriorBack', 'exteriorLeft', 'exteriorRight', 'interiorSeat', 'interiorCluster'];
+            thumbnailsContainer.innerHTML = photoSlots
+                .map(slot => car.photos?.[slot])
+                .filter(Boolean)
+                .map(photo => {
+                    const url = typeof photo === 'string' ? photo : (photo.url || FALLBACK_IMAGE);
+                    return `
+                        <img src="${url}" class="img-thumbnail" style="width:80px;height:80px;object-fit:cover;cursor:pointer;" 
+                             onclick="document.getElementById('carDetailHero').src='${url}'" alt="Car photo" onerror="this.src='${FALLBACK_IMAGE}'">
+                    `;
+                }).join('');
 
             modal.show();
         }
