@@ -1,0 +1,9 @@
+{
+  "name": "c2c-inquiry",
+  "version": "1.0.0",
+  "description": "Lambda function to handle C2C marketplace customer inquiries",
+  "main": "index.js",
+  "dependencies": {
+    "@aws-sdk/client-ses": "^3.0.0"
+  }
+}
