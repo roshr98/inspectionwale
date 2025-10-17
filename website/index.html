@@ -35,18 +35,19 @@
     <meta name="twitter:image" content="https://www.inspectionwale.com/Images/brand_logo.png">
 
     <!-- Favicon -->
-    <link href="Images/brand_logo.png" rel="icon">
-    <link href="Images/brand_logo.png" rel="apple-touch-icon">
+    <link href="/Images/brand_logo.png" rel="icon">
+    <link href="/Images/brand_logo.png" rel="apple-touch-icon">
     
     <!-- Preload Critical Resources -->
-    <link rel="preload" href="css/bootstrap.min.css" as="style">
-    <link rel="preload" href="css/style.css" as="style">
-    <link rel="preload" href="Images/banner_new.avif" as="image" type="image/avif">
+    <link rel="preload" href="/css/bootstrap.min.css" as="style">
+    <link rel="preload" href="/css/style.css" as="style">
+    <link rel="preload" href="/Images/banner_new.avif" as="image" type="image/avif" fetchpriority="high">
     
     <!-- DNS Prefetch -->
     <link rel="dns-prefetch" href="//code.jquery.com">
     <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="preconnect" href="https://423cmvhw3g.execute-api.us-east-1.amazonaws.com">
     
     <!-- Google Analytics 4 - REPLACE G-XXXXXXXXXX with your Measurement ID -->
     <!-- Get your Measurement ID from: https://analytics.google.com/analytics/web/#/a{accountId}/admin/streams/table -->
@@ -270,7 +271,7 @@
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
         <a href="/" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-            <img src="Images/brand_logo.png" alt="inspectionWale Logo" style="height: 90px; width: auto;">
+            <img src="/Images/brand_logo.png" alt="inspectionWale Logo" width="200" height="90" style="height: 90px; width: auto;" loading="lazy" decoding="async">
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
@@ -294,7 +295,7 @@
         <div id="header-carousel" class="carousel" aria-hidden="false">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="w-100" src="Images/banner_new.avif" alt="inspectionWale banner" width="1920" height="600" fetchpriority="high" style="width:100%; object-fit:cover;">
+                    <img class="w-100" src="/Images/banner_new.avif" alt="inspectionWale banner" width="1920" height="600" fetchpriority="high" decoding="async" style="width:100%; object-fit:cover;">
                     <p style="position: absolute; bottom: 10px; right: 15px; margin: 0; font-size: 11px; color: rgba(255,255,255,0.7); background: rgba(0,0,0,0.3); padding: 3px 8px; border-radius: 3px; z-index: 5;">Image courtesy: Peugeot</p>
                     <div class="carousel-caption d-flex align-items-center">
                         <div class="container">
@@ -536,8 +537,8 @@
                 </button>
             </div>
             <div class="text-center mt-4">
-                <a href="C2C_Marketplace.html" target="_blank" class="btn btn-primary rounded-pill py-3 px-5">
-                    Vist our Market Place<i class="fa fa-arrow-right ms-3"></i>
+                        <a href="/car-marketplace/" class="btn btn-primary rounded-pill py-3 px-5">
+                    Show More<i class="fa fa-arrow-right ms-3"></i>
                 </a>
             </div>
         </div>
@@ -762,7 +763,7 @@
                         <div class="row g-4">
                             <div class="col-lg-7">
                                 <div class="ratio ratio-16x9 bg-light rounded border">
-                                    <img id="listingDetailHero" src="" alt="Selected car photo" class="img-fluid rounded" style="object-fit:cover;">
+                                    <img id="listingDetailHero" src="" alt="Selected car photo" class="img-fluid rounded" width="720" height="480" loading="lazy" decoding="async" style="object-fit:cover;">
                                 </div>
                                 <div class="d-flex flex-wrap gap-2 mt-3" id="listingDetailThumbnails"></div>
                             </div>
@@ -928,8 +929,8 @@
 
 
     <!-- JavaScript Libraries - jQuery and Bootstrap load first, others deferred for performance -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script defer src="lib/wow/wow.min.js"></script>
     <script defer src="lib/easing/easing.min.js"></script>
     <script defer src="lib/waypoints/waypoints.min.js"></script>
@@ -939,21 +940,21 @@
     <!-- Template Javascript -->
         <script>
         // Booking form handler for inspectionWale booking panel — posts to /api/quote
-        (function(){
+        document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('bookingFormIW')
             const status = document.getElementById('bookingStatus')
-            if(!form || !status) return
+            if (!form || !status) return
 
-            async function postJSON(url, data){
+            async function postJSON(url, data) {
                 const res = await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
-                })
+            })
                 return res
             }
 
-            form.addEventListener('submit', async function(e){
+            form.addEventListener('submit', async function (e) {
                 e.preventDefault()
                 const fd = new FormData(this)
                 const payload = {
@@ -970,134 +971,126 @@
                 status.className = 'text-muted'
                 status.textContent = 'Sending...'
 
-                try{
+                try {
                     const res = await postJSON('/api/quote', payload)
-                    if(res.ok){
+                    if (res.ok) {
                         status.className = 'text-success'
                         status.textContent = 'Thank you — we will contact you shortly.'
                         this.reset()
                     } else {
-                        const j = await res.json().catch(()=>null)
+                        const j = await res.json().catch(() => null)
                         status.className = 'text-danger'
                         status.textContent = (j && j.error) ? j.error : 'Server error — please try later.'
                     }
-                }catch(err){
+                } catch (err) {
                     console.error(err)
                     status.className = 'text-danger'
                     status.textContent = 'Unable to reach server.'
                 }
 
-                setTimeout(()=>{ status.style.display='none'; status.textContent=''; }, 5000)
+                setTimeout(() => { status.style.display = 'none'; status.textContent = ''; }, 5000)
             })
-        })()
+        });
         </script>
 
         <script>
         // Google Reviews Loader with Carousel
-        (async function(){
-            const container = document.getElementById('googleReviewsContainer')
-            if (!container) return
+        document.addEventListener('DOMContentLoaded', function () {
+            (async function () {
+                const container = document.getElementById('googleReviewsContainer')
+                if (!container) {
+                    return
+                }
 
-            try {
-                const res = await fetch('/api/reviews')
-                const data = await res.json()
-                
-                if (data.ok && data.reviews && data.reviews.length) {
-                    // Update overall rating
-                    if (data.overallRating) {
-                        document.getElementById('overallRating').textContent = data.overallRating.toFixed(1)
-                    }
-                    if (data.totalReviews) {
-                        document.getElementById('totalReviews').textContent = data.totalReviews + ' reviews'
-                    }
-                    
-                    // Update overall stars display
-                    if (data.overallRating) {
-                        const rating = data.overallRating
-                        const full = Math.floor(rating)
-                        const half = rating % 1 >= 0.5 ? 1 : 0
-                        const empty = 5 - full - half
-                        document.getElementById('overallStars').innerHTML = '★'.repeat(full) + (half ? '⯨' : '') + '☆'.repeat(empty)
-                    }
-                    
-                    // Generate star HTML for individual reviews
-                    function getStars(rating) {
-                        const full = Math.floor(rating)
-                        const half = rating % 1 >= 0.5 ? 1 : 0
-                        const empty = 5 - full - half
-                        return '★'.repeat(full) + (half ? '⯨' : '') + '☆'.repeat(empty)
-                    }
-                    
-                    // Render reviews as carousel items
-                    container.innerHTML = data.reviews.map(review => `
-                        <div class="google-review-item text-center">
-                            <div class="bg-light p-4 rounded mx-2" style="min-height: 300px;">
-                                <div class="d-flex align-items-center justify-content-center mb-3">
-                                    ${review.profile_photo ? 
-                                        `<img src="${review.profile_photo}" class="rounded-circle" style="width:60px;height:60px;object-fit:cover;" alt="${review.author}" loading="lazy" decoding="async">` :
-                                        `<div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:60px;height:60px;font-size:24px;font-weight:bold;">${review.author.charAt(0)}</div>`
-                                    }
-                                </div>
-                                <h5 class="mb-1">${review.author}</h5>
-                                <small class="text-muted d-block mb-2">${review.time || ''}</small>
-                                <div class="mb-3" style="color:#ffc107;font-size:1.3em;">
-                                    ${getStars(review.rating)}
-                                </div>
-                                <p class="mb-3" style="min-height: 80px;">${review.text.length > 150 ? review.text.substring(0, 150) + '...' : review.text}</p>
-                                <div class="pt-2 border-top">
-                                    <small class="text-muted">
-                                        <i class="fab fa-google me-1"></i> Posted on Google
-                                    </small>
+                try {
+                    const res = await fetch('/api/reviews')
+                    const data = await res.json()
+
+                    if (data.ok && data.reviews && data.reviews.length) {
+                        if (data.overallRating) {
+                            document.getElementById('overallRating').textContent = data.overallRating.toFixed(1)
+                        }
+                        if (data.totalReviews) {
+                            document.getElementById('totalReviews').textContent = data.totalReviews + ' reviews'
+                        }
+
+                        if (data.overallRating) {
+                            const rating = data.overallRating
+                            const full = Math.floor(rating)
+                            const half = rating % 1 >= 0.5 ? 1 : 0
+                            const empty = 5 - full - half
+                            document.getElementById('overallStars').innerHTML = '★'.repeat(full) + (half ? '⯨' : '') + '☆'.repeat(empty)
+                        }
+
+                        function getStars(rating) {
+                            const full = Math.floor(rating)
+                            const half = rating % 1 >= 0.5 ? 1 : 0
+                            const empty = 5 - full - half
+                            return '★'.repeat(full) + (half ? '⯨' : '') + '☆'.repeat(empty)
+                        }
+
+                        container.innerHTML = data.reviews.map(review => `
+                            <div class="google-review-item text-center">
+                                <div class="bg-light p-4 rounded mx-2" style="min-height: 300px;">
+                                    <div class="d-flex align-items-center justify-content-center mb-3">
+                                        ${review.profile_photo ?
+                                            `<img src="${review.profile_photo}" class="rounded-circle" style="width:60px;height:60px;object-fit:cover;" alt="${review.author}" loading="lazy" decoding="async">` :
+                                            `<div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:60px;height:60px;font-size:24px;font-weight:bold;">${review.author.charAt(0)}</div>`
+                                        }
+                                    </div>
+                                    <h5 class="mb-1">${review.author}</h5>
+                                    <small class="text-muted d-block mb-2">${review.time || ''}</small>
+                                    <div class="mb-3" style="color:#ffc107;font-size:1.3em;">
+                                        ${getStars(review.rating)}
+                                    </div>
+                                    <p class="mb-3" style="min-height: 80px;">${review.text.length > 150 ? review.text.substring(0, 150) + '...' : review.text}</p>
+                                    <div class="pt-2 border-top">
+                                        <small class="text-muted">
+                                            <i class="fab fa-google me-1"></i> Posted on Google
+                                        </small>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    `).join('')
-                    
-                    // Initialize Owl Carousel after reviews are loaded
-                    setTimeout(() => {
-                        $('.google-reviews-carousel').owlCarousel({
-                            autoplay: true,
-                            autoplayTimeout: 5000,
-                            autoplayHoverPause: true,
-                            smartSpeed: 1000,
-                            center: false,
-                            dots: true,
-                            loop: true,
-                            nav: true,
-                            navText: [
-                                '<i class="bi bi-arrow-left"></i>',
-                                '<i class="bi bi-arrow-right"></i>'
-                            ],
-                            responsive: {
-                                0: {
-                                    items: 1
-                                },
-                                768: {
-                                    items: 2
-                                },
-                                992: {
-                                    items: 3
+                        `).join('')
+
+                        setTimeout(() => {
+                            $('.google-reviews-carousel').owlCarousel({
+                                autoplay: true,
+                                autoplayTimeout: 5000,
+                                autoplayHoverPause: true,
+                                smartSpeed: 1000,
+                                center: false,
+                                dots: true,
+                                loop: true,
+                                nav: true,
+                                navText: [
+                                    '<i class="bi bi-arrow-left"></i>',
+                                    '<i class="bi bi-arrow-right"></i>'
+                                ],
+                                responsive: {
+                                    0: { items: 1 },
+                                    768: { items: 2 },
+                                    992: { items: 3 }
                                 }
-                            }
-                        });
-                    }, 100);
-                } else {
-                    // Show fallback message
+                            })
+                        }, 100)
+                    } else {
+                        container.innerHTML = `
+                            <div class="text-center p-4">
+                                <p class="text-muted">Reviews will appear here once configured.</p>
+                            </div>
+                        `
+                    }
+                } catch (err) {
+                    console.error('Failed to load reviews:', err)
                     container.innerHTML = `
                         <div class="text-center p-4">
-                            <p class="text-muted">Reviews will appear here once configured.</p>
+                            <p class="text-danger">Unable to load reviews. Please try again later.</p>
                         </div>
                     `
                 }
-            } catch (err) {
-                console.error('Failed to load reviews:', err)
-                container.innerHTML = `
-                    <div class="text-center p-4">
-                        <p class="text-danger">Unable to load reviews. Please try again later.</p>
-                    </div>
-                `
-            }
-        })()
+            })()
+        });
         </script>
         <script defer src="js/main.js"></script>
         

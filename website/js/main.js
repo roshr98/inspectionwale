@@ -107,7 +107,8 @@
     const API_ENDPOINT = 'https://423cmvhw3g.execute-api.us-east-1.amazonaws.com/prod/customer-listings'
     const REQUIRED_PHOTO_SLOTS = ['exteriorFront', 'exteriorBack', 'exteriorLeft', 'exteriorRight', 'interiorSeat', 'interiorCluster']
     const DOCUMENT_SLOT = 'rcDocument'
-    const FALLBACK_IMAGES = ['Images/car-1.jpg', 'Images/car-2.jpg', 'Images/car-3.jpg', 'Images/car-4.jpg']
+    const FALLBACK_IMAGES = ['/Images/car-1.jpg', '/Images/car-2.jpg', '/Images/car-3.jpg', '/Images/car-4.jpg']
+    const SOLD_STATUSES = new Set(['sold', 'soldout', 'sold-out', 'sold out', 'booked', 'reserved'])
     
     // Image compression settings
     const MAX_IMAGE_WIDTH = 1920
@@ -301,8 +302,9 @@
         article.className = 'customer-highlight-card p-4 h-100'
         article.dataset.listingId = listing.listingId
         
-        // Check if car is sold out
-        const isSoldOut = listing.status === 'soldout' || listing.status === 'sold'
+    // Check if car is sold out
+    const statusValue = (listing.status || listing.car?.status || '').toString().trim().toLowerCase()
+    const isSoldOut = SOLD_STATUSES.has(statusValue)
         
         if (isSoldOut) {
             article.classList.add('sold-out')
@@ -391,11 +393,18 @@
         const reserveBtn = document.createElement('button')
         reserveBtn.type = 'button'
         reserveBtn.className = 'btn btn-success btn-sm'
-        reserveBtn.textContent = 'Reserve'
-        reserveBtn.addEventListener('click', (event) => {
-            event.stopPropagation()
-            openReserveModal(listing.listingId)
-        })
+        if (isSoldOut) {
+            reserveBtn.textContent = 'Sold Out'
+            reserveBtn.classList.remove('btn-success')
+            reserveBtn.classList.add('btn-secondary')
+            reserveBtn.disabled = true
+        } else {
+            reserveBtn.textContent = 'Reserve Now'
+            reserveBtn.addEventListener('click', (event) => {
+                event.stopPropagation()
+                openReserveModal(listing.listingId)
+            })
+        }
 
         buttonGroup.appendChild(detailsBtn)
         buttonGroup.appendChild(reserveBtn)
@@ -855,7 +864,10 @@
     }
 
     function openReserveModal(listingId) {
-        const listing = listingsCache.get(listingId)
+        let listing = listingsCache.get(listingId)
+        if (!listing && Array.isArray(window.carListingsData)) {
+            listing = window.carListingsData.find(item => item.listingId === listingId)
+        }
         if (!listing) return
         const form = document.getElementById('reserveListingForm')
         if (!form) return
@@ -870,6 +882,13 @@
         hideAlert(alertBox)
         submitBtn.disabled = false
         submitBtn.innerText = 'Reserve Now'
+
+        const statusValue = (listing.status || listing.car?.status || '').toString().trim().toLowerCase()
+        if (SOLD_STATUSES.has(statusValue)) {
+            showAlert(alertBox, 'warning', 'This listing is no longer available.')
+            alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            return
+        }
 
         hiddenId.value = listingId
         summary.textContent = `${buildListingTitle(listing)} • ${buildListingStats(listing)} • ${formatPrice(listing.car && listing.car.expectedPrice)}`
@@ -961,7 +980,10 @@
     }
 
     function openDetailModal(listingId) {
-        const listing = listingsCache.get(listingId)
+        let listing = listingsCache.get(listingId)
+        if (!listing && Array.isArray(window.carListingsData)) {
+            listing = window.carListingsData.find(item => item.listingId === listingId)
+        }
         if (!listing) return
         currentListingId = listingId
 

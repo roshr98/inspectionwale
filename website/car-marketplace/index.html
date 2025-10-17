@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Customer-to-Customer Car Marketplace - inspectionWale</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Buy verified used cars directly from owners. Inspected by inspectionWale professionals." name="description">
+    <meta content="used cars, car marketplace, buy cars, sell cars, inspectionWale" name="keywords">
+    <link rel="canonical" href="https://www.inspectionwale.com/car-marketplace/">
+    <meta property="og:url" content="https://www.inspectionwale.com/car-marketplace/">
+    <meta property="og:title" content="Customer-to-Customer Car Marketplace - inspectionWale">
+    <meta property="og:description" content="Browse verified used cars inspected by inspectionWale professionals before you buy.">
+    <meta property="og:image" content="https://www.inspectionwale.com/Images/brand_logo.png">
+
+    <!-- Favicon -->
+    <link href="/Images/brand_logo.png" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700&family=Ubuntu:wght@400;500&display=swap" rel="stylesheet"> 
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="/css/style.css" rel="stylesheet">
+
+    <style>
+        .marketplace-banner {
+            position: relative;
+            height: 400px;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/Images/banner_new.avif') center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .car-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            background: white;
+            height: 100%;
+        }
+
+        .car-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .car-card-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .car-card-img-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .car-card-body {
+            padding: 20px;
+        }
+
+        .car-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0B2154;
+        }
+
+        .car-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .car-specs {
+            display: flex;
+            gap: 15px;
+            margin: 10px 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .car-spec-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .filter-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .view-more-btn {
+            background: #0B2154;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .view-more-btn:hover {
+            background: #D81324;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .car-card.sold-out .view-more-btn {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .car-card.sold-out .view-more-btn:hover {
+            background: #6c757d;
+            transform: none;
+        }
+
+        .inquiry-modal .modal-content {
+            border-radius: 15px;
+        }
+
+        .form-label-required::after {
+            content: " *";
+            color: #D81324;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+        <a href="/" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+            <img src="/Images/brand_logo.png" alt="inspectionWale Logo" width="180" height="60" style="max-height: 60px;" loading="lazy" decoding="async">
+        </a>
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <a href="/" class="nav-item nav-link">Home</a>
+                <a href="/#book" class="nav-item nav-link">Book Inspection</a>
+            </div>
+            <a href="/#book" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Get A Quote<i class="fa fa-arrow-right ms-3"></i></a>
+        </div>
+    </nav>
+    <!-- Navbar End -->
+
+    <!-- Banner Start -->
+    <div class="marketplace-banner">
+        <div class="container text-center">
+            <h1 class="display-3 text-white mb-3 animated slideInDown">Customer-to-Customer Car Marketplace</h1>
+            <p class="fs-5 text-white mb-4">Buy verified, inspected cars directly from owners</p>
+        </div>
+    </div>
+    <!-- Banner End -->
+
+    <!-- Marketplace Content Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <!-- Car Listings Grid -->
+            <div class="row g-4" id="carListingsGrid">
+                <!-- Listings will be loaded here dynamically -->
+                <div class="col-12 text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading cars...</span>
+                    </div>
+                    <p class="mt-3 text-muted">Loading available cars...</p>
+                </div>
+            </div>
+
+            <!-- No Cars Message (hidden by default) -->
+            <div id="noCarsMessage" class="text-center py-5 d-none">
+                <i class="fa fa-car fa-3x text-muted mb-3"></i>
+                <h4 class="text-muted">No cars available at the moment</h4>
+                <p class="text-muted">Check back soon or submit your requirements!</p>
+                <button class="btn btn-primary rounded-pill px-4 mt-3" data-bs-toggle="modal" data-bs-target="#inquiryModal">
+                    Submit Your Requirements
+                </button>
+            </div>
+
+            <!-- Inquiry Call-to-Action -->
+            <div class="text-center mt-5">
+                <button class="btn btn-primary rounded-pill px-5" data-bs-toggle="modal" data-bs-target="#inquiryModal">
+                    <i class="fa fa-search me-2"></i>Looking for Something Specific? Tell Us!
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Marketplace Content End -->
+
+    <!-- Inquiry Modal -->
+    <div class="modal fade inquiry-modal" id="inquiryModal" tabindex="-1" aria-labelledby="inquiryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="inquiryModalLabel">
+                        <i class="fa fa-search me-2"></i>Tell Us What You're Looking For
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="inquiryForm" class="needs-validation" novalidate>
+                    <div class="modal-body p-4">
+                        <div id="inquiryFormAlert" class="alert d-none" role="alert"></div>
+                        
+                        <div class="row g-3">
+                            <!-- Budget -->
+                            <div class="col-md-6">
+                                <label for="budget" class="form-label form-label-required">Budget (Rs.)</label>
+                                <input type="number" class="form-control" id="budget" name="budget" placeholder="e.g. 500000" min="0" step="1000" required>
+                                <div class="invalid-feedback">Please enter your budget</div>
+                            </div>
+
+                            <!-- Name -->
+                            <div class="col-md-6">
+                                <label for="inquiryName" class="form-label form-label-required">Name</label>
+                                <input type="text" class="form-control" id="inquiryName" name="name" placeholder="Your full name" required>
+                                <div class="invalid-feedback">Please enter your name</div>
+                            </div>
+
+                            <!-- Number -->
+                            <div class="col-md-6">
+                                <label for="inquiryNumber" class="form-label form-label-required">Mobile Number</label>
+                                <input type="tel" class="form-control" id="inquiryNumber" name="number" placeholder="10-digit mobile" pattern="^0?\d{10}$" required>
+                                <div class="invalid-feedback">Please enter a valid 10-digit mobile number</div>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="col-md-6">
+                                <label for="inquiryEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="inquiryEmail" name="email" placeholder="name@example.com">
+                            </div>
+
+                            <!-- Preferred Car - Make and Model in same row -->
+                            <div class="col-md-6">
+                                <label for="preferredMake" class="form-label">Preferred Car Make</label>
+                                <select class="form-select" id="preferredMake" name="preferredMake">
+                                    <option value="">Any Make</option>
+                                    <option value="Maruti Suzuki">Maruti Suzuki</option>
+                                    <option value="Hyundai">Hyundai</option>
+                                    <option value="Tata">Tata</option>
+                                    <option value="Mahindra">Mahindra</option>
+                                    <option value="Honda">Honda</option>
+                                    <option value="Toyota">Toyota</option>
+                                    <option value="Kia">Kia</option>
+                                    <option value="Renault">Renault</option>
+                                    <option value="Ford">Ford</option>
+                                    <option value="Volkswagen">Volkswagen</option>
+                                    <option value="Skoda">Skoda</option>
+                                    <option value="Nissan">Nissan</option>
+                                    <option value="MG">MG</option>
+                                    <option value="BMW">BMW</option>
+                                    <option value="Mercedes-Benz">Mercedes-Benz</option>
+                                    <option value="Audi">Audi</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="preferredModel" class="form-label">Preferred Model</label>
+                                <input type="text" class="form-control" id="preferredModel" name="preferredModel" placeholder="e.g. Swift, City, Creta" list="modelSuggestions">
+                                <datalist id="modelSuggestions">
+                                    <!-- Popular models -->
+                                    <option value="Swift">
+                                    <option value="Baleno">
+                                    <option value="Wagon R">
+                                    <option value="Alto">
+                                    <option value="Creta">
+                                    <option value="i20">
+                                    <option value="Venue">
+                                    <option value="City">
+                                    <option value="Amaze">
+                                    <option value="Jazz">
+                                    <option value="Nexon">
+                                    <option value="Tiago">
+                                    <option value="Harrier">
+                                    <option value="XUV700">
+                                    <option value="Scorpio">
+                                    <option value="Seltos">
+                                    <option value="Sonet">
+                                    <option value="Fortuner">
+                                    <option value="Innova">
+                                </datalist>
+                            </div>
+
+                            <!-- Fuel Type -->
+                            <div class="col-md-6">
+                                <label for="fuelType" class="form-label">Fuel Type</label>
+                                <select class="form-select" id="fuelType" name="fuelType">
+                                    <option value="Any">Any</option>
+                                    <option value="Petrol">Petrol</option>
+                                    <option value="Diesel">Diesel</option>
+                                    <option value="CNG">CNG</option>
+                                    <option value="Electric">Electric</option>
+                                </select>
+                            </div>
+
+                            <!-- Location -->
+                            <div class="col-md-6">
+                                <label for="location" class="form-label form-label-required">Location</label>
+                                <input type="text" class="form-control" id="location" name="location" placeholder="e.g. Mumbai, Navi Mumbai" required>
+                                <div class="invalid-feedback">Please enter your location</div>
+                            </div>
+
+                            <!-- Additional Comments -->
+                            <div class="col-12">
+                                <label for="additionalComments" class="form-label">Additional Requirements</label>
+                                <textarea class="form-control" id="additionalComments" name="additionalComments" rows="3" placeholder="Any specific requirements or preferences..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary px-4" id="inquirySubmitBtn">
+                            <i class="fa fa-paper-plane me-2"></i>Submit Requirements
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Car Detail Modal -->
+    <div class="modal fade" id="carDetailModal" tabindex="-1" aria-labelledby="carDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div>
+                        <h5 class="modal-title" id="carDetailModalLabel">Car Details</h5>
+                        <p class="text-muted mb-0 small" id="carDetailMeta"></p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-4">
+                        <div class="col-lg-7">
+                            <div class="ratio ratio-16x9 bg-light rounded border">
+                                <img id="carDetailHero" src="" alt="Car photo" class="img-fluid rounded" width="720" height="480" loading="lazy" decoding="async" style="object-fit:cover;">
+                            </div>
+                            <div class="d-flex flex-wrap gap-2 mt-3" id="carDetailThumbnails"></div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="border rounded p-3 h-100">
+                                <h5 class="fw-semibold" id="carDetailTitle"></h5>
+                                <p class="text-muted" id="carDetailSummary"></p>
+                                <dl class="row mb-0 small">
+                                    <dt class="col-5">Registration Year</dt>
+                                    <dd class="col-7" id="detailYear"></dd>
+                                    <dt class="col-5">KMs Driven</dt>
+                                    <dd class="col-7" id="detailKms"></dd>
+                                    <dt class="col-5">Expected Price</dt>
+                                    <dd class="col-7" id="detailPrice"></dd>
+                                </dl>
+                                <div class="mt-4 d-grid gap-2">
+                                    <button type="button" class="btn btn-success" id="c2cReserveBtn">Reserve Now</button>
+                                    <a href="/#book" class="btn btn-outline-primary" id="c2cBookInspectionBtn">Book an Inspection</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+            <!-- Reserve Listing Modal -->
+            <div class="modal fade" id="c2cReserveModal" tabindex="-1" aria-labelledby="c2cReserveModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="c2cReserveModalLabel">Reserve This Car</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form id="c2cReserveForm" class="needs-validation" novalidate>
+                            <div class="modal-body">
+                                <div id="c2cReserveFormAlert" class="alert d-none" role="alert"></div>
+                                <input type="hidden" id="c2cReserveListingId" name="listingId">
+                                <p class="small text-muted" id="c2cReserveListingSummary"></p>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="c2cReserveName" class="form-label">Name<span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="c2cReserveName" name="name" required>
+                                        <div class="invalid-feedback">Please enter your name</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="c2cReserveMobile" class="form-label">Mobile Number<span class="text-danger">*</span></label>
+                                        <input type="tel" class="form-control" id="c2cReserveMobile" name="mobile" pattern="^0?\d{10}$" required>
+                                        <div class="invalid-feedback">Enter a valid 10-digit mobile number</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="c2cReserveEmail" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="c2cReserveEmail" name="email" placeholder="name@example.com">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="c2cReserveOffer" class="form-label">Offer Price (Rs.)</label>
+                                        <input type="number" class="form-control" id="c2cReserveOffer" name="offerPrice" min="0" step="1" placeholder="Your best offer">
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="c2cReserveNotes" class="form-label">Preferred Follow-up</label>
+                                        <textarea class="form-control" id="c2cReserveNotes" name="notes" rows="2" placeholder="Share any timing preference or message for the seller"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-success" id="c2cReserveSubmitBtn">Reserve Now</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-light footer py-4 mt-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container">
+            <div class="copyright">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <p class="mb-0 text-muted" style="font-size: 14px;">© inspectionwale.com - All Rights Reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script defer src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script defer src="/lib/wow/wow.min.js"></script>
+    <script defer src="/lib/easing/easing.min.js"></script>
+    <script defer src="/lib/waypoints/waypoints.min.js"></script>
+    <script defer src="/lib/counterup/counterup.min.js"></script>
+    <script defer src="/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script defer src="/js/main.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const API_ENDPOINT = 'https://423cmvhw3g.execute-api.us-east-1.amazonaws.com/prod/customer-listings';
+    const INQUIRY_ENDPOINT = '/api/c2cInquiry';
+    const FALLBACK_IMAGE = '/Images/brand_logo.png';
+    const SOLD_STATUSES = new Set(['sold', 'soldout', 'sold-out', 'sold out', 'booked', 'reserved']);
+    const listingMap = new Map();
+
+        // Load customer listings and display them as cards
+        (async function loadListings() {
+            const grid = document.getElementById('carListingsGrid');
+            const noCarMsg = document.getElementById('noCarsMessage');
+
+            function buildCard(listing) {
+                const car = listing.car || {};
+                const title = buildListingTitle(listing) || 'Customer Listing';
+                const kmsFormatted = formatKms(car.kmsDriven) || 'N/A';
+                const priceFormatted = formatPrice(car.expectedPrice);
+                const primaryPhoto = resolvePrimaryPhoto(listing);
+                const isSoldOut = isListingSold(listing);
+                const cardClass = `car-card${isSoldOut ? ' sold-out' : ''}`;
+                const imageWrapperClass = `car-card-img-wrapper${isSoldOut ? ' sold-out-overlay' : ''}`;
+                const actionButton = isSoldOut
+                    ? `<button class="btn view-more-btn w-100 mt-3" type="button" disabled aria-disabled="true">Sold Out</button>`
+                    : `<button class="btn view-more-btn w-100 mt-3" type="button" onclick="showCarDetails('${listing.listingId}')">View Details</button>`;
+
+                return `
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="${cardClass}">
+                            <div class="${imageWrapperClass}">
+                                <img src="${primaryPhoto}" alt="${title}" class="car-card-img" width="400" height="220" loading="lazy" decoding="async" onerror="this.src='${FALLBACK_IMAGE}'">
+                                ${isSoldOut ? '<div class="sold-out-banner">SOLD OUT</div>' : ''}
+                            </div>
+                            <div class="car-card-body">
+                                <div class="car-price mb-2">${priceFormatted}</div>
+                                <div class="car-title">${title}</div>
+                                <div class="car-specs">
+                                    <div class="car-spec-item">
+                                        <i class="fa fa-calendar text-primary"></i>
+                                        <span>${car.registrationYear || 'N/A'}</span>
+                                    </div>
+                                    <div class="car-spec-item">
+                                        <i class="fa fa-road text-primary"></i>
+                                        <span>${kmsFormatted}</span>
+                                    </div>
+                                </div>
+                                ${actionButton}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            try {
+                const res = await fetch(API_ENDPOINT, { headers: { Accept: 'application/json' } });
+                const data = await res.json();
+
+                if (data.ok && Array.isArray(data.items) && data.items.length) {
+                    listingMap.clear();
+                    data.items.forEach(item => {
+                        if (item?.listingId) {
+                            listingMap.set(item.listingId, item);
+                        }
+                    });
+                    window.carListingsData = data.items;
+                    grid.innerHTML = data.items.map(buildCard).join('');
+                    grid.classList.remove('d-none');
+                    noCarMsg.classList.add('d-none');
+                } else {
+                    grid.classList.add('d-none');
+                    noCarMsg.classList.remove('d-none');
+                }
+            } catch (err) {
+                console.error('Error loading listings:', err);
+                grid.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <p class="text-danger">Unable to load cars. Please try again later.</p>
+                    </div>
+                `;
+            }
+        })();
+
+        function isListingSold(listing) {
+            if (!listing) return false;
+            const statusValue = normalizeStatus(listing.status || listing.car?.status);
+            return SOLD_STATUSES.has(statusValue);
+        }
+
+        function normalizeStatus(value) {
+            return value ? value.toString().trim().toLowerCase() : '';
+        }
+
+        function buildListingTitle(listing) {
+            const car = listing?.car || {};
+            return `${car.make || ''} ${car.model || ''} ${car.edition || ''}`.replace(/\s+/g, ' ').trim();
+        }
+
+        function formatKms(value) {
+            if (!value) return '';
+            const numeric = Number(String(value).replace(/[^0-9.]/g, ''));
+            if (!Number.isFinite(numeric) || numeric <= 0) return '';
+            return `${numeric.toLocaleString('en-IN')} km`;
+        }
+
+        function formatPrice(value) {
+            if (value === undefined || value === null || value === '') return 'Price on request';
+            const numeric = Number(String(value).replace(/[^0-9.]/g, ''));
+            if (!Number.isFinite(numeric) || numeric <= 0) return 'Price on request';
+            return `₹${numeric.toLocaleString('en-IN')}`;
+        }
+
+        function buildListingSummaryLine(listing) {
+            const parts = [];
+            const car = listing?.car || {};
+            if (car.registrationYear) parts.push(car.registrationYear);
+            const kms = formatKms(car.kmsDriven);
+            if (kms) parts.push(kms);
+            parts.push(formatPrice(car.expectedPrice));
+            return parts.filter(Boolean).join(' • ');
+        }
+
+        function extractPhotoUrl(slotValue) {
+            if (!slotValue) return '';
+            if (typeof slotValue === 'string') return slotValue;
+            if (slotValue.url) return slotValue.url;
+            if (slotValue.key) return `https://inspectionwale-car-listings.s3.amazonaws.com/${slotValue.key}`;
+            if (slotValue.S) return slotValue.S;
+            return '';
+        }
+
+        function resolvePrimaryPhoto(listing) {
+            if (!listing) return FALLBACK_IMAGE;
+            if (listing.heroUrl) return listing.heroUrl;
+            const photos = listing.photos || {};
+            const preferredSlots = ['exteriorFront', 'exteriorBack', 'exteriorLeft', 'exteriorRight'];
+            for (const slot of preferredSlots) {
+                const url = extractPhotoUrl(photos[slot]);
+                if (url) return url;
+            }
+            if (Array.isArray(photos.gallery)) {
+                for (const item of photos.gallery) {
+                    const url = extractPhotoUrl(item);
+                    if (url) return url;
+                }
+            }
+            return FALLBACK_IMAGE;
+        }
+
+        function collectListingPhotos(listing) {
+            const photos = [];
+            if (!listing) return photos;
+            const photoEntries = listing.photos ? Object.entries(listing.photos) : [];
+            const seen = new Set();
+            photoEntries.forEach(([slot, value]) => {
+                const url = extractPhotoUrl(value);
+                if (url && !seen.has(url) && slot !== 'rcDocument') {
+                    photos.push({ slot, url });
+                    seen.add(url);
+                }
+            });
+            if (!photos.length) {
+                const fallback = resolvePrimaryPhoto(listing);
+                if (fallback) photos.push({ slot: 'exteriorFront', url: fallback });
+            }
+            return photos;
+        }
+
+        // Show car details in modal
+        function showCarDetails(listingId) {
+            const listing = listingMap.get(listingId) || window.carListingsData?.find(c => c.listingId === listingId);
+            if (!listing) return;
+
+            const carInfo = listing.car || {};
+            const title = buildListingTitle(listing) || 'Car Details';
+            const modalEl = document.getElementById('carDetailModal');
+            if (!modalEl) return;
+
+            const isSoldOut = isListingSold(listing);
+            document.getElementById('carDetailModalLabel').textContent = title;
+            document.getElementById('carDetailTitle').textContent = title;
+            document.getElementById('carDetailSummary').textContent = listing.summary || '';
+            document.getElementById('carDetailMeta').textContent = listing.createdAt
+                ? `Submitted on ${new Date(listing.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}`
+                : '';
+            document.getElementById('detailYear').textContent = carInfo.registrationYear || 'N/A';
+            document.getElementById('detailKms').textContent = formatKms(carInfo.kmsDriven) || 'N/A';
+            document.getElementById('detailPrice').textContent = formatPrice(carInfo.expectedPrice);
+
+            const heroImg = document.getElementById('carDetailHero');
+            const photos = collectListingPhotos(listing);
+            if (heroImg) {
+                heroImg.src = (photos[0] && photos[0].url) || FALLBACK_IMAGE;
+                heroImg.alt = `${title} photo`;
+                heroImg.onerror = function() { this.src = FALLBACK_IMAGE; };
+            }
+
+            const thumbnailsContainer = document.getElementById('carDetailThumbnails');
+            if (thumbnailsContainer) {
+                thumbnailsContainer.innerHTML = photos.map(photo => {
+                    const safeUrl = photo.url || FALLBACK_IMAGE;
+                    const slotLabel = photo.slot ? photo.slot.replace(/([A-Z])/g, ' $1') : 'Photo';
+                    return `
+                        <img src="${safeUrl}" class="img-thumbnail" style="width:80px;height:80px;object-fit:cover;cursor:pointer;"
+                             width="80" height="80" loading="lazy" decoding="async"
+                             alt="${slotLabel.trim()}" onerror="this.src='${FALLBACK_IMAGE}'"
+                             onclick="document.getElementById('carDetailHero').src='${safeUrl}'">
+                    `;
+                }).join('');
+            }
+
+            const reserveBtn = document.getElementById('c2cReserveBtn');
+            if (reserveBtn) {
+                reserveBtn.onclick = null;
+                reserveBtn.textContent = isSoldOut ? 'Sold Out' : 'Reserve Now';
+                reserveBtn.classList.toggle('btn-success', !isSoldOut);
+                reserveBtn.classList.toggle('btn-secondary', isSoldOut);
+                reserveBtn.disabled = isSoldOut;
+                if (!isSoldOut) {
+                    reserveBtn.onclick = () => openC2CReserveModal(listingId);
+                }
+            }
+
+            const modal = new bootstrap.Modal(modalEl);
+            modal.show();
+        }
+
+        function openC2CReserveModal(listingId) {
+            const listing = listingMap.get(listingId) || window.carListingsData?.find(c => c.listingId === listingId);
+            if (!listing) return;
+
+            const form = document.getElementById('c2cReserveForm');
+            const alertBox = document.getElementById('c2cReserveFormAlert');
+            const submitBtn = document.getElementById('c2cReserveSubmitBtn');
+            const hiddenId = document.getElementById('c2cReserveListingId');
+            const summary = document.getElementById('c2cReserveListingSummary');
+
+            if (!form || !alertBox || !submitBtn || !hiddenId || !summary) return;
+
+            const modalEl = document.getElementById('c2cReserveModal');
+            if (!modalEl) return;
+
+            resetReserveForm();
+
+            const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+
+            if (isListingSold(listing)) {
+                showReserveAlert('warning', 'This listing is no longer available to reserve.');
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Unavailable';
+                modal.show();
+                return;
+            }
+
+            hiddenId.value = listingId;
+            summary.textContent = `${buildListingTitle(listing)} • ${buildListingSummaryLine(listing)}`;
+
+            modal.show();
+        }
+
+        function showReserveAlert(type, message) {
+            const alertBox = document.getElementById('c2cReserveFormAlert');
+            if (!alertBox) return;
+            alertBox.className = `alert alert-${type}`;
+            alertBox.textContent = message;
+            alertBox.classList.remove('d-none');
+        }
+
+        function hideReserveAlert() {
+            const alertBox = document.getElementById('c2cReserveFormAlert');
+            if (!alertBox) return;
+            alertBox.classList.add('d-none');
+            alertBox.textContent = '';
+        }
+
+        function resetReserveForm() {
+            const form = document.getElementById('c2cReserveForm');
+            const submitBtn = document.getElementById('c2cReserveSubmitBtn');
+            if (form) {
+                form.reset();
+                form.classList.remove('was-validated');
+            }
+            hideReserveAlert();
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Reserve Now';
+            }
+        }
+
+        const reserveModalElement = document.getElementById('c2cReserveModal');
+        if (reserveModalElement) {
+            reserveModalElement.addEventListener('hidden.bs.modal', resetReserveForm);
+        }
+
+        async function postReservation(payload) {
+            const res = await fetch(API_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'reserve', ...payload })
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok || data.ok === false) {
+                const error = new Error((data && data.error) || 'request_failed');
+                error.payload = data;
+                throw error;
+            }
+            return data;
+        }
+
+        function friendlyReserveError(error) {
+            if (!error) return 'Unable to submit your reservation right now. Please try again shortly.';
+            const code = error.payload && error.payload.error;
+            switch (code) {
+                case 'listing_not_found':
+                    return 'This listing is no longer available.';
+                case 'customer_details_required':
+                    return 'Name and mobile number are required to reserve.';
+                case 'customer_email_invalid':
+                    return 'Please provide a valid email address or leave it blank.';
+                default:
+                    return 'Unable to submit your reservation right now. Please try again shortly.';
+            }
+        }
+
+        const reserveForm = document.getElementById('c2cReserveForm');
+        if (reserveForm) {
+            reserveForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                if (!reserveForm.checkValidity()) {
+                    reserveForm.classList.add('was-validated');
+                    return;
+                }
+
+                const formData = new FormData(reserveForm);
+                const listingId = formData.get('listingId');
+                if (!listingId) {
+                    showReserveAlert('danger', 'Missing listing information. Please reopen the car details.');
+                    return;
+                }
+
+                const listing = listingMap.get(listingId) || window.carListingsData?.find(c => c.listingId === listingId);
+                if (!listing) {
+                    showReserveAlert('danger', 'This listing could not be found. Please refresh the page.');
+                    return;
+                }
+
+                if (isListingSold(listing)) {
+                    showReserveAlert('warning', 'Sorry, this car has just been marked as sold.');
+                    return;
+                }
+
+                hideReserveAlert();
+                const submitBtn = document.getElementById('c2cReserveSubmitBtn');
+                if (!submitBtn) return;
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Submitting...';
+
+                const payload = {
+                    listingId,
+                    name: formData.get('name'),
+                    mobile: formData.get('mobile'),
+                    email: formData.get('email') || '',
+                    offerPrice: formData.get('offerPrice') || '',
+                    notes: formData.get('notes') || ''
+                };
+
+                try {
+                    const result = await postReservation(payload);
+                    showReserveAlert('success', result.message || 'Thank you! Our team will reach out shortly.');
+                    submitBtn.textContent = 'Submitted';
+
+                    const modalEl = document.getElementById('c2cReserveModal');
+                    const modalInstance = modalEl ? bootstrap.Modal.getInstance(modalEl) : null;
+                    setTimeout(() => {
+                        if (modalInstance) {
+                            modalInstance.hide();
+                        }
+                        resetReserveForm();
+                    }, 2500);
+                } catch (err) {
+                    console.error('Reserve submission failed', err);
+                    showReserveAlert('danger', friendlyReserveError(err));
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Reserve Now';
+                }
+            });
+        }
+
+        // Inquiry form submission
+        document.getElementById('inquiryForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!this.checkValidity()) {
+                e.stopPropagation();
+                this.classList.add('was-validated');
+                return;
+            }
+
+            const submitBtn = document.getElementById('inquirySubmitBtn');
+            const alert = document.getElementById('inquiryFormAlert');
+            const formData = new FormData(this);
+            
+            const payload = {
+                budget: formData.get('budget'),
+                name: formData.get('name'),
+                number: formData.get('number'),
+                email: formData.get('email') || '',
+                preferredMake: formData.get('preferredMake') || 'Any',
+                preferredModel: formData.get('preferredModel') || 'Any',
+                fuelType: formData.get('fuelType') || 'Any',
+                location: formData.get('location'),
+                additionalComments: formData.get('additionalComments') || ''
+            };
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
+
+            try {
+                const res = await fetch(INQUIRY_ENDPOINT, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    alert.className = 'alert alert-success';
+                    alert.textContent = 'Thank you! We will contact you soon with matching cars.';
+                    alert.classList.remove('d-none');
+                    this.reset();
+                    this.classList.remove('was-validated');
+                    
+                    setTimeout(() => {
+                        bootstrap.Modal.getInstance(document.getElementById('inquiryModal')).hide();
+                        alert.classList.add('d-none');
+                    }, 3000);
+                } else {
+                    const errorData = await res.json().catch(() => null);
+                    alert.className = 'alert alert-danger';
+                    alert.textContent = errorData?.error || 'Failed to submit. Please try again.';
+                    alert.classList.remove('d-none');
+                }
+            } catch (err) {
+                console.error(err);
+                alert.className = 'alert alert-danger';
+                alert.textContent = 'Unable to reach server. Please try again.';
+                alert.classList.remove('d-none');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa fa-paper-plane me-2"></i>Submit Requirements';
+            }
+        });
+    });
+    </script>
+</body>
+
+</html>

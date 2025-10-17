@@ -16,8 +16,19 @@ const LISTINGS_TABLE = process.env.CAR_LISTINGS_TABLE || process.env.LISTINGS_TA
 const RESERVATIONS_TABLE = process.env.CAR_RESERVATIONS_TABLE || process.env.RESERVATIONS_TABLE
 const LISTINGS_BUCKET = process.env.CAR_LISTINGS_BUCKET || process.env.LISTINGS_BUCKET
 const CDN_BASE_URL = trimTrailingSlash(process.env.CAR_LISTINGS_CDN || process.env.LISTINGS_CDN_URL || '')
-const REVIEW_EMAIL = process.env.LISTINGS_REVIEW_EMAIL || process.env.SES_TO || 'hello@inspectionwale.com'
-const SES_SOURCE = process.env.SES_FROM
+
+const DEFAULT_REVIEW_EMAIL = 'inspectionwale@zohomail.in'
+const DEFAULT_SOURCE_EMAIL = 'hello@inspectionwale.com'
+
+const REVIEW_EMAIL = normaliseString(process.env.LISTINGS_REVIEW_EMAIL || process.env.SES_TO || DEFAULT_REVIEW_EMAIL)
+const SES_SOURCE = normaliseString(process.env.SES_FROM || DEFAULT_SOURCE_EMAIL)
+const REVIEW_RECIPIENTS = Array.from(new Set([
+  REVIEW_EMAIL,
+  process.env.LISTINGS_REVIEW_EMAIL,
+  process.env.SES_TO,
+  DEFAULT_REVIEW_EMAIL,
+  DEFAULT_SOURCE_EMAIL
+].map(normaliseString).filter(Boolean)))
 
 const REQUIRED_PHOTO_SLOTS = ['exteriorFront', 'exteriorBack', 'exteriorLeft', 'exteriorRight', 'interiorSeat', 'interiorCluster']
 const DOCUMENT_SLOTS = ['rcDocument']
@@ -156,10 +167,12 @@ async function handleList() {
 
   let items = []
   let startKey
+  const visibleStatuses = new Set(['approved', 'sold', 'soldout', 'sold-out', 'sold out', 'booked', 'reserved'])
+
   do {
     if (startKey) params.ExclusiveStartKey = startKey
     const result = await ddb.send(new ScanCommand(params))
-    const approved = (result.Items || []).filter(item => item.status === 'approved')
+    const approved = (result.Items || []).filter(item => visibleStatuses.has((item.status || '').toLowerCase()))
     items = items.concat(approved)
     startKey = result.LastEvaluatedKey
   } while (startKey)
@@ -402,8 +415,8 @@ function sanitizeListingForPublic(item) {
 }
 
 async function sendNewListingEmail(item) {
-  if (!REVIEW_EMAIL || !SES_SOURCE) {
-    console.warn('SES SOURCE or REVIEW_EMAIL missing; skipping email for new listing')
+  if (!REVIEW_RECIPIENTS.length || !SES_SOURCE) {
+    console.warn('SES SOURCE or review recipients missing; skipping email for new listing')
     return
   }
 
@@ -573,9 +586,14 @@ async function sendNewListingEmail(item) {
     </html>
   `
 
+  const primaryRecipient = REVIEW_EMAIL || REVIEW_RECIPIENTS[0]
+  const ccRecipients = REVIEW_RECIPIENTS.filter(email => email && email !== primaryRecipient)
+  const destination = { ToAddresses: [primaryRecipient] }
+  if (ccRecipients.length) destination.CcAddresses = ccRecipients
+
   const command = new SendEmailCommand({
     Source: SES_SOURCE,
-    Destination: { ToAddresses: [REVIEW_EMAIL] },
+    Destination: destination,
     Message: {
       Subject: { Data: `🚗 Car Listing Request Received: ${carTitle} - ${car.registrationYear}` },
       Body: {
@@ -594,8 +612,8 @@ function generateApprovalToken(listingId, action, secretKey) {
 }
 
 async function sendReservationEmail(listing, reservation) {
-  if (!REVIEW_EMAIL || !SES_SOURCE) {
-    console.warn('SES SOURCE or REVIEW_EMAIL missing; skipping reservation email')
+  if (!REVIEW_RECIPIENTS.length || !SES_SOURCE) {
+    console.warn('SES SOURCE or review recipients missing; skipping reservation email')
     return
   }
 
@@ -603,7 +621,7 @@ async function sendReservationEmail(listing, reservation) {
   const seller = listing.seller || {}
 
   // Only send to admin, not to customer/seller
-  const recipients = new Set([REVIEW_EMAIL])
+  const recipients = REVIEW_RECIPIENTS
 
   const lines = [
     'New reservation request for a customer listing',
@@ -621,9 +639,14 @@ async function sendReservationEmail(listing, reservation) {
     `Submitted at: ${reservation.createdAt}`
   ].filter(Boolean)
 
+  const toAddresses = recipients.length ? [recipients[0]] : []
+  const ccAddresses = recipients.slice(1)
+  const destination = { ToAddresses: toAddresses }
+  if (ccAddresses.length) destination.CcAddresses = ccAddresses
+
   const command = new SendEmailCommand({
     Source: SES_SOURCE,
-    Destination: { ToAddresses: Array.from(recipients) },
+    Destination: destination,
     Message: {
       Subject: { Data: `Reservation request for ${car.make} ${car.model}`.trim() },
       Body: {

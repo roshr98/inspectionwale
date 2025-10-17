@@ -182,9 +182,10 @@ inspectionWale - Customer-to-Customer Car Marketplace
 
         // Send email via SES
         const params = {
-            Source: 'inspectionwale@zohomail.in',
+            Source: 'hello@inspectionwale.com',
             Destination: {
-                ToAddresses: ['inspectionwale@zohomail.in']
+                ToAddresses: ['inspectionwale@zohomail.in'],
+                CcAddresses: ['hello@inspectionwale.com']
             },
             Message: {
                 Subject: {
