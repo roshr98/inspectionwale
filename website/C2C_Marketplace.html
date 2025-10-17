@@ -166,17 +166,6 @@
     <!-- Marketplace Content Start -->
     <div class="container-xxl py-5">
         <div class="container">
-            <!-- Filter Section -->
-            <div class="filter-section">
-                <div class="row g-3">
-                    <div class="col-12 text-center mb-3">
-                        <button class="btn btn-primary rounded-pill px-5" data-bs-toggle="modal" data-bs-target="#inquiryModal">
-                            <i class="fa fa-search me-2"></i>Looking for Something Specific? Tell Us!
-                        </button>
-                    </div>
-                </div>
-            </div>
-
             <!-- Car Listings Grid -->
             <div class="row g-4" id="carListingsGrid">
                 <!-- Listings will be loaded here dynamically -->
@@ -195,6 +184,13 @@
                 <p class="text-muted">Check back soon or submit your requirements!</p>
                 <button class="btn btn-primary rounded-pill px-4 mt-3" data-bs-toggle="modal" data-bs-target="#inquiryModal">
                     Submit Your Requirements
+                </button>
+            </div>
+
+            <!-- Inquiry Call-to-Action -->
+            <div class="text-center mt-5">
+                <button class="btn btn-primary rounded-pill px-5" data-bs-toggle="modal" data-bs-target="#inquiryModal">
+                    <i class="fa fa-search me-2"></i>Looking for Something Specific? Tell Us!
                 </button>
             </div>
         </div>
@@ -403,9 +399,11 @@
     <script src="js/main.js"></script>
 
     <script>
+    const API_ENDPOINT = 'https://423cmvhw3g.execute-api.us-east-1.amazonaws.com/prod/customer-listings';
+    const INQUIRY_ENDPOINT = '/api/c2cInquiry';
+
         // Load customer listings and display them as cards
         (async function() {
-            const API_ENDPOINT = 'https://423cmvhw3g.execute-api.us-east-1.amazonaws.com/prod/customer-listings';
             const FALLBACK_IMAGE = 'Images/brand_logo.png';
             const grid = document.getElementById('carListingsGrid');
             const noCarMsg = document.getElementById('noCarsMessage');
@@ -548,7 +546,7 @@
             submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
 
             try {
-                const res = await fetch('/api/c2cInquiry', {
+                const res = await fetch(INQUIRY_ENDPOINT, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
