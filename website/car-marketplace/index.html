@@ -38,33 +38,238 @@
     <link href="../css/style.css" rel="stylesheet">
 
     <style>
+        :root {
+            --iw-navy: #0B2154;
+            --iw-red: #D81324;
+            --iw-slate: #5C6377;
+        }
+
+        body.marketplace-page {
+            background: #f5f6fb;
+            padding-top: 0;
+        }
+
+        #goog-gt-tt,
+        .goog-te-banner-frame,
+        .goog-te-balloon-frame {
+            display: none !important;
+        }
+
+        /* Top Header - Transparent over banner */
+        .top-banner {
+            background: transparent;
+            padding: 15px 0;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1050;
+        }
+        
+        .banner-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .banner-logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .banner-logo img {
+            height: 55px;
+            width: auto;
+            opacity: 1;
+        }
+        
+        .banner-icons {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+        
+        .banner-icon {
+            color: #fff;
+            font-size: 1.2rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .banner-icon:hover {
+            color: #D81324;
+            transform: scale(1.1);
+        }
+        
+        .banner-icon i {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .top-banner {
+                padding: 10px 0;
+            }
+            
+            .banner-container {
+                padding: 0 15px;
+            }
+            
+            .banner-logo img {
+                height: 40px;
+            }
+            
+            .banner-icons {
+                gap: 15px;
+            }
+            
+            .banner-icon {
+                font-size: 1rem;
+            }
+        }
+
         .marketplace-banner {
             position: relative;
-            height: 400px;
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/Images/banner_new.avif') center center/cover;
+            height: 450px;
+            background: linear-gradient(rgba(5, 16, 45, 0.5), rgba(5, 16, 45, 0.75)), url('/Images/marketplace.png') center center no-repeat;
+            background-size: cover;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: #fff;
+            border-radius: 0 0 32px 32px;
+            overflow: hidden;
+        }
+        
+        @media (max-width: 768px) {
+            .marketplace-banner {
+                height: 350px;
+                background-position: center center;
+            }
+        }
+
+        .marketplace-search-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 25px 60px rgba(11, 33, 84, 0.08);
+            border: 1px solid rgba(11, 33, 84, 0.08);
+            margin-top: -80px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .finder-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--iw-navy);
+            margin-bottom: 18px;
+        }
+
+        .finder-input-wrapper {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border-radius: 999px;
+            border: 1px solid #d5d8e5;
+            padding: 6px 16px 6px 24px;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+        }
+
+        .finder-input-wrapper input {
+            border: none;
+            flex: 1;
+            padding: 10px 6px;
+            font-size: 1rem;
+            color: #333;
+            outline: none;
+            background: transparent;
+        }
+
+        .finder-input-wrapper button {
+            border: none;
+            background: transparent;
+            color: var(--iw-slate);
+            font-size: 1.2rem;
+        }
+
+        .finder-links a {
+            font-weight: 600;
+            color: var(--iw-navy);
+            margin-right: 24px;
+            text-decoration: none;
+        }
+
+        .filter-section {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(11, 33, 84, 0.06);
+            margin-top: 24px;
+        }
+
+        .filter-section label {
+            font-size: 0.9rem;
+            color: var(--iw-slate);
+        }
+
+        .filter-section .form-select,
+        .filter-section .form-control {
+            border-radius: 12px;
+            border-color: #dfe3f1;
+        }
+
+        .city-chip {
+            border-radius: 999px;
+            border: 1px solid #d8d8d8;
+            color: #555;
+            background: #fff;
+            padding: 6px 16px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .city-chip.active,
+        .city-chip:hover {
+            background: var(--iw-navy);
+            color: #fff;
+            border-color: var(--iw-navy);
+        }
+
+        .marketplace-results-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 30px 0 10px;
+            color: #6b7287;
+            font-weight: 500;
         }
 
         .car-card {
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
+            border: 1px solid #e8ebf5;
+            border-radius: 20px;
             overflow: hidden;
             transition: transform 0.3s, box-shadow 0.3s;
             background: white;
             height: 100%;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 60px rgba(11, 33, 84, 0.08);
         }
 
         .car-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transform: translateY(-6px);
+            box-shadow: 0 30px 70px rgba(11, 33, 84, 0.12);
         }
 
         .car-card-img {
             width: 100%;
-            height: 220px;
+            height: 240px;
             object-fit: cover;
         }
 
@@ -73,59 +278,119 @@
             overflow: hidden;
         }
 
+        .featured-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: #ff9f43;
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .sold-out-banner {
+            position: absolute;
+            top: 16px;
+            right: -60px;
+            background: #101828;
+            color: #fff;
+            font-size: 0.85rem;
+            padding: 6px 60px;
+            transform: rotate(45deg);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
         .car-card-body {
-            padding: 20px;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
         }
 
         .car-price {
-            font-size: 24px;
+            font-size: 1.4rem;
             font-weight: 700;
-            color: #0B2154;
+            color: var(--iw-navy);
         }
 
         .car-title {
-            font-size: 18px;
+            font-size: 1.1rem;
             font-weight: 600;
-            color: #333;
-            margin-bottom: 10px;
+            color: #1f2a44;
+            margin: 6px 0;
         }
 
-        .car-specs {
+        .car-subtitle {
+            font-size: 0.95rem;
+            color: #6c738e;
+        }
+
+        .car-specs-row {
             display: flex;
-            gap: 15px;
-            margin: 10px 0;
-            font-size: 14px;
-            color: #666;
+            gap: 16px;
+            font-size: 0.9rem;
+            color: #4f5772;
+            margin: 14px 0;
         }
 
         .car-spec-item {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
         }
 
-        .filter-section {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
+        .car-card-tags {
+            margin-top: auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .car-chip {
+            background: #eef2ff;
+            color: #3c4a9a;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
         }
 
         .view-more-btn {
-            background: #0B2154;
+            background: #ff3b30;
             color: white;
             border: none;
-            padding: 10px 30px;
-            border-radius: 5px;
+            padding: 10px 18px;
+            border-radius: 12px;
             font-weight: 600;
             transition: all 0.3s;
         }
 
         .view-more-btn:hover {
-            background: #D81324;
+            background: #e12a20;
             color: white;
-            transform: translateY(-2px);
+            transform: translateY(-1px);
+        }
+
+        .car-card-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .make-offer-link {
+            color: var(--iw-navy);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .make-offer-link:hover {
+            color: var(--iw-red);
+            text-decoration: underline;
         }
 
         .car-card.sold-out .view-more-btn {
@@ -146,10 +411,38 @@
             content: " *";
             color: #D81324;
         }
+
+        @media (max-width: 767.98px) {
+            .marketplace-search-card {
+                padding: 22px;
+                margin-top: -60px;
+            }
+
+            .finder-title {
+                font-size: 22px;
+            }
+
+            .car-card-body {
+                padding: 18px;
+            }
+
+            .car-card-img {
+                height: 200px;
+            }
+
+            .car-card-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .view-more-btn {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 
-<body>
+<body class="marketplace-page">
     <!-- Spinner Start -->
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
@@ -158,23 +451,28 @@
     </div>
     <!-- Spinner End -->
 
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-        <a href="/" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-            <img src="/Images/brand_logo.png" alt="inspectionWale Logo" width="180" height="60" style="max-height: 60px;" loading="lazy" decoding="async">
-        </a>
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="/" class="nav-item nav-link">Home</a>
-                <a href="/#book" class="nav-item nav-link">Book Inspection</a>
+    <!-- Top Header with Logo and Icons -->
+    <div class="top-banner">
+        <div class="banner-container">
+            <a href="/" class="banner-logo">
+                <img src="/Images/brand_logo.png" alt="inspectionWale Logo" width="120" height="55" loading="eager" decoding="async">
+            </a>
+            <div class="banner-icons">
+                <a href="tel:+919876543210" class="banner-icon" title="Call Us">
+                    <i class="fas fa-map-marker-alt"></i>
+                </a>
+                <div class="translate-btn-wrapper" style="position: relative;">
+                    <button type="button" class="btn btn-sm banner-icon" onclick="toggleTranslateDropdown()" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem;">
+                        <i class="fas fa-language me-1"></i> <span class="d-none d-md-inline">हिंदी</span>
+                    </button>
+                    <div id="google_translate_element" style="position: absolute; top: 100%; right: 0; margin-top: 5px; display: none; background: #fff; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); padding: 10px; min-width: 180px; z-index: 9999;"></div>
+                </div>
+                <a href="/inspector-login.html" title="Inspector Login" class="banner-icon">
+                    <i class="fa fa-user"></i>
+                </a>
             </div>
-            <a href="/#book" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Get A Quote<i class="fa fa-arrow-right ms-3"></i></a>
         </div>
-    </nav>
-    <!-- Navbar End -->
+    </div>
 
     <!-- Banner Start -->
     <div class="marketplace-banner">
@@ -188,6 +486,70 @@
     <!-- Marketplace Content Start -->
     <div class="container-xxl py-5">
         <div class="container">
+            <div class="marketplace-search-card">
+                <p class="finder-title mb-2">Find Second Hand Cars</p>
+                <div class="finder-input-wrapper">
+                    <label for="marketplaceSearch" class="visually-hidden">Search cars</label>
+                    <input type="text" id="marketplaceSearch" placeholder="Type model name, e.g., Used Alto">
+                    <button type="button" aria-label="Search">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+                <div class="finder-links d-flex flex-wrap mt-3">
+                    <a href="/#book">Sell Your Car</a>
+                    <a href="/#book">Check Value of Your Car</a>
+                </div>
+            </div>
+            <div class="filter-section mb-4">
+                <div class="row g-3 align-items-end">
+                    <div class="col-6 col-md-3">
+                        <label for="marketplacePrice" class="form-label mb-1 fw-semibold">Budget</label>
+                        <select id="marketplacePrice" class="form-select">
+                            <option value="">Any</option>
+                            <option value="lt1">Below ₹1 Lakh</option>
+                            <option value="lt2">Below ₹2 Lakh</option>
+                            <option value="lt3">Below ₹3 Lakh</option>
+                            <option value="lt5">Below ₹5 Lakh</option>
+                            <option value="lt10">Below ₹10 Lakh</option>
+                            <option value="gte10">₹10 Lakh +</option>
+                        </select>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <label for="marketplaceFuel" class="form-label mb-1 fw-semibold">Fuel</label>
+                        <select id="marketplaceFuel" class="form-select">
+                            <option value="">Any</option>
+                            <option value="petrol">Petrol</option>
+                            <option value="diesel">Diesel</option>
+                            <option value="cng">CNG</option>
+                            <option value="electric">Electric</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <label for="marketplaceSort" class="form-label mb-1 fw-semibold">Sort by</label>
+                        <select id="marketplaceSort" class="form-select">
+                            <option value="recent">Recently Added</option>
+                            <option value="lowToHigh">Price: Low to High</option>
+                            <option value="highToLow">Price: High to Low</option>
+                            <option value="kms">Lowest KMs</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <label class="form-label mb-1 fw-semibold">Popular Cities</label>
+                        <div class="d-flex flex-wrap gap-2" id="cityChips">
+                            <button type="button" class="btn btn-sm city-chip active" data-city="">All</button>
+                            <button type="button" class="btn btn-sm city-chip" data-city="Mumbai">Mumbai</button>
+                            <button type="button" class="btn btn-sm city-chip" data-city="Navi Mumbai">Navi Mumbai</button>
+                            <button type="button" class="btn btn-sm city-chip" data-city="Thane">Thane</button>
+                            <button type="button" class="btn btn-sm city-chip" data-city="Kalyan">Kalyan</button>
+                            <button type="button" class="btn btn-sm city-chip" data-city="Dombivli">Dombivli</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="marketplace-results-meta" id="marketplaceResultsMeta">
+                <span id="marketplaceResultsCount">Loading cars...</span>
+                <span class="text-muted small">Updated daily</span>
+            </div>
             <!-- Car Listings Grid -->
             <div class="row g-4" id="carListingsGrid">
                 <!-- Listings will be loaded here dynamically -->
@@ -202,8 +564,8 @@
             <!-- No Cars Message (hidden by default) -->
             <div id="noCarsMessage" class="text-center py-5 d-none">
                 <i class="fa fa-car fa-3x text-muted mb-3"></i>
-                <h4 class="text-muted">No cars available at the moment</h4>
-                <p class="text-muted">Check back soon or submit your requirements!</p>
+                <h4 class="text-muted" id="noCarsTitle">No cars available at the moment</h4>
+                <p class="text-muted" id="noCarsCopy">Check back soon or submit your requirements!</p>
                 <button class="btn btn-primary rounded-pill px-4 mt-3" data-bs-toggle="modal" data-bs-target="#inquiryModal">
                     Submit Your Requirements
                 </button>
@@ -441,13 +803,42 @@
             </div>
 
     <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-light footer py-4 mt-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container-fluid text-light footer pt-3 pb-2" style="background: #0B2154; font-family: 'Montserrat', sans-serif;">
         <div class="container">
-            <div class="copyright">
-                <div class="row">
-                    <div class="col-12 text-center">
-                        <p class="mb-0 text-muted" style="font-size: 14px;">© inspectionwale.com - All Rights Reserved.</p>
+            <div class="row align-items-center py-2 border-bottom" style="border-color: rgba(255,255,255,0.15) !important;">
+                <div class="col-lg-3 col-md-4 mb-3 mb-md-0">
+                    <span style="color: rgba(255,255,255,0.6); font-size: 14px;">Language:</span>
+                    <a href="#" class="text-white text-decoration-none ms-2" style="font-weight: 500; font-size: 14px;">English</a>
+                    <a href="#" class="text-decoration-none ms-2" style="color: rgba(255,255,255,0.6); font-size: 14px;">हिंदी</a>
+                </div>
+                <div class="col-lg-9 col-md-8">
+                    <div class="d-flex flex-wrap justify-content-md-end justify-content-start gap-4">
+                        <a href="/#about" class="text-white text-decoration-none" style="font-size: 14px;">About Us</a>
+                        <a href="/#careers" class="text-white text-decoration-none" style="font-size: 14px;">Careers</a>
+                        <a href="/#terms" class="text-white text-decoration-none" style="font-size: 14px;">Terms &amp; Conditions</a>
+                        <a href="/#advertise" class="text-white text-decoration-none" style="font-size: 14px;">Advertise</a>
                     </div>
+                </div>
+            </div>
+
+            <div class="row py-2 border-bottom" style="border-color: rgba(255,255,255,0.15) !important;">
+                <div class="col-12">
+                    <div class="d-flex align-items-center">
+                        <span class="text-uppercase me-3" style="color: rgba(255,255,255,0.6); font-size: 11px; letter-spacing: 1px;">Connect With Us</span>
+                        <div class="d-flex gap-3">
+                            <a href="https://facebook.com" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://twitter.com" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-twitter"></i></a>
+                            <a href="https://youtube.com" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-youtube"></i></a>
+                            <a href="https://linkedin.com" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="https://instagram.com" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row pt-2">
+                <div class="col-md-6 text-md-start text-center mb-2 mb-md-0">
+                    <span style="color: rgba(255,255,255,0.5); font-size: 12px;">&copy; 2025 inspectionwale.com. All Rights Reserved.</span>
                 </div>
             </div>
         </div>
@@ -477,7 +868,40 @@
     const listingMap = new Map();
     let deepLinkHandled = false;
     let listingEventsBound = false;
+    let allMarketplaceListings = [];
+    let listingsLoadedOnce = false;
 
+    const gridElement = document.getElementById('carListingsGrid');
+    const noCarsMessageEl = document.getElementById('noCarsMessage');
+    const noCarsTitleEl = document.getElementById('noCarsTitle');
+    const noCarsCopyEl = document.getElementById('noCarsCopy');
+    const resultsCountEl = document.getElementById('marketplaceResultsCount');
+
+    const searchInput = document.getElementById('marketplaceSearch');
+    const finderSearchButton = document.querySelector('.finder-input-wrapper button');
+    const priceSelect = document.getElementById('marketplacePrice');
+    const fuelSelect = document.getElementById('marketplaceFuel');
+    const sortSelect = document.getElementById('marketplaceSort');
+    const cityChipsContainer = document.getElementById('cityChips');
+
+    const filterState = {
+        search: '',
+        budget: '',
+        fuel: '',
+        city: '',
+        sort: 'recent'
+    };
+
+    const budgetRanges = {
+        lt1: { max: 100000 },
+        lt2: { max: 200000 },
+        lt3: { max: 300000 },
+        lt5: { max: 500000 },
+        lt10: { max: 1000000 },
+        gte10: { min: 1000000 }
+    };
+
+    initFilterControls();
     function ensureAbsoluteUrl(value) {
         if (!value) return '';
 
@@ -547,50 +971,331 @@
         return tokens;
     }
 
+    function initFilterControls() {
+        if (searchInput) {
+            const handleSearchInput = debounce((value) => {
+                filterState.search = value.trim().toLowerCase();
+                applyFiltersAndRender();
+            }, 250);
+            searchInput.addEventListener('input', (event) => handleSearchInput(event.target.value || ''));
+        }
+
+        if (finderSearchButton) {
+            finderSearchButton.addEventListener('click', () => {
+                filterState.search = (searchInput?.value || '').trim().toLowerCase();
+                applyFiltersAndRender();
+            });
+        }
+
+        if (priceSelect) {
+            priceSelect.addEventListener('change', (event) => {
+                filterState.budget = event.target.value;
+                applyFiltersAndRender();
+            });
+        }
+
+        if (fuelSelect) {
+            fuelSelect.addEventListener('change', (event) => {
+                filterState.fuel = event.target.value;
+                applyFiltersAndRender();
+            });
+        }
+
+        if (sortSelect) {
+            sortSelect.addEventListener('change', (event) => {
+                filterState.sort = event.target.value || 'recent';
+                applyFiltersAndRender();
+            });
+        }
+
+        if (cityChipsContainer) {
+            cityChipsContainer.addEventListener('click', (event) => {
+                const chip = event.target.closest('.city-chip');
+                if (!chip) return;
+                filterState.city = (chip.dataset.city || '').toLowerCase();
+                cityChipsContainer.querySelectorAll('.city-chip').forEach(btn => btn.classList.toggle('active', btn === chip));
+                applyFiltersAndRender();
+            });
+        }
+    }
+
+    function debounce(fn, delay) {
+        let timeoutId;
+        return function (...args) {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => fn.apply(this, args), delay);
+        };
+    }
+
+    function applyFiltersAndRender() {
+        if (!gridElement) return;
+        if (!allMarketplaceListings.length) {
+            if (!listingsLoadedOnce) return;
+            updateResultsCount(0, 0);
+            if (noCarsMessageEl) {
+                updateNoCarsMessage(false);
+                noCarsMessageEl.classList.remove('d-none');
+            }
+            gridElement.classList.add('d-none');
+            return;
+        }
+
+        const filtered = sortListings(allMarketplaceListings.filter(matchesAllFilters));
+        updateResultsCount(filtered.length, allMarketplaceListings.length);
+
+        if (!filtered.length) {
+            gridElement.classList.add('d-none');
+            if (noCarsMessageEl) {
+                updateNoCarsMessage(true);
+                noCarsMessageEl.classList.remove('d-none');
+            }
+            return;
+        }
+
+        if (noCarsMessageEl) {
+            noCarsMessageEl.classList.add('d-none');
+        }
+        gridElement.classList.remove('d-none');
+        gridElement.innerHTML = filtered.map(buildCard).join('');
+    }
+
+    function updateResultsCount(visible, total) {
+        if (!resultsCountEl) return;
+        if (!total) {
+            resultsCountEl.textContent = visible ? `${visible} cars available` : 'No cars available right now';
+            return;
+        }
+        if (visible === total) {
+            resultsCountEl.textContent = `${visible} cars available now`;
+        } else {
+            resultsCountEl.textContent = `${visible} of ${total} cars match your filters`;
+        }
+    }
+
+    function updateNoCarsMessage(isFilterContext) {
+        if (!noCarsTitleEl || !noCarsCopyEl) return;
+        if (isFilterContext) {
+            noCarsTitleEl.textContent = 'No cars matched your filters';
+            noCarsCopyEl.textContent = 'Try adjusting filters or submit your requirements.';
+        } else {
+            noCarsTitleEl.textContent = 'No cars available at the moment';
+            noCarsCopyEl.textContent = 'Check back soon or submit your requirements!';
+        }
+    }
+
+    function matchesAllFilters(listing) {
+        return matchesSearch(listing) && matchesBudget(listing) && matchesFuel(listing) && matchesCity(listing);
+    }
+
+    function sortListings(listings) {
+        const sorted = [...listings];
+        switch (filterState.sort) {
+            case 'lowToHigh':
+                sorted.sort((a, b) => {
+                    const priceA = extractPriceNumber(a) || Number.MAX_SAFE_INTEGER;
+                    const priceB = extractPriceNumber(b) || Number.MAX_SAFE_INTEGER;
+                    return priceA - priceB;
+                });
+                break;
+            case 'highToLow':
+                sorted.sort((a, b) => {
+                    const priceA = extractPriceNumber(a);
+                    const priceB = extractPriceNumber(b);
+                    return (priceB || 0) - (priceA || 0);
+                });
+                break;
+            case 'kms':
+                sorted.sort((a, b) => {
+                    const kmsA = getListingKmsNumber(a);
+                    const kmsB = getListingKmsNumber(b);
+                    return kmsA - kmsB;
+                });
+                break;
+            case 'recent':
+            default:
+                sorted.sort((a, b) => {
+                    const dateA = new Date(a.createdAt || a.updatedAt || 0).getTime();
+                    const dateB = new Date(b.createdAt || b.updatedAt || 0).getTime();
+                    return dateB - dateA;
+                });
+                break;
+        }
+        return sorted;
+    }
+
+    function matchesBudget(listing) {
+        if (!filterState.budget) return true;
+        const price = extractPriceNumber(listing);
+        if (!price) return false;
+        const rule = budgetRanges[filterState.budget];
+        if (!rule) return true;
+        if (rule.min && price < rule.min) return false;
+        if (rule.max && price > rule.max) return false;
+        return true;
+    }
+
+    function matchesFuel(listing) {
+        if (!filterState.fuel) return true;
+        const fuel = getListingFuel(listing);
+        if (!fuel) return false;
+        return fuel === filterState.fuel;
+    }
+
+    function matchesCity(listing) {
+        if (!filterState.city) return true;
+        const city = getListingCity(listing);
+        if (!city) return false;
+        return city.includes(filterState.city.toLowerCase());
+    }
+
+    function matchesSearch(listing) {
+        if (!filterState.search) return true;
+        const terms = filterState.search.split(/\s+/).filter(Boolean);
+        if (!terms.length) return true;
+        const haystack = [
+            buildListingTitle(listing),
+            listing.summary,
+            listing.description,
+            listing.display?.tagline,
+            listing.car?.make,
+            listing.car?.model,
+            listing.car?.edition,
+            listing.car?.variant,
+            listing.car?.transmission,
+            getListingCity(listing)
+        ].map(safeLower).filter(Boolean).join(' ');
+        return terms.every(term => haystack.includes(term));
+    }
+
+    function extractPriceNumber(listing) {
+        const sources = [
+            listing?.car?.expectedPrice,
+            listing?.expectedPrice,
+            listing?.price,
+            listing?.display?.price
+        ];
+        for (const value of sources) {
+            const numeric = normalizeNumber(value);
+            if (numeric) return numeric;
+        }
+        return 0;
+    }
+
+    function getListingKmsNumber(listing) {
+        const car = listing?.car || {};
+        const kms = normalizeNumber(car.kmsDriven || listing?.kmsDriven || listing?.odometer);
+        return kms || Number.MAX_SAFE_INTEGER;
+    }
+
+    function getListingFuel(listing) {
+        const car = listing?.car || {};
+        const candidates = [car.fuelType, car.fuel, listing?.fuelType, listing?.fuel];
+        for (const candidate of candidates) {
+            const value = safeLower(candidate);
+            if (value) return value;
+        }
+        return '';
+    }
+
+    function getListingCity(listing) {
+        const candidates = [
+            listing?.city,
+            listing?.location,
+            listing?.sellerCity,
+            listing?.seller?.city,
+            listing?.seller?.location,
+            listing?.metadata?.city,
+            listing?.metadata?.location,
+            listing?.car?.city
+        ];
+        for (const candidate of candidates) {
+            const value = safeLower(candidate);
+            if (value) return value;
+        }
+        return '';
+    }
+
+    function getListingHighlights(listing) {
+        const highlights = [];
+        const push = (value) => {
+            const text = normalizeString(value);
+            if (text && !highlights.includes(text)) {
+                highlights.push(text.length > 28 ? `${text.slice(0, 25)}...` : text);
+            }
+        };
+        const sources = [
+            listing?.highlights,
+            listing?.features,
+            listing?.tags,
+            listing?.display?.highlights,
+            listing?.car?.highlights,
+            listing?.car?.keyFeatures
+        ];
+        sources.forEach(source => {
+            if (Array.isArray(source)) {
+                source.forEach(push);
+            } else if (typeof source === 'string') {
+                source.split(',').forEach(push);
+            }
+        });
+        if (!highlights.length && listing?.summary) {
+            push(listing.summary.split(/[•\.-]/)[0]);
+        }
+        return highlights.slice(0, 3);
+    }
+
+    function normalizeString(value) {
+        const unwrapped = unwrapValue(value);
+        if (typeof unwrapped === 'string') {
+            return unwrapped.trim();
+        }
+        if (typeof unwrapped === 'number' && Number.isFinite(unwrapped)) {
+            return String(unwrapped);
+        }
+        return '';
+    }
+
+    function normalizeNumber(value) {
+        const unwrapped = unwrapValue(value);
+        if (typeof unwrapped === 'number' && Number.isFinite(unwrapped)) {
+            return unwrapped;
+        }
+        if (typeof unwrapped === 'string') {
+            const numeric = Number(unwrapped.replace(/[^0-9.]/g, ''));
+            return Number.isFinite(numeric) ? numeric : 0;
+        }
+        return 0;
+    }
+
+    function unwrapValue(value) {
+        if (!value || typeof value !== 'object') return value;
+        if (typeof value.S === 'string') return value.S;
+        if (typeof value.value === 'string') return value.value;
+        return value;
+    }
+
+    function safeLower(value) {
+        const text = normalizeString(value);
+        return text ? text.toLowerCase() : '';
+    }
+
+    function capitalise(value) {
+        if (!value) return '';
+        return value.charAt(0).toUpperCase() + value.slice(1);
+    }
+
+    function titleCase(value) {
+        if (!value) return '';
+        return value
+            .split(/\s+/)
+            .filter(Boolean)
+            .map(word => capitalise(word.toLowerCase()))
+            .join(' ');
+    }
+
         // Load customer listings and display them as cards
         (async function loadListings() {
-            const grid = document.getElementById('carListingsGrid');
-            const noCarMsg = document.getElementById('noCarsMessage');
-
-            function buildCard(listing) {
-                const car = listing.car || {};
-                const title = buildListingTitle(listing) || 'Customer Listing';
-                const kmsFormatted = formatKms(car.kmsDriven) || 'N/A';
-                const priceFormatted = formatPrice(car.expectedPrice);
-                const primaryPhoto = resolvePrimaryPhoto(listing);
-                const isSoldOut = isListingSold(listing);
-                const cardClass = `car-card${isSoldOut ? ' sold-out' : ''}`;
-                const imageWrapperClass = `car-card-img-wrapper${isSoldOut ? ' sold-out-overlay' : ''}`;
-                const actionButton = isSoldOut
-                    ? `<button class="btn view-more-btn w-100 mt-3" type="button" disabled aria-disabled="true">Sold Out</button>`
-                    : `<button class="btn view-more-btn w-100 mt-3 js-view-details" type="button" data-listing-id="${listing.listingId}">View Details</button>`;
-
-                return `
-                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                        <div class="${cardClass}">
-                            <div class="${imageWrapperClass}">
-                                <img src="${primaryPhoto}" alt="${title}" class="car-card-img" width="400" height="220" loading="lazy" decoding="async" onerror="this.src='${FALLBACK_IMAGE}'">
-                                ${isSoldOut ? '<div class="sold-out-banner">SOLD OUT</div>' : ''}
-                            </div>
-                            <div class="car-card-body">
-                                <div class="car-price mb-2">${priceFormatted}</div>
-                                <div class="car-title">${title}</div>
-                                <div class="car-specs">
-                                    <div class="car-spec-item">
-                                        <i class="fa fa-calendar text-primary"></i>
-                                        <span>${car.registrationYear || 'N/A'}</span>
-                                    </div>
-                                    <div class="car-spec-item">
-                                        <i class="fa fa-road text-primary"></i>
-                                        <span>${kmsFormatted}</span>
-                                    </div>
-                                </div>
-                                ${actionButton}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
+            if (!gridElement) return;
 
             try {
                 const res = await fetch(API_ENDPOINT, { headers: { Accept: 'application/json' } });
@@ -603,38 +1308,57 @@
                             listingMap.set(item.listingId, item);
                         }
                     });
+                    allMarketplaceListings = data.items.slice();
                     window.carListingsData = data.items;
-                    grid.innerHTML = data.items.map(buildCard).join('');
+                    listingsLoadedOnce = true;
+                    applyFiltersAndRender();
                     bindListingEvents();
-                    grid.classList.remove('d-none');
-                    noCarMsg.classList.add('d-none');
                     handleListingDeepLink();
                 } else {
-                    grid.classList.add('d-none');
-                    noCarMsg.classList.remove('d-none');
+                    allMarketplaceListings = [];
+                    listingsLoadedOnce = true;
+                    updateResultsCount(0, 0);
+                    gridElement.classList.add('d-none');
+                    if (noCarsMessageEl) {
+                        updateNoCarsMessage(false);
+                        noCarsMessageEl.classList.remove('d-none');
+                    }
                 }
             } catch (err) {
                 console.error('Error loading listings:', err);
-                grid.innerHTML = `
+                gridElement.innerHTML = `
                     <div class="col-12 text-center py-5">
                         <p class="text-danger">Unable to load cars. Please try again later.</p>
                     </div>
                 `;
+                gridElement.classList.remove('d-none');
+                if (noCarsMessageEl) {
+                    noCarsMessageEl.classList.add('d-none');
+                }
+                updateResultsCount(0, 0);
                 bindListingEvents();
             }
         })();
 
         function bindListingEvents() {
-            if (listingEventsBound) return;
-            const grid = document.getElementById('carListingsGrid');
-            if (!grid) return;
-            grid.addEventListener('click', function (event) {
-                const target = event.target.closest('.js-view-details');
-                if (!target) return;
-                event.preventDefault();
-                const listingId = target.getAttribute('data-listing-id');
-                if (listingId) {
-                    showCarDetails(listingId);
+            if (listingEventsBound || !gridElement) return;
+            gridElement.addEventListener('click', function (event) {
+                const detailTrigger = event.target.closest('.js-view-details');
+                if (detailTrigger) {
+                    event.preventDefault();
+                    const listingId = detailTrigger.getAttribute('data-listing-id');
+                    if (listingId) {
+                        showCarDetails(listingId);
+                    }
+                    return;
+                }
+                const offerTrigger = event.target.closest('.js-make-offer');
+                if (offerTrigger) {
+                    event.preventDefault();
+                    const listingId = offerTrigger.getAttribute('data-listing-id');
+                    if (listingId) {
+                        openC2CReserveModal(listingId);
+                    }
                 }
             });
             listingEventsBound = true;
@@ -689,6 +1413,101 @@
             if (kms) parts.push(kms);
             parts.push(formatPrice(car.expectedPrice));
             return parts.filter(Boolean).join(' • ');
+        }
+
+        function buildListingSpecLine(listing, kmsFormatted) {
+            const parts = [];
+            if (kmsFormatted) parts.push(kmsFormatted);
+            const fuel = getListingFuel(listing);
+            if (fuel) parts.push(titleCase(fuel));
+            const city = getListingCity(listing);
+            if (city) {
+                const cityLabel = city.split(',').map(part => titleCase(part.trim())).join(', ');
+                parts.push(cityLabel);
+            }
+            return parts.join(' • ');
+        }
+
+        function isListingFeatured(listing) {
+            if (!listing) return false;
+            if (listing.featured || listing.isFeatured) return true;
+            const display = listing.display || {};
+            const badgeTokens = [display.badge, display.badgeText, display.tagline];
+            if (badgeTokens.some(token => safeLower(token).includes('feature'))) {
+                return true;
+            }
+            if (Array.isArray(listing.tags) && listing.tags.some(tag => safeLower(tag).includes('feature'))) {
+                return true;
+            }
+            if (Array.isArray(listing.flags) && listing.flags.some(flag => safeLower(flag).includes('feature'))) {
+                return true;
+            }
+            return false;
+        }
+
+        function buildCard(listing) {
+            const car = listing?.car || {};
+            const title = buildListingTitle(listing) || 'Customer Listing';
+            const kmsFormatted = formatKms(car.kmsDriven);
+            const priceFormatted = formatPrice(car.expectedPrice);
+            const primaryPhoto = resolvePrimaryPhoto(listing);
+            const isSoldOut = isListingSold(listing);
+            const cardClass = `car-card${isSoldOut ? ' sold-out' : ''}`;
+            const specLine = buildListingSpecLine(listing, kmsFormatted);
+            const fuelLabel = getListingFuel(listing);
+            const fuelDisplay = fuelLabel ? titleCase(fuelLabel) : 'Fuel NA';
+            const city = getListingCity(listing);
+            const cityDisplay = city ? city.split(',').map(part => titleCase(part.trim())).join(', ') : 'Location NA';
+            const highlights = getListingHighlights(listing);
+            const featured = isListingFeatured(listing);
+            const listingIdAttr = listing?.listingId ? `data-listing-id="${listing.listingId}"` : '';
+            const kmsDisplay = kmsFormatted || 'KMs NA';
+            const offerAction = isSoldOut
+                ? '<span class="text-muted fw-semibold">Sold Out</span>'
+                : `<button class="btn btn-link make-offer-link p-0 js-make-offer" type="button" ${listingIdAttr}>Make Offer</button>`;
+
+            return `
+                <div class="col-12 col-md-6 col-xl-4 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="${cardClass}">
+                        <div class="car-card-img-wrapper">
+                            <img src="${primaryPhoto}" alt="${title}" class="car-card-img" width="400" height="240" loading="lazy" decoding="async" onerror="this.src='${FALLBACK_IMAGE}'">
+                            ${featured ? '<span class="featured-badge">Featured</span>' : ''}
+                            ${isSoldOut ? '<div class="sold-out-banner">Sold Out</div>' : ''}
+                        </div>
+                        <div class="car-card-body">
+                            <div class="d-flex justify-content-between align-items-start gap-3">
+                                <div>
+                                    <h5 class="car-title mb-1">${title}</h5>
+                                    <p class="car-subtitle mb-0">${specLine || 'Verified listing'}</p>
+                                </div>
+                                <div class="text-end">
+                                    ${car.registrationYear ? `<span class="badge bg-light text-dark mb-1">${car.registrationYear}</span>` : ''}
+                                    <div class="car-price">${priceFormatted}</div>
+                                </div>
+                            </div>
+                            <div class="car-specs-row">
+                                <div class="car-spec-item">
+                                    <i class="fa fa-road text-primary"></i>
+                                    <span>${kmsDisplay}</span>
+                                </div>
+                                <div class="car-spec-item">
+                                    <i class="fa fa-gas-pump text-primary"></i>
+                                    <span>${fuelDisplay}</span>
+                                </div>
+                                <div class="car-spec-item">
+                                    <i class="fa fa-map-marker-alt text-primary"></i>
+                                    <span>${cityDisplay}</span>
+                                </div>
+                            </div>
+                            <div class="car-card-actions">
+                                ${offerAction}
+                                <button class="btn view-more-btn js-view-details" type="button" ${listingIdAttr} ${isSoldOut ? 'disabled aria-disabled="true"' : ''}>${isSoldOut ? 'Unavailable' : 'Get Seller Details'}</button>
+                            </div>
+                            ${highlights.length ? `<div class="car-card-tags mt-3">${highlights.map(feature => `<span class="car-chip">${feature}</span>`).join('')}</div>` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
         }
 
         function extractPhotoUrl(slotValue) {

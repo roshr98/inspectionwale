@@ -85,48 +85,42 @@ body {
 
 
 /*** Navbar ***/
-.navbar-transparent {
-    background: transparent !important;
+.navbar-transparent,
+.navbar-transparent.scrolled {
+    background: rgba(7, 17, 48, 0.82) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 9999;
     width: 100%;
+    z-index: 9999;
+    box-shadow: 0 12px 35px rgba(7, 17, 48, 0.35);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
-.navbar-transparent .navbar-toggler {
-    border-color: rgba(255,255,255,0.5);
-}
-
-.navbar-transparent .navbar-toggler-icon {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-}
-
-.navbar-transparent.scrolled {
-    background: transparent !important;
-}
-
+.navbar-transparent .navbar-toggler,
 .navbar-transparent.scrolled .navbar-toggler {
-    border-color: #000;
+    border-color: rgba(255,255,255,0.7);
 }
 
+.navbar-transparent .navbar-toggler-icon,
 .navbar-transparent.scrolled .navbar-toggler-icon {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23000000' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.95%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
-.navbar-transparent.scrolled .navbar-toggler .fa-bars {
-    color: #000 !important;
-}
-
+.navbar-transparent .fa-map-marker-alt,
+.navbar-transparent .fa-user,
 .navbar-transparent.scrolled .fa-map-marker-alt,
 .navbar-transparent.scrolled .fa-user {
-    color: #000 !important;
+    color: rgba(255,255,255,0.9) !important;
 }
 
+.navbar-transparent .translate-btn-wrapper .btn,
 .navbar-transparent.scrolled .translate-btn-wrapper .btn {
-    border-color: #000 !important;
-    color: #000 !important;
+    border-color: rgba(255,255,255,0.7) !important;
+    color: rgba(255,255,255,0.9) !important;
 }
 
 .navbar .dropdown-toggle::after {

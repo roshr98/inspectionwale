@@ -3,10 +3,53 @@ frontend:
   phases:
     build:
       commands:
-        - echo "Deploying static website from website/ directory"
+        - echo "Building inspectionWale website with complete UI redesign"
+        - echo "Deployment timestamp:" $(date)
   artifacts:
-    baseDirectory: website
+    baseDirectory: /
     files:
       - '**/*'
   cache:
     paths: []
+customHeaders:
+  - pattern: '**/*'
+    headers:
+      - key: 'Strict-Transport-Security'
+        value: 'max-age=31536000; includeSubDomains'
+      - key: 'X-Content-Type-Options'
+        value: 'nosniff'
+      - key: 'X-Frame-Options'
+        value: 'SAMEORIGIN'
+      - key: 'X-XSS-Protection'
+        value: '1; mode=block'
+      - key: 'Cache-Control'
+        value: 'public, max-age=31536000, immutable'
+  - pattern: '**/*.html'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=3600, must-revalidate'
+customRules:
+  - source: /Home
+    target: /index.html
+    status: '200'
+  - source: /Used-Car-Marketplace
+    target: /car-marketplace/index.html
+    status: '200'
+  - source: /car-marketplace
+    target: /car-marketplace/index.html
+    status: '301'
+  - source: /api/car-value
+    target: https://565pfipvrdzny5ftic5htroshu0lltuf.lambda-url.us-east-1.on.aws/
+    status: '200'
+  - source: /api/quote
+    target: https://dnocsuec6aeok3oykcujglp2hq0bocso.lambda-url.us-east-1.on.aws/
+    status: '200'
+  - source: /api/customer-listings
+    target: https://423cmvhw3g.execute-api.us-east-1.amazonaws.com/prod/customer-listings
+    status: '200'
+  - source: /api/reviews
+    target: https://cznea7cetynoa5eqim53crc2xq0scqec.lambda-url.us-east-1.on.aws/
+    status: '200'
+  - source: '</^[^.]+$|\.(?!(css|gif|ico|jpg|jpeg|js|png|txt|svg|woff|woff2|ttf|map|json|webp|xml|pdf|webmanifest|avif)$)([^.]+$)/>'
+    target: /index.html
+    status: '200'
