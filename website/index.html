@@ -94,7 +94,7 @@
     </script>
     
     <!-- Content Security Policy -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://423cmvhw3g.execute-api.us-east-1.amazonaws.com https://inspectionWale-car-listings.s3.amazonaws.com https://inspectionWale-car-listings.s3.us-east-1.amazonaws.com https://inspectionWale-car-listings.s3-us-east-1.amazonaws.com https://www.google-analytics.com https://cdn.jsdelivr.net; frame-src 'self' https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://translate.google.com https://translate.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://translate.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://423cmvhw3g.execute-api.us-east-1.amazonaws.com https://inspectionWale-car-listings.s3.amazonaws.com https://inspectionWale-car-listings.s3.us-east-1.amazonaws.com https://inspectionWale-car-listings.s3-us-east-1.amazonaws.com https://www.google-analytics.com https://cdn.jsdelivr.net; frame-src 'self' https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1043,11 +1043,11 @@
         }
     </style>
 
-    <!-- Car Marketplace Section -->
+    <!-- Buy Used Cars Section -->
     <section class="py-5" style="background: #fff;">
         <div class="container">
             <div class="d-flex align-items-center justify-content-between mb-4">
-                <h2 class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #0B2154; font-weight: 600;">Car Marketplace</h2>
+                <h2 class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #0B2154; font-weight: 600;">Buy Used Cars</h2>
                 <button type="button" class="btn sell-car-btn" data-bs-toggle="modal" data-bs-target="#listCarModal">
                     Sell Your Car <span class="sell-car-dot">•</span>
                 </button>
@@ -1090,7 +1090,7 @@
             
             <!-- View More Button -->
             <div class="text-center mt-4">
-                <a href="/car-marketplace/" class="btn view-more-btn">
+                <a href="/car-marketplace/index.html" class="btn view-more-btn">
                     View More <i class="fas fa-chevron-right ms-2"></i>
                 </a>
             </div>
@@ -1375,7 +1375,7 @@
             const kms = formatListingKms(listing?.car?.kmsDriven ?? listing.kmsDriven);
             const photo = resolveListingPhoto(listing);
             const listingId = listing?.listingId;
-            const ctaUrl = listingId ? `/car-marketplace/index.html?listingId=${encodeURIComponent(listingId)}` : '/car-marketplace/';
+            const ctaUrl = listingId ? `/car-marketplace/index.html?listingId=${encodeURIComponent(listingId)}` : '/car-marketplace/index.html';
             return `
                 <div class="popular-car-card">
                     <div class="car-image-wrapper">
@@ -1391,10 +1391,14 @@
 
         function buildPopularListingTitle(listing) {
             if (!listing) return 'Verified Used Car';
-            if (listing.title) return listing.title;
+            if (listing.title) {
+                const cleanedTitle = listing.title.replace(/^\s*Used\s+/i, '').trim();
+                return cleanedTitle || 'Verified Used Car';
+            }
             const car = listing.car || {};
-            const parts = ['Used', car.make, car.model, car.edition].filter(Boolean);
-            return parts.join(' ').replace(/\s+/g, ' ').trim() || 'Verified Used Car';
+            const parts = [car.make, car.model, car.edition].filter(Boolean);
+            const label = parts.join(' ').replace(/\s+/g, ' ').trim();
+            return label || 'Verified Used Car';
         }
 
         function formatListingPrice(value) {
@@ -1443,8 +1447,14 @@
             if (!trimmed) return '';
             if (/^(data:|blob:|https?:)/i.test(trimmed)) return trimmed;
             if (trimmed.startsWith('//')) return `https:${trimmed}`;
-            if (trimmed.startsWith('/')) return trimmed;
-            return LISTINGS_ASSET_BASE + trimmed.replace(/^\/+/,'');
+            const withoutDotPrefix = trimmed.replace(/^\.\//, '');
+            if (withoutDotPrefix.startsWith('/')) return withoutDotPrefix;
+            const lower = withoutDotPrefix.toLowerCase();
+            const localPrefixes = ['images/', 'img/', 'icons/', 'assets/', 'static/', 'css/', 'js/'];
+            if (localPrefixes.some(prefix => lower.startsWith(prefix))) {
+                return `/${withoutDotPrefix.replace(/^\/+/, '')}`;
+            }
+            return LISTINGS_ASSET_BASE + withoutDotPrefix.replace(/^\/+/, '');
         }
 
         function isListingSold(listing) {
