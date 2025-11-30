@@ -473,6 +473,7 @@
     const LISTINGS_ASSET_BASE = 'https://inspectionwale-car-listings.s3.amazonaws.com/';
     const SOLD_KEYWORDS = ['sold', 'sold out', 'sold-out', 'soldout', 'sold_out', 'booked', 'reserved', 'unavailable', 'not available', 'pending sale', 'pending-sale', 'under offer', 'deposit taken'];
     const listingMap = new Map();
+    let deepLinkHandled = false;
     let listingEventsBound = false;
 
     function ensureAbsoluteUrl(value) {
@@ -605,6 +606,7 @@
                     bindListingEvents();
                     grid.classList.remove('d-none');
                     noCarMsg.classList.add('d-none');
+                    handleListingDeepLink();
                 } else {
                     grid.classList.add('d-none');
                     noCarMsg.classList.remove('d-none');
@@ -634,6 +636,22 @@
                 }
             });
             listingEventsBound = true;
+        }
+
+        function handleListingDeepLink() {
+            if (deepLinkHandled) return;
+            const params = new URLSearchParams(window.location.search);
+            const requestedId = params.get('listingId');
+            if (!requestedId) {
+                deepLinkHandled = true;
+                return;
+            }
+            if (!listingMap.has(requestedId)) {
+                deepLinkHandled = true;
+                return;
+            }
+            deepLinkHandled = true;
+            setTimeout(() => showCarDetails(requestedId), 200);
         }
 
         function isListingSold(listing) {

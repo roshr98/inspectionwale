@@ -8,11 +8,11 @@
 }
 
 * {
-    font-family: LatoGoogle, Lato, LatoWeb, sans-serif;
+    font-family: 'Montserrat', Arial, sans-serif;
 }
 
 body {
-    font-family: LatoGoogle, Lato, LatoWeb, sans-serif;
+    font-family: 'Montserrat', Arial, sans-serif;
     color: var(--text-color);
     background-color: #ffffff;
 }
@@ -85,6 +85,50 @@ body {
 
 
 /*** Navbar ***/
+.navbar-transparent {
+    background: transparent !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    width: 100%;
+}
+
+.navbar-transparent .navbar-toggler {
+    border-color: rgba(255,255,255,0.5);
+}
+
+.navbar-transparent .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.navbar-transparent.scrolled {
+    background: transparent !important;
+}
+
+.navbar-transparent.scrolled .navbar-toggler {
+    border-color: #000;
+}
+
+.navbar-transparent.scrolled .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23000000' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.navbar-transparent.scrolled .navbar-toggler .fa-bars {
+    color: #000 !important;
+}
+
+.navbar-transparent.scrolled .fa-map-marker-alt,
+.navbar-transparent.scrolled .fa-user {
+    color: #000 !important;
+}
+
+.navbar-transparent.scrolled .translate-btn-wrapper .btn {
+    border-color: #000 !important;
+    color: #000 !important;
+}
+
 .navbar .dropdown-toggle::after {
     border: none;
     content: "\f107";
@@ -101,6 +145,7 @@ body {
     font-size: 15px;
     text-transform: uppercase;
     outline: none;
+    font-style: italic;
 }
 
 .navbar-light .navbar-nav .nav-link:hover,
@@ -156,14 +201,58 @@ body {
 
 /*** Header ***/
 .carousel-caption {
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    /* lighter glass overlay so the banner image shows more clearly; no blur on the image */
-    background: linear-gradient(90deg, rgba(0,145,255,0.06), rgba(30,41,59,0.04));
-    backdrop-filter: none; /* remove blur effect */
+    /* transparent overlay so the banner image shows clearly */
+    background: transparent;
+    backdrop-filter: none;
     z-index: 1;
+}
+
+.hero-caption {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch !important;
+    padding: 1.5rem 0;
+    height: 100%;
+}
+
+.hero-caption > .container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.hero-caption-row {
+    width: 100%;
+    flex: 0 0 auto;
+}
+
+.hero-copy {
+    max-width: 620px;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+}
+
+.hero-copy h1 {
+    white-space: nowrap;
+    font-size: 1.75rem;
+}
+
+.hero-contact-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 0;
+    margin-right: 0;
+    position: absolute;
+    right: 10px;
+    top: 70px;
+    bottom: 120px;
 }
 
 .carousel-control-prev,
@@ -175,6 +264,245 @@ body {
 .carousel-control-next-icon {
     width: 3rem;
     height: 3rem;
+}
+
+.text-white-75 { color: rgba(255, 255, 255, 0.75) !important; }
+.letter-spacing-sm { letter-spacing: 0.08em; }
+@media (min-width: 992px) {
+    .display-lg-3 { font-size: 3.5rem; }
+    .hero-tagline {
+        padding-top: 100px;
+    }
+}
+
+.hero-contact-card {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    padding: 18px 18px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(182, 179, 176, 0.3);
+    max-width: 240px;
+    width: 240px;
+    margin-left: auto;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+}
+
+.hero-contact-card h5 {
+    color: #b6b3b0 !important;
+}
+
+.hero-contact-card .form-label {
+    color: #b6b3b0 !important;
+}
+
+.hero-contact-card .form-control-lg {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #b6b3b0;
+    color: #fff;
+}
+
+.hero-contact-card .form-control-lg::placeholder {
+    color: rgba(182, 179, 176, 0.7);
+}
+
+.hero-contact-card .form-control-lg:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #b6b3b0;
+    box-shadow: 0 0 0 0.2rem rgba(182, 179, 176, 0.25);
+    color: #fff;
+}
+
+.hero-contact-card p.small {
+    color: #b6b3b0 !important;
+}
+
+.hero-contact-card .form-label {
+    font-size: 0.75rem;
+    margin-bottom: 0.2rem;
+}
+
+.hero-contact-card .mb-3 {
+    margin-bottom: 0.75rem !important;
+}
+
+.hero-contact-card .mb-4 {
+    margin-bottom: 0.75rem !important;
+}
+
+.hero-contact-card h5 {
+    font-size: 1rem;
+    margin-bottom: 0.75rem !important;
+    font-weight: 600;
+}
+
+.hero-contact-card textarea {
+    min-height: 60px;
+    flex-grow: 1;
+}
+
+.hero-contact-card .btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    border-radius: 8px;
+    background-color: #D81324;
+    border-color: #D81324;
+    color: #fff;
+}
+
+.hero-contact-card .btn:hover {
+    background-color: #b00f1e;
+    border-color: #b00f1e;
+}
+
+.hero-contact-card p.small {
+    font-size: 0.7rem;
+    margin-top: 0.5rem !important;
+}
+
+.hero-contact-form .form-control {
+    border-radius: 0;
+    border-color: rgba(11, 33, 84, 0.15);
+}
+
+.hero-contact-form .form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(216, 19, 36, 0.15);
+    border-color: #D81324;
+}
+
+.hero-badge-bar {
+    margin-top: 0;
+    background: transparent;
+    border-radius: 30px;
+    padding: 0.75rem 1.5rem;
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    color: #ffffff;
+}
+
+.hero-badge {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-align: center;
+    gap: 0.5rem;
+}
+
+.hero-badge span {
+    color: #b6b3b0;
+}
+
+.hero-badge img {
+    width: 24px;
+    height: 24px;
+    max-width: 24px;
+    max-height: 24px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+@media (max-width: 991.98px) {
+    .hero-contact-card {
+        border-radius: 0;
+        padding: 15px 18px;
+        max-width: 220px;
+        width: 220px;
+        margin-left: auto;
+    }
+
+    .hero-contact-wrapper {
+        right: 20px;
+        top: 80px;
+        bottom: 100px;
+    }
+
+    .hero-badge-bar {
+        border-radius: 12px;
+        padding: 1rem;
+        gap: 0.75rem;
+    }
+
+    .hero-badge {
+        font-size: 0.8rem;
+    }
+
+    .hero-badge i {
+        font-size: 2rem;
+        width: 50px;
+        height: 50px;
+    }
+
+    .hero-caption {
+        padding: 1rem 0;
+    }
+
+    .hero-copy {
+        max-width: 320px;
+        padding: 1rem;
+    }
+
+    .hero-copy h1 {
+        font-size: 1.5rem !important;
+    }
+
+    .hero-copy p {
+        font-size: 0.85rem;
+    }
+
+    .hero-badge-bar-overlay {
+        bottom: 10px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    /* Hide the desktop contact form on mobile */
+    .hero-contact-wrapper {
+        display: none !important;
+    }
+    
+    .hero-tagline {
+        padding-top: 60px !important;
+        font-size: 14px !important;
+        line-height: 1.3 !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+        margin-bottom: 10px !important;
+    }
+    
+    .hero-caption-row {
+        flex-direction: column !important;
+    }
+
+    .hero-copy {
+        max-width: 100%;
+        margin: 0 auto;
+        text-align: center;
+    }
+}
+
+.hero-badge-bar-overlay {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(92%, 950px);
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    margin-top: 0;
+    padding: 12px 25px;
 }
 
 @media (max-width: 768px) {
@@ -244,7 +572,7 @@ body {
     content: '';
     position: absolute;
     inset: 0;
-    background: url(/Images/booknow_banner.jpg) 70% center / cover no-repeat;
+    background: url(../Images/booknow_banner.jpg) 70% center / cover no-repeat;
     filter: blur(6px);
     transform: scale(1.03); /* slightly enlarge to hide edges when blurred */
     z-index: 0;

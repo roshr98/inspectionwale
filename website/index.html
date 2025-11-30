@@ -30,7 +30,7 @@
     <meta property="og:url" content="https://www.inspectionwale.com/">
     <meta property="og:title" content="inspectionWale - Expert Car Inspection Services in Mumbai, Navi Mumbai, Thane & Pune">
     <meta property="og:description" content="160+ point pre-purchase car inspection. Same-day reports. Unbiased evaluation by certified inspectors. Book your car inspection online today!">
-    <meta property="og:image" content="https://www.inspectionwale.comImages/brand_logo.png">
+    <meta property="og:image" content="https://www.inspectionwale.com/Images/brand_logo.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:locale" content="en_IN">
@@ -41,7 +41,7 @@
     <meta name="twitter:url" content="https://www.inspectionwale.com/">
     <meta name="twitter:title" content="inspectionWale - Expert Car Inspection Services">
     <meta name="twitter:description" content="160+ point pre-purchase car inspection in Mumbai, Navi Mumbai, Thane & Pune. Same-day reports by certified inspectors.">
-    <meta name="twitter:image" content="https://www.inspectionwale.comImages/brand_logo.png">
+    <meta name="twitter:image" content="https://www.inspectionwale.com/Images/brand_logo.png">
 
     <!-- Favicon -->
     <link href="Images/brand_logo.png" rel="icon">
@@ -1055,52 +1055,25 @@
             
             <div class="position-relative">
                 <div class="popular-cars-slider" id="popularCarsSlider">
-                    <div class="popular-cars-track d-flex gap-4" id="popularCarsTrack">
-                        <!-- Car 1 -->
-                        <div class="popular-car-card">
-                            <div class="car-image-wrapper">
-                                <img src="Images/Car-1.jpg" alt="Maruti Suzuki Swift" loading="lazy">
+                    <div class="popular-cars-track d-flex gap-4" id="popularCarsTrack" aria-live="polite">
+                        <div class="popular-car-card loading-card">
+                            <div class="car-image-wrapper shimmer-block">
+                                <span class="visually-hidden">Loading car photo...</span>
                             </div>
                             <div class="car-info">
-                                <h5 class="car-name">Maruti Swift</h5>
-                                <p class="car-price">Rs. 6.49 Lakh <span class="onwards">onwards</span></p>
-                                <a href="#" class="check-price-link" data-bs-toggle="modal" data-bs-target="#quoteModalIW">Check On Road Price</a>
+                                <div class="skeleton-line w-75"></div>
+                                <div class="skeleton-line w-50"></div>
+                                <div class="skeleton-line w-60"></div>
                             </div>
                         </div>
-                        
-                        <!-- Car 2 -->
-                        <div class="popular-car-card">
-                            <div class="car-image-wrapper">
-                                <img src="Images/Car-2.jpg" alt="Hyundai Creta" loading="lazy">
+                        <div class="popular-car-card loading-card d-none d-md-flex">
+                            <div class="car-image-wrapper shimmer-block">
+                                <span class="visually-hidden">Loading car photo...</span>
                             </div>
                             <div class="car-info">
-                                <h5 class="car-name">Hyundai Creta</h5>
-                                <p class="car-price">Rs. 11.00 Lakh <span class="onwards">onwards</span></p>
-                                <a href="#" class="check-price-link" data-bs-toggle="modal" data-bs-target="#quoteModalIW">Check On Road Price</a>
-                            </div>
-                        </div>
-                        
-                        <!-- Car 3 -->
-                        <div class="popular-car-card">
-                            <div class="car-image-wrapper">
-                                <img src="Images/Car-3.jpg" alt="Tata Nexon" loading="lazy">
-                            </div>
-                            <div class="car-info">
-                                <h5 class="car-name">Tata Nexon</h5>
-                                <p class="car-price">Rs. 8.10 Lakh <span class="onwards">onwards</span></p>
-                                <a href="#" class="check-price-link" data-bs-toggle="modal" data-bs-target="#quoteModalIW">Check On Road Price</a>
-                            </div>
-                        </div>
-                        
-                        <!-- Car 4 -->
-                        <div class="popular-car-card">
-                            <div class="car-image-wrapper">
-                                <img src="Images/Car-4.jpg" alt="Honda City" loading="lazy">
-                            </div>
-                            <div class="car-info">
-                                <h5 class="car-name">Honda City</h5>
-                                <p class="car-price">Rs. 12.00 Lakh <span class="onwards">onwards</span></p>
-                                <a href="#" class="check-price-link" data-bs-toggle="modal" data-bs-target="#quoteModalIW">Check On Road Price</a>
+                                <div class="skeleton-line w-75"></div>
+                                <div class="skeleton-line w-50"></div>
+                                <div class="skeleton-line w-60"></div>
                             </div>
                         </div>
                     </div>
@@ -1117,7 +1090,7 @@
             
             <!-- View More Button -->
             <div class="text-center mt-4">
-                <a href="./car-marketplace/index.html" class="btn view-more-btn">
+                <a href="/car-marketplace/" class="btn view-more-btn">
                     View More <i class="fas fa-chevron-right ms-2"></i>
                 </a>
             </div>
@@ -1148,6 +1121,10 @@
             border: 1px solid #eee;
             transition: box-shadow 0.2s, transform 0.2s;
         }
+        .popular-car-card.loading-card {
+            border-style: dashed;
+            min-height: 210px;
+        }
         .popular-car-card:hover {
             box-shadow: 0 4px 16px rgba(0,0,0,0.12);
             transform: translateY(-2px);
@@ -1160,6 +1137,14 @@
             padding: 15px;
             background: #fafafa;
         }
+        .shimmer-block {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            background: linear-gradient(90deg, #f0f0f0 25%, #f7f7f7 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.2s linear infinite;
+        }
         .car-image-wrapper img {
             max-width: 100%;
             max-height: 100%;
@@ -1168,6 +1153,19 @@
         .car-info {
             padding: 15px 20px 20px;
         }
+        .skeleton-line {
+            height: 12px;
+            border-radius: 6px;
+            background: #f0f0f0;
+            margin-bottom: 10px;
+            animation: shimmer 1.2s linear infinite;
+        }
+        .skeleton-line:last-child {
+            margin-bottom: 0;
+        }
+        .skeleton-line.w-75 { width: 75%; }
+        .skeleton-line.w-60 { width: 60%; }
+        .skeleton-line.w-50 { width: 50%; }
         .car-name {
             font-family: 'Montserrat', sans-serif;
             font-size: 1.1rem;
@@ -1179,6 +1177,11 @@
             font-size: 0.95rem;
             color: #333;
             margin-bottom: 10px;
+        }
+        .car-price .car-kms {
+            color: #777;
+            font-size: 0.8rem;
+            margin-left: 6px;
         }
         .car-price .onwards {
             color: #888;
@@ -1223,6 +1226,10 @@
         .popular-cars-nav i {
             color: #333;
             font-size: 0.9rem;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
         }
         /* Sell Your Car Button - Green */
         .sell-car-btn {
@@ -1275,21 +1282,184 @@
     </style>
     
     <script>
+        const POPULAR_MARKETPLACE_API = 'https://423cmvhw3g.execute-api.us-east-1.amazonaws.com/prod/customer-listings';
+        const LISTINGS_ASSET_BASE = 'https://inspectionwale-car-listings.s3.amazonaws.com/';
+        const POPULAR_FALLBACK_IMAGE = '/Images/brand_logo.png';
+        const POPULAR_CAR_FALLBACKS = [
+            {
+                listingId: 'placeholder-003',
+                car: { make: 'Maruti Suzuki', model: 'Baleno', edition: 'Delta CVT', expectedPrice: 825000, kmsDriven: 15000 },
+                photos: { exteriorFront: '/Images/Car-1.jpg' }
+            },
+            {
+                listingId: 'placeholder-004',
+                car: { make: 'Honda', model: 'Amaze', edition: 'VX Petrol', expectedPrice: 695000, kmsDriven: 22000 },
+                photos: { exteriorFront: '/Images/Car-2.jpg' }
+            },
+            {
+                listingId: 'placeholder-001',
+                car: { make: 'Tata', model: 'Altroz', edition: 'XZ Plus', expectedPrice: 750000, kmsDriven: 32000 },
+                photos: { exteriorFront: '/Images/Car-3.jpg' }
+            },
+            {
+                listingId: 'placeholder-002',
+                car: { make: 'Hyundai', model: 'Grand i10', edition: 'Sportz', expectedPrice: 525000, kmsDriven: 38000 },
+                photos: { exteriorFront: '/Images/Car-4.jpg' }
+            }
+        ];
+        let popularSliderScrollBound = false;
+
         function scrollPopularCars(direction) {
             const track = document.getElementById('popularCarsTrack');
-            const cardWidth = 300; // card width + gap
+            if (!track) return;
+            const firstCard = track.querySelector('.popular-car-card');
+            const computed = window.getComputedStyle(track);
+            const gap = parseInt(computed.columnGap || computed.gap || '16', 10) || 16;
+            const cardWidth = firstCard ? firstCard.getBoundingClientRect().width + gap : 300;
             track.scrollBy({ left: direction * cardWidth, behavior: 'smooth' });
-            
-            // Update nav visibility
-            setTimeout(() => {
-                const prevBtn = document.querySelector('.popular-cars-nav-prev');
-                const nextBtn = document.querySelector('.popular-cars-nav-next');
-                if (prevBtn && nextBtn) {
-                    prevBtn.style.display = track.scrollLeft > 10 ? 'flex' : 'none';
-                    nextBtn.style.display = track.scrollLeft < (track.scrollWidth - track.clientWidth - 10) ? 'flex' : 'none';
-                }
-            }, 350);
+            setTimeout(updatePopularCarsNav, 350);
         }
+
+        function bindPopularSliderScroll() {
+            if (popularSliderScrollBound) return;
+            const track = document.getElementById('popularCarsTrack');
+            if (!track) return;
+            track.addEventListener('scroll', updatePopularCarsNav);
+            popularSliderScrollBound = true;
+        }
+
+        function updatePopularCarsNav() {
+            const track = document.getElementById('popularCarsTrack');
+            const prevBtn = document.querySelector('.popular-cars-nav-prev');
+            const nextBtn = document.querySelector('.popular-cars-nav-next');
+            if (!track || !prevBtn || !nextBtn) return;
+            const tolerance = 8;
+            const maxScrollLeft = Math.max(track.scrollWidth - track.clientWidth - tolerance, 0);
+            prevBtn.style.display = track.scrollLeft > tolerance ? 'flex' : 'none';
+            nextBtn.style.display = track.scrollLeft >= maxScrollLeft ? 'none' : 'flex';
+        }
+
+        async function loadPopularMarketplaceCars() {
+            const track = document.getElementById('popularCarsTrack');
+            if (!track) return;
+            try {
+                const response = await fetch(POPULAR_MARKETPLACE_API, { headers: { 'Accept': 'application/json' } });
+                const payload = await response.json();
+                if (!payload.ok || !Array.isArray(payload.items)) {
+                    renderPopularCarFallbacks(track);
+                } else {
+                    const available = payload.items.filter(item => !isListingSold(item));
+                    const listings = (available.length ? available : payload.items).slice(0, 6);
+                    if (listings.length) {
+                        track.innerHTML = listings.map(buildPopularCarCard).join('');
+                    } else {
+                        renderPopularCarFallbacks(track);
+                    }
+                }
+            } catch (error) {
+                console.error('Unable to load marketplace slider', error);
+                renderPopularCarFallbacks(track);
+            } finally {
+                bindPopularSliderScroll();
+                updatePopularCarsNav();
+            }
+        }
+
+        function renderPopularCarFallbacks(track) {
+            track.innerHTML = POPULAR_CAR_FALLBACKS.map(buildPopularCarCard).join('');
+        }
+
+        function buildPopularCarCard(listing) {
+            const title = buildPopularListingTitle(listing);
+            const price = formatListingPrice(listing?.car?.expectedPrice ?? listing.expectedPrice);
+            const kms = formatListingKms(listing?.car?.kmsDriven ?? listing.kmsDriven);
+            const photo = resolveListingPhoto(listing);
+            const listingId = listing?.listingId;
+            const ctaUrl = listingId ? `/car-marketplace/index.html?listingId=${encodeURIComponent(listingId)}` : '/car-marketplace/';
+            return `
+                <div class="popular-car-card">
+                    <div class="car-image-wrapper">
+                        <img src="${photo}" alt="${title}" loading="lazy" onerror="this.src='${POPULAR_FALLBACK_IMAGE}'">
+                    </div>
+                    <div class="car-info">
+                        <h5 class="car-name">${title}</h5>
+                        <p class="car-price">${price} <span class="onwards">onwards</span>${kms ? `<span class="car-kms">• ${kms}</span>` : ''}</p>
+                        <a href="${ctaUrl}" class="check-price-link">View Details</a>
+                    </div>
+                </div>`;
+        }
+
+        function buildPopularListingTitle(listing) {
+            if (!listing) return 'Verified Used Car';
+            if (listing.title) return listing.title;
+            const car = listing.car || {};
+            const parts = ['Used', car.make, car.model, car.edition].filter(Boolean);
+            return parts.join(' ').replace(/\s+/g, ' ').trim() || 'Verified Used Car';
+        }
+
+        function formatListingPrice(value) {
+            if (!value && value !== 0) return 'Price on request';
+            const numeric = Number(String(value).replace(/[^0-9.]/g, ''));
+            if (!Number.isFinite(numeric) || numeric <= 0) return 'Price on request';
+            if (numeric >= 100000) {
+                return `Rs. ${(numeric / 100000).toFixed(2)} Lakh`;
+            }
+            return `Rs. ${numeric.toLocaleString('en-IN')}`;
+        }
+
+        function formatListingKms(value) {
+            if (!value && value !== 0) return '';
+            const numeric = Number(String(value).replace(/[^0-9.]/g, ''));
+            if (!Number.isFinite(numeric) || numeric <= 0) return '';
+            return `${numeric.toLocaleString('en-IN')} km`;
+        }
+
+        function resolveListingPhoto(listing) {
+            if (!listing) return POPULAR_FALLBACK_IMAGE;
+            if (listing.heroUrl) {
+                const resolved = ensureAbsoluteListingUrl(listing.heroUrl);
+                if (resolved) return resolved;
+            }
+            const photos = listing.photos || {};
+            const preferredSlots = ['exteriorFront', 'exteriorBack', 'exteriorLeft', 'exteriorRight'];
+            for (const slot of preferredSlots) {
+                const candidate = ensureAbsoluteListingUrl(photos[slot]);
+                if (candidate) return candidate;
+            }
+            if (listing.image) {
+                const candidate = ensureAbsoluteListingUrl(listing.image);
+                if (candidate) return candidate;
+            }
+            return POPULAR_FALLBACK_IMAGE;
+        }
+
+        function ensureAbsoluteListingUrl(value) {
+            if (!value) return '';
+            if (typeof value === 'object') {
+                value = value.url || value.key || '';
+            }
+            if (typeof value !== 'string') return '';
+            const trimmed = value.trim();
+            if (!trimmed) return '';
+            if (/^(data:|blob:|https?:)/i.test(trimmed)) return trimmed;
+            if (trimmed.startsWith('//')) return `https:${trimmed}`;
+            if (trimmed.startsWith('/')) return trimmed;
+            return LISTINGS_ASSET_BASE + trimmed.replace(/^\/+/,'');
+        }
+
+        function isListingSold(listing) {
+            const tokens = [];
+            if (listing?.status) tokens.push(String(listing.status));
+            if (listing?.state) tokens.push(String(listing.state));
+            if (listing?.availability) tokens.push(String(listing.availability));
+            return tokens
+                .map(token => token.toLowerCase())
+                .some(token => token.includes('sold') || token.includes('booked') || token.includes('reserved'));
+        }
+
+        window.addEventListener('resize', () => {
+            updatePopularCarsNav();
+        });
     </script>
 
         <!-- Customer Listing Modals -->
@@ -1894,6 +2064,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             initHeroCarValueForms();
             initBookingPanelForm();
+            loadPopularMarketplaceCars();
             initInspectionModalForm({
                 formId: 'usedCarInspectionForm',
                 modalId: 'usedCarInspectionModal',
