@@ -253,6 +253,7 @@
     document.addEventListener('DOMContentLoaded', () => {
         initListCarForm()
         initReserveForm()
+        initTestDriveForm()
         initDetailModal()
         fetchAndRenderListings()
     })
@@ -479,8 +480,22 @@
             })
         }
 
+        const testDriveBtn = document.createElement('button')
+        testDriveBtn.type = 'button'
+        testDriveBtn.className = 'btn btn-outline-secondary btn-sm'
+        testDriveBtn.textContent = 'Test Drive'
+        if (isSoldOut) {
+            testDriveBtn.disabled = true
+        } else {
+            testDriveBtn.addEventListener('click', (event) => {
+                event.stopPropagation()
+                openTestDriveModal(listing.listingId)
+            })
+        }
+
         buttonGroup.appendChild(detailsBtn)
         buttonGroup.appendChild(reserveBtn)
+        buttonGroup.appendChild(testDriveBtn)
 
         footer.appendChild(price)
         footer.appendChild(buttonGroup)
@@ -923,6 +938,107 @@
         }
     }
 
+    function initTestDriveForm() {
+        const form = document.getElementById('testDriveForm')
+        if (!form) return
+        const alertBox = document.getElementById('testDriveFormAlert')
+        const submitBtn = document.getElementById('testDriveSubmitBtn')
+        const dateInput = document.getElementById('testDriveDate')
+
+        if (dateInput) {
+            const today = new Date().toISOString().split('T')[0]
+            dateInput.min = today
+        }
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault()
+            event.stopPropagation()
+
+            if (!form.checkValidity()) {
+                form.classList.add('was-validated')
+                return
+            }
+
+            form.classList.remove('was-validated')
+            hideAlert(alertBox)
+
+            if (submitBtn) {
+                submitBtn.disabled = true
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...'
+            }
+
+            const formData = new FormData(form)
+            const payload = {
+                formType: 'test-drive',
+                firstName: formData.get('name') || '',
+                mobile: formData.get('mobile') || '',
+                email: formData.get('email') || '',
+                location: formData.get('location') || '',
+                preferredDate: formData.get('preferredDate') || '',
+                preferredSlot: formData.get('preferredSlot') || '',
+                notes: formData.get('notes') || '',
+                listingId: formData.get('listingId') || '',
+                listingSummary: formData.get('listingSummary') || ''
+            }
+
+            try {
+                const res = await fetch('/api/quote', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                })
+                const data = await res.json().catch(() => ({}))
+                if (!res.ok) {
+                    const err = new Error(data.error || 'request_failed')
+                    err.payload = data
+                    throw err
+                }
+
+                showAlert(alertBox, 'success', 'Request received. Our team will call you with the schedule.')
+                form.reset()
+                setTimeout(() => {
+                    hideAlert(alertBox)
+                    const modalEl = document.getElementById('testDriveModal')
+                    if (modalEl) {
+                        const modal = bootstrap.Modal.getInstance(modalEl)
+                        if (modal) modal.hide()
+                    }
+                }, 1800)
+            } catch (error) {
+                console.error('Test drive request failed', error)
+                showAlert(alertBox, 'danger', 'Unable to submit right now. Please try again.')
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false
+                    submitBtn.innerHTML = 'Book Test Drive'
+                }
+            }
+        })
+
+        const modalEl = document.getElementById('testDriveModal')
+        if (modalEl) {
+            modalEl.addEventListener('hidden.bs.modal', () => {
+                form.reset()
+                form.classList.remove('was-validated')
+                hideAlert(alertBox)
+                if (submitBtn) {
+                    submitBtn.disabled = false
+                    submitBtn.innerHTML = 'Book Test Drive'
+                }
+
+                const backdrops = document.querySelectorAll('.modal-backdrop')
+                backdrops.forEach(backdrop => {
+                    if (backdrop && backdrop.parentNode) {
+                        backdrop.parentNode.removeChild(backdrop)
+                    }
+                })
+                document.body.classList.remove('modal-open')
+                document.body.style.overflow = ''
+                document.body.style.paddingRight = ''
+            })
+        }
+    }
+
     function openReserveModal(listingId) {
         let listing = listingsCache.get(listingId)
         if (!listing && Array.isArray(window.carListingsData)) {
@@ -957,9 +1073,49 @@
         modal.show()
     }
 
+    function openTestDriveModal(listingId) {
+        let listing = listingsCache.get(listingId)
+        if (!listing && Array.isArray(window.carListingsData)) {
+            listing = window.carListingsData.find(item => item.listingId === listingId)
+        }
+        if (!listing) return
+        if (isListingSold(listing)) return
+
+        const form = document.getElementById('testDriveForm')
+        if (!form) return
+        const alertBox = document.getElementById('testDriveFormAlert')
+        const hiddenId = document.getElementById('testDriveListingId')
+        const hiddenSummary = document.getElementById('testDriveListingSummary')
+        const summaryText = document.getElementById('testDriveSummaryText')
+        const submitBtn = document.getElementById('testDriveSubmitBtn')
+
+        form.reset()
+        form.classList.remove('was-validated')
+        hideAlert(alertBox)
+        if (submitBtn) {
+            submitBtn.disabled = false
+            submitBtn.innerHTML = 'Book Test Drive'
+        }
+
+        if (hiddenId) hiddenId.value = listingId
+        const summaryParts = [buildListingTitle(listing)]
+        const stats = buildListingStats(listing)
+        if (stats) summaryParts.push(stats)
+        const priceText = formatPrice(listing.car && listing.car.expectedPrice)
+        if (priceText) summaryParts.push(priceText)
+        const summary = summaryParts.filter(Boolean).join(' • ')
+        if (hiddenSummary) hiddenSummary.value = summary
+        if (summaryText) summaryText.textContent = summary
+
+        const modalEl = document.getElementById('testDriveModal')
+        const modal = new bootstrap.Modal(modalEl)
+        modal.show()
+    }
+
     function initDetailModal() {
         const detailReserveBtn = document.getElementById('detailReserveBtn')
         const detailBookBtn = document.getElementById('detailBookInspectionBtn')
+        const detailTestDriveBtn = document.getElementById('detailTestDriveBtn')
 
         if (detailReserveBtn) {
             detailReserveBtn.addEventListener('click', () => {
@@ -1003,6 +1159,26 @@
                     if (bookingSection) {
                         bookingSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
                     }
+                }, 300)
+            })
+        }
+
+        if (detailTestDriveBtn) {
+            detailTestDriveBtn.addEventListener('click', () => {
+                if (!currentListingId) return
+                const listing = listingsCache.get(currentListingId)
+                if (!listing || isListingSold(listing)) return
+
+                const detailModalEl = document.getElementById('listingDetailModal')
+                if (detailModalEl) {
+                    const detailModal = bootstrap.Modal.getInstance(detailModalEl)
+                    if (detailModal) {
+                        detailModal.hide()
+                    }
+                }
+
+                setTimeout(() => {
+                    openTestDriveModal(currentListingId)
                 }, 300)
             })
         }

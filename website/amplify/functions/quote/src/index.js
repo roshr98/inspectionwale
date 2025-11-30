@@ -22,10 +22,12 @@ exports.handler = async (event) => {
     const model = safeString(body.model || body.carType || '')
     const city = safeString(body.city || body.location || '')
     const make = safeString(body.make || '')
+    const ownership = safeString(body.ownership || body.ownershipType || '')
+    const formType = safeString(body.formType || 'booking')
     const extra = {}
     // copy any other fields for storage
     for (const k of Object.keys(body)) {
-      if (!['name','firstName','lastName','mobile','phone','mobileNumber','email','model','carType','city','location','make'].includes(k)) extra[k] = body[k]
+      if (!['name','firstName','lastName','mobile','phone','mobileNumber','email','model','carType','city','location','make','ownership','ownershipType','formType'].includes(k)) extra[k] = body[k]
     }
 
     if (!name || !mobile) {
@@ -44,9 +46,13 @@ exports.handler = async (event) => {
       make,
       model,
       city,
+      ownership,
+      formType,
       extra,
       receivedAt: new Date().toISOString()
     }
+
+    if (!item.ownership) delete item.ownership
 
     if (!QUOTES_TABLE) console.warn('QUOTES_TABLE not set; skipping DynamoDB save')
     else await ddbDoc.send(new PutCommand({ TableName: QUOTES_TABLE, Item: item }))
@@ -61,6 +67,8 @@ exports.handler = async (event) => {
       item.make ? `Make: ${item.make}` : null,
       item.model ? `Model/Type: ${item.model}` : null,
       item.city ? `City/Location: ${item.city}` : null,
+      item.ownership ? `Ownership: ${item.ownership}` : null,
+      item.formType ? `Form type: ${item.formType}` : null,
       Object.keys(item.extra || {}).length ? `Extra: ${JSON.stringify(item.extra)}` : null,
       `Received: ${item.receivedAt}`
     ].filter(Boolean).join('\n')
