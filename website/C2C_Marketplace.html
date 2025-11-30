@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Redirecting to Customer Marketplace</title>
-    <meta http-equiv="refresh" content="0; url=/car-marketplace/">
+    <meta http-equiv="refresh" content="0; url=car-marketplace/index.html">
     <meta name="robots" content="noindex,follow">
     <link rel="canonical" href="https://www.inspectionwale.com/car-marketplace/">
     <meta property="og:url" content="https://www.inspectionwale.com/car-marketplace/">
@@ -11,7 +11,18 @@
     <meta property="og:description" content="Browse verified used cars inspected by inspectionWale professionals before you buy.">
     <meta property="og:image" content="https://www.inspectionwale.com/Images/brand_logo.png">
     <script>
-        window.location.replace('/car-marketplace/');
+        (function redirectToMarketplace() {
+            var path = window.location.pathname || '';
+            var prefix = '';
+            if (path) {
+                var lastSlash = path.lastIndexOf('/');
+                if (lastSlash >= 0) {
+                    prefix = path.slice(0, lastSlash);
+                }
+            }
+            var target = (prefix ? prefix + '/' : '') + 'car-marketplace/index.html';
+            window.location.replace(target);
+        })();
     </script>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; padding: 40px; }
@@ -20,6 +31,6 @@
 </head>
 <body>
     <p>You are being redirected to our updated marketplace page.</p>
-    <p><a href="/car-marketplace/">Click here</a> if you are not redirected automatically.</p>
+    <p><a href="car-marketplace/index.html">Click here</a> if you are not redirected automatically.</p>
 </body>
 </html>
