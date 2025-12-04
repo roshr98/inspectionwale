@@ -248,8 +248,11 @@ async function handleSubmitListing(body) {
   const registrationYear = normaliseString(car.registrationYear)
   const kmsDriven = normaliseString(car.kmsDriven)
   const expectedPrice = normaliseString(car.expectedPrice)
+  const carLocation = normaliseString(car.location)
+  const carFuelType = normaliseString(car.fuelType)
+  const sellerType = normaliseString(seller.type) || 'Individual'
 
-  if (!carMake || !carModel || !registrationYear || !kmsDriven || !expectedPrice) {
+  if (!carMake || !carModel || !registrationYear || !kmsDriven || !expectedPrice || !carLocation) {
     return fail(400, 'car_details_incomplete')
   }
 
@@ -279,10 +282,13 @@ async function handleSubmitListing(body) {
     sellerName,
     sellerEmail,
     sellerMobile,
+    sellerType,
+    location: carLocation,
     seller: {
       name: sellerName,
       mobile: sellerMobile,
-      email: sellerEmail
+      email: sellerEmail,
+      type: sellerType
     },
     car: {
       make: carMake,
@@ -290,7 +296,10 @@ async function handleSubmitListing(body) {
       edition: normaliseString(car.edition),
       registrationYear,
       kmsDriven,
-      expectedPrice
+      expectedPrice,
+      location: carLocation,
+      city: carLocation,
+      fuelType: carFuelType
     },
     photos: photos.reduce((acc, photo) => {
       if (photo && photo.slot && photo.key) {
