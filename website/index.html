@@ -617,7 +617,7 @@
         <div id="header-carousel" class="carousel" aria-hidden="false">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="w-100" src="Images/final_banner.jpg" alt="inspectionWale banner" width="1920" height="600" fetchpriority="high" decoding="async" style="width:100%; height: 350px; max-height: 350px; object-fit:cover; object-position: 20% center;">
+                    <img class="w-100" src="Images/final_banner.jpg" alt="inspectionWale banner" width="1920" height="600" fetchpriority="high" decoding="async" style="width:100%; height: 550px; max-height: 550px; object-fit:cover; object-position: 20% center; border-radius: 20px;">
                     <div class="carousel-caption d-flex align-items-center hero-caption">
                         <div class="container">
                             <div class="row gy-4 align-items-start justify-content-between hero-caption-row">
@@ -760,81 +760,106 @@
     <div class="container-fluid p-0 flowing-sections-wrapper" style="background: #f5f6fb !important;">
 
         <!-- Split Sections: What is Checked + Why New Car Inspection + 5 Things Reported -->
-        <div class="split-sections-row" style="padding: 20px 15px;">
+        <div class="split-sections-row" style="padding: 20px 15px; display: flex; align-items: stretch;">
             <!-- Left Side: What is Checked -->
             <div class="split-section-col">
-                <div class="flowing-section-box" style="background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); padding: 20px;">
-                    <div class="d-flex align-items-center gap-2 mb-2">
-                        <div style="width: 40px; height: 40px; background: #f0f0f0; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <i class="fas fa-clipboard-check" style="font-size: 18px; color: #D81324;"></i>
+                <div class="flowing-section-box" style="background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); padding: 20px; display: flex; flex-direction: column; min-height: 520px;">
+                    <h2 class="mb-3" style="font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 700; color: #0B2154; line-height: 1.3; font-style: italic; text-align: left; border-bottom: 3px solid #26a69a; padding-bottom: 12px;">
+                        What is Checked?
+                    </h2>
+                    <div class="row g-2 mb-2" style="flex-grow: 1;">
+                        <div class="col-6">
+                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
+                                <i class="fas fa-check-circle" style="color: #26a69a; font-size: 11px; margin-top: 2px; flex-shrink: 0;"></i>
+                                <div>
+                                    <div style="font-size: 12px; color: #0B2154; font-weight: 600; line-height: 1.3;">Engine</div>
+                                    <div style="font-size: 10px; color: #666; line-height: 1.3;">Leaks, noise</div>
+                                </div>
+                            </div>
                         </div>
-                        <h2 class="mb-0" style="font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 700; color: #0B2154; line-height: 1.2;">
-                            What is Checked?
-                        </h2>
+                        <div class="col-6">
+                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
+                                <i class="fas fa-check-circle" style="color: #26a69a; font-size: 11px; margin-top: 2px; flex-shrink: 0;"></i>
+                                <div>
+                                    <div style="font-size: 12px; color: #0B2154; font-weight: 600; line-height: 1.3;">Accident</div>
+                                    <div style="font-size: 10px; color: #666; line-height: 1.3;">Frame damage</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
+                                <i class="fas fa-check-circle" style="color: #26a69a; font-size: 11px; margin-top: 2px; flex-shrink: 0;"></i>
+                                <div>
+                                    <div style="font-size: 12px; color: #0B2154; font-weight: 600; line-height: 1.3;">Paint & Body</div>
+                                    <div style="font-size: 10px; color: #666; line-height: 1.3;">Repaint, rust</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
+                                <i class="fas fa-check-circle" style="color: #26a69a; font-size: 11px; margin-top: 2px; flex-shrink: 0;"></i>
+                                <div>
+                                    <div style="font-size: 12px; color: #0B2154; font-weight: 600; line-height: 1.3;">Electricals</div>
+                                    <div style="font-size: 10px; color: #666; line-height: 1.3;">Battery, lights</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
+                                <i class="fas fa-check-circle" style="color: #26a69a; font-size: 11px; margin-top: 2px; flex-shrink: 0;"></i>
+                                <div>
+                                    <div style="font-size: 12px; color: #0B2154; font-weight: 600; line-height: 1.3;">Test Drive</div>
+                                    <div style="font-size: 10px; color: #666; line-height: 1.3;">Performance</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
+                                <i class="fas fa-check-circle" style="color: #26a69a; font-size: 11px; margin-top: 2px; flex-shrink: 0;"></i>
+                                <div>
+                                    <div style="font-size: 12px; color: #0B2154; font-weight: 600; line-height: 1.3;">Suspension</div>
+                                    <div style="font-size: 10px; color: #666; line-height: 1.3;">Ride quality</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
+                                <i class="fas fa-check-circle" style="color: #26a69a; font-size: 11px; margin-top: 2px; flex-shrink: 0;"></i>
+                                <div>
+                                    <div style="font-size: 12px; color: #0B2154; font-weight: 600; line-height: 1.3;">Tyres</div>
+                                    <div style="font-size: 10px; color: #666; line-height: 1.3;">Tread, wear</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
+                                <i class="fas fa-check-circle" style="color: #26a69a; font-size: 11px; margin-top: 2px; flex-shrink: 0;"></i>
+                                <div>
+                                    <div style="font-size: 12px; color: #0B2154; font-weight: 600; line-height: 1.3;">Interior</div>
+                                    <div style="font-size: 10px; color: #666; line-height: 1.3;">Seats, trim</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
+                                <i class="fas fa-check-circle" style="color: #26a69a; font-size: 11px; margin-top: 2px; flex-shrink: 0;"></i>
+                                <div>
+                                    <div style="font-size: 12px; color: #0B2154; font-weight: 600; line-height: 1.3;">AC & Features</div>
+                                    <div style="font-size: 10px; color: #666; line-height: 1.3;">Cooling, tech</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
+                                <i class="fas fa-check-circle" style="color: #26a69a; font-size: 11px; margin-top: 2px; flex-shrink: 0;"></i>
+                                <div>
+                                    <div style="font-size: 12px; color: #0B2154; font-weight: 600; line-height: 1.3;">Flood/Fire</div>
+                                    <div style="font-size: 10px; color: #666; line-height: 1.3;">Water, burn</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="row g-1 mb-2 mt-3">
-                        <div class="col-6">
-                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
-                                <i class="fas fa-check-circle" style="color: #26a69a; font-size: 10px; margin-top: 2px;"></i>
-                                <span style="font-size: 10px; color: #333; font-weight: 500;">Engine Health</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
-                                <i class="fas fa-check-circle" style="color: #26a69a; font-size: 10px; margin-top: 2px;"></i>
-                                <span style="font-size: 10px; color: #333; font-weight: 500;">Accidental Check</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
-                                <i class="fas fa-check-circle" style="color: #26a69a; font-size: 10px; margin-top: 2px;"></i>
-                                <span style="font-size: 10px; color: #333; font-weight: 500;">Paint & Body</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
-                                <i class="fas fa-check-circle" style="color: #26a69a; font-size: 10px; margin-top: 2px;"></i>
-                                <span style="font-size: 10px; color: #333; font-weight: 500;">Electricals</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
-                                <i class="fas fa-check-circle" style="color: #26a69a; font-size: 10px; margin-top: 2px;"></i>
-                                <span style="font-size: 10px; color: #333; font-weight: 500;">Test Drive</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
-                                <i class="fas fa-check-circle" style="color: #26a69a; font-size: 10px; margin-top: 2px;"></i>
-                                <span style="font-size: 10px; color: #333; font-weight: 500;">Suspension</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
-                                <i class="fas fa-check-circle" style="color: #26a69a; font-size: 10px; margin-top: 2px;"></i>
-                                <span style="font-size: 10px; color: #333; font-weight: 500;">Tyres Condition</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
-                                <i class="fas fa-check-circle" style="color: #26a69a; font-size: 10px; margin-top: 2px;"></i>
-                                <span style="font-size: 10px; color: #333; font-weight: 500;">Interior Check</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
-                                <i class="fas fa-check-circle" style="color: #26a69a; font-size: 10px; margin-top: 2px;"></i>
-                                <span style="font-size: 10px; color: #333; font-weight: 500;">AC & Features</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
-                                <i class="fas fa-check-circle" style="color: #26a69a; font-size: 10px; margin-top: 2px;"></i>
-                                <span style="font-size: 10px; color: #333; font-weight: 500;">Flood/Fire Check</span>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="button" class="btn w-100 mt-2" style="background: #D81324; color: #fff; border: none; border-radius: 6px; font-size: 11px; font-weight: 600; padding: 8px;" data-bs-toggle="modal" data-bs-target="#usedCarInspectionModal">
+                    <button type="button" class="btn w-100 mt-auto" style="background: #26a69a; color: #fff; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; padding: 10px;" data-bs-toggle="modal" data-bs-target="#usedCarInspectionModal">
                         BOOK USED CAR INSPECTION
                     </button>
                 </div>
@@ -842,78 +867,103 @@
 
             <!-- Middle: Why New Car Inspection -->
             <div class="split-section-col">
-                <div class="flowing-section-box" style="background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); padding: 20px;">
-                    <div class="d-flex align-items-center gap-2 mb-2">
-                        <div style="width: 40px; height: 40px; background: #f0f0f0; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <i class="fas fa-car-side" style="font-size: 18px; color: #D81324;"></i>
+                <div class="flowing-section-box" style="background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); padding: 20px; display: flex; flex-direction: column; min-height: 520px;">
+                    <h2 class="mb-3" style="font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 700; color: #0B2154; line-height: 1.3; font-style: italic; text-align: left; border-bottom: 3px solid #26a69a; padding-bottom: 12px;">
+                        Why New Car Inspection?
+                    </h2>
+                    <div class="row g-2 mb-2" style="flex-grow: 1;">
+                        <div class="col-6">
+                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
+                                <i class="fas fa-shield-alt" style="color: #26a69a; font-size: 11px; margin-top: 2px; flex-shrink: 0;"></i>
+                                <div>
+                                    <div style="font-size: 12px; color: #0B2154; font-weight: 600; line-height: 1.3;">Transit Damage</div>
+                                    <div style="font-size: 10px; color: #666; line-height: 1.3;">Dents, scratches</div>
+                                </div>
+                            </div>
                         </div>
-                        <h2 class="mb-0" style="font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 700; color: #0B2154; line-height: 1.2;">
-                            Why New Car Inspection?
-                        </h2>
+                        <div class="col-6">
+                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
+                                <i class="fas fa-shield-alt" style="color: #26a69a; font-size: 11px; margin-top: 2px; flex-shrink: 0;"></i>
+                                <div>
+                                    <div style="font-size: 12px; color: #0B2154; font-weight: 600; line-height: 1.3;">Factory Defects</div>
+                                    <div style="font-size: 10px; color: #666; line-height: 1.3;">Manufacturing</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
+                                <i class="fas fa-shield-alt" style="color: #26a69a; font-size: 11px; margin-top: 2px; flex-shrink: 0;"></i>
+                                <div>
+                                    <div style="font-size: 12px; color: #0B2154; font-weight: 600; line-height: 1.3;">Paint Issues</div>
+                                    <div style="font-size: 10px; color: #666; line-height: 1.3;">Uneven coating</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
+                                <i class="fas fa-shield-alt" style="color: #26a69a; font-size: 11px; margin-top: 2px; flex-shrink: 0;"></i>
+                                <div>
+                                    <div style="font-size: 12px; color: #0B2154; font-weight: 600; line-height: 1.3;">Sensor Problems</div>
+                                    <div style="font-size: 10px; color: #666; line-height: 1.3;">Faulty alerts</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
+                                <i class="fas fa-shield-alt" style="color: #26a69a; font-size: 11px; margin-top: 2px; flex-shrink: 0;"></i>
+                                <div>
+                                    <div style="font-size: 12px; color: #0B2154; font-weight: 600; line-height: 1.3;">Software Glitches</div>
+                                    <div style="font-size: 10px; color: #666; line-height: 1.3;">System bugs</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
+                                <i class="fas fa-shield-alt" style="color: #26a69a; font-size: 11px; margin-top: 2px; flex-shrink: 0;"></i>
+                                <div>
+                                    <div style="font-size: 12px; color: #0B2154; font-weight: 600; line-height: 1.3;">Missing Features</div>
+                                    <div style="font-size: 10px; color: #666; line-height: 1.3;">Incomplete spec</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
+                                <i class="fas fa-shield-alt" style="color: #26a69a; font-size: 11px; margin-top: 2px; flex-shrink: 0;"></i>
+                                <div>
+                                    <div style="font-size: 12px; color: #0B2154; font-weight: 600; line-height: 1.3;">Dealer Mistakes</div>
+                                    <div style="font-size: 10px; color: #666; line-height: 1.3;">Pre-delivery</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
+                                <i class="fas fa-shield-alt" style="color: #26a69a; font-size: 11px; margin-top: 2px; flex-shrink: 0;"></i>
+                                <div>
+                                    <div style="font-size: 12px; color: #0B2154; font-weight: 600; line-height: 1.3;">Hidden Repairs</div>
+                                    <div style="font-size: 10px; color: #666; line-height: 1.3;">Showroom fix</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
+                                <i class="fas fa-shield-alt" style="color: #26a69a; font-size: 11px; margin-top: 2px; flex-shrink: 0;"></i>
+                                <div>
+                                    <div style="font-size: 12px; color: #0B2154; font-weight: 600; line-height: 1.3;">Unbiased Opinion</div>
+                                    <div style="font-size: 10px; color: #666; line-height: 1.3;">Expert review</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
+                                <i class="fas fa-shield-alt" style="color: #26a69a; font-size: 11px; margin-top: 2px; flex-shrink: 0;"></i>
+                                <div>
+                                    <div style="font-size: 12px; color: #0B2154; font-weight: 600; line-height: 1.3;">Peace of Mind</div>
+                                    <div style="font-size: 10px; color: #666; line-height: 1.3;">Buy confident</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="row g-1 mb-2 mt-3">
-                        <div class="col-6">
-                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
-                                <i class="fas fa-shield-alt" style="color: #26a69a; font-size: 10px; margin-top: 2px;"></i>
-                                <span style="font-size: 10px; color: #333; font-weight: 500;">Transit Damage</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
-                                <i class="fas fa-shield-alt" style="color: #26a69a; font-size: 10px; margin-top: 2px;"></i>
-                                <span style="font-size: 10px; color: #333; font-weight: 500;">Factory Defects</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
-                                <i class="fas fa-shield-alt" style="color: #26a69a; font-size: 10px; margin-top: 2px;"></i>
-                                <span style="font-size: 10px; color: #333; font-weight: 500;">Paint Issues</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
-                                <i class="fas fa-shield-alt" style="color: #26a69a; font-size: 10px; margin-top: 2px;"></i>
-                                <span style="font-size: 10px; color: #333; font-weight: 500;">Sensor Problems</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
-                                <i class="fas fa-shield-alt" style="color: #26a69a; font-size: 10px; margin-top: 2px;"></i>
-                                <span style="font-size: 10px; color: #333; font-weight: 500;">Software Glitches</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
-                                <i class="fas fa-shield-alt" style="color: #26a69a; font-size: 10px; margin-top: 2px;"></i>
-                                <span style="font-size: 10px; color: #333; font-weight: 500;">Missing Features</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
-                                <i class="fas fa-shield-alt" style="color: #26a69a; font-size: 10px; margin-top: 2px;"></i>
-                                <span style="font-size: 10px; color: #333; font-weight: 500;">Dealer Mistakes</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
-                                <i class="fas fa-shield-alt" style="color: #26a69a; font-size: 10px; margin-top: 2px;"></i>
-                                <span style="font-size: 10px; color: #333; font-weight: 500;">Hidden Repairs</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
-                                <i class="fas fa-shield-alt" style="color: #26a69a; font-size: 10px; margin-top: 2px;"></i>
-                                <span style="font-size: 10px; color: #333; font-weight: 500;">Unbiased Opinion</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-start gap-1 p-2" style="background: #f8f9fa; border-radius: 6px;">
-                                <i class="fas fa-shield-alt" style="color: #26a69a; font-size: 10px; margin-top: 2px;"></i>
-                                <span style="font-size: 10px; color: #333; font-weight: 500;">Peace of Mind</span>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="button" class="btn w-100 mt-2" style="background: #D81324; color: #fff; border: none; border-radius: 6px; font-size: 11px; font-weight: 600; padding: 8px;" data-bs-toggle="modal" data-bs-target="#newCarInspectionModal">
+                    <button type="button" class="btn w-100 mt-auto" style="background: #26a69a; color: #fff; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; padding: 10px;" data-bs-toggle="modal" data-bs-target="#newCarInspectionModal">
                         BOOK NEW CAR INSPECTION
                     </button>
                 </div>
@@ -921,67 +971,62 @@
             
             <!-- Right: 5 Things Reported -->
             <div class="split-section-col">
-                <div class="flowing-section-box" style="background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); padding: 20px;">
-                    <div class="d-flex align-items-center gap-2 mb-2">
-                        <div style="width: 40px; height: 40px; background: #f0f0f0; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <i class="fas fa-file-alt" style="font-size: 18px; color: #D81324;"></i>
-                        </div>
-                        <h2 class="mb-0" style="font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 700; color: #0B2154; line-height: 1.2;">
-                            5 Things Reported
-                        </h2>
-                    </div>
-                    <div class="row g-1 mb-2 mt-3">
+                <div class="flowing-section-box" style="background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); padding: 20px; display: flex; flex-direction: column; min-height: 520px;">
+                    <h2 class="mb-3" style="font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 700; color: #0B2154; line-height: 1.3; font-style: italic; text-align: left; border-bottom: 3px solid #26a69a; padding-bottom: 12px;">
+                        5 Things Reported
+                    </h2>
+                    <div class="row g-2 mb-2" style="flex-grow: 1;">
                         <div class="col-12">
-                            <div class="p-2" style="background: #f8f9fa; border-radius: 6px; border-left: 3px solid #D81324;">
+                            <div class="p-2" style="background: #f8f9fa; border-radius: 6px; border-left: 3px solid #26a69a;">
                                 <div class="d-flex align-items-start gap-2">
-                                    <span style="font-size: 16px; font-weight: 700; color: #D81324; line-height: 1;">1.</span>
+                                    <span style="font-size: 18px; font-weight: 700; color: #26a69a; line-height: 1;">1.</span>
                                     <div>
-                                        <h6 class="mb-0" style="font-size: 11px; font-weight: 700; color: #0B2154;">Real Car Condition</h6>
-                                        <p class="mb-0" style="color: #666; font-size: 9px; line-height: 1.3; margin-top: 2px;">See the car's actual condition with detailed checks and photos.</p>
+                                        <h6 class="mb-0" style="font-size: 13px; font-weight: 700; color: #0B2154; line-height: 1.3;">Real Car Condition</h6>
+                                        <p class="mb-0" style="color: #666; font-size: 10px; line-height: 1.4; margin-top: 2px;">See actual condition with detailed checks and photos.</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="p-2" style="background: #f8f9fa; border-radius: 6px; border-left: 3px solid #D81324;">
+                            <div class="p-2" style="background: #f8f9fa; border-radius: 6px; border-left: 3px solid #26a69a;">
                                 <div class="d-flex align-items-start gap-2">
-                                    <span style="font-size: 16px; font-weight: 700; color: #D81324; line-height: 1;">2.</span>
+                                    <span style="font-size: 18px; font-weight: 700; color: #26a69a; line-height: 1;">2.</span>
                                     <div>
-                                        <h6 class="mb-0" style="font-size: 11px; font-weight: 700; color: #0B2154;">Repair Cost Estimate</h6>
-                                        <p class="mb-0" style="color: #666; font-size: 9px; line-height: 1.3; margin-top: 2px;">Know how much repairs may cost before you decide.</p>
+                                        <h6 class="mb-0" style="font-size: 13px; font-weight: 700; color: #0B2154; line-height: 1.3;">Repair Cost Estimate</h6>
+                                        <p class="mb-0" style="color: #666; font-size: 10px; line-height: 1.4; margin-top: 2px;">Know repair costs before you decide.</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="p-2" style="background: #f8f9fa; border-radius: 6px; border-left: 3px solid #D81324;">
+                            <div class="p-2" style="background: #f8f9fa; border-radius: 6px; border-left: 3px solid #26a69a;">
                                 <div class="d-flex align-items-start gap-2">
-                                    <span style="font-size: 16px; font-weight: 700; color: #D81324; line-height: 1;">3.</span>
+                                    <span style="font-size: 18px; font-weight: 700; color: #26a69a; line-height: 1;">3.</span>
                                     <div>
-                                        <h6 class="mb-0" style="font-size: 11px; font-weight: 700; color: #0B2154;">Correct Market Value</h6>
-                                        <p class="mb-0" style="color: #666; font-size: 9px; line-height: 1.3; margin-top: 2px;">Get the right price based on the car's true condition.</p>
+                                        <h6 class="mb-0" style="font-size: 13px; font-weight: 700; color: #0B2154; line-height: 1.3;">Correct Market Value</h6>
+                                        <p class="mb-0" style="color: #666; font-size: 10px; line-height: 1.4; margin-top: 2px;">Right price based on true condition.</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="p-2" style="background: #f8f9fa; border-radius: 6px; border-left: 3px solid #D81324;">
+                            <div class="p-2" style="background: #f8f9fa; border-radius: 6px; border-left: 3px solid #26a69a;">
                                 <div class="d-flex align-items-start gap-2">
-                                    <span style="font-size: 16px; font-weight: 700; color: #D81324; line-height: 1;">4.</span>
+                                    <span style="font-size: 18px; font-weight: 700; color: #26a69a; line-height: 1;">4.</span>
                                     <div>
-                                        <h6 class="mb-0" style="font-size: 11px; font-weight: 700; color: #0B2154;">Strong Negotiation Power</h6>
-                                        <p class="mb-0" style="color: #666; font-size: 9px; line-height: 1.3; margin-top: 2px;">Use clear information to bargain better and save money.</p>
+                                        <h6 class="mb-0" style="font-size: 13px; font-weight: 700; color: #0B2154; line-height: 1.3;">Strong Negotiation Power</h6>
+                                        <p class="mb-0" style="color: #666; font-size: 10px; line-height: 1.4; margin-top: 2px;">Bargain better with clear information.</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="p-2" style="background: #f8f9fa; border-radius: 6px; border-left: 3px solid #D81324;">
+                            <div class="p-2" style="background: #f8f9fa; border-radius: 6px; border-left: 3px solid #26a69a;">
                                 <div class="d-flex align-items-start gap-2">
-                                    <span style="font-size: 16px; font-weight: 700; color: #D81324; line-height: 1;">5.</span>
+                                    <span style="font-size: 18px; font-weight: 700; color: #26a69a; line-height: 1;">5.</span>
                                     <div>
-                                        <h6 class="mb-0" style="font-size: 11px; font-weight: 700; color: #0B2154;">Full Clarity & Confidence</h6>
-                                        <p class="mb-0" style="color: #666; font-size: 9px; line-height: 1.3; margin-top: 2px;">Understand everything clearly and choose the right deal.</p>
+                                        <h6 class="mb-0" style="font-size: 13px; font-weight: 700; color: #0B2154; line-height: 1.3;">Full Clarity & Confidence</h6>
+                                        <p class="mb-0" style="color: #666; font-size: 10px; line-height: 1.4; margin-top: 2px;">Understand clearly and choose right deal.</p>
                                     </div>
                                 </div>
                             </div>
@@ -1004,37 +1049,37 @@
                     <div class="col-4 col-md-2 brand-item">
                         <div class="brand-box">
                             <img src="Images/tata-logo.png" alt="Tata" loading="lazy">
-                            <span>Tata</span>
+                            <span class="brand-name">Tata</span>
                         </div>
                     </div>
                     <div class="col-4 col-md-2 brand-item">
                         <div class="brand-box">
                             <img src="Images/mahindra-logo.png" alt="Mahindra" loading="lazy">
-                            <span>Mahindra</span>
+                            <span class="brand-name">Mahindra</span>
                         </div>
                     </div>
                     <div class="col-4 col-md-2 brand-item">
                         <div class="brand-box">
                             <img src="Images/suzuki-logo.png" alt="Maruti Suzuki" loading="lazy">
-                            <span>Maruti Suzuki</span>
+                            <span class="brand-name">Maruti Suzuki</span>
                         </div>
                     </div>
                     <div class="col-4 col-md-2 brand-item">
                         <div class="brand-box">
                             <img src="Images/hyundai-logo.png" alt="Hyundai" loading="lazy">
-                            <span>Hyundai</span>
+                            <span class="brand-name">Hyundai</span>
                         </div>
                     </div>
                     <div class="col-4 col-md-2 brand-item">
                         <div class="brand-box">
                             <img src="Images/toyota-logo.png" alt="Toyota" loading="lazy">
-                            <span>Toyota</span>
+                            <span class="brand-name">Toyota</span>
                         </div>
                     </div>
                     <div class="col-4 col-md-2 brand-item">
                         <div class="brand-box">
                             <img src="Images/kia_logo.png" alt="Kia" loading="lazy">
-                            <span>Kia</span>
+                            <span class="brand-name">Kia</span>
                         </div>
                     </div>
                 </div>
@@ -1043,37 +1088,37 @@
                     <div class="col-4 col-md-2 brand-item">
                         <div class="brand-box">
                             <img src="Images/bmw-logo.png" alt="BMW" loading="lazy">
-                            <span>BMW</span>
+                            <span class="brand-name">BMW</span>
                         </div>
                     </div>
                     <div class="col-4 col-md-2 brand-item">
                         <div class="brand-box">
                             <img src="Images/volkswagen-logo.png" alt="Volkswagen" loading="lazy">
-                            <span>Volkswagen</span>
+                            <span class="brand-name">Volkswagen</span>
                         </div>
                     </div>
                     <div class="col-4 col-md-2 brand-item">
                         <div class="brand-box">
                             <img src="Images/honda-logo.png" alt="Honda" loading="lazy">
-                            <span>Honda</span>
+                            <span class="brand-name">Honda</span>
                         </div>
                     </div>
                     <div class="col-4 col-md-2 brand-item">
                         <div class="brand-box">
                             <img src="Images/ford-logo.png" alt="Ford" loading="lazy">
-                            <span>Ford</span>
+                            <span class="brand-name">Ford</span>
                         </div>
                     </div>
                     <div class="col-4 col-md-2 brand-item">
                         <div class="brand-box">
                             <img src="Images/mg-logo.png" alt="MG" loading="lazy">
-                            <span>MG</span>
+                            <span class="brand-name">MG</span>
                         </div>
                     </div>
                     <div class="col-4 col-md-2 brand-item">
                         <div class="brand-box">
                             <img src="Images/hyundai-logo.png" alt="More Brands" loading="lazy" style="opacity: 0.3;">
-                            <span style="color: #999;">+ More</span>
+                            <span class="brand-name" style="color: #999; opacity: 1;">+ More</span>
                         </div>
                     </div>
                 </div>
@@ -1109,27 +1154,51 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px 10px;
-            min-height: 120px;
-            transition: background 0.2s;
+            padding: 12px 8px;
+            min-height: 70px;
+            transition: all 0.3s ease;
+            position: relative;
         }
         .brand-box:hover {
             background: #f8f9fa;
+            transform: translateY(-2px);
         }
         .brand-box img {
-            width: 60px;
-            height: 60px;
+            width: 40px;
+            height: 40px;
             object-fit: contain;
-            margin-bottom: 10px;
+            transition: transform 0.3s ease;
         }
-        .brand-box span {
-            font-size: 0.85rem;
-            color: #333;
-            font-weight: 500;
+        .brand-box:hover img {
+            transform: scale(1.15);
+        }
+        .brand-box .brand-name {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.65rem;
+            color: #0B2154;
+            font-weight: 600;
             text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+        .brand-box:hover .brand-name {
+            opacity: 1;
+        }
+        .view-more-brands {
+            transition: background 0.2s;
         }
         .view-more-brands:hover {
             background: #f8f9fa;
+        }
+        .view-more-brands span {
+            font-size: 0.7rem;
+            color: #555;
+            font-weight: 500;
         }
     </style>
 
@@ -2661,7 +2730,7 @@
         .goog-te-menu-value span { color: #333 !important; }
         #google_translate_element .goog-te-gadget-simple {
             padding: 8px 12px;
-            border-radius: 5px;
+            border-radius: 6px;
             background: #f8f9fa !important;
         }
         .skiptranslate iframe { display: none !important; }
