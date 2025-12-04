@@ -852,7 +852,7 @@
                                 </dl>
                                 <div class="mt-4 d-grid gap-2">
                                     <button type="button" class="btn btn-success" id="c2cReserveBtn">Reserve Now</button>
-                                    <a href="/#book" class="btn btn-outline-primary" id="c2cBookInspectionBtn">Book an Inspection</a>
+                                    <button type="button" class="btn btn-outline-primary" id="c2cBookInspectionBtn" data-bs-toggle="modal" data-bs-target="#inspectionModal">Book an Inspection</button>
                                 </div>
                             </div>
                         </div>
@@ -951,6 +951,58 @@
         </div>
     </div>
     <!-- Footer End -->
+
+    <!-- Inspection Booking Modal -->
+    <div class="modal fade" id="inspectionModal" tabindex="-1" aria-labelledby="inspectionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content" style="border-radius: 16px; overflow: hidden;">
+                <div class="modal-header" style="background: linear-gradient(135deg, #1a2a3a 0%, #2d4a5e 100%); border: none;">
+                    <h5 class="modal-title text-white" id="inspectionModalLabel" style="font-style: italic;">Book an Inspection</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4" style="background: linear-gradient(180deg, #f5f5f5 0%, #e8e8e8 100%);">
+                    <div id="inspectionFormAlert" class="alert d-none" role="alert"></div>
+                    <p class="small text-muted mb-3" id="inspectionCarSummary"></p>
+                    <form id="inspectionBookingForm" novalidate>
+                        <input type="hidden" id="inspectionListingId" name="listingId">
+                        <div class="mb-3">
+                            <input type="text" name="name" class="form-control form-control-lg" placeholder="Name" required style="border-radius: 8px; border: none; background: #fff;">
+                            <div class="invalid-feedback">Please enter your name</div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="tel" name="mobile" class="form-control form-control-lg" placeholder="Mobile number" required pattern="[0-9]{10}" style="border-radius: 8px; border: none; background: #fff;">
+                            <div class="invalid-feedback">Enter a valid 10-digit mobile number</div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="email" name="email" class="form-control form-control-lg" placeholder="Email" required style="border-radius: 8px; border: none; background: #fff;">
+                            <div class="invalid-feedback">Please enter a valid email</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <select name="carType" class="form-select form-select-lg" required style="border-radius: 8px; border: none; background: #fff;">
+                                    <option value="" disabled selected>Car Type</option>
+                                    <option value="Used Car">Used Car</option>
+                                    <option value="New Car">New Car</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <input type="text" name="makeModel" class="form-control form-control-lg" placeholder="Make and model" required style="border-radius: 8px; border: none; background: #fff;">
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <input type="text" name="regYear" class="form-control form-control-lg" placeholder="Registration year" style="border-radius: 8px; border: none; background: #fff;">
+                            </div>
+                            <div class="col-6">
+                                <input type="text" name="kmsDriven" class="form-control form-control-lg" placeholder="KMs driven" style="border-radius: 8px; border: none; background: #fff;">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn w-100 py-3" id="inspectionSubmitBtn" style="background: #D81324; color: #fff; border-radius: 30px; font-size: 1rem; font-weight: 600; text-transform: uppercase;">Book Inspection</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
@@ -1972,6 +2024,120 @@
                 submitBtn.innerHTML = '<i class="fa fa-paper-plane me-2"></i>Submit Requirements';
             }
         });
+    });
+
+    // Inspection Modal Handler
+    document.addEventListener('DOMContentLoaded', function() {
+        const inspectionModal = document.getElementById('inspectionModal');
+        const inspectionForm = document.getElementById('inspectionBookingForm');
+        
+        if (inspectionModal && inspectionForm) {
+            // Pre-fill car details when modal opens
+            inspectionModal.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+                const listingId = button?.dataset?.listingId;
+                
+                if (listingId) {
+                    const listing = listingMap.get(listingId) || window.carListingsData?.find(c => c.listingId === listingId);
+                    if (listing) {
+                        const carInfo = listing.car || {};
+                        document.getElementById('inspectionListingId').value = listingId;
+                        document.getElementById('inspectionCarSummary').textContent = 
+                            `Inspection for: ${buildListingTitle(listing) || 'Selected Car'}`;
+                        
+                        // Pre-fill make/model
+                        const makeModelInput = inspectionForm.querySelector('[name="makeModel"]');
+                        if (makeModelInput && carInfo.make) {
+                            makeModelInput.value = `${carInfo.make}${carInfo.model ? ' ' + carInfo.model : ''}`;
+                        }
+                        
+                        // Pre-fill year
+                        const regYearInput = inspectionForm.querySelector('[name="regYear"]');
+                        if (regYearInput && carInfo.registrationYear) {
+                            regYearInput.value = carInfo.registrationYear;
+                        }
+                        
+                        // Pre-fill kms
+                        const kmsInput = inspectionForm.querySelector('[name="kmsDriven"]');
+                        if (kmsInput && carInfo.kmsDriven) {
+                            kmsInput.value = carInfo.kmsDriven;
+                        }
+                    }
+                }
+            });
+            
+            // Handle form submission
+            inspectionForm.addEventListener('submit', async function(event) {
+                event.preventDefault();
+                
+                if (!inspectionForm.checkValidity()) {
+                    inspectionForm.classList.add('was-validated');
+                    return;
+                }
+                
+                inspectionForm.classList.remove('was-validated');
+                
+                const formData = new FormData(inspectionForm);
+                const submitBtn = document.getElementById('inspectionSubmitBtn');
+                const alert = document.getElementById('inspectionFormAlert');
+                
+                const payload = {
+                    firstName: formData.get('name') || '',
+                    mobile: formData.get('mobile') || '',
+                    email: formData.get('email') || '',
+                    carType: formData.get('carType') || 'Used Car',
+                    make: formData.get('makeModel') || '',
+                    registrationYear: formData.get('regYear') || '',
+                    kmsDriven: formData.get('kmsDriven') || '',
+                    formType: 'marketplace-inspection',
+                    listingId: formData.get('listingId') || ''
+                };
+                
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                
+                try {
+                    const res = await fetch('/api/quote', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    if (res.ok) {
+                        alert.className = 'alert alert-success';
+                        alert.textContent = 'Booking received! We will contact you shortly.';
+                        alert.classList.remove('d-none');
+                        
+                        submitBtn.innerHTML = '<i class="fas fa-check"></i> Booking Received!';
+                        submitBtn.style.background = '#26a69a';
+                        
+                        inspectionForm.reset();
+                        
+                        setTimeout(() => {
+                            bootstrap.Modal.getInstance(inspectionModal).hide();
+                            alert.classList.add('d-none');
+                            submitBtn.innerHTML = 'Book Inspection';
+                            submitBtn.style.background = '#D81324';
+                            submitBtn.disabled = false;
+                        }, 2000);
+                    } else {
+                        const errorData = await res.json().catch(() => null);
+                        alert.className = 'alert alert-danger';
+                        alert.textContent = errorData?.error || 'Failed to submit. Please try again.';
+                        alert.classList.remove('d-none');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Book Inspection';
+                    }
+                } catch (err) {
+                    console.error('Inspection booking failed:', err);
+                    alert.className = 'alert alert-danger';
+                    alert.textContent = 'Unable to reach server. Please try again.';
+                    alert.classList.remove('d-none');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Book Inspection';
+                }
+            });
+        }
     });
     </script>
 </body>
