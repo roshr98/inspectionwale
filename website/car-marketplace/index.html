@@ -405,20 +405,27 @@
 
         .car-specs-row {
             display: flex;
-            gap: 12px;
-            font-size: 14px;
+            gap: 16px;
+            font-size: 13px;
             font-family: 'Lato', 'LatoWeb', 'Google', 'Lato', sans-serif;
             font-weight: 400;
             color: #4f5772;
             margin: 8px 0;
+            flex-wrap: nowrap;
+            align-items: center;
         }
 
         .car-spec-item {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             font-family: 'Lato', 'LatoWeb', 'Google', 'Lato', sans-serif;
             font-weight: 400;
+            white-space: nowrap;
+        }
+
+        .car-spec-item i {
+            font-size: 12px;
         }
 
         .car-card-tags {
@@ -857,9 +864,9 @@
                                     <dt class="col-5">Expected Price</dt>
                                     <dd class="col-7" id="detailPrice"></dd>
                                 </dl>
-                                <div class="mt-4 d-grid gap-2">
-                                    <button type="button" class="btn btn-success" id="c2cReserveBtn">Reserve Now</button>
-                                    <button type="button" class="btn btn-outline-primary" id="c2cBookInspectionBtn" data-bs-toggle="modal" data-bs-target="#inspectionModal">Book an Inspection</button>
+                                <div class="mt-4 d-grid d-sm-flex gap-2">
+                                    <button type="button" class="btn btn-success flex-grow-1" id="c2cReserveBtn" style="border-radius: 20px;">Reserve Now</button>
+                                    <button type="button" class="btn btn-outline-primary flex-grow-1" id="c2cBookInspectionBtn" data-bs-toggle="modal" data-bs-target="#inspectionModal" style="border-radius: 20px;">Book Test Drive</button>
                                 </div>
                             </div>
                         </div>
@@ -955,6 +962,37 @@
                     <span style="color: rgba(255,255,255,0.5); font-size: 12px;">&copy; 2025 inspectionwale.com. All Rights Reserved.</span>
                 </div>
             </div>
+
+            <!-- Terms & Conditions Section -->
+            <div class="row pt-4 mt-4" style="border-top: 1px solid rgba(255,255,255,0.15); padding-top: 24px !important;">
+                <div class="col-md-6 mb-4">
+                    <h6 class="text-white mb-3" style="font-weight: 600; font-size: 14px;">Terms & Conditions – InspectionWale</h6>
+                    <ul style="list-style: none; padding: 0; font-size: 12px; line-height: 1.8;">
+                        <li><strong style="color: #fff;">Report Validity:</strong> <span style="color: rgba(255,255,255,0.7);">Inspection reports are valid for 2 days or 20 km, whichever comes first, from the date of inspection.</span></li>
+                        <li><strong style="color: #fff;">Inspection Booking:</strong> <span style="color: rgba(255,255,255,0.7);">All inspections must be booked at least 1 day in advance.</span></li>
+                        <li><strong style="color: #fff;">Out-of-Service Location Visits:</strong> <span style="color: rgba(255,255,255,0.7);">If the inspection location is outside our service area, an additional travel charge will apply, based on distance, and will not exceed ₹450.</span></li>
+                        <li><strong style="color: #fff;">Inspection Fees:</strong> <span style="color: rgba(255,255,255,0.7);">The standard inspection fee is ₹1,399/-.</span></li>
+                        <li><strong style="color: #fff;">Cancellation Policy:</strong> <span style="color: rgba(255,255,255,0.7);">If an inspection is cancelled after the booking is confirmed or when our agent is already on the way, 50% of the inspection fee will be charged.</span></li>
+                        <li><strong style="color: #fff;">Data Privacy:</strong> <span style="color: rgba(255,255,255,0.7);">We do not share or sell your data under any circumstances.</span></li>
+                        <li><strong style="color: #fff;">On-Site Requirements:</strong> <span style="color: rgba(255,255,255,0.7);">You must inform the seller/dealer that the inspection takes 1 to 1.5 hours, vehicle documents must be provided, and a road test of 3 to 5 km is required.</span></li>
+                    </ul>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <h6 class="text-white mb-3" style="font-weight: 600; font-size: 14px;">Careers – Automobile Inspectors (Hiring Now)</h6>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 12px; line-height: 1.8;">
+                        InspectionWale, started in 2020 (earlier known as WhizzCheck), is India's trusted used-car inspection and valuation service. We are expanding our team and looking for skilled Automobile Inspectors with strong hands-on car evaluation experience.
+                    </p>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 12px; line-height: 1.8; margin-bottom: 8px;"><strong style="color: #fff;">Requirements:</strong></p>
+                    <ul style="list-style: none; padding: 0; font-size: 12px; line-height: 1.6; margin-left: 0;">
+                        <li style="color: rgba(255,255,255,0.7);">• Good knowledge of mechanical, electrical, and bodywork checks</li>
+                        <li style="color: rgba(255,255,255,0.7);">• Ability to perform road tests and identify repair needs</li>
+                        <li style="color: rgba(255,255,255,0.7);">• Experience in car inspection, servicing, or used-car evaluation</li>
+                        <li style="color: rgba(255,255,255,0.7);">• Basic smartphone handling for photos and report entry</li>
+                        <li style="color: rgba(255,255,255,0.7);">• Honest, reliable, and customer-friendly attitude</li>
+                    </ul>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 12px; line-height: 1.8; margin-top: 8px;">If you're passionate about cars and want a stable, growth-focused career, join the InspectionWale team.</p>
+                </div>
+            </div>
         </div>
     </div>
     <!-- Footer End -->
@@ -964,7 +1002,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content" style="border-radius: 16px; overflow: hidden;">
                 <div class="modal-header" style="background: linear-gradient(135deg, #1a2a3a 0%, #2d4a5e 100%); border: none;">
-                    <h5 class="modal-title text-white" id="inspectionModalLabel" style="font-style: italic;">Book an Inspection</h5>
+                    <h5 class="modal-title text-white" id="inspectionModalLabel" style="font-style: italic;">Book Test Drive</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4" style="background: linear-gradient(180deg, #f5f5f5 0%, #e8e8e8 100%);">
@@ -1695,7 +1733,7 @@
                             </div>
                             <div class="car-card-actions">
                                 ${offerAction}
-                                <button class="btn view-more-btn js-view-details" type="button" ${listingIdAttr} ${isSoldOut ? 'disabled aria-disabled="true"' : ''}>${isSoldOut ? 'Unavailable' : 'Get Seller Details'}</button>
+                                <button class="btn view-more-btn js-view-details" type="button" ${listingIdAttr} ${isSoldOut ? 'disabled aria-disabled="true"' : ''}>${isSoldOut ? 'Unavailable' : 'Seller Details'}</button>
                             </div>
                             ${highlights.length ? `<div class="car-card-tags mt-3">${highlights.map(feature => `<span class="car-chip">${feature}</span>`).join('')}</div>` : ''}
                         </div>
