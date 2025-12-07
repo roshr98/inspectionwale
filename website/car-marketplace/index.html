@@ -1562,7 +1562,6 @@
         })();
 
         function bindListingEvents() {
-            console.log('bindListingEvents: called. listingEventsBound=', listingEventsBound, 'gridElement=', !!gridElement);
             if (listingEventsBound || !gridElement) return;
             gridElement.addEventListener('click', function (event) {
                 const detailTrigger = event.target.closest('.js-view-details');
