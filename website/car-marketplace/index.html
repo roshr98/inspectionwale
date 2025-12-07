@@ -1784,60 +1784,9 @@
         function showCarDetails(listingId) {
             const listing = listingMap.get(listingId) || window.carListingsData?.find(c => c.listingId === listingId);
             if (!listing) return;
-
-            const carInfo = listing.car || {};
-            const title = buildListingTitle(listing) || 'Car Details';
-            const modalEl = document.getElementById('carDetailModal');
-            if (!modalEl) return;
-
-            const isSoldOut = isListingSold(listing);
-            document.getElementById('carDetailModalLabel').textContent = title;
-            document.getElementById('carDetailTitle').textContent = title;
-            document.getElementById('carDetailSummary').textContent = listing.summary || '';
-            document.getElementById('carDetailMeta').textContent = listing.createdAt
-                ? `Submitted on ${new Date(listing.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}`
-                : '';
-            document.getElementById('detailYear').textContent = carInfo.registrationYear || 'N/A';
-            document.getElementById('detailKms').textContent = formatKms(carInfo.kmsDriven) || 'N/A';
-            document.getElementById('detailPrice').textContent = formatPrice(carInfo.expectedPrice);
-
-            const heroImg = document.getElementById('carDetailHero');
-            const photos = collectListingPhotos(listing);
-            if (heroImg) {
-                const primary = photos[0] && photos[0].url ? ensureAbsoluteUrl(photos[0].url) : FALLBACK_IMAGE;
-                heroImg.src = primary || FALLBACK_IMAGE;
-                heroImg.alt = `${title} photo`;
-                heroImg.onerror = function() { this.src = FALLBACK_IMAGE; };
-            }
-
-            const thumbnailsContainer = document.getElementById('carDetailThumbnails');
-            if (thumbnailsContainer) {
-                thumbnailsContainer.innerHTML = photos.map(photo => {
-                    const safeUrl = ensureAbsoluteUrl(photo.url) || FALLBACK_IMAGE;
-                    const slotLabel = photo.slot ? photo.slot.replace(/([A-Z])/g, ' $1') : 'Photo';
-                    return `
-                        <img src="${safeUrl}" class="img-thumbnail" style="width:80px;height:80px;object-fit:cover;cursor:pointer;"
-                             width="80" height="80" loading="lazy" decoding="async"
-                             alt="${slotLabel.trim()}" onerror="this.src='${FALLBACK_IMAGE}'"
-                             onclick="document.getElementById('carDetailHero').src='${safeUrl}'">
-                    `;
-                }).join('');
-            }
-
-            const reserveBtn = document.getElementById('c2cReserveBtn');
-            if (reserveBtn) {
-                reserveBtn.onclick = null;
-                reserveBtn.textContent = isSoldOut ? 'Sold Out' : 'Reserve Now';
-                reserveBtn.classList.toggle('btn-success', !isSoldOut);
-                reserveBtn.classList.toggle('btn-secondary', isSoldOut);
-                reserveBtn.disabled = isSoldOut;
-                if (!isSoldOut) {
-                    reserveBtn.onclick = () => openC2CReserveModal(listingId);
-                }
-            }
-
-            const modal = new bootstrap.Modal(modalEl);
-            modal.show();
+            
+            // Use the new full-screen modal
+            openCarDetailModal(listingId);
         }
 
         function openC2CReserveModal(listingId) {
@@ -2328,17 +2277,6 @@
             }, 300);
         };
     }
-
-    // Wire "Seller Details" button clicks to open modal
-    document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('js-view-details')) {
-            const listingId = e.target.getAttribute('data-listing-id');
-            if (listingId) {
-                openCarDetailModal(listingId);
-            }
-        }
-    });
-
 
     </script>
 </body>
