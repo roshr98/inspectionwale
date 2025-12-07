@@ -1565,13 +1565,10 @@
             console.log('bindListingEvents: called. listingEventsBound=', listingEventsBound, 'gridElement=', !!gridElement);
             if (listingEventsBound || !gridElement) return;
             gridElement.addEventListener('click', function (event) {
-                console.log('grid click:', event.target);
                 const detailTrigger = event.target.closest('.js-view-details');
-                console.log('closest .js-view-details ->', detailTrigger);
                 if (detailTrigger) {
                     event.preventDefault();
                     const listingId = detailTrigger.getAttribute('data-listing-id');
-                    console.log('Seller Details clicked. listingId=', listingId);
                     if (listingId) {
                         showCarDetails(listingId);
                     }
@@ -1581,14 +1578,13 @@
                 if (offerTrigger) {
                     event.preventDefault();
                     const listingId = offerTrigger.getAttribute('data-listing-id');
-                    console.log('Make Offer clicked. listingId=', listingId);
+                    
                     if (listingId) {
                         openC2CReserveModal(listingId);
                     }
                 }
             });
             listingEventsBound = true;
-            console.log('bindListingEvents: bound successfully');
         }
 
         function handleListingDeepLink() {
@@ -1790,21 +1786,18 @@
 
         // Show car details in modal
         function showCarDetails(listingId) {
-            console.log('🔍 showCarDetails called with listingId:', listingId);
-            const listing = listingMap.get(listingId) || allMarketplaceListings.find(c => c.listingId === listingId);
-            console.log('📋 Listing found:', listing ? 'YES' : 'NO');
+            const listing = (window.listingMap && window.listingMap.get(listingId)) || (window.allMarketplaceListings || []).find(c => c.listingId === listingId);
             if (!listing) {
-                console.error('❌ Listing not found for ID:', listingId);
+                console.error('Listing not found for ID:', listingId);
                 return;
             }
-            
+
             // Use the new full-screen modal
-            console.log('📱 Calling openCarDetailModal...');
             openCarDetailModal(listingId);
         }
 
         function openC2CReserveModal(listingId) {
-            const listing = listingMap.get(listingId) || window.carListingsData?.find(c => c.listingId === listingId);
+            const listing = (window.listingMap && window.listingMap.get(listingId)) || window.carListingsData?.find(c => c.listingId === listingId);
             if (!listing) return;
 
             const form = document.getElementById('c2cReserveForm');
@@ -1918,7 +1911,7 @@
                     return;
                 }
 
-                const listing = listingMap.get(listingId) || window.carListingsData?.find(c => c.listingId === listingId);
+                const listing = (window.listingMap && window.listingMap.get(listingId)) || window.carListingsData?.find(c => c.listingId === listingId);
                 if (!listing) {
                     showReserveAlert('danger', 'This listing could not be found. Please refresh the page.');
                     return;
@@ -2043,7 +2036,7 @@
                 const listingId = button?.dataset?.listingId;
                 
                 if (listingId) {
-                    const listing = listingMap.get(listingId) || window.carListingsData?.find(c => c.listingId === listingId);
+                    const listing = (window.listingMap && window.listingMap.get(listingId)) || window.carListingsData?.find(c => c.listingId === listingId);
                     if (listing) {
                         const carInfo = listing.car || {};
                         document.getElementById('inspectionListingId').value = listingId;
@@ -2149,24 +2142,20 @@
     let currentDetailListing = null;
 
     function openCarDetailModal(listingId) {
-        console.log('🎯 openCarDetailModal called with listingId:', listingId);
-        const listing = listingMap.get(listingId) || allMarketplaceListings.find(item => item.listingId === listingId);
+        const listing = (window.listingMap && window.listingMap.get(listingId)) || (window.allMarketplaceListings || []).find(item => item.listingId === listingId);
         if (!listing) {
-            console.error('❌ Listing not found in openCarDetailModal:', listingId);
+            console.error('Listing not found in openCarDetailModal:', listingId);
             return;
         }
-        console.log('✅ Listing found:', listing.car?.make, listing.car?.model);
         currentDetailListing = listing;
         populateCarDetailModal(listing);
         const modalEl = document.getElementById('carDetailModal');
-        console.log('🎬 Modal element found:', modalEl ? 'YES' : 'NO');
         if (!modalEl) {
-            console.error('❌ Modal element not found!');
+            console.error('Modal element not found!');
             return;
         }
         const modal = new bootstrap.Modal(modalEl, { backdrop: 'static', keyboard: false });
         modal.show();
-        console.log('✨ Modal shown');
     }
 
     function populateCarDetailModal(listing) {
@@ -2273,30 +2262,28 @@
 
         // Wire action buttons
         document.getElementById('carDetailReserveBtn').onclick = function() {
-            console.log('Reserve clicked for:', listing.listingId);
             alert('Reserve functionality coming soon!');
         };
 
         document.getElementById('carDetailTestDriveBtn').onclick = function() {
-            console.log('Book test drive clicked for:', listing.listingId);
             document.getElementById('carDetailContactMessage').focus();
             document.getElementById('carDetailContactMessage').value = `I'd like to book a test drive for ${fullTitle}`;
         };
 
         // ===== NEW: Wire Book Inspection Button =====
         document.getElementById('carDetailBookInspectionBtn').onclick = function() {
-            console.log('Book inspection clicked for:', listing.listingId);
-            // Scroll to inspection booking section or open inspection modal
+            // Close listing modal and open inspection booking modal
             const modal = bootstrap.Modal.getInstance(document.getElementById('carDetailModal'));
             if (modal) modal.hide();
-            // Open inspection booking modal after a brief delay
             setTimeout(() => {
                 const inspectionModal = new bootstrap.Modal(document.getElementById('inspectionModal'), { backdrop: 'static' });
                 inspectionModal.show();
-                document.getElementById('inspectionCarMake').value = car.make || '';
-                document.getElementById('inspectionCarModel').value = car.model || '';
-                document.getElementById('inspectionRegYear').value = year || '';
-                document.getElementById('inspectionKmsDriven').value = kms || '';
+                const makeModelInput = document.querySelector('#inspectionBookingForm [name="makeModel"]');
+                const regYearInput = document.querySelector('#inspectionBookingForm [name="regYear"]');
+                const kmsInput = document.querySelector('#inspectionBookingForm [name="kmsDriven"]');
+                if (makeModelInput) makeModelInput.value = `${car.make || ''}${car.model ? ' ' + car.model : ''}`;
+                if (regYearInput) regYearInput.value = year || '';
+                if (kmsInput) kmsInput.value = kms || '';
             }, 300);
         };
     }
