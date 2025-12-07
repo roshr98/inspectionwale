@@ -21,7 +21,7 @@
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700&family=Ubuntu:wght@400;500&family=Lato:wght@400;700&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&family=Barlow:wght@600;700&family=Ubuntu:wght@400;500&family=Lato:wght@400;700&display=swap" rel="stylesheet"> 
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -840,73 +840,114 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
-    <!-- Car Detail Modal - Reference Design Match -->
+    <!-- Car Detail Modal - Compact Design -->
     <div class="modal fade" id="carDetailModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen">
-            <div class="modal-content" style="background: #f8f9fa;">
+            <div class="modal-content" style="background: white; font-family: 'Roboto', sans-serif;">
                 <!-- Header with Back Button -->
-                <div class="modal-header" style="padding: 15px 30px; background: #1e3a5f; color: white; border: none;">
-                    <button type="button" class="btn btn-link p-0" data-bs-dismiss="modal" style="color: white; text-decoration: none; font-size: 24px; margin-right: 15px;">
+                <div class="modal-header" style="padding: 12px 20px; background: #1e3a5f; color: white; border: none;">
+                    <button type="button" class="btn btn-link p-0" data-bs-dismiss="modal" style="color: white; text-decoration: none; font-size: 20px; margin-right: 12px;">
                         <i class="fas fa-arrow-left"></i>
                     </button>
-                    <h5 class="modal-title mb-0" id="carDetailTitle" style="font-weight: 600; color: white; font-size: 18px;">Hyundai i10 Sportz</h5>
+                    <h5 class="modal-title mb-0" id="carDetailTitle" style="font-weight: 500; color: white; font-size: 16px; font-family: 'Roboto', sans-serif;">Hyundai i10 Sportz</h5>
                     <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <!-- Full Screen Body -->
-                <div class="modal-body p-0" style="overflow-y: auto; max-height: calc(100vh - 60px); background: #f8f9fa;">
-                    <div class="container-fluid">
+                <div class="modal-body p-0" style="overflow-y: auto; max-height: calc(100vh - 50px); background: white;">
+                    <div class="container-fluid p-0">
                         <div class="row g-0">
-                            <!-- Left Column: Large Image Gallery -->
-                            <div class="col-lg-8" style="background: #f8f9fa; padding: 20px;">
+                            <!-- Left Column: Large Image Gallery + Specs Table -->
+                            <div class="col-lg-7" style="background: white;">
+                                <!-- Image Gallery -->
                                 <div class="position-relative">
-                                    <!-- View Similar Link -->
-                                    <a href="#" class="text-primary mb-3 d-inline-block" style="font-size: 14px; text-decoration: none;">
-                                        <i class="fas fa-chevron-left me-1"></i> View similar vehicles
-                                    </a>
-
-                                    <div class="d-flex gap-3">
+                                    <div class="d-flex gap-2" style="background: linear-gradient(135deg, #f5f7fa 0%, #e8edf2 100%); padding: 15px; border-radius: 8px;">
                                         <!-- Main Large Image -->
                                         <div style="flex: 1;">
                                             <div id="carDetailCarouselMain" class="carousel slide" data-bs-ride="false">
-                                                <div class="carousel-inner" style="border-radius: 12px; overflow: hidden; background: white;">
+                                                <div class="carousel-inner" style="border-radius: 8px; overflow: hidden;">
                                                     <div class="carousel-item active">
-                                                        <img src="/Images/brand_logo_new_1.png" class="d-block w-100" alt="Car main image" style="height: 550px; object-fit: contain; background: white;">
+                                                        <img src="/Images/brand_logo_new_1.png" class="d-block w-100" alt="Car main image" style="height: 480px; object-fit: contain; background: transparent;">
                                                     </div>
                                                 </div>
-                                                <button class="carousel-control-prev" type="button" data-bs-target="#carDetailCarouselMain" data-bs-slide="prev" style="width: 50px;">
-                                                    <span class="carousel-control-prev-icon" style="filter: drop-shadow(0 0 3px rgba(0,0,0,0.5));"></span>
+                                                <button class="carousel-control-prev" type="button" data-bs-target="#carDetailCarouselMain" data-bs-slide="prev" style="width: 40px;">
+                                                    <span class="carousel-control-prev-icon" style="filter: drop-shadow(0 0 2px rgba(0,0,0,0.5));"></span>
                                                 </button>
-                                                <button class="carousel-control-next" type="button" data-bs-target="#carDetailCarouselMain" data-bs-slide="next" style="width: 50px;">
-                                                    <span class="carousel-control-next-icon" style="filter: drop-shadow(0 0 3px rgba(0,0,0,0.5));"></span>
+                                                <button class="carousel-control-next" type="button" data-bs-target="#carDetailCarouselMain" data-bs-slide="next" style="width: 40px;">
+                                                    <span class="carousel-control-next-icon" style="filter: drop-shadow(0 0 2px rgba(0,0,0,0.5));"></span>
                                                 </button>
-                                            </div>
-
-                                            <!-- Photo Counter -->
-                                            <div class="text-center mt-2">
-                                                <a href="#" class="text-primary" style="font-size: 14px; text-decoration: none;">
-                                                    <i class="fas fa-camera me-1"></i> <span id="photoCountText">46 Photos</span>
-                                                </a>
                                             </div>
                                         </div>
 
                                         <!-- Right Side: Vertical Stack of 3 Thumbnails -->
-                                        <div class="d-flex flex-column gap-2" id="carDetailThumbnails" style="width: 200px;">
-                                            <img src="/Images/brand_logo_new_1.png" class="img-thumbnail" style="width: 100%; height: 170px; object-fit: cover; cursor: pointer; border: 2px solid #ddd; border-radius: 8px;" alt="Thumb">
-                                            <img src="/Images/brand_logo_new_1.png" class="img-thumbnail" style="width: 100%; height: 170px; object-fit: cover; cursor: pointer; border: 2px solid #ddd; border-radius: 8px;" alt="Thumb">
-                                            <img src="/Images/brand_logo_new_1.png" class="img-thumbnail" style="width: 100%; height: 170px; object-fit: cover; cursor: pointer; border: 2px solid #ddd; border-radius: 8px;" alt="Thumb">
+                                        <div class="d-flex flex-column gap-2" id="carDetailThumbnails" style="width: 140px;">
+                                            <img src="/Images/brand_logo_new_1.png" class="img-thumbnail" style="width: 100%; height: 156px; object-fit: cover; cursor: pointer; border: 2px solid #333; border-radius: 4px; background: black;" alt="Thumb">
+                                            <img src="/Images/brand_logo_new_1.png" class="img-thumbnail" style="width: 100%; height: 156px; object-fit: cover; cursor: pointer; border: 2px solid #333; border-radius: 4px; background: black;" alt="Thumb">
+                                            <img src="/Images/brand_logo_new_1.png" class="img-thumbnail" style="width: 100%; height: 156px; object-fit: cover; cursor: pointer; border: 2px solid #333; border-radius: 4px; background: black;" alt="Thumb">
                                         </div>
+                                    </div>
+
+                                    <!-- Photo Counter -->
+                                    <div class="text-center py-2" style="background: #f5f5f5;">
+                                        <small class="text-muted" style="font-size: 12px; font-family: 'Roboto', sans-serif;">
+                                            <i class="fas fa-camera me-1"></i> <span id="photoCountText">46 Photos</span>
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <!-- Vehicle Specs Table - Right Below Images -->
+                                <div style="padding: 20px; background: white;">
+                                    <table class="table table-bordered mb-0" style="font-family: 'Roboto', sans-serif; font-size: 14px;">
+                                        <tbody id="carDetailSpecsTable">
+                                            <tr>
+                                                <td style="font-weight: 600; color: #666; width: 35%; padding: 12px; background: #f9f9f9;">Make:</td>
+                                                <td style="padding: 12px; color: #1a1a1a;">Ford</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: 600; color: #666; padding: 12px; background: #f9f9f9;">Model:</td>
+                                                <td style="padding: 12px; color: #1a1a1a;">Figo</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: 600; color: #666; padding: 12px; background: #f9f9f9;">Edition:</td>
+                                                <td style="padding: 12px; color: #1a1a1a;">Exi</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: 600; color: #666; padding: 12px; background: #f9f9f9;">Year:</td>
+                                                <td style="padding: 12px; color: #1a1a1a;">2012</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: 600; color: #666; padding: 12px; background: #f9f9f9;">KMs Driven:</td>
+                                                <td style="padding: 12px; color: #1a1a1a;">1,51,000 km</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: 600; color: #666; padding: 12px; background: #f9f9f9;">Fuel Type:</td>
+                                                <td style="padding: 12px; color: #1a1a1a;">N/a</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: 600; color: #666; padding: 12px; background: #f9f9f9;">Transmission:</td>
+                                                <td style="padding: 12px; color: #1a1a1a;">N/A</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-weight: 600; color: #666; padding: 12px; background: #f9f9f9;">Location:</td>
+                                                <td style="padding: 12px; color: #1a1a1a;">N/A</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <!-- Vehicle Description -->
+                                    <div class="mt-3" id="carDetailDescription" style="font-size: 13px; line-height: 1.7; color: #555; font-family: 'Roboto', sans-serif;">
+                                        <p>Vehicle description and inspection recommendation will appear here.</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Right Column: Car Details & Pricing -->
-                            <div class="col-lg-4" style="background: white; padding: 30px;">
+                            <!-- Right Column: Pricing & Contact -->
+                            <div class="col-lg-5" style="background: #f9f9f9; padding: 20px;">
                                 <!-- Price -->
-                                <h2 class="mb-1" id="carDetailExpPrice" style="font-weight: 700; color: #1a1a1a; font-size: 40px;">₹1,30,000</h2>
+                                <h2 class="mb-2" id="carDetailExpPrice" style="font-weight: 700; color: #1a1a1a; font-size: 36px; font-family: 'Roboto', sans-serif;">₹1,30,000</h2>
                                 
                                 <!-- Vehicle Title -->
-                                <h5 class="mb-2 mt-3" id="carDetailModalTitle" style="font-weight: 700; color: #1a1a1a; font-size: 22px;">Used 2022 Nissan Altima 2.5 SV</h5>
+                                <h5 class="mb-3" id="carDetailModalTitle" style="font-weight: 600; color: #1a1a1a; font-size: 20px; font-family: 'Roboto', sans-serif;">Used 2022 Nissan Altima 2.5 SV</h5>
                                 
                                 <!-- Rating -->
                                 <div class="mb-3">
@@ -986,65 +1027,100 @@
                             </div>
                         </div>
 
-                        <!-- Bottom Section: Tabs -->
+                        <!-- Vehicle Details Table -->
                         <div class="row g-0">
-                            <div class="col-12" style="background: white; padding: 30px 40px; border-top: 1px solid #e0e0e0;">
-                                <!-- Tabs Navigation -->
-                                <div class="border-bottom mb-4">
-                                    <div class="d-flex gap-5">
-                                        <button class="btn btn-link text-decoration-none pb-3 px-0" id="specsTabBtn" style="color: #1a1a1a; font-weight: 600; border-bottom: 3px solid #0052CC; background: none;" onclick="showTab('specs')">
-                                            <div class="text-center">
-                                                <i class="fas fa-cog d-block mb-1" style="font-size: 24px;"></i>
-                                                <span style="font-size: 13px;">Specs</span>
-                                            </div>
-                                        </button>
-                                        <button class="btn btn-link text-decoration-none pb-3 px-0" id="highlightsTabBtn" style="color: #666; font-weight: 600; border-bottom: 3px solid transparent; background: none;" onclick="showTab('highlights')">
-                                            <div class="text-center">
-                                                <i class="fas fa-star d-block mb-1" style="font-size: 24px;"></i>
-                                                <span style="font-size: 13px;">Highlights</span>
-                                            </div>
-                                        </button>
-                                        <button class="btn btn-link text-decoration-none pb-3 px-0" id="safetyTabBtn" style="color: #666; font-weight: 600; border-bottom: 3px solid transparent; background: none;" onclick="showTab('safety')">
-                                            <div class="text-center">
-                                                <i class="fas fa-shield-alt d-block mb-1" style="font-size: 24px;"></i>
-                                                <span style="font-size: 13px;">Safety</span>
-                                            </div>
-                                        </button>
-                                    </div>
+                            <div class="col-12" style="background: white; padding: 25px 40px;">
+                                <h5 class="mb-3" style="font-weight: 600; color: #1a1a1a; font-size: 18px;">Vehicle Specifications</h5>
+                                <table class="table table-bordered" style="font-size: 14px; margin-bottom: 20px;">
+                                    <tbody id="carDetailSpecsTable">
+                                        <tr>
+                                            <td style="width: 25%; background: #f8f9fa; font-weight: 600; color: #555; padding: 12px;">Make:</td>
+                                            <td style="padding: 12px;">Hyundai</td>
+                                            <td style="width: 25%; background: #f8f9fa; font-weight: 600; color: #555; padding: 12px;">Model:</td>
+                                            <td style="padding: 12px;">i10</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
+                                <!-- Vehicle Description -->
+                                <div id="carDetailDescription" style="font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 20px;">
+                                    <p>Vehicle description will be displayed here.</p>
                                 </div>
 
-                                <!-- Tab Content -->
-                                <div id="specsContent" class="tab-content-section">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <ul id="carDetailSpecsList" class="list-unstyled" style="font-size: 14px; line-height: 2.2;">
-                                                <li class="mb-2"><strong style="color: #666;">Make:</strong> <span class="float-end" style="color: #1a1a1a;">Hyundai</span></li>
-                                                <li class="mb-2"><strong style="color: #666;">Model:</strong> <span class="float-end" style="color: #1a1a1a;">i10</span></li>
-                                            </ul>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div id="carDetailDescription" style="font-size: 14px; color: #555; line-height: 1.8;">
-                                                <p>Vehicle description will be displayed here.</p>
+                                <!-- Highlights -->
+                                <div class="mb-3">
+                                    <h6 style="font-weight: 600; color: #1a1a1a; font-size: 16px; margin-bottom: 10px;">
+                                        <i class="fas fa-star" style="color: #ffa500;"></i> Key Features
+                                    </h6>
+                                    <ul id="carDetailHighlights" class="list-unstyled row" style="font-size: 13px;">
+                                        <li class="col-md-6 mb-2"><i class="fas fa-check-circle me-2" style="color: #26a69a;"></i>Well Equipped</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Customer Reviews Section (Compact) -->
+                        <div class="row g-0">
+                            <div class="col-12" style="background: #f8f9fa; padding: 20px 40px; border-top: 1px solid #e0e0e0;">
+                                <h5 class="mb-3" style="font-weight: 600; color: #1a1a1a; font-size: 16px;">
+                                    <i class="fas fa-comments"></i> Customer Reviews
+                                </h5>
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <div style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0;">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <div style="width: 40px; height: 40px; border-radius: 50%; background: #007bff; color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; margin-right: 10px;">RK</div>
+                                                <div>
+                                                    <div style="font-weight: 600; font-size: 13px;">Rajesh Kumar</div>
+                                                    <div style="color: #ffa500; font-size: 12px;">★★★★★</div>
+                                                </div>
                                             </div>
+                                            <p style="font-size: 12px; color: #666; margin-bottom: 0; line-height: 1.5;">"Professional inspection service. They checked everything thoroughly and gave me a detailed report before I bought my car."</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0;">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <div style="width: 40px; height: 40px; border-radius: 50%; background: #28a745; color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; margin-right: 10px;">PS</div>
+                                                <div>
+                                                    <div style="font-weight: 600; font-size: 13px;">Priya Sharma</div>
+                                                    <div style="color: #ffa500; font-size: 12px;">★★★★★</div>
+                                                </div>
+                                            </div>
+                                            <p style="font-size: 12px; color: #666; margin-bottom: 0; line-height: 1.5;">"Best decision to get the inspection done! Found hidden issues that saved me from a bad purchase. Highly recommended!"</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0;">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <div style="width: 40px; height: 40px; border-radius: 50%; background: #dc3545; color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; margin-right: 10px;">AM</div>
+                                                <div>
+                                                    <div style="font-weight: 600; font-size: 13px;">Amit Mehta</div>
+                                                    <div style="color: #ffa500; font-size: 12px;">★★★★★</div>
+                                                </div>
+                                            </div>
+                                            <p style="font-size: 12px; color: #666; margin-bottom: 0; line-height: 1.5;">"Worth every rupee! The detailed report helped me negotiate a better price. Very professional team at InspectionWale."</p>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
 
-                                <div id="highlightsContent" class="tab-content-section" style="display: none;">
-                                    <div class="row">
-                                        <div class="col-md-8">
-                                            <ul id="carDetailHighlights" class="list-unstyled" style="font-size: 14px; line-height: 2.2;">
-                                                <li class="mb-2"><i class="fas fa-check-circle me-2" style="color: #26a69a;"></i>Well Equipped</li>
-                                            </ul>
-                                        </div>
+                        <!-- Footer -->
+                        <div class="row g-0">
+                            <div class="col-12" style="background: #1e3a5f; padding: 20px 40px; color: white;">
+                                <div class="row align-items-center">
+                                    <div class="col-md-6">
+                                        <h6 style="font-weight: 600; font-size: 14px; margin-bottom: 5px;">InspectionWale</h6>
+                                        <p style="font-size: 12px; margin-bottom: 0; opacity: 0.9;">Professional Vehicle Inspection Services</p>
                                     </div>
-                                </div>
-
-                                <div id="safetyContent" class="tab-content-section" style="display: none;">
-                                    <div class="row">
-                                        <div class="col-md-8">
-                                            <p class="text-muted" style="font-size: 14px;">Safety features and ratings information for this vehicle.</p>
-                                        </div>
+                                    <div class="col-md-6 text-md-end">
+                                        <p style="font-size: 12px; margin-bottom: 5px;">
+                                            <i class="fas fa-phone me-2"></i> +91 XXX-XXX-XXXX
+                                        </p>
+                                        <p style="font-size: 12px; margin-bottom: 0;">
+                                            <i class="fas fa-envelope me-2"></i> info@inspectionwale.com
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -2229,7 +2305,7 @@
             return `
                 <div class="carousel-item${idx === 0 ? ' active' : ''}">
                     <img src="${url}" class="d-block w-100" alt="Car photo ${idx + 1}" 
-                         style="height: 550px; object-fit: contain; background: white;"
+                         style="height: 480px; object-fit: contain; background: black;"
                          onerror="this.src='${FALLBACK_IMAGE}';">
                 </div>
             `;
@@ -2249,8 +2325,8 @@
                 return `
                     <img src="${url}" 
                          class="img-thumbnail car-thumbnail${isActive ? ' active-thumb' : ''}" 
-                         style="width: 100%; height: 170px; object-fit: cover; cursor: pointer; 
-                                border: 2px solid ${isActive ? '#007bff' : '#ddd'}; border-radius: 8px;" 
+                         style="width: 100%; height: 156px; object-fit: cover; cursor: pointer; 
+                                border: 2px solid ${isActive ? '#007bff' : '#ddd'}; border-radius: 4px;" 
                          alt="Thumbnail ${idx + 1}" 
                          data-slide-to="${idx}"
                          onerror="this.src='${FALLBACK_IMAGE}';"
@@ -2259,20 +2335,23 @@
             }).join('');
         }
 
-        // Populate specs
-        const specsList = document.getElementById('carDetailSpecsList');
-        if (specsList) {
+        // Populate specs table (2 columns x 4 rows format)
+        const specsTable = document.getElementById('carDetailSpecsTable');
+        if (specsTable) {
             const specs = [
-                { label: 'Make', value: car.make || 'N/A' },
-                { label: 'Model', value: car.model || 'N/A' },
-                { label: 'Edition', value: edition || 'N/A' },
-                { label: 'Year', value: year || 'N/A' },
-                { label: 'KMs Driven', value: kmsFormatted },
-                { label: 'Fuel Type', value: window.titleCase(fuel) },
-                { label: 'Transmission', value: car.transmission ? window.titleCase(car.transmission) : 'N/A' },
-                { label: 'Location', value: window.getListingCity(listing) || 'N/A' }
+                { label: 'Make', value: car.make || 'N/A', label2: 'Model', value2: car.model || 'N/A' },
+                { label: 'Edition', value: edition || 'N/A', label2: 'Year', value2: year || 'N/A' },
+                { label: 'KMs Driven', value: kmsFormatted, label2: 'Fuel Type', value2: window.titleCase(fuel) },
+                { label: 'Transmission', value: car.transmission ? window.titleCase(car.transmission) : 'N/A', label2: 'Location', value2: window.getListingCity(listing) || 'N/A' }
             ];
-            specsList.innerHTML = specs.map(s => `<li class="mb-2"><strong style="color: #666;">${s.label}:</strong> <span class="float-end" style="color: #1a1a1a;">${s.value}</span></li>`).join('');
+            specsTable.innerHTML = specs.map(s => `
+                <tr>
+                    <td style="font-weight: 600; color: #555; width: 25%; padding: 12px; background: #f8f9fa;">${s.label}:</td>
+                    <td style="padding: 12px; color: #1a1a1a;">${s.value}</td>
+                    <td style="font-weight: 600; color: #555; width: 25%; padding: 12px; background: #f8f9fa;">${s.label2}:</td>
+                    <td style="padding: 12px; color: #1a1a1a;">${s.value2}</td>
+                </tr>
+            `).join('');
         }
 
         // Generate vehicle description
@@ -2314,33 +2393,6 @@
             });
         }
     }
-
-    // Tab switching function for bottom tabs
-    window.showTab = function(tabName) {
-        // Hide all content
-        document.querySelectorAll('.tab-content-section').forEach(el => el.style.display = 'none');
-        
-        // Remove active styling from all buttons
-        document.querySelectorAll('#specsTabBtn, #highlightsTabBtn, #safetyTabBtn').forEach(btn => {
-            btn.style.color = '#666';
-            btn.style.borderBottom = '3px solid transparent';
-        });
-        
-        // Show selected content and style button
-        if (tabName === 'specs') {
-            document.getElementById('specsContent').style.display = 'block';
-            document.getElementById('specsTabBtn').style.color = '#1a1a1a';
-            document.getElementById('specsTabBtn').style.borderBottom = '3px solid #007bff';
-        } else if (tabName === 'highlights') {
-            document.getElementById('highlightsContent').style.display = 'block';
-            document.getElementById('highlightsTabBtn').style.color = '#1a1a1a';
-            document.getElementById('highlightsTabBtn').style.borderBottom = '3px solid #007bff';
-        } else if (tabName === 'safety') {
-            document.getElementById('safetyContent').style.display = 'block';
-            document.getElementById('safetyTabBtn').style.color = '#1a1a1a';
-            document.getElementById('safetyTabBtn').style.borderBottom = '3px solid #007bff';
-        }
-    };
 
     </script>
 </body>
