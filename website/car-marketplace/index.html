@@ -1027,6 +1027,160 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
+    <!-- Car Detail Modal (Reference design) -->
+    <div class="modal fade" id="carDetailModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-light border-bottom">
+                    <div>
+                        <h5 class="modal-title mb-1" id="carDetailTitle">Vehicle Title</h5>
+                        <small class="text-muted">Used <span id="carDetailYear">2022</span></small>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="row g-0">
+                        <!-- Image Carousel (Left) -->
+                        <div class="col-md-6">
+                            <div id="carDetailCarousel" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <img src="/Images/brand_logo_new_1.png" class="d-block w-100" alt="No image" style="height: 400px; object-fit: cover;">
+                                    </div>
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carDetailCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carDetailCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon"></span>
+                                </button>
+                            </div>
+
+                            <!-- Price & Financing (Below Carousel) -->
+                            <div class="p-4 bg-light border-top">
+                                <h2 class="mb-2" id="carDetailPrice">₹24,600</h2>
+                                <p class="text-muted small mb-3">See price and payment details</p>
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="paymentOption" id="financeOption" checked>
+                                            <label class="form-check-label" for="financeOption">
+                                                <strong>Finance</strong><br>
+                                                <span id="carDetailMonthlyPayment">₹419</span>/mo.
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="paymentOption" id="cashOption">
+                                            <label class="form-check-label" for="cashOption">
+                                                <strong>Cash</strong><br>
+                                                <span id="carDetailPrice2">₹24,600</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-light w-100 mb-2" style="border: 2px solid #0066cc; color: #0066cc; font-weight: 600;">Apply for Financing</button>
+                                <button class="btn btn-primary w-100" style="background: #0066cc; font-weight: 600;" data-bs-toggle="modal" data-bs-target="#carDetailModal" onclick="document.getElementById('carDetailContactForm').scrollIntoView({behavior: 'smooth'});">Request Info</button>
+                            </div>
+                        </div>
+
+                        <!-- Details Panel (Right) -->
+                        <div class="col-md-6 p-4">
+                            <!-- Action Icons -->
+                            <div class="d-flex gap-2 mb-4">
+                                <button class="btn btn-outline-secondary" title="Share">
+                                    <i class="fas fa-share"></i> Share
+                                </button>
+                                <button class="btn btn-outline-secondary" title="Save to Wishlist">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+
+                            <!-- Tabs -->
+                            <ul class="nav nav-tabs mb-4" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="specsTab" data-bs-toggle="tab" data-bs-target="#specsPane" type="button" role="tab" aria-selected="true">
+                                        <i class="fas fa-list"></i> Specs
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="highlightsTab" data-bs-toggle="tab" data-bs-target="#highlightsPane" type="button" role="tab" aria-selected="false">
+                                        <i class="fas fa-star"></i> Highlights
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="safetyTab" data-bs-toggle="tab" data-bs-target="#safetyPane" type="button" role="tab" aria-selected="false">
+                                        <i class="fas fa-shield-alt"></i> Safety
+                                    </button>
+                                </li>
+                            </ul>
+
+                            <!-- Tab Content -->
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="specsPane" role="tabpanel">
+                                    <ul id="carDetailSpecsList" class="list-unstyled">
+                                        <li><strong>Make:</strong> Nissan</li>
+                                        <li><strong>Model:</strong> Altima</li>
+                                    </ul>
+                                </div>
+                                <div class="tab-pane fade" id="highlightsPane" role="tabpanel">
+                                    <ul id="carDetailHighlights" class="list-unstyled">
+                                        <li>Low Miles</li>
+                                        <li>Well Equipped</li>
+                                    </ul>
+                                </div>
+                                <div class="tab-pane fade" id="safetyPane" role="tabpanel">
+                                    <ul id="carDetailSafety" class="list-unstyled">
+                                        <li>Inspected by InspectionWale</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Contact Form -->
+                            <hr class="my-4">
+                            <h6 class="mb-3">Got Questions? Contact the Dealer</h6>
+                            <form id="carDetailContactForm">
+                                <div class="mb-3">
+                                    <select class="form-select form-select-sm" id="carDetailSubject" required>
+                                        <option selected>This Vehicle's Availability</option>
+                                        <option>Pricing Question</option>
+                                        <option>Service History</option>
+                                        <option>Other</option>
+                                    </select>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <input type="text" class="form-control form-control-sm" id="carDetailContactName" placeholder="First Name" required>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="form-control form-control-sm" placeholder="Last Name">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <input type="email" class="form-control form-control-sm" id="carDetailContactEmail" placeholder="Email" required>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="tel" class="form-control form-control-sm" id="carDetailContactPhone" placeholder="Phone (optional)">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <textarea class="form-control form-control-sm" id="carDetailContactMessage" rows="3" placeholder="Message" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100" style="background: #0066cc; font-weight: 600;">Request Info</button>
+                                <small class="text-muted d-block mt-2">By clicking "Request Info", you accept the terms of our Visitor Agreement</small>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
     <!-- JavaScript Libraries -->
     <script defer src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -2159,6 +2313,93 @@
             });
         }
     });
+
+    // ============ CAR DETAIL MODAL ============
+    let currentDetailListing = null;
+
+    function openCarDetailModal(listingId) {
+        const listing = listingMap.get(listingId) || allMarketplaceListings.find(item => item.listingId === listingId);
+        if (!listing) {
+            console.error('Listing not found:', listingId);
+            return;
+        }
+        currentDetailListing = listing;
+        populateCarDetailModal(listing);
+        const modal = new bootstrap.Modal(document.getElementById('carDetailModal'), { backdrop: 'static', keyboard: false });
+        modal.show();
+    }
+
+    function populateCarDetailModal(listing) {
+        const car = listing.car || {};
+        const title = `${car.make || ''} ${car.model || ''}`.trim() || 'Vehicle Listing';
+        const year = car.registrationYear || '';
+        const price = car.expectedPrice || 0;
+        const priceFormatted = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(price);
+        const monthlyPayment = Math.round(price / 72); // approx. 72 mo financing
+        const monthlyFormatted = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(monthlyPayment);
+
+        // Set title and price
+        document.getElementById('carDetailTitle').textContent = title;
+        document.getElementById('carDetailYear').textContent = year || 'N/A';
+        document.getElementById('carDetailPrice').textContent = priceFormatted;
+        document.getElementById('carDetailMonthlyPayment').textContent = monthlyFormatted;
+
+        // Populate carousel
+        const carouselContainer = document.getElementById('carDetailCarousel');
+        const photos = listing.photos || {};
+        const photoArray = [listing.heroUrl, photos.exteriorFront?.url, photos.exteriorBack?.url, photos.exteriorLeft?.url, photos.exteriorRight?.url, photos.interiorSeat?.url, photos.interiorCluster?.url]
+            .filter(Boolean)
+            .map(p => typeof p === 'string' ? p : p?.url)
+            .filter(Boolean);
+
+        carouselContainer.innerHTML = photoArray.map((photo, idx) => {
+            const url = ensureAbsoluteUrl(photo) || FALLBACK_IMAGE;
+            return `
+                <div class="carousel-item${idx === 0 ? ' active' : ''}">
+                    <img src="${url}" class="d-block w-100" alt="Car photo ${idx + 1}" style="height: 400px; object-fit: cover;">
+                </div>
+            `;
+        }).join('') || `<div class="carousel-item active"><img src="${FALLBACK_IMAGE}" class="d-block w-100" alt="No photo" style="height: 400px; object-fit: cover;"></div>`;
+
+        // Pre-fill contact form
+        document.getElementById('carDetailContactName').value = '';
+        document.getElementById('carDetailContactEmail').value = '';
+        document.getElementById('carDetailContactPhone').value = '';
+        document.getElementById('carDetailContactMessage').value = `Is your ${title} listed for ${priceFormatted} still available?`;
+
+        // Populate specs, highlights, safety
+        const specsList = document.getElementById('carDetailSpecsList');
+        const highlights = getListingHighlights(listing);
+        const specs = [
+            { label: 'Make', value: car.make || 'N/A' },
+            { label: 'Model', value: car.model || 'N/A' },
+            { label: 'Year', value: car.registrationYear || 'N/A' },
+            { label: 'KMs', value: formatKms(car.kmsDriven) || 'N/A' },
+            { label: 'Fuel Type', value: car.fuelType || 'N/A' },
+            { label: 'Transmission', value: car.transmission || 'N/A' },
+            { label: 'Location', value: getListingCity(listing) || 'N/A' }
+        ];
+        specsList.innerHTML = specs.map(s => `<li><strong>${s.label}:</strong> ${s.value}</li>`).join('');
+
+        // Highlights
+        const highlightsList = document.getElementById('carDetailHighlights');
+        highlightsList.innerHTML = highlights.length ? highlights.map(h => `<li>${h}</li>`).join('') : '<li>No highlights available</li>';
+
+        // Safety
+        const safetyList = document.getElementById('carDetailSafety');
+        safetyList.innerHTML = '<li>Inspected by InspectionWale professionals</li><li>Verified seller information</li><li>Secure transaction process</li>';
+    }
+
+    // Wire "Seller Details" button clicks to open modal
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('js-view-details')) {
+            const listingId = e.target.getAttribute('data-listing-id');
+            if (listingId) {
+                openCarDetailModal(listingId);
+            }
+        }
+    });
+
     </script>
 </body>
 
