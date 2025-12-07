@@ -1782,10 +1782,16 @@
 
         // Show car details in modal
         function showCarDetails(listingId) {
-            const listing = listingMap.get(listingId) || window.carListingsData?.find(c => c.listingId === listingId);
-            if (!listing) return;
+            console.log('🔍 showCarDetails called with listingId:', listingId);
+            const listing = listingMap.get(listingId) || allMarketplaceListings.find(c => c.listingId === listingId);
+            console.log('📋 Listing found:', listing ? 'YES' : 'NO');
+            if (!listing) {
+                console.error('❌ Listing not found for ID:', listingId);
+                return;
+            }
             
             // Use the new full-screen modal
+            console.log('📱 Calling openCarDetailModal...');
             openCarDetailModal(listingId);
         }
 
@@ -2135,15 +2141,24 @@
     let currentDetailListing = null;
 
     function openCarDetailModal(listingId) {
+        console.log('🎯 openCarDetailModal called with listingId:', listingId);
         const listing = listingMap.get(listingId) || allMarketplaceListings.find(item => item.listingId === listingId);
         if (!listing) {
-            console.error('Listing not found:', listingId);
+            console.error('❌ Listing not found in openCarDetailModal:', listingId);
             return;
         }
+        console.log('✅ Listing found:', listing.car?.make, listing.car?.model);
         currentDetailListing = listing;
         populateCarDetailModal(listing);
-        const modal = new bootstrap.Modal(document.getElementById('carDetailModal'), { backdrop: 'static', keyboard: false });
+        const modalEl = document.getElementById('carDetailModal');
+        console.log('🎬 Modal element found:', modalEl ? 'YES' : 'NO');
+        if (!modalEl) {
+            console.error('❌ Modal element not found!');
+            return;
+        }
+        const modal = new bootstrap.Modal(modalEl, { backdrop: 'static', keyboard: false });
         modal.show();
+        console.log('✨ Modal shown');
     }
 
     function populateCarDetailModal(listing) {
