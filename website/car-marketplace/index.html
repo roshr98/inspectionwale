@@ -1123,7 +1123,7 @@
         }
     }
 
-    function ensureAbsoluteUrl(value) {
+    window.ensureAbsoluteUrl = function ensureAbsoluteUrl(value) {
         if (!value) return '';
 
         let candidate = value;
@@ -1418,7 +1418,7 @@
         return '';
     }
 
-    function getListingCity(listing) {
+    window.getListingCity = function getListingCity(listing) {
         const candidates = [
             listing?.city,
             listing?.location,
@@ -1436,7 +1436,7 @@
         return '';
     }
 
-    function getListingHighlights(listing) {
+    window.getListingHighlights = function getListingHighlights(listing) {
         const highlights = [];
         const push = (value) => {
             const text = normalizeString(value);
@@ -1505,14 +1505,14 @@
         return value.charAt(0).toUpperCase() + value.slice(1);
     }
 
-    function titleCase(value) {
+    window.titleCase = function titleCase(value) {
         if (!value) return '';
         return value
             .split(/\s+/)
             .filter(Boolean)
             .map(word => capitalise(word.toLowerCase()))
             .join(' ');
-    }
+    };
 
         // Load customer listings and display them as cards
         (async function loadListings() {
@@ -2159,6 +2159,8 @@
     }
 
     function populateCarDetailModal(listing) {
+        const FALLBACK_IMAGE = '/Images/brand_logo_new_1.png';
+        
         const car = listing.car || {};
         const title = `${car.make || ''} ${car.model || ''}`.trim() || 'Vehicle Listing';
         const edition = car.edition || '';
@@ -2180,7 +2182,7 @@
         document.getElementById('carDetailRegYear').textContent = year || 'N/A';
         document.getElementById('carDetailKms').textContent = kmsFormatted;
         document.getElementById('carDetailExpPrice').textContent = priceFormatted;
-        document.getElementById('carDetailFuel').textContent = titleCase(fuel);
+        document.getElementById('carDetailFuel').textContent = window.titleCase(fuel);
 
         // Populate main carousel (updated height for full-screen)
         const photos = listing.photos || {};
@@ -2191,7 +2193,7 @@
 
         const carouselContainer = document.getElementById('carDetailCarouselMain');
         carouselContainer.innerHTML = (photoArray.length ? photoArray : [FALLBACK_IMAGE]).map((photo, idx) => {
-            const url = ensureAbsoluteUrl(photo) || FALLBACK_IMAGE;
+            const url = window.ensureAbsoluteUrl(photo) || FALLBACK_IMAGE;
             return `
                 <div class="carousel-item${idx === 0 ? ' active' : ''}">
                     <img src="${url}" class="d-block w-100" alt="Car photo ${idx + 1}" style="height: 450px; object-fit: cover; border-radius: 8px;">
@@ -2202,7 +2204,7 @@
         // Populate thumbnails
         const thumbnailContainer = document.getElementById('carDetailThumbnails');
         thumbnailContainer.innerHTML = (photoArray.length ? photoArray : [FALLBACK_IMAGE]).map((photo, idx) => {
-            const url = ensureAbsoluteUrl(photo) || FALLBACK_IMAGE;
+            const url = window.ensureAbsoluteUrl(photo) || FALLBACK_IMAGE;
             return `
                 <img src="${url}" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover; cursor: pointer; border-radius: 8px; border: 2px solid #eee; flex-shrink: 0;" 
                      alt="Thumbnail ${idx + 1}" onclick="bootstrap.Carousel.getInstance(document.getElementById('carDetailCarouselMain')).to(${idx})">
@@ -2224,19 +2226,19 @@
             { label: 'Edition', value: edition || 'N/A' },
             { label: 'Year', value: year || 'N/A' },
             { label: 'KMs Driven', value: kmsFormatted },
-            { label: 'Fuel Type', value: titleCase(fuel) },
-            { label: 'Transmission', value: car.transmission ? titleCase(car.transmission) : 'N/A' },
-            { label: 'Location', value: getListingCity(listing) || 'N/A' }
+            { label: 'Fuel Type', value: window.titleCase(fuel) },
+            { label: 'Transmission', value: car.transmission ? window.titleCase(car.transmission) : 'N/A' },
+            { label: 'Location', value: window.getListingCity(listing) || 'N/A' }
         ];
         specsList.innerHTML = specs.map(s => `<li><strong>${s.label}:</strong> ${s.value}</li>`).join('');
 
         // Populate highlights
-        const highlights = getListingHighlights(listing);
+        const highlights = window.getListingHighlights(listing);
         const highlightsList = document.getElementById('carDetailHighlights');
         highlightsList.innerHTML = highlights.length ? highlights.map(h => `<li>• ${h}</li>`).join('') : '<li>• Well Equipped</li><li>• Verified Listing</li>';
 
         // ===== NEW: Populate Car Overview Section =====
-        const overviewText = listing.summary || car.description || `The ${fullTitle} is a ${titleCase(fuel)}-powered vehicle registered in ${year}. This car has been driven approximately ${kmsFormatted} and is being listed at an expected price of ${priceFormatted}. Whether you're looking for your first car or upgrading, this ${title} offers reliable transportation with good value. Get a professional inspection from InspectionWale to verify its condition before making your purchase decision.`;
+        const overviewText = listing.summary || car.description || `The ${fullTitle} is a ${window.titleCase(fuel)}-powered vehicle registered in ${year}. This car has been driven approximately ${kmsFormatted} and is being listed at an expected price of ${priceFormatted}. Whether you're looking for your first car or upgrading, this ${title} offers reliable transportation with good value. Get a professional inspection from InspectionWale to verify its condition before making your purchase decision.`;
         document.getElementById('carDetailOverview').textContent = overviewText;
 
         // ===== NEW: Populate Quick History Section =====
