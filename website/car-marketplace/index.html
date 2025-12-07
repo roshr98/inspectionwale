@@ -1742,46 +1742,47 @@
             `;
         }
 
-        function extractPhotoUrl(slotValue) {
-            return ensureAbsoluteUrl(slotValue);
-        }
+        window.extractPhotoUrl = function extractPhotoUrl(slotValue) {
+            return window.ensureAbsoluteUrl(slotValue);
+        };
 
-        function resolvePrimaryPhoto(listing) {
+        window.resolvePrimaryPhoto = function resolvePrimaryPhoto(listing) {
+            const FALLBACK_IMAGE = '/Images/brand_logo_new_1.png';
             if (!listing) return FALLBACK_IMAGE;
-            if (listing.heroUrl) return ensureAbsoluteUrl(listing.heroUrl) || FALLBACK_IMAGE;
+            if (listing.heroUrl) return window.ensureAbsoluteUrl(listing.heroUrl) || FALLBACK_IMAGE;
             const photos = listing.photos || {};
             const preferredSlots = ['exteriorFront', 'exteriorBack', 'exteriorLeft', 'exteriorRight'];
             for (const slot of preferredSlots) {
-                const url = extractPhotoUrl(photos[slot]);
+                const url = window.extractPhotoUrl(photos[slot]);
                 if (url) return url;
             }
             if (Array.isArray(photos.gallery)) {
                 for (const item of photos.gallery) {
-                    const url = extractPhotoUrl(item);
+                    const url = window.extractPhotoUrl(item);
                     if (url) return url;
                 }
             }
             return FALLBACK_IMAGE;
-        }
+        };
 
-        function collectListingPhotos(listing) {
+        window.collectListingPhotos = function collectListingPhotos(listing) {
             const photos = [];
             if (!listing) return photos;
             const photoEntries = listing.photos ? Object.entries(listing.photos) : [];
             const seen = new Set();
             photoEntries.forEach(([slot, value]) => {
-                const url = extractPhotoUrl(value);
+                const url = window.extractPhotoUrl(value);
                 if (url && !seen.has(url) && slot !== 'rcDocument') {
                     photos.push({ slot, url });
                     seen.add(url);
                 }
             });
             if (!photos.length) {
-                const fallback = resolvePrimaryPhoto(listing);
+                const fallback = window.resolvePrimaryPhoto(listing);
                 if (fallback) photos.push({ slot: 'exteriorFront', url: fallback });
             }
             return photos;
-        }
+        };
 
         // Show car details in modal
         function showCarDetails(listingId) {
@@ -2184,14 +2185,11 @@
         document.getElementById('carDetailFuel').textContent = window.titleCase(fuel);
 
         // Populate main carousel (updated height for full-screen)
-        const photos = listing.photos || {};
-        const photoArray = [listing.heroUrl, photos.exteriorFront?.url, photos.exteriorBack?.url, photos.exteriorLeft?.url, photos.exteriorRight?.url, photos.interiorSeat?.url, photos.interiorCluster?.url]
-            .filter(Boolean)
-            .map(p => typeof p === 'string' ? p : p?.url)
-            .filter(Boolean);
+        const photoObjects = window.collectListingPhotos(listing);
+        const photoUrls = photoObjects.map(p => p.url).filter(Boolean);
 
         const carouselContainer = document.getElementById('carDetailCarouselMain');
-        carouselContainer.innerHTML = (photoArray.length ? photoArray : [FALLBACK_IMAGE]).map((photo, idx) => {
+        carouselContainer.innerHTML = (photoUrls.length ? photoUrls : [FALLBACK_IMAGE]).map((photo, idx) => {
             const url = window.ensureAbsoluteUrl(photo) || FALLBACK_IMAGE;
             return `
                 <div class="carousel-item${idx === 0 ? ' active' : ''}">
@@ -2202,7 +2200,7 @@
 
         // Populate thumbnails
         const thumbnailContainer = document.getElementById('carDetailThumbnails');
-        thumbnailContainer.innerHTML = (photoArray.length ? photoArray : [FALLBACK_IMAGE]).map((photo, idx) => {
+        thumbnailContainer.innerHTML = (photoUrls.length ? photoUrls : [FALLBACK_IMAGE]).map((photo, idx) => {
             const url = window.ensureAbsoluteUrl(photo) || FALLBACK_IMAGE;
             return `
                 <img src="${url}" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover; cursor: pointer; border-radius: 8px; border: 2px solid #eee; flex-shrink: 0;" 
