@@ -1010,7 +1010,7 @@
 
                                 <textarea class="form-control mb-3" rows="4" id="carDetailContactMessage" placeholder="Is your Used 2022 Nissan Altima 2.5 SV listed for ₹1,30,000 still available?" style="border: 1px solid #ddd; padding: 12px; font-size: 14px; border-radius: 6px;"></textarea>
 
-                                <button class="btn btn-primary w-100 mb-3" style="padding: 14px; font-weight: 700; font-size: 15px; border-radius: 6px; background: #0052CC; border: none;">Request Info</button>
+                                <button id="carDetailRequestInfoBtn" class="btn btn-primary w-100 mb-3" style="padding: 14px; font-weight: 700; font-size: 15px; border-radius: 6px; background: #0052CC; border: none;">Request Info</button>
                                 
                                 <p class="text-muted mb-0" style="font-size: 11px; line-height: 1.4;">By clicking "Request Info", you accept the terms of our <a href="#" class="text-primary">Visitor Agreement</a></p>
 
@@ -1019,7 +1019,7 @@
                                     <i class="fas fa-shield-alt" style="font-size: 28px; color: white; margin-bottom: 8px;"></i>
                                     <h6 class="text-white mb-2" style="font-weight: 700; font-size: 14px;">Get Peace of Mind</h6>
                                     <p class="text-white mb-3" style="font-size: 12px; line-height: 1.4; opacity: 0.95;">Book a professional pre-purchase inspection from InspectionWale before buying</p>
-                                    <button class="btn btn-light w-100" style="font-weight: 700; padding: 10px; border-radius: 6px; font-size: 13px; color: #26a69a;">
+                                    <button id="carDetailBookInspectionBtn" class="btn btn-light w-100" style="font-weight: 700; padding: 10px; border-radius: 6px; font-size: 13px; color: #26a69a;">
                                         <i class="fas fa-calendar-check me-1"></i> Book Inspection
                                     </button>
                                 </div>
@@ -1027,10 +1027,12 @@
                             </div>
                         </div>
 
-                        <!-- Vehicle Details Table -->
+                        <!-- Car Details Section -->
                         <div class="row g-0">
                             <div class="col-12" style="background: white; padding: 25px 40px;">
-                                <h5 class="mb-3" style="font-weight: 600; color: #1a1a1a; font-size: 18px;">Vehicle Specifications</h5>
+                                <h5 class="mb-3" style="font-weight: 600; color: #1a1a1a; font-size: 18px;">
+                                    <i class="fas fa-car" style="color: #26a69a;"></i> Car Details
+                                </h5>
                                 <table class="table table-bordered" style="font-size: 14px; margin-bottom: 20px;">
                                     <tbody id="carDetailSpecsTable">
                                         <tr>
@@ -1043,18 +1045,62 @@
                                 </table>
                                 
                                 <!-- Vehicle Description -->
-                                <div id="carDetailDescription" style="font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 20px;">
+                                <div id="carDetailDescription" style="font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 0;">
                                     <p>Vehicle description will be displayed here.</p>
                                 </div>
+                            </div>
+                        </div>
 
-                                <!-- Highlights -->
-                                <div class="mb-3">
-                                    <h6 style="font-weight: 600; color: #1a1a1a; font-size: 16px; margin-bottom: 10px;">
-                                        <i class="fas fa-star" style="color: #ffa500;"></i> Key Features
-                                    </h6>
-                                    <ul id="carDetailHighlights" class="list-unstyled row" style="font-size: 13px;">
-                                        <li class="col-md-6 mb-2"><i class="fas fa-check-circle me-2" style="color: #26a69a;"></i>Well Equipped</li>
-                                    </ul>
+                        <!-- Vehicle Features Section -->
+                        <div class="row g-0">
+                            <div class="col-12" style="background: white; padding: 25px 40px; border-top: 1px solid #e0e0e0;">
+                                <h5 class="mb-3" style="font-weight: 600; color: #1a1a1a; font-size: 18px;">
+                                    <i class="fas fa-cogs" style="color: #26a69a;"></i> Vehicle Features
+                                </h5>
+                                <div class="row g-3" id="carDetailFeaturesSection" style="padding: 20px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+                                    <!-- Features will be populated by JavaScript -->
+                                    <div class="col-md-3 col-6">
+                                        <div class="p-3" style="background: white; border-radius: 8px; text-align: center; border: 1px solid #dee2e6;">
+                                            <i class="fas fa-cog" style="font-size: 24px; color: #26a69a; margin-bottom: 8px;"></i>
+                                            <div style="font-size: 11px; color: #888; margin-bottom: 4px;">Transmission</div>
+                                            <div style="font-weight: 600; font-size: 13px; color: #1a1a1a;">Manual</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-6">
+                                        <div class="p-3" style="background: white; border-radius: 8px; text-align: center; border: 1px solid #dee2e6;">
+                                            <i class="fas fa-shield-alt" style="font-size: 24px; color: #26a69a; margin-bottom: 8px;"></i>
+                                            <div style="font-size: 11px; color: #888; margin-bottom: 4px;">Airbags</div>
+                                            <div style="font-weight: 600; font-size: 13px; color: #1a1a1a;">2</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-6">
+                                        <div class="p-3" style="background: white; border-radius: 8px; text-align: center; border: 1px solid #dee2e6;">
+                                            <i class="fas fa-stop-circle" style="font-size: 24px; color: #26a69a; margin-bottom: 8px;"></i>
+                                            <div style="font-size: 11px; color: #888; margin-bottom: 4px;">ABS</div>
+                                            <div style="font-weight: 600; font-size: 13px; color: #1a1a1a;">Not Available</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-6">
+                                        <div class="p-3" style="background: white; border-radius: 8px; text-align: center; border: 1px solid #dee2e6;">
+                                            <i class="fas fa-car" style="font-size: 24px; color: #26a69a; margin-bottom: 8px;"></i>
+                                            <div style="font-size: 11px; color: #888; margin-bottom: 4px;">Cruise Control</div>
+                                            <div style="font-weight: 600; font-size: 13px; color: #1a1a1a;">Not Available</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-6">
+                                        <div class="p-3" style="background: white; border-radius: 8px; text-align: center; border: 1px solid #dee2e6;">
+                                            <i class="fas fa-parking" style="font-size: 24px; color: #26a69a; margin-bottom: 8px;"></i>
+                                            <div style="font-size: 11px; color: #888; margin-bottom: 4px;">Parking Assist</div>
+                                            <div style="font-weight: 600; font-size: 13px; color: #1a1a1a;">Not Available</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-6">
+                                        <div class="p-3" style="background: white; border-radius: 8px; text-align: center; border: 1px solid #dee2e6;">
+                                            <i class="fas fa-music" style="font-size: 24px; color: #26a69a; margin-bottom: 8px;"></i>
+                                            <div style="font-size: 11px; color: #888; margin-bottom: 4px;">Audio System</div>
+                                            <div style="font-weight: 600; font-size: 13px; color: #1a1a1a;">Working</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -2335,14 +2381,24 @@
             }).join('');
         }
 
-        // Populate specs table (2 columns x 4 rows format)
+        // Populate specs table (2 columns x multiple rows format - expanded with all new fields)
         const specsTable = document.getElementById('carDetailSpecsTable');
         if (specsTable) {
+            const transmission = car.transmissionType || car.transmission || 'N/A';
+            const variant = car.variant || edition || 'N/A';
+            const insurance = car.insuranceValidity || 'Not Specified';
+            const accidentHistory = car.accidentalHistory === true ? 'Yes' : (car.accidentalHistory === false ? 'No' : 'Not Specified');
+            const warranty = car.warrantyAvailable === true ? 'Yes' : (car.warrantyAvailable === false ? 'No' : 'Not Specified');
+            const spareKey = car.spareKeyAvailable === true ? 'Yes' : (car.spareKeyAvailable === false ? 'No' : 'Not Specified');
+            
             const specs = [
                 { label: 'Make', value: car.make || 'N/A', label2: 'Model', value2: car.model || 'N/A' },
-                { label: 'Edition', value: edition || 'N/A', label2: 'Year', value2: year || 'N/A' },
+                { label: 'Variant', value: variant, label2: 'Year', value2: year || 'N/A' },
                 { label: 'KMs Driven', value: kmsFormatted, label2: 'Fuel Type', value2: window.titleCase(fuel) },
-                { label: 'Transmission', value: car.transmission ? window.titleCase(car.transmission) : 'N/A', label2: 'Location', value2: window.getListingCity(listing) || 'N/A' }
+                { label: 'Transmission', value: window.titleCase(transmission), label2: 'Location', value2: window.getListingCity(listing) || 'N/A' },
+                { label: 'Insurance', value: insurance, label2: 'Accident History', value2: accidentHistory },
+                { label: 'Warranty', value: warranty, label2: 'Spare Key', value2: spareKey },
+                { label: 'Listed On', value: createdAt || 'N/A', label2: 'Price', value2: priceFormatted }
             ];
             specsTable.innerHTML = specs.map(s => `
                 <tr>
@@ -2374,6 +2430,36 @@
         if (highlightsList) {
             highlightsList.innerHTML = highlights.length ? highlights.map(h => `<li style="padding: 8px 0;"><i class="fas fa-check-circle me-2" style="color: #26a69a;"></i>${h}</li>`).join('') : '<li style="padding: 8px 0;"><i class="fas fa-check-circle me-2" style="color: #26a69a;"></i>Well Equipped</li><li style="padding: 8px 0;"><i class="fas fa-check-circle me-2" style="color: #26a69a;"></i>Verified Listing</li>';
         }
+
+        // Populate Vehicle Features Section
+        const featuresSection = document.getElementById('carDetailFeaturesSection');
+        if (featuresSection) {
+            const transmission = car.transmissionType || car.transmission || 'Not Specified';
+            const airbags = car.airbags || '0';
+            const abs = car.abs === true ? 'Available' : 'Not Available';
+            const cruiseControl = car.cruiseControl === true ? 'Available' : 'Not Available';
+            const parkingAssist = car.parkingAssistant === true ? 'Available' : 'Not Available';
+            const audioSystem = car.audioSystemWorking === true ? 'Working' : 'Not Working';
+            
+            const features = [
+                { icon: 'fa-cog', label: 'Transmission', value: window.titleCase(transmission) },
+                { icon: 'fa-shield-alt', label: 'Airbags', value: airbags },
+                { icon: 'fa-stop-circle', label: 'ABS', value: abs },
+                { icon: 'fa-car', label: 'Cruise Control', value: cruiseControl },
+                { icon: 'fa-parking', label: 'Parking Assist', value: parkingAssist },
+                { icon: 'fa-music', label: 'Audio System', value: audioSystem }
+            ];
+            
+            featuresSection.innerHTML = features.map(f => `
+                <div class="col-md-3 col-6">
+                    <div class="p-3" style="background: white; border-radius: 8px; text-align: center; border: 1px solid #dee2e6;">
+                        <i class="fas ${f.icon}" style="font-size: 24px; color: #26a69a; margin-bottom: 8px;"></i>
+                        <div style="font-size: 11px; color: #888; margin-bottom: 4px;">${f.label}</div>
+                        <div style="font-weight: 600; font-size: 13px; color: #1a1a1a;">${f.value}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
         
         // Update thumbnail highlights when carousel slides through all photos
         const carouselEl = document.getElementById('carDetailCarouselMain');
@@ -2390,6 +2476,58 @@
                         thumb.classList.remove('active-thumb');
                     }
                 });
+            });
+        }
+
+        // Add Request Info button handler
+        const requestInfoBtn = document.getElementById('carDetailRequestInfoBtn');
+        if (requestInfoBtn) {
+            // Remove any existing listeners by cloning
+            const newRequestBtn = requestInfoBtn.cloneNode(true);
+            requestInfoBtn.parentNode.replaceChild(newRequestBtn, requestInfoBtn);
+            
+            newRequestBtn.addEventListener('click', function() {
+                // Close the detail modal
+                const detailModal = bootstrap.Modal.getInstance(document.getElementById('carDetailModal'));
+                if (detailModal) detailModal.hide();
+                
+                // Open the reserve listing modal with pre-filled data
+                setTimeout(() => {
+                    if (currentDetailListing && typeof window.openReserveModal === 'function') {
+                        window.openReserveModal(currentDetailListing.listingId);
+                    } else {
+                        alert('Please contact us at +91-9876543210 to inquire about this vehicle.');
+                    }
+                }, 300);
+            });
+        }
+
+        // Add Book Inspection button handler
+        const bookInspectionBtn = document.getElementById('carDetailBookInspectionBtn');
+        if (bookInspectionBtn) {
+            // Remove any existing listeners by cloning
+            const newBookBtn = bookInspectionBtn.cloneNode(true);
+            bookInspectionBtn.parentNode.replaceChild(newBookBtn, bookInspectionBtn);
+            
+            newBookBtn.addEventListener('click', function() {
+                // Scroll to top of page
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // Close the detail modal
+                const detailModal = bootstrap.Modal.getInstance(document.getElementById('carDetailModal'));
+                if (detailModal) detailModal.hide();
+                
+                // Open the inspection booking modal
+                setTimeout(() => {
+                    const inspectionModal = document.getElementById('bookingModal');
+                    if (inspectionModal) {
+                        const modal = new bootstrap.Modal(inspectionModal);
+                        modal.show();
+                    } else {
+                        // Redirect to home page booking section
+                        window.location.href = '/#book-inspection';
+                    }
+                }, 300);
             });
         }
     }
