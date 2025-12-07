@@ -1066,10 +1066,12 @@
     const FALLBACK_IMAGE = '/Images/brand_logo_new_1.png';
     const LISTINGS_ASSET_BASE = 'https://inspectionwale-car-listings.s3.amazonaws.com/';
     const SOLD_KEYWORDS = ['sold', 'sold out', 'sold-out', 'soldout', 'sold_out', 'booked', 'reserved', 'unavailable', 'not available', 'pending sale', 'pending-sale', 'under offer', 'deposit taken'];
-    const listingMap = new Map();
+    window.listingMap = window.listingMap || new Map();
+    const listingMap = window.listingMap;
     let deepLinkHandled = false;
     let listingEventsBound = false;
-    let allMarketplaceListings = [];
+    window.allMarketplaceListings = window.allMarketplaceListings || [];
+    let allMarketplaceListings = window.allMarketplaceListings;
     let listingsLoadedOnce = false;
 
     const gridElement = document.getElementById('carListingsGrid');
@@ -1560,12 +1562,16 @@
         })();
 
         function bindListingEvents() {
+            console.log('bindListingEvents: called. listingEventsBound=', listingEventsBound, 'gridElement=', !!gridElement);
             if (listingEventsBound || !gridElement) return;
             gridElement.addEventListener('click', function (event) {
+                console.log('grid click:', event.target);
                 const detailTrigger = event.target.closest('.js-view-details');
+                console.log('closest .js-view-details ->', detailTrigger);
                 if (detailTrigger) {
                     event.preventDefault();
                     const listingId = detailTrigger.getAttribute('data-listing-id');
+                    console.log('Seller Details clicked. listingId=', listingId);
                     if (listingId) {
                         showCarDetails(listingId);
                     }
@@ -1575,12 +1581,14 @@
                 if (offerTrigger) {
                     event.preventDefault();
                     const listingId = offerTrigger.getAttribute('data-listing-id');
+                    console.log('Make Offer clicked. listingId=', listingId);
                     if (listingId) {
                         openC2CReserveModal(listingId);
                     }
                 }
             });
             listingEventsBound = true;
+            console.log('bindListingEvents: bound successfully');
         }
 
         function handleListingDeepLink() {
