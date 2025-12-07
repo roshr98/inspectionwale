@@ -1027,122 +1027,117 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
-    <!-- Car Detail Modal (Reference design) -->
+    <!-- Car Detail Modal (Reference design with thumbnails, quick info, action buttons) -->
     <div class="modal fade" id="carDetailModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header bg-light border-bottom">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="max-height: 90vh; overflow-y: auto;">
+                <!-- Header -->
+                <div class="modal-header border-bottom" style="padding: 20px; background: #fff;">
                     <div>
-                        <h5 class="modal-title mb-1" id="carDetailTitle">Vehicle Title</h5>
-                        <small class="text-muted">Used <span id="carDetailYear">2022</span></small>
+                        <h5 class="modal-title mb-1" id="carDetailTitle" style="font-weight: 700; color: #0B2154;">Hyundai i10 Sportz</h5>
+                        <small class="text-muted" id="carDetailDateSubmitted">Submitted on 5 Nov 2025</small>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-0">
+
+                <!-- Body -->
+                <div class="modal-body p-0" style="background: #fff;">
                     <div class="row g-0">
-                        <!-- Image Carousel (Left) -->
-                        <div class="col-md-6">
-                            <div id="carDetailCarousel" class="carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-inner">
+                        <!-- Left: Main Image & Thumbnails -->
+                        <div class="col-md-6" style="padding: 20px;">
+                            <!-- Main Carousel Image -->
+                            <div id="carDetailCarouselMain" class="carousel slide mb-3" data-bs-ride="carousel">
+                                <div class="carousel-inner rounded" style="background: #f5f5f5;">
                                     <div class="carousel-item active">
-                                        <img src="/Images/brand_logo_new_1.png" class="d-block w-100" alt="No image" style="height: 400px; object-fit: cover;">
+                                        <img src="/Images/brand_logo_new_1.png" class="d-block w-100" alt="Car main image" style="height: 400px; object-fit: cover; border-radius: 8px;">
                                     </div>
                                 </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carDetailCarousel" data-bs-slide="prev">
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carDetailCarouselMain" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon"></span>
                                 </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carDetailCarousel" data-bs-slide="next">
+                                <button class="carousel-control-next" type="button" data-bs-target="#carDetailCarouselMain" data-bs-slide="next">
                                     <span class="carousel-control-next-icon"></span>
                                 </button>
                             </div>
 
-                            <!-- Price & Financing (Below Carousel) -->
-                            <div class="p-4 bg-light border-top">
-                                <h2 class="mb-2" id="carDetailPrice">₹24,600</h2>
-                                <p class="text-muted small mb-3">See price and payment details</p>
-                                <div class="row mb-3">
-                                    <div class="col-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="paymentOption" id="financeOption" checked>
-                                            <label class="form-check-label" for="financeOption">
-                                                <strong>Finance</strong><br>
-                                                <span id="carDetailMonthlyPayment">₹419</span>/mo.
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="paymentOption" id="cashOption">
-                                            <label class="form-check-label" for="cashOption">
-                                                <strong>Cash</strong><br>
-                                                <span id="carDetailPrice2">₹24,600</span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button class="btn btn-light w-100 mb-2" style="border: 2px solid #0066cc; color: #0066cc; font-weight: 600;">Apply for Financing</button>
-                                <button class="btn btn-primary w-100" style="background: #0066cc; font-weight: 600;" data-bs-toggle="modal" data-bs-target="#carDetailModal" onclick="document.getElementById('carDetailContactForm').scrollIntoView({behavior: 'smooth'});">Request Info</button>
+                            <!-- Thumbnail Carousel -->
+                            <div class="d-flex gap-2 overflow-auto" id="carDetailThumbnails" style="padding: 10px 0;">
+                                <img src="/Images/brand_logo_new_1.png" class="img-thumbnail" style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; border-radius: 6px;" alt="Thumb">
                             </div>
                         </div>
 
-                        <!-- Details Panel (Right) -->
-                        <div class="col-md-6 p-4">
-                            <!-- Action Icons -->
-                            <div class="d-flex gap-2 mb-4">
-                                <button class="btn btn-outline-secondary" title="Share">
-                                    <i class="fas fa-share"></i> Share
-                                </button>
-                                <button class="btn btn-outline-secondary" title="Save to Wishlist">
-                                    <i class="far fa-heart"></i>
-                                </button>
+                        <!-- Right: Quick Info & Action Buttons -->
+                        <div class="col-md-6" style="padding: 20px; background: #f9f9f9; border-left: 1px solid #eee;">
+                            <!-- Title -->
+                            <h5 style="font-weight: 700; color: #0B2154; margin-bottom: 20px;" id="carDetailRightTitle">Hyundai i10 Sportz</h5>
+
+                            <!-- Quick Info Table -->
+                            <div style="margin-bottom: 20px;">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 14px;">
+                                    <div>
+                                        <p style="color: #666; margin-bottom: 5px; font-weight: 600;">Registration Year</p>
+                                        <p style="font-weight: 700; color: #0B2154; margin-bottom: 0;" id="carDetailRegYear">2012</p>
+                                    </div>
+                                    <div>
+                                        <p style="color: #666; margin-bottom: 5px; font-weight: 600;">KMs Driven</p>
+                                        <p style="font-weight: 700; color: #0B2154; margin-bottom: 0;" id="carDetailKms">95,000 km</p>
+                                    </div>
+                                    <div>
+                                        <p style="color: #666; margin-bottom: 5px; font-weight: 600;">Expected Price</p>
+                                        <p style="font-weight: 700; color: #0B2154; margin-bottom: 0;" id="carDetailExpPrice">₹1,30,000</p>
+                                    </div>
+                                    <div>
+                                        <p style="color: #666; margin-bottom: 5px; font-weight: 600;">Fuel Type</p>
+                                        <p style="font-weight: 700; color: #0B2154; margin-bottom: 0;" id="carDetailFuel">Petrol</p>
+                                    </div>
+                                </div>
                             </div>
 
-                            <!-- Tabs -->
-                            <ul class="nav nav-tabs mb-4" role="tablist">
+                            <!-- Action Buttons -->
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px;">
+                                <button class="btn" style="background: #26a69a; color: white; font-weight: 700; padding: 12px 20px; border-radius: 25px; border: none; font-size: 14px;" id="carDetailReserveBtn">RESERVE NOW</button>
+                                <button class="btn" style="border: 2px solid #D81324; color: #D81324; background: white; font-weight: 700; padding: 10px 20px; border-radius: 25px; font-size: 14px;" id="carDetailTestDriveBtn">BOOK TEST DRIVE</button>
+                            </div>
+
+                            <!-- More Details Tabs -->
+                            <ul class="nav nav-tabs mb-3" style="border-bottom: 1px solid #ddd;" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="specsTab" data-bs-toggle="tab" data-bs-target="#specsPane" type="button" role="tab" aria-selected="true">
-                                        <i class="fas fa-list"></i> Specs
+                                    <button class="nav-link active" id="carDetailSpecsTab" data-bs-toggle="tab" data-bs-target="#carDetailSpecsPane" type="button" role="tab" style="font-weight: 600; font-size: 13px;">
+                                        <i class="fas fa-list"></i> Details
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="highlightsTab" data-bs-toggle="tab" data-bs-target="#highlightsPane" type="button" role="tab" aria-selected="false">
+                                    <button class="nav-link" id="carDetailHighlightsTab" data-bs-toggle="tab" data-bs-target="#carDetailHighlightsPane" type="button" role="tab" style="font-weight: 600; font-size: 13px;">
                                         <i class="fas fa-star"></i> Highlights
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="safetyTab" data-bs-toggle="tab" data-bs-target="#safetyPane" type="button" role="tab" aria-selected="false">
-                                        <i class="fas fa-shield-alt"></i> Safety
                                     </button>
                                 </li>
                             </ul>
 
                             <!-- Tab Content -->
-                            <div class="tab-content">
-                                <div class="tab-pane fade show active" id="specsPane" role="tabpanel">
-                                    <ul id="carDetailSpecsList" class="list-unstyled">
-                                        <li><strong>Make:</strong> Nissan</li>
-                                        <li><strong>Model:</strong> Altima</li>
+                            <div class="tab-content" style="font-size: 14px;">
+                                <div class="tab-pane fade show active" id="carDetailSpecsPane" role="tabpanel">
+                                    <ul id="carDetailSpecsList" class="list-unstyled" style="line-height: 1.8;">
+                                        <li><strong>Make:</strong> Hyundai</li>
+                                        <li><strong>Model:</strong> i10</li>
+                                        <li><strong>Edition:</strong> Sportz</li>
                                     </ul>
                                 </div>
-                                <div class="tab-pane fade" id="highlightsPane" role="tabpanel">
-                                    <ul id="carDetailHighlights" class="list-unstyled">
-                                        <li>Low Miles</li>
-                                        <li>Well Equipped</li>
-                                    </ul>
-                                </div>
-                                <div class="tab-pane fade" id="safetyPane" role="tabpanel">
-                                    <ul id="carDetailSafety" class="list-unstyled">
-                                        <li>Inspected by InspectionWale</li>
+                                <div class="tab-pane fade" id="carDetailHighlightsPane" role="tabpanel">
+                                    <ul id="carDetailHighlights" class="list-unstyled" style="line-height: 1.8;">
+                                        <li>• Well Equipped</li>
+                                        <li>• Low Mileage</li>
                                     </ul>
                                 </div>
                             </div>
 
+                            <!-- Contact Section -->
+                            <hr style="margin: 20px 0; border-color: #ddd;">
+                            <h6 style="font-weight: 700; color: #0B2154; margin-bottom: 15px;">Got Questions? Contact the Dealer</h6>
+
                             <!-- Contact Form -->
-                            <hr class="my-4">
-                            <h6 class="mb-3">Got Questions? Contact the Dealer</h6>
                             <form id="carDetailContactForm">
                                 <div class="mb-3">
-                                    <select class="form-select form-select-sm" id="carDetailSubject" required>
+                                    <select class="form-select form-select-sm" id="carDetailSubject" style="font-size: 13px;" required>
                                         <option selected>This Vehicle's Availability</option>
                                         <option>Pricing Question</option>
                                         <option>Service History</option>
@@ -1151,25 +1146,25 @@
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-6">
-                                        <input type="text" class="form-control form-control-sm" id="carDetailContactName" placeholder="First Name" required>
+                                        <input type="text" class="form-control form-control-sm" id="carDetailContactFirstName" placeholder="First Name" style="font-size: 13px;" required>
                                     </div>
                                     <div class="col-6">
-                                        <input type="text" class="form-control form-control-sm" placeholder="Last Name">
+                                        <input type="text" class="form-control form-control-sm" id="carDetailContactLastName" placeholder="Last Name" style="font-size: 13px;">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-6">
-                                        <input type="email" class="form-control form-control-sm" id="carDetailContactEmail" placeholder="Email" required>
+                                        <input type="email" class="form-control form-control-sm" id="carDetailContactEmail" placeholder="Email" style="font-size: 13px;" required>
                                     </div>
                                     <div class="col-6">
-                                        <input type="tel" class="form-control form-control-sm" id="carDetailContactPhone" placeholder="Phone (optional)">
+                                        <input type="tel" class="form-control form-control-sm" id="carDetailContactPhone" placeholder="Phone (optional)" style="font-size: 13px;">
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <textarea class="form-control form-control-sm" id="carDetailContactMessage" rows="3" placeholder="Message" required></textarea>
+                                    <textarea class="form-control form-control-sm" id="carDetailContactMessage" rows="3" placeholder="Message" style="font-size: 13px;" required></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-primary w-100" style="background: #0066cc; font-weight: 600;">Request Info</button>
-                                <small class="text-muted d-block mt-2">By clicking "Request Info", you accept the terms of our Visitor Agreement</small>
+                                <button type="submit" class="btn w-100" style="background: #0066cc; color: white; font-weight: 700; border: none; padding: 10px; border-radius: 6px; font-size: 14px;">Request Info</button>
+                                <small class="text-muted d-block mt-2" style="font-size: 12px;">By clicking "Request Info", you accept the terms of our <a href="/terms.html" style="color: #0066cc; text-decoration: none;">Visitor Agreement</a></small>
                             </form>
                         </div>
                     </div>
@@ -2332,62 +2327,91 @@
     function populateCarDetailModal(listing) {
         const car = listing.car || {};
         const title = `${car.make || ''} ${car.model || ''}`.trim() || 'Vehicle Listing';
+        const edition = car.edition || '';
+        const fullTitle = edition ? `${title} ${edition}` : title;
         const year = car.registrationYear || '';
+        const kms = car.kmsDriven || 0;
+        const kmsFormatted = kms ? new Intl.NumberFormat('en-IN').format(kms) + ' km' : 'N/A';
         const price = car.expectedPrice || 0;
         const priceFormatted = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(price);
-        const monthlyPayment = Math.round(price / 72); // approx. 72 mo financing
-        const monthlyFormatted = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(monthlyPayment);
+        const fuel = car.fuelType || 'N/A';
+        const createdAt = listing.createdAt ? new Date(listing.createdAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
 
-        // Set title and price
-        document.getElementById('carDetailTitle').textContent = title;
-        document.getElementById('carDetailYear').textContent = year || 'N/A';
-        document.getElementById('carDetailPrice').textContent = priceFormatted;
-        document.getElementById('carDetailMonthlyPayment').textContent = monthlyFormatted;
+        // Set header and titles
+        document.getElementById('carDetailTitle').textContent = fullTitle;
+        document.getElementById('carDetailDateSubmitted').textContent = `Submitted on ${createdAt}`;
+        document.getElementById('carDetailRightTitle').textContent = fullTitle;
 
-        // Populate carousel
-        const carouselContainer = document.getElementById('carDetailCarousel');
+        // Set quick info
+        document.getElementById('carDetailRegYear').textContent = year || 'N/A';
+        document.getElementById('carDetailKms').textContent = kmsFormatted;
+        document.getElementById('carDetailExpPrice').textContent = priceFormatted;
+        document.getElementById('carDetailFuel').textContent = titleCase(fuel);
+
+        // Populate main carousel
         const photos = listing.photos || {};
         const photoArray = [listing.heroUrl, photos.exteriorFront?.url, photos.exteriorBack?.url, photos.exteriorLeft?.url, photos.exteriorRight?.url, photos.interiorSeat?.url, photos.interiorCluster?.url]
             .filter(Boolean)
             .map(p => typeof p === 'string' ? p : p?.url)
             .filter(Boolean);
 
-        carouselContainer.innerHTML = photoArray.map((photo, idx) => {
+        const carouselContainer = document.getElementById('carDetailCarouselMain');
+        carouselContainer.innerHTML = (photoArray.length ? photoArray : [FALLBACK_IMAGE]).map((photo, idx) => {
             const url = ensureAbsoluteUrl(photo) || FALLBACK_IMAGE;
             return `
                 <div class="carousel-item${idx === 0 ? ' active' : ''}">
-                    <img src="${url}" class="d-block w-100" alt="Car photo ${idx + 1}" style="height: 400px; object-fit: cover;">
+                    <img src="${url}" class="d-block w-100" alt="Car photo ${idx + 1}" style="height: 400px; object-fit: cover; border-radius: 8px;">
                 </div>
             `;
-        }).join('') || `<div class="carousel-item active"><img src="${FALLBACK_IMAGE}" class="d-block w-100" alt="No photo" style="height: 400px; object-fit: cover;"></div>`;
+        }).join('');
+
+        // Populate thumbnails
+        const thumbnailContainer = document.getElementById('carDetailThumbnails');
+        thumbnailContainer.innerHTML = (photoArray.length ? photoArray : [FALLBACK_IMAGE]).map((photo, idx) => {
+            const url = ensureAbsoluteUrl(photo) || FALLBACK_IMAGE;
+            return `
+                <img src="${url}" class="img-thumbnail" style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; border-radius: 6px; border: 2px solid #eee;" 
+                     alt="Thumbnail ${idx + 1}" onclick="bootstrap.Carousel.getInstance(document.getElementById('carDetailCarouselMain')).to(${idx})">
+            `;
+        }).join('');
 
         // Pre-fill contact form
-        document.getElementById('carDetailContactName').value = '';
+        document.getElementById('carDetailContactFirstName').value = '';
+        document.getElementById('carDetailContactLastName').value = '';
         document.getElementById('carDetailContactEmail').value = '';
         document.getElementById('carDetailContactPhone').value = '';
-        document.getElementById('carDetailContactMessage').value = `Is your ${title} listed for ${priceFormatted} still available?`;
+        document.getElementById('carDetailContactMessage').value = `Is your ${fullTitle} listed for ${priceFormatted} still available?`;
 
-        // Populate specs, highlights, safety
+        // Populate specs
         const specsList = document.getElementById('carDetailSpecsList');
-        const highlights = getListingHighlights(listing);
         const specs = [
             { label: 'Make', value: car.make || 'N/A' },
             { label: 'Model', value: car.model || 'N/A' },
-            { label: 'Year', value: car.registrationYear || 'N/A' },
-            { label: 'KMs', value: formatKms(car.kmsDriven) || 'N/A' },
-            { label: 'Fuel Type', value: car.fuelType || 'N/A' },
-            { label: 'Transmission', value: car.transmission || 'N/A' },
+            { label: 'Edition', value: edition || 'N/A' },
+            { label: 'Year', value: year || 'N/A' },
+            { label: 'KMs Driven', value: kmsFormatted },
+            { label: 'Fuel Type', value: titleCase(fuel) },
+            { label: 'Transmission', value: car.transmission ? titleCase(car.transmission) : 'N/A' },
             { label: 'Location', value: getListingCity(listing) || 'N/A' }
         ];
         specsList.innerHTML = specs.map(s => `<li><strong>${s.label}:</strong> ${s.value}</li>`).join('');
 
-        // Highlights
+        // Populate highlights
+        const highlights = getListingHighlights(listing);
         const highlightsList = document.getElementById('carDetailHighlights');
-        highlightsList.innerHTML = highlights.length ? highlights.map(h => `<li>${h}</li>`).join('') : '<li>No highlights available</li>';
+        highlightsList.innerHTML = highlights.length ? highlights.map(h => `<li>• ${h}</li>`).join('') : '<li>• Well Equipped</li><li>• Verified Listing</li>';
 
-        // Safety
-        const safetyList = document.getElementById('carDetailSafety');
-        safetyList.innerHTML = '<li>Inspected by InspectionWale professionals</li><li>Verified seller information</li><li>Secure transaction process</li>';
+        // Wire action buttons
+        document.getElementById('carDetailReserveBtn').onclick = function() {
+            console.log('Reserve clicked for:', listing.listingId);
+            alert('Reserve functionality coming soon!');
+        };
+
+        document.getElementById('carDetailTestDriveBtn').onclick = function() {
+            console.log('Book test drive clicked for:', listing.listingId);
+            document.getElementById('carDetailContactMessage').focus();
+            document.getElementById('carDetailContactMessage').value = `I'd like to book a test drive for ${fullTitle}`;
+        };
     }
 
     // Wire "Seller Details" button clicks to open modal
@@ -2399,6 +2423,7 @@
             }
         }
     });
+
 
     </script>
 </body>
