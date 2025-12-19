@@ -1388,6 +1388,17 @@
             border-bottom-color: #26a69a;
             font-weight: 600;
         }
+        /* Auto-scroll animation for popular cars */
+        @keyframes auto-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .popular-cars-track.auto-scrolling {
+            animation: auto-scroll 30s linear infinite;
+        }
+        .popular-cars-track.auto-scrolling:hover {
+            animation-play-state: paused;
+        }
         @media (max-width: 767px) {
             .price-filter-tabs {
                 overflow-x: auto;
@@ -1756,7 +1767,28 @@
             } finally {
                 bindPopularSliderScroll();
                 updatePopularCarsNav();
+                enableAutoScroll();
             }
+        }
+
+        function enableAutoScroll() {
+            const track = document.getElementById('popularCarsTrack');
+            if (!track) return;
+            
+            // Duplicate cards for infinite scroll effect
+            const cards = track.querySelectorAll('.popular-car-card');
+            if (cards.length < 3) return; // Need at least 3 cards
+            
+            // Clone cards and append
+            cards.forEach(card => {
+                const clone = card.cloneNode(true);
+                track.appendChild(clone);
+            });
+            
+            // Enable auto-scroll after a short delay
+            setTimeout(() => {
+                track.classList.add('auto-scrolling');
+            }, 1000);
         }
 
         function renderPopularCarFallbacks(track) {

@@ -887,10 +887,11 @@
                                         </div>
                                     </div>
 
-                                    <!-- Photo Counter -->
+                                    <!-- Photo Counter (Clickable) -->
                                     <div class="text-center py-2" style="background: #f5f5f5;">
                                         <small class="text-muted" style="font-size: 12px; font-family: 'Roboto', sans-serif;">
-                                            <i class="fas fa-camera me-1"></i> <span id="photoCountText">46 Photos</span>
+                                            <i class="fas fa-camera me-1"></i> 
+                                            <a href="#" id="photoCountText" onclick="event.preventDefault(); document.getElementById('carDetailCarouselMain').querySelector('.carousel-control-next').click(); return false;" style="color: #007bff; text-decoration: underline; cursor: pointer;" title="Click to browse all photos">46 Photos</a>
                                         </small>
                                     </div>
                                 </div>
@@ -2411,9 +2412,24 @@
             `;
         }).join('');
         
-        // Set photo count
+        // Set photo count with clickable link
         const photoCountEl = document.getElementById('photoCountText');
-        if (photoCountEl) photoCountEl.textContent = `${finalPhotos.length} Photo${finalPhotos.length !== 1 ? 's' : ''}`;
+        if (photoCountEl) {
+            const photoText = `${finalPhotos.length} Photo${finalPhotos.length !== 1 ? 's' : ''}`;
+            photoCountEl.textContent = photoText;
+            photoCountEl.title = `Click to browse all ${finalPhotos.length} photos`;
+            // Make it start auto-sliding on click
+            photoCountEl.onclick = function(e) {
+                e.preventDefault();
+                const carousel = document.getElementById('carDetailCarouselMain');
+                const bsCarousel = bootstrap.Carousel.getOrCreateInstance(carousel, {
+                    interval: 2000,  // Auto-slide every 2 seconds
+                    ride: 'carousel'
+                });
+                bsCarousel.cycle();
+                return false;
+            };
+        }
 
         // Populate thumbnails (show only first 3 images stacked vertically)
         const thumbnailContainer = document.getElementById('carDetailThumbnails');
