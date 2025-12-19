@@ -97,8 +97,8 @@
       });
     </script>
     
-    <!-- Content Security Policy -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://translate.google.com https://translate.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://translate.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://423cmvhw3g.execute-api.us-east-1.amazonaws.com https://inspectionWale-car-listings.s3.amazonaws.com https://inspectionWale-car-listings.s3.us-east-1.amazonaws.com https://inspectionWale-car-listings.s3-us-east-1.amazonaws.com https://www.google-analytics.com https://cdn.jsdelivr.net; frame-src 'self' https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+    <!-- Content Security Policy - Updated for Google Translate and SEO -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://translate.googleapis.com https://www.gstatic.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://423cmvhw3g.execute-api.us-east-1.amazonaws.com https://inspectionWale-car-listings.s3.amazonaws.com https://inspectionWale-car-listings.s3.us-east-1.amazonaws.com https://inspectionWale-car-listings.s3-us-east-1.amazonaws.com https://www.google-analytics.com https://cdn.jsdelivr.net https://translate.googleapis.com https://translate-pa.googleapis.com; frame-src 'self' https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -124,6 +124,100 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    
+    <!-- Structured Data (JSON-LD) for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "AutoRepair",
+      "name": "inspectionWale",
+      "description": "Expert pre-purchase car inspection services in Mumbai, Navi Mumbai, Thane & Pune. 160+ point inspection, same-day reports, unbiased evaluation.",
+      "image": "https://www.inspectionwale.com/Images/brand_logo_new_1.png",
+      "url": "https://www.inspectionwale.com",
+      "telephone": "+91-8238089600",
+      "email": "inspectionwale@zohomail.in",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Balaji Arcade, Ground Floor Rd, Sapna Industrial Estate, Pimplaphar",
+        "addressLocality": "Kalyan",
+        "addressRegion": "Maharashtra",
+        "postalCode": "421311",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 19.2403,
+        "longitude": 73.1305
+      },
+      "priceRange": "₹₹",
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+          "opens": "09:00",
+          "closes": "19:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Sunday",
+          "opens": "10:00",
+          "closes": "17:00"
+        }
+      ],
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": "Mumbai"
+        },
+        {
+          "@type": "City",
+          "name": "Navi Mumbai"
+        },
+        {
+          "@type": "City",
+          "name": "Thane"
+        },
+        {
+          "@type": "City",
+          "name": "Pune"
+        }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Car Inspection Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Pre-Purchase Car Inspection",
+              "description": "Comprehensive 160+ point inspection of used cars before purchase"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "C2C Car Marketplace",
+              "description": "Direct customer-to-customer verified car listings with inspection reports"
+            }
+          }
+        ]
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "500",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "sameAs": [
+        "https://www.facebook.com/inspectionwale",
+        "https://www.instagram.com/inspectionwale"
+      ]
+    }
+    </script>
+    
     <style>
         :root {
             scroll-padding-top: 100px;

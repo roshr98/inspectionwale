@@ -91,28 +91,29 @@ async function checkDuplicateSeller(email, mobile) {
   }
 
   try {
-    // Scan for any approved listing with same email or mobile
+    // Allow sellers to submit multiple cars - only check for duplicate in last 24 hours to prevent spam
+    const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
     const scanResult = await ddb.send(new ScanCommand({
       TableName: LISTINGS_TABLE,
-      FilterExpression: '#status = :approved AND (#email = :email OR #mobile = :mobile)',
+      FilterExpression: '#createdAt > :oneDayAgo AND (#email = :email OR #mobile = :mobile)',
       ExpressionAttributeNames: {
-        '#status': 'status',
+        '#createdAt': 'createdAt',
         '#email': 'sellerEmail',
         '#mobile': 'sellerMobile'
       },
       ExpressionAttributeValues: {
-        ':approved': 'approved',
+        ':oneDayAgo': oneDayAgo,
         ':email': email || 'NO_EMAIL',
         ':mobile': mobile || 'NO_MOBILE'
       }
     }))
 
-    if (scanResult.Items && scanResult.Items.length > 0) {
-      const existingListing = scanResult.Items[0]
+    // Allow multiple listings, just prevent spam submissions within 24 hours
+    if (scanResult.Items && scanResult.Items.length >= 3) {
       return {
         ok: false,
-        error: 'duplicate_seller_detected',
-        message: `A listing already exists with this ${existingListing.sellerEmail === email ? 'email' : 'mobile number'}. Only one active listing per seller is allowed. Contact support if you need assistance.`
+        error: 'too_many_submissions',
+        message: 'You have submitted multiple listings recently. Please wait 24 hours before submitting more listings or contact support for assistance.'
       }
     }
 
