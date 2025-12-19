@@ -1138,47 +1138,17 @@
                             </div>
                         </div>
 
-                        <!-- Customer Reviews Section (Compact) -->
+                        <!-- Customer Reviews Section (Google Reviews) -->
                         <div class="row g-0">
                             <div class="col-12" style="background: #f8f9fa; padding: 20px 40px; border-top: 1px solid #e0e0e0;">
                                 <h5 class="mb-3" style="font-weight: 600; color: #1a1a1a; font-size: 16px;">
-                                    <i class="fas fa-comments"></i> Customer Reviews
+                                    <i class="fab fa-google"></i> Google Reviews
                                 </h5>
-                                <div class="row g-3">
-                                    <div class="col-md-4">
-                                        <div style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0;">
-                                            <div class="d-flex align-items-center mb-2">
-                                                <div style="width: 40px; height: 40px; border-radius: 50%; background: #007bff; color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; margin-right: 10px;">RK</div>
-                                                <div>
-                                                    <div style="font-weight: 600; font-size: 13px;">Rajesh Kumar</div>
-                                                    <div style="color: #ffa500; font-size: 12px;">★★★★★</div>
-                                                </div>
-                                            </div>
-                                            <p style="font-size: 12px; color: #666; margin-bottom: 0; line-height: 1.5;">"Professional inspection service. They checked everything thoroughly and gave me a detailed report before I bought my car."</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0;">
-                                            <div class="d-flex align-items-center mb-2">
-                                                <div style="width: 40px; height: 40px; border-radius: 50%; background: #28a745; color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; margin-right: 10px;">PS</div>
-                                                <div>
-                                                    <div style="font-weight: 600; font-size: 13px;">Priya Sharma</div>
-                                                    <div style="color: #ffa500; font-size: 12px;">★★★★★</div>
-                                                </div>
-                                            </div>
-                                            <p style="font-size: 12px; color: #666; margin-bottom: 0; line-height: 1.5;">"Best decision to get the inspection done! Found hidden issues that saved me from a bad purchase. Highly recommended!"</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0;">
-                                            <div class="d-flex align-items-center mb-2">
-                                                <div style="width: 40px; height: 40px; border-radius: 50%; background: #dc3545; color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; margin-right: 10px;">AM</div>
-                                                <div>
-                                                    <div style="font-weight: 600; font-size: 13px;">Amit Mehta</div>
-                                                    <div style="color: #ffa500; font-size: 12px;">★★★★★</div>
-                                                </div>
-                                            </div>
-                                            <p style="font-size: 12px; color: #666; margin-bottom: 0; line-height: 1.5;">"Worth every rupee! The detailed report helped me negotiate a better price. Very professional team at InspectionWale."</p>
+                                <div id="marketplaceGoogleReviewsContainer" class="row g-3">
+                                    <!-- Reviews will load here dynamically -->
+                                    <div class="col-12 text-center">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Loading reviews...</span>
                                         </div>
                                     </div>
                                 </div>
@@ -1188,18 +1158,43 @@
                         <!-- Footer -->
                         <div class="row g-0">
                             <div class="col-12" style="background: #1e3a5f; padding: 20px 40px; color: white;">
-                                <div class="row align-items-center">
-                                    <div class="col-md-6">
-                                        <h6 style="font-weight: 600; font-size: 14px; margin-bottom: 5px;">InspectionWale</h6>
-                                        <p style="font-size: 12px; margin-bottom: 0; opacity: 0.9;">Professional Vehicle Inspection Services</p>
+                                <!-- Language & Links Row -->
+                                <div class="row align-items-center py-3 border-bottom" style="border-color: rgba(255,255,255,0.15) !important;">
+                                    <div class="col-lg-3 col-md-4 mb-3 mb-md-0">
+                                        <span style="color: rgba(255,255,255,0.6); font-size: 14px;">Language:</span>
+                                        <a href="#" class="text-white text-decoration-none ms-2" style="font-weight: 500; font-size: 14px;">English</a>
+                                        <a href="#" class="text-decoration-none ms-2" style="color: rgba(255,255,255,0.6); font-size: 14px;">हिंदी</a>
                                     </div>
-                                    <div class="col-md-6 text-md-end">
-                                        <p style="font-size: 12px; margin-bottom: 5px;">
-                                            <i class="fas fa-phone me-2"></i> +91 XXX-XXX-XXXX
-                                        </p>
-                                        <p style="font-size: 12px; margin-bottom: 0;">
-                                            <i class="fas fa-envelope me-2"></i> info@inspectionwale.com
-                                        </p>
+                                    <div class="col-lg-9 col-md-8">
+                                        <div class="d-flex flex-wrap justify-content-md-end justify-content-start gap-4">
+                                            <a href="/#about" class="text-white text-decoration-none" style="font-size: 14px;">About Us</a>
+                                            <a href="/careers.html" class="text-white text-decoration-none" style="font-size: 14px;">Careers</a>
+                                            <a href="/terms.html" class="text-white text-decoration-none" style="font-size: 14px;">Terms & Conditions</a>
+                                            <a href="#" class="text-white text-decoration-none" style="font-size: 14px;">Advertise</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Social Icons Row -->
+                                <div class="row py-3 border-bottom" style="border-color: rgba(255,255,255,0.15) !important;">
+                                    <div class="col-12">
+                                        <div class="d-flex align-items-center">
+                                            <span class="text-uppercase me-3" style="color: rgba(255,255,255,0.6); font-size: 11px; letter-spacing: 1px;">Connect With Us</span>
+                                            <div class="d-flex gap-3">
+                                                <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-facebook-f"></i></a>
+                                                <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-twitter"></i></a>
+                                                <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-youtube"></i></a>
+                                                <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-linkedin-in"></i></a>
+                                                <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-instagram"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Copyright Row -->
+                                <div class="row pt-3">
+                                    <div class="col-md-6 text-md-start text-center mb-2 mb-md-0">
+                                        <span style="color: rgba(255,255,255,0.5); font-size: 12px;">&copy; 2025 inspectionwale.com. All Rights Reserved.</span>
                                     </div>
                                 </div>
                             </div>
@@ -1934,15 +1929,41 @@
         window.collectListingPhotos = function collectListingPhotos(listing) {
             const photos = [];
             if (!listing) return photos;
-            const photoEntries = listing.photos ? Object.entries(listing.photos) : [];
+            
+            // Define all 18 required photo slots in display order
+            const photoSlots = [
+                'exteriorFront', 'exteriorBack', 'exteriorLeft', 'exteriorRight',
+                'engine', 'battery', 'firewall', 'rhsApron', 'lhsApron',
+                'tyreFrontLeft', 'tyreFrontRight', 'tyreRearLeft', 'tyreRearRight', 'tyreSpare',
+                'seatFrontView', 'seatRearView', 'dashboard', 'interiorCluster',
+                'cngPlate' // Optional but include if available
+            ];
+            
+            const photoEntries = listing.photos ? listing.photos : {};
             const seen = new Set();
-            photoEntries.forEach(([slot, value]) => {
-                const url = window.extractPhotoUrl(value);
-                if (url && !seen.has(url) && slot !== 'rcDocument') {
-                    photos.push({ slot, url });
-                    seen.add(url);
+            
+            // Add photos in the defined order to ensure all 18+ slots are checked
+            photoSlots.forEach(slot => {
+                if (photoEntries[slot]) {
+                    const url = window.extractPhotoUrl(photoEntries[slot]);
+                    if (url && !seen.has(url)) {
+                        photos.push({ slot, url });
+                        seen.add(url);
+                    }
                 }
             });
+            
+            // Add any other photos not in the predefined list (except rcDocument)
+            Object.entries(photoEntries).forEach(([slot, value]) => {
+                if (slot !== 'rcDocument' && !photoSlots.includes(slot)) {
+                    const url = window.extractPhotoUrl(value);
+                    if (url && !seen.has(url)) {
+                        photos.push({ slot, url });
+                        seen.add(url);
+                    }
+                }
+            });
+            
             if (!photos.length) {
                 const fallback = window.resolvePrimaryPhoto(listing);
                 if (fallback) photos.push({ slot: 'exteriorFront', url: fallback });
@@ -2565,6 +2586,69 @@
         }
     }
 
+    </script>
+
+    <script>
+    // Google Reviews Loader for Marketplace
+    document.addEventListener('DOMContentLoaded', function () {
+        (async function () {
+            const container = document.getElementById('marketplaceGoogleReviewsContainer')
+            if (!container) {
+                return
+            }
+
+            try {
+                const res = await fetch('/api/reviews')
+                const data = await res.json()
+
+                if (data.ok && data.reviews && data.reviews.length) {
+                    function getStars(rating) {
+                        const full = Math.floor(rating)
+                        const half = rating % 1 >= 0.5 ? 1 : 0
+                        const empty = 5 - full - half
+                        return '★'.repeat(full) + (half ? '⯨' : '') + '☆'.repeat(empty)
+                    }
+
+                    // Display compact reviews in 3 columns
+                    const reviewsHtml = data.reviews.slice(0, 3).map(review => `
+                        <div class="col-md-4">
+                            <div style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0;">
+                                <div class="d-flex align-items-center mb-2">
+                                    ${review.profile_photo ?
+                                        `<img src="${review.profile_photo}" class="rounded-circle" style="width:40px;height:40px;object-fit:cover;margin-right:10px;" alt="${review.author}" loading="lazy" decoding="async">` :
+                                        `<div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:40px;height:40px;font-size:18px;font-weight:600;margin-right:10px;">${review.author.charAt(0)}</div>`
+                                    }
+                                    <div>
+                                        <div style="font-weight: 600; font-size: 13px;">${review.author}</div>
+                                        <div style="color: #ffa500; font-size: 12px;">${getStars(review.rating)}</div>
+                                    </div>
+                                </div>
+                                <p style="font-size: 12px; color: #666; margin-bottom: 0; line-height: 1.5;">${review.text.length > 120 ? review.text.substring(0, 120) + '...' : review.text}</p>
+                                <small class="text-muted d-block mt-2" style="font-size: 11px;">
+                                    <i class="fab fa-google me-1"></i> ${review.time || 'Google Review'}
+                                </small>
+                            </div>
+                        </div>
+                    `).join('')
+
+                    container.innerHTML = reviewsHtml
+                } else {
+                    container.innerHTML = `
+                        <div class="col-12 text-center p-4">
+                            <p class="text-muted">Reviews will appear here once configured.</p>
+                        </div>
+                    `
+                }
+            } catch (err) {
+                console.error('Failed to load Google reviews:', err)
+                container.innerHTML = `
+                    <div class="col-12 text-center p-4">
+                        <p class="text-danger">Unable to load reviews at this time.</p>
+                    </div>
+                `
+            }
+        })()
+    })
     </script>
 </body>
 
