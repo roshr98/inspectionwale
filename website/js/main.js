@@ -116,10 +116,10 @@
     const LISTINGS_ASSET_BASE = 'https://inspectionwale-car-listings.s3.amazonaws.com/'
     const SOLD_KEYWORDS = ['sold', 'sold out', 'sold-out', 'soldout', 'sold_out', 'booked', 'reserved', 'unavailable', 'not available', 'pending sale', 'pending-sale', 'under offer', 'deposit taken']
     
-    // Image compression settings
-    const MAX_IMAGE_WIDTH = 1920
-    const MAX_IMAGE_HEIGHT = 1440
-    const JPEG_QUALITY = 0.85
+    // Image compression settings - optimized for fast upload with good quality
+    const MAX_IMAGE_WIDTH = 1280
+    const MAX_IMAGE_HEIGHT = 960
+    const JPEG_QUALITY = 0.80
     const MAX_FILE_SIZE_MB = 2
 
     const listingsCache = new Map()
@@ -197,11 +197,11 @@
         return candidates.some(value => SOLD_KEYWORDS.some(keyword => value.includes(keyword)))
     }
     
-    // Image compression function
+    // Image compression function - optimized for faster uploads
     async function compressImage(file) {
         return new Promise((resolve, reject) => {
-            // Skip if file is already small
-            if (file.size < 500 * 1024) { // Less than 500KB
+            // Always compress images larger than 300KB for faster upload
+            if (file.size < 300 * 1024) { // Less than 300KB
                 resolve(file)
                 return
             }
