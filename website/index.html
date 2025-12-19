@@ -1949,7 +1949,8 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="registrationYear" class="form-label">Registration Year<span class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" id="registrationYear" name="registrationYear" min="1990" max="2100" placeholder="e.g. 2019" required>
+                                    <input type="month" class="form-control" id="registrationYear" name="registrationYear" min="1990-01" max="2100-12" placeholder="Select year and month" required>
+                                    <div class="form-text">Select the year and month of registration</div>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="kmsDriven" class="form-label">KMs Driven<span class="text-danger">*</span></label>
@@ -2091,7 +2092,7 @@
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Exterior &mdash; Front<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoExteriorFront" data-slot="exteriorFront" accept="image/*" capture="environment" required>
+                                    <input type="file" class="form-control list-car-photo" id="photoExteriorFront" data-slot="exteriorFront" accept="image/*" required>
                                     <div class="form-text">Front 3/4th angle preferred.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="exteriorFront" alt="Exterior front preview">
@@ -2105,7 +2106,7 @@
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Exterior &mdash; Back<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoExteriorBack" data-slot="exteriorBack" accept="image/*" capture="environment" required>
+                                    <input type="file" class="form-control list-car-photo" id="photoExteriorBack" data-slot="exteriorBack" accept="image/*" required>
                                     <div class="form-text">Rear 3/4th shot.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="exteriorBack" alt="Exterior back preview">
@@ -2119,7 +2120,7 @@
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Exterior &mdash; Left Side<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoExteriorLeft" data-slot="exteriorLeft" accept="image/*" capture="environment" required>
+                                    <input type="file" class="form-control list-car-photo" id="photoExteriorLeft" data-slot="exteriorLeft" accept="image/*" required>
                                     <div class="form-text">Driver side profile.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="exteriorLeft" alt="Exterior left preview">
@@ -2133,7 +2134,7 @@
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Exterior &mdash; Right Side<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoExteriorRight" data-slot="exteriorRight" accept="image/*" capture="environment" required>
+                                    <input type="file" class="form-control list-car-photo" id="photoExteriorRight" data-slot="exteriorRight" accept="image/*" required>
                                     <div class="form-text">Passenger side profile.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="exteriorRight" alt="Exterior right preview">
@@ -2148,7 +2149,7 @@
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Engine<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoEngine" data-slot="engine" accept="image/*" capture="environment" required>
+                                    <input type="file" class="form-control list-car-photo" id="photoEngine" data-slot="engine" accept="image/*" required>
                                     <div class="form-text">Clear view of engine bay.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="engine" alt="Engine preview">
@@ -2162,7 +2163,7 @@
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Battery<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoBattery" data-slot="battery" accept="image/*" capture="environment" required>
+                                    <input type="file" class="form-control list-car-photo" id="photoBattery" data-slot="battery" accept="image/*" required>
                                     <div class="form-text">Battery and terminals visible.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="battery" alt="Battery preview">
@@ -2176,7 +2177,7 @@
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Firewall<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoFirewall" data-slot="firewall" accept="image/*" capture="environment" required>
+                                    <input type="file" class="form-control list-car-photo" id="photoFirewall" data-slot="firewall" accept="image/*" required>
                                     <div class="form-text">Engine bay firewall view.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="firewall" alt="Firewall preview">
@@ -2191,7 +2192,7 @@
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         RHS Apron<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoRhsApron" data-slot="rhsApron" accept="image/*" capture="environment" required>
+                                    <input type="file" class="form-control list-car-photo" id="photoRhsApron" data-slot="rhsApron" accept="image/*" required>
                                     <div class="form-text">Right side apron.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="rhsApron" alt="RHS Apron preview">
@@ -2205,7 +2206,7 @@
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         LHS Apron<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoLhsApron" data-slot="lhsApron" accept="image/*" capture="environment" required>
+                                    <input type="file" class="form-control list-car-photo" id="photoLhsApron" data-slot="lhsApron" accept="image/*" required>
                                     <div class="form-text">Left side apron.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="lhsApron" alt="LHS Apron preview">
@@ -2220,7 +2221,7 @@
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Tyre &mdash; LHS Front<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoTyreLhsFront" data-slot="tyreLhsFront" accept="image/*" capture="environment" required>
+                                    <input type="file" class="form-control list-car-photo" id="photoTyreLhsFront" data-slot="tyreLhsFront" accept="image/*" required>
                                     <div class="form-text">Left front tyre tread.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="tyreLhsFront" alt="LHS Front Tyre preview">
@@ -2234,7 +2235,7 @@
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Tyre &mdash; LHS Back<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoTyreLhsBack" data-slot="tyreLhsBack" accept="image/*" capture="environment" required>
+                                    <input type="file" class="form-control list-car-photo" id="photoTyreLhsBack" data-slot="tyreLhsBack" accept="image/*" required>
                                     <div class="form-text">Left rear tyre tread.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="tyreLhsBack" alt="LHS Back Tyre preview">
@@ -2248,7 +2249,7 @@
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Tyre &mdash; RHS Front<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoTyreRhsFront" data-slot="tyreRhsFront" accept="image/*" capture="environment" required>
+                                    <input type="file" class="form-control list-car-photo" id="photoTyreRhsFront" data-slot="tyreRhsFront" accept="image/*" required>
                                     <div class="form-text">Right front tyre tread.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="tyreRhsFront" alt="RHS Front Tyre preview">
@@ -2262,7 +2263,7 @@
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Tyre &mdash; RHS Back<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoTyreRhsBack" data-slot="tyreRhsBack" accept="image/*" capture="environment" required>
+                                    <input type="file" class="form-control list-car-photo" id="photoTyreRhsBack" data-slot="tyreRhsBack" accept="image/*" required>
                                     <div class="form-text">Right rear tyre tread.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="tyreRhsBack" alt="RHS Back Tyre preview">
@@ -2276,7 +2277,7 @@
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Tyre &mdash; Spare<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoTyreSpare" data-slot="tyreSpare" accept="image/*" capture="environment" required>
+                                    <input type="file" class="form-control list-car-photo" id="photoTyreSpare" data-slot="tyreSpare" accept="image/*" required>
                                     <div class="form-text">Spare tyre condition.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="tyreSpare" alt="Spare Tyre preview">
@@ -2291,7 +2292,7 @@
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Front Seat View<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoSeatFrontView" data-slot="seatFrontView" accept="image/*" capture="environment" required>
+                                    <input type="file" class="form-control list-car-photo" id="photoSeatFrontView" data-slot="seatFrontView" accept="image/*" required>
                                     <div class="form-text">Front seat area view.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="seatFrontView" alt="Front Seat preview">
@@ -2305,7 +2306,7 @@
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Rear Seat View<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoSeatRearView" data-slot="seatRearView" accept="image/*" capture="environment" required>
+                                    <input type="file" class="form-control list-car-photo" id="photoSeatRearView" data-slot="seatRearView" accept="image/*" required>
                                     <div class="form-text">Rear seat area view.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="seatRearView" alt="Rear Seat preview">
@@ -2319,7 +2320,7 @@
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Dashboard<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoDashboard" data-slot="dashboard" accept="image/*" capture="environment" required>
+                                    <input type="file" class="form-control list-car-photo" id="photoDashboard" data-slot="dashboard" accept="image/*" required>
                                     <div class="form-text">Dashboard and controls view.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="dashboard" alt="Dashboard preview">
@@ -2333,7 +2334,7 @@
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Instrument Cluster<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoInteriorCluster" data-slot="interiorCluster" accept="image/*" capture="environment" required>
+                                    <input type="file" class="form-control list-car-photo" id="photoInteriorCluster" data-slot="interiorCluster" accept="image/*" required>
                                     <div class="form-text">Clear odometer reading.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="interiorCluster" alt="Instrument cluster preview">
@@ -2348,7 +2349,7 @@
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         CNG Plate <span class="text-muted small">(Optional)</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoCngPlate" data-slot="cngPlate" accept="image/*" capture="environment">
+                                    <input type="file" class="form-control list-car-photo" id="photoCngPlate" data-slot="cngPlate" accept="image/*">
                                     <div class="form-text">If CNG fitted.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="cngPlate" alt="CNG Plate preview">
@@ -2362,7 +2363,7 @@
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         RC Document <span class="text-muted small">(Optional)</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoRcDocument" data-slot="rcDocument" accept="image/*" capture="environment">
+                                    <input type="file" class="form-control list-car-photo" id="photoRcDocument" data-slot="rcDocument" accept="image/*">
                                     <div class="form-text">Only for verification &mdash; never published.</div>
                                     <div class="mt-2 position-relative mb-3">
                                         <img class="img-fluid rounded d-none" data-preview="rcDocument" alt="RC preview">

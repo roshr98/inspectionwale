@@ -844,11 +844,15 @@
             email: formData.get('sellerEmail') || ''
         }
 
+        // Extract year from month input (format: "YYYY-MM" -> "YYYY")
+        const regYearValue = formData.get('registrationYear') || '';
+        const registrationYear = regYearValue ? regYearValue.split('-')[0] : '';
+
         const car = {
             make: formData.get('carMake') || '',
             model: formData.get('carModel') || '',
             edition: formData.get('carEdition') || '',
-            registrationYear: formData.get('registrationYear') || '',
+            registrationYear: registrationYear,
             kmsDriven: formData.get('kmsDriven') || '',
             expectedPrice: formData.get('expectedPrice') || '',
             location: formData.get('location') || '',

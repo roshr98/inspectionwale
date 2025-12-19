@@ -1005,10 +1005,10 @@
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-6">
-                                        <input type="email" class="form-control" placeholder="Email" style="border: 1px solid #ddd; padding: 12px; font-size: 14px; border-radius: 6px;">
+                                        <input type="email" class="form-control" placeholder="Email" required style="border: 1px solid #ddd; padding: 12px; font-size: 14px; border-radius: 6px;">
                                     </div>
                                     <div class="col-6">
-                                        <input type="tel" class="form-control" placeholder="Phone (optional)" style="border: 1px solid #ddd; padding: 12px; font-size: 14px; border-radius: 6px;">
+                                        <input type="tel" class="form-control" placeholder="Phone" pattern="[0-9]{10}" required style="border: 1px solid #ddd; padding: 12px; font-size: 14px; border-radius: 6px;">
                                     </div>
                                 </div>
 
@@ -2421,11 +2421,14 @@
             // Make it start auto-sliding on click
             photoCountEl.onclick = function(e) {
                 e.preventDefault();
-                const carousel = document.getElementById('carDetailCarouselMain');
-                const bsCarousel = bootstrap.Carousel.getOrCreateInstance(carousel, {
-                    interval: 2000,  // Auto-slide every 2 seconds
-                    ride: 'carousel'
-                });
+                const carouselEl = document.getElementById('carDetailCarouselMain');
+                let bsCarousel = bootstrap.Carousel.getInstance(carouselEl);
+                if (!bsCarousel) {
+                    bsCarousel = new bootstrap.Carousel(carouselEl, {
+                        interval: 2000,  // Auto-slide every 2 seconds
+                        ride: 'carousel'
+                    });
+                }
                 bsCarousel.cycle();
                 return false;
             };
