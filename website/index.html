@@ -2085,14 +2085,25 @@
                             </div>
 
                             <h6 class="text-uppercase text-muted mb-3">Upload Required Photos</h6>
-                            <p class="small text-muted">Capture clear, well-lit photos using your camera. Click × to remove a photo and retake.</p>
+                            <p class="small text-muted">Choose to take a photo with your camera or upload from your device gallery.</p>
                             <div class="row g-3" id="listingPhotoInputs">
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoExteriorFront">
+                                    <label class="form-label fw-semibold d-flex align-items-center">
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Exterior &mdash; Front<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoExteriorFront" data-slot="exteriorFront" accept="image/*" required>
+                                    <!-- Hidden file inputs -->
+                                    <input type="file" class="d-none list-car-photo-camera" id="photoExteriorFrontCamera" data-slot="exteriorFront" accept="image/*" capture="environment">
+                                    <input type="file" class="d-none list-car-photo-gallery" id="photoExteriorFrontGallery" data-slot="exteriorFront" accept="image/*">
+                                    <!-- Visible buttons -->
+                                    <div class="btn-group d-flex gap-2 mb-2" role="group">
+                                        <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoExteriorFrontCamera').click()">
+                                            <i class="fas fa-camera"></i> Take Photo
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoExteriorFrontGallery').click()">
+                                            <i class="fas fa-images"></i> Choose from Device
+                                        </button>
+                                    </div>
                                     <div class="form-text">Front 3/4th angle preferred.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="exteriorFront" alt="Exterior front preview">
@@ -2102,11 +2113,20 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoExteriorBack">
+                                    <label class="form-label fw-semibold d-flex align-items-center">
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Exterior &mdash; Back<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoExteriorBack" data-slot="exteriorBack" accept="image/*" required>
+                                    <input type="file" class="d-none list-car-photo-camera" id="photoExteriorBackCamera" data-slot="exteriorBack" accept="image/*" capture="environment">
+                                    <input type="file" class="d-none list-car-photo-gallery" id="photoExteriorBackGallery" data-slot="exteriorBack" accept="image/*">
+                                    <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoExteriorBackCamera').click()">
+                                            <i class="fas fa-camera"></i> Take Photo
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoExteriorBackGallery').click()">
+                                            <i class="fas fa-images"></i> Choose from Device
+                                        </button>
+                                    </div>
                                     <div class="form-text">Rear 3/4th shot.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="exteriorBack" alt="Exterior back preview">
@@ -2116,11 +2136,20 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoExteriorLeft">
+                                    <label class="form-label fw-semibold d-flex align-items-center">
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Exterior &mdash; Left Side<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoExteriorLeft" data-slot="exteriorLeft" accept="image/*" required>
+                                    <input type="file" class="d-none list-car-photo-camera" id="photoExteriorLeftCamera" data-slot="exteriorLeft" accept="image/*" capture="environment">
+                                    <input type="file" class="d-none list-car-photo-gallery" id="photoExteriorLeftGallery" data-slot="exteriorLeft" accept="image/*">
+                                    <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoExteriorLeftCamera').click()">
+                                            <i class="fas fa-camera"></i> Take Photo
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoExteriorLeftGallery').click()">
+                                            <i class="fas fa-images"></i> Choose from Device
+                                        </button>
+                                    </div>
                                     <div class="form-text">Driver side profile.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="exteriorLeft" alt="Exterior left preview">
@@ -2130,11 +2159,20 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoExteriorRight">
+                                    <label class="form-label fw-semibold d-flex align-items-center">
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Exterior &mdash; Right Side<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoExteriorRight" data-slot="exteriorRight" accept="image/*" required>
+                                    <input type="file" class="d-none list-car-photo-camera" id="photoExteriorRightCamera" data-slot="exteriorRight" accept="image/*" capture="environment">
+                                    <input type="file" class="d-none list-car-photo-gallery" id="photoExteriorRightGallery" data-slot="exteriorRight" accept="image/*">
+                                    <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoExteriorRightCamera').click()">
+                                            <i class="fas fa-camera"></i> Take Photo
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoExteriorRightGallery').click()">
+                                            <i class="fas fa-images"></i> Choose from Device
+                                        </button>
+                                    </div>
                                     <div class="form-text">Passenger side profile.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="exteriorRight" alt="Exterior right preview">
@@ -2145,11 +2183,20 @@
                                 </div>
                                 <!-- Engine Compartment Section -->
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoEngine">
+                                    <label class="form-label fw-semibold d-flex align-items-center">
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Engine<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoEngine" data-slot="engine" accept="image/*" required>
+                                    <input type="file" class="d-none list-car-photo-camera" id="photoEngineCamera" data-slot="engine" accept="image/*" capture="environment">
+                                    <input type="file" class="d-none list-car-photo-gallery" id="photoEngineGallery" data-slot="engine" accept="image/*">
+                                    <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoEngineCamera').click()">
+                                            <i class="fas fa-camera"></i> Take Photo
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoEngineGallery').click()">
+                                            <i class="fas fa-images"></i> Choose from Device
+                                        </button>
+                                    </div>
                                     <div class="form-text">Clear view of engine bay.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="engine" alt="Engine preview">
@@ -2159,11 +2206,20 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoBattery">
+                                    <label class="form-label fw-semibold d-flex align-items-center">
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Battery<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoBattery" data-slot="battery" accept="image/*" required>
+                                    <input type="file" class="d-none list-car-photo-camera" id="photoBatteryCamera" data-slot="battery" accept="image/*" capture="environment">
+                                    <input type="file" class="d-none list-car-photo-gallery" id="photoBatteryGallery" data-slot="battery" accept="image/*">
+                                    <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoBatteryCamera').click()">
+                                            <i class="fas fa-camera"></i> Take Photo
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoBatteryGallery').click()">
+                                            <i class="fas fa-images"></i> Choose from Device
+                                        </button>
+                                    </div>
                                     <div class="form-text">Battery and terminals visible.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="battery" alt="Battery preview">
@@ -2173,11 +2229,20 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoFirewall">
+                                    <label class="form-label fw-semibold d-flex align-items-center">
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Firewall<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoFirewall" data-slot="firewall" accept="image/*" required>
+                                    <input type="file" class="d-none list-car-photo-camera" id="photoFirewallCamera" data-slot="firewall" accept="image/*" capture="environment">
+                                    <input type="file" class="d-none list-car-photo-gallery" id="photoFirewallGallery" data-slot="firewall" accept="image/*">
+                                    <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoFirewallCamera').click()">
+                                            <i class="fas fa-camera"></i> Take Photo
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoFirewallGallery').click()">
+                                            <i class="fas fa-images"></i> Choose from Device
+                                        </button>
+                                    </div>
                                     <div class="form-text">Engine bay firewall view.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="firewall" alt="Firewall preview">
@@ -2188,11 +2253,20 @@
                                 </div>
                                 <!-- Apron Section -->
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoRhsApron">
+                                    <label class="form-label fw-semibold d-flex align-items-center">
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         RHS Apron<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoRhsApron" data-slot="rhsApron" accept="image/*" required>
+                                    <input type="file" class="d-none list-car-photo-camera" id="photoRhsApronCamera" data-slot="rhsApron" accept="image/*" capture="environment">
+                                    <input type="file" class="d-none list-car-photo-gallery" id="photoRhsApronGallery" data-slot="rhsApron" accept="image/*">
+                                    <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoRhsApronCamera').click()">
+                                            <i class="fas fa-camera"></i> Take Photo
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoRhsApronGallery').click()">
+                                            <i class="fas fa-images"></i> Choose from Device
+                                        </button>
+                                    </div>
                                     <div class="form-text">Right side apron.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="rhsApron" alt="RHS Apron preview">
@@ -2202,11 +2276,20 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoLhsApron">
+                                    <label class="form-label fw-semibold d-flex align-items-center">
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         LHS Apron<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoLhsApron" data-slot="lhsApron" accept="image/*" required>
+                                    <input type="file" class="d-none list-car-photo-camera" id="photoLhsApronCamera" data-slot="lhsApron" accept="image/*" capture="environment">
+                                    <input type="file" class="d-none list-car-photo-gallery" id="photoLhsApronGallery" data-slot="lhsApron" accept="image/*">
+                                    <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoLhsApronCamera').click()">
+                                            <i class="fas fa-camera"></i> Take Photo
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoLhsApronGallery').click()">
+                                            <i class="fas fa-images"></i> Choose from Device
+                                        </button>
+                                    </div>
                                     <div class="form-text">Left side apron.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="lhsApron" alt="LHS Apron preview">
@@ -2217,11 +2300,20 @@
                                 </div>
                                 <!-- Tyres Section -->
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoTyreLhsFront">
+                                    <label class="form-label fw-semibold d-flex align-items-center">
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Tyre &mdash; LHS Front<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoTyreLhsFront" data-slot="tyreLhsFront" accept="image/*" required>
+                                    <input type="file" class="d-none list-car-photo-camera" id="photoTyreLhsFrontCamera" data-slot="tyreLhsFront" accept="image/*" capture="environment">
+                                    <input type="file" class="d-none list-car-photo-gallery" id="photoTyreLhsFrontGallery" data-slot="tyreLhsFront" accept="image/*">
+                                    <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoTyreLhsFrontCamera').click()">
+                                            <i class="fas fa-camera"></i> Take Photo
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoTyreLhsFrontGallery').click()">
+                                            <i class="fas fa-images"></i> Choose from Device
+                                        </button>
+                                    </div>
                                     <div class="form-text">Left front tyre tread.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="tyreLhsFront" alt="LHS Front Tyre preview">
@@ -2231,11 +2323,20 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoTyreLhsBack">
+                                    <label class="form-label fw-semibold d-flex align-items-center">
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Tyre &mdash; LHS Back<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoTyreLhsBack" data-slot="tyreLhsBack" accept="image/*" required>
+                                    <input type="file" class="d-none list-car-photo-camera" id="photoTyreLhsBackCamera" data-slot="tyreLhsBack" accept="image/*" capture="environment">
+                                    <input type="file" class="d-none list-car-photo-gallery" id="photoTyreLhsBackGallery" data-slot="tyreLhsBack" accept="image/*">
+                                    <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoTyreLhsBackCamera').click()">
+                                            <i class="fas fa-camera"></i> Take Photo
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoTyreLhsBackGallery').click()">
+                                            <i class="fas fa-images"></i> Choose from Device
+                                        </button>
+                                    </div>
                                     <div class="form-text">Left rear tyre tread.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="tyreLhsBack" alt="LHS Back Tyre preview">
@@ -2245,11 +2346,20 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoTyreRhsFront">
+                                    <label class="form-label fw-semibold d-flex align-items-center">
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Tyre &mdash; RHS Front<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoTyreRhsFront" data-slot="tyreRhsFront" accept="image/*" required>
+                                    <input type="file" class="d-none list-car-photo-camera" id="photoTyreRhsFrontCamera" data-slot="tyreRhsFront" accept="image/*" capture="environment">
+                                    <input type="file" class="d-none list-car-photo-gallery" id="photoTyreRhsFrontGallery" data-slot="tyreRhsFront" accept="image/*">
+                                    <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoTyreRhsFrontCamera').click()">
+                                            <i class="fas fa-camera"></i> Take Photo
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoTyreRhsFrontGallery').click()">
+                                            <i class="fas fa-images"></i> Choose from Device
+                                        </button>
+                                    </div>
                                     <div class="form-text">Right front tyre tread.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="tyreRhsFront" alt="RHS Front Tyre preview">
@@ -2259,11 +2369,20 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoTyreRhsBack">
+                                    <label class="form-label fw-semibold d-flex align-items-center">
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Tyre &mdash; RHS Back<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoTyreRhsBack" data-slot="tyreRhsBack" accept="image/*" required>
+                                    <input type="file" class="d-none list-car-photo-camera" id="photoTyreRhsBackCamera" data-slot="tyreRhsBack" accept="image/*" capture="environment">
+                                    <input type="file" class="d-none list-car-photo-gallery" id="photoTyreRhsBackGallery" data-slot="tyreRhsBack" accept="image/*">
+                                    <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoTyreRhsBackCamera').click()">
+                                            <i class="fas fa-camera"></i> Take Photo
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoTyreRhsBackGallery').click()">
+                                            <i class="fas fa-images"></i> Choose from Device
+                                        </button>
+                                    </div>
                                     <div class="form-text">Right rear tyre tread.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="tyreRhsBack" alt="RHS Back Tyre preview">
@@ -2273,11 +2392,20 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoTyreSpare">
+                                    <label class="form-label fw-semibold d-flex align-items-center">
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Tyre &mdash; Spare<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoTyreSpare" data-slot="tyreSpare" accept="image/*" required>
+                                    <input type="file" class="d-none list-car-photo-camera" id="photoTyreSpareCamera" data-slot="tyreSpare" accept="image/*" capture="environment">
+                                    <input type="file" class="d-none list-car-photo-gallery" id="photoTyreSpareGallery" data-slot="tyreSpare" accept="image/*">
+                                    <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoTyreSpareCamera').click()">
+                                            <i class="fas fa-camera"></i> Take Photo
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoTyreSpareGallery').click()">
+                                            <i class="fas fa-images"></i> Choose from Device
+                                        </button>
+                                    </div>
                                     <div class="form-text">Spare tyre condition.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="tyreSpare" alt="Spare Tyre preview">
@@ -2288,11 +2416,20 @@
                                 </div>
                                 <!-- Interior Section -->
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoSeatFrontView">
+                                    <label class="form-label fw-semibold d-flex align-items-center">
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Front Seat View<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoSeatFrontView" data-slot="seatFrontView" accept="image/*" required>
+                                    <input type="file" class="d-none list-car-photo-camera" id="photoSeatFrontViewCamera" data-slot="seatFrontView" accept="image/*" capture="environment">
+                                    <input type="file" class="d-none list-car-photo-gallery" id="photoSeatFrontViewGallery" data-slot="seatFrontView" accept="image/*">
+                                    <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoSeatFrontViewCamera').click()">
+                                            <i class="fas fa-camera"></i> Take Photo
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoSeatFrontViewGallery').click()">
+                                            <i class="fas fa-images"></i> Choose from Device
+                                        </button>
+                                    </div>
                                     <div class="form-text">Front seat area view.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="seatFrontView" alt="Front Seat preview">
@@ -2302,11 +2439,20 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoSeatRearView">
+                                    <label class="form-label fw-semibold d-flex align-items-center">
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Rear Seat View<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoSeatRearView" data-slot="seatRearView" accept="image/*" required>
+                                    <input type="file" class="d-none list-car-photo-camera" id="photoSeatRearViewCamera" data-slot="seatRearView" accept="image/*" capture="environment">
+                                    <input type="file" class="d-none list-car-photo-gallery" id="photoSeatRearViewGallery" data-slot="seatRearView" accept="image/*">
+                                    <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoSeatRearViewCamera').click()">
+                                            <i class="fas fa-camera"></i> Take Photo
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoSeatRearViewGallery').click()">
+                                            <i class="fas fa-images"></i> Choose from Device
+                                        </button>
+                                    </div>
                                     <div class="form-text">Rear seat area view.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="seatRearView" alt="Rear Seat preview">
@@ -2316,11 +2462,20 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoDashboard">
+                                    <label class="form-label fw-semibold d-flex align-items-center">
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Dashboard<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoDashboard" data-slot="dashboard" accept="image/*" required>
+                                    <input type="file" class="d-none list-car-photo-camera" id="photoDashboardCamera" data-slot="dashboard" accept="image/*" capture="environment">
+                                    <input type="file" class="d-none list-car-photo-gallery" id="photoDashboardGallery" data-slot="dashboard" accept="image/*">
+                                    <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoDashboardCamera').click()">
+                                            <i class="fas fa-camera"></i> Take Photo
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoDashboardGallery').click()">
+                                            <i class="fas fa-images"></i> Choose from Device
+                                        </button>
+                                    </div>
                                     <div class="form-text">Dashboard and controls view.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="dashboard" alt="Dashboard preview">
@@ -2330,11 +2485,20 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoInteriorCluster">
+                                    <label class="form-label fw-semibold d-flex align-items-center">
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         Instrument Cluster<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoInteriorCluster" data-slot="interiorCluster" accept="image/*" required>
+                                    <input type="file" class="d-none list-car-photo-camera" id="photoInteriorClusterCamera" data-slot="interiorCluster" accept="image/*" capture="environment">
+                                    <input type="file" class="d-none list-car-photo-gallery" id="photoInteriorClusterGallery" data-slot="interiorCluster" accept="image/*">
+                                    <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoInteriorClusterCamera').click()">
+                                            <i class="fas fa-camera"></i> Take Photo
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoInteriorClusterGallery').click()">
+                                            <i class="fas fa-images"></i> Choose from Device
+                                        </button>
+                                    </div>
                                     <div class="form-text">Clear odometer reading.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="interiorCluster" alt="Instrument cluster preview">
@@ -2345,11 +2509,20 @@
                                 </div>
                                 <!-- Documents Section -->
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoCngPlate">
+                                    <label class="form-label fw-semibold d-flex align-items-center">
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         CNG Plate <span class="text-muted small">(Optional)</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoCngPlate" data-slot="cngPlate" accept="image/*">
+                                    <input type="file" class="d-none list-car-photo-camera" id="photoCngPlateCamera" data-slot="cngPlate" accept="image/*" capture="environment">
+                                    <input type="file" class="d-none list-car-photo-gallery" id="photoCngPlateGallery" data-slot="cngPlate" accept="image/*">
+                                    <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoCngPlateCamera').click()">
+                                            <i class="fas fa-camera"></i> Take Photo
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoCngPlateGallery').click()">
+                                            <i class="fas fa-images"></i> Choose from Device
+                                        </button>
+                                    </div>
                                     <div class="form-text">If CNG fitted.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="cngPlate" alt="CNG Plate preview">
@@ -2359,11 +2532,20 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoRcDocument">
+                                    <label class="form-label fw-semibold d-flex align-items-center">
                                         <i class="fas fa-camera text-primary me-2"></i>
                                         RC Document <span class="text-muted small">(Optional)</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoRcDocument" data-slot="rcDocument" accept="image/*">
+                                    <input type="file" class="d-none list-car-photo-camera" id="photoRcDocumentCamera" data-slot="rcDocument" accept="image/*" capture="environment">
+                                    <input type="file" class="d-none list-car-photo-gallery" id="photoRcDocumentGallery" data-slot="rcDocument" accept="image/*">
+                                    <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoRcDocumentCamera').click()">
+                                            <i class="fas fa-camera"></i> Take Photo
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoRcDocumentGallery').click()">
+                                            <i class="fas fa-images"></i> Choose from Device
+                                        </button>
+                                    </div>
                                     <div class="form-text">Only for verification &mdash; never published.</div>
                                     <div class="mt-2 position-relative mb-3">
                                         <img class="img-fluid rounded d-none" data-preview="rcDocument" alt="RC preview">

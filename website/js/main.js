@@ -568,6 +568,12 @@
         const alertBox = document.getElementById('listCarFormAlert')
         const submitBtn = document.getElementById('listCarSubmitBtn')
 
+        // Handle both camera and gallery photo inputs
+        form.querySelectorAll('.list-car-photo-camera, .list-car-photo-gallery').forEach(input => {
+            input.addEventListener('change', () => handlePhotoChange(input))
+        })
+        
+        // Legacy support for old single input format
         form.querySelectorAll('.list-car-photo').forEach(input => {
             input.addEventListener('change', () => handlePhotoChange(input))
         })
@@ -623,9 +629,14 @@
                 const firstMissingSlot = photoValidation.missingSlots[0]
                 const firstMissingInput = form.querySelector(`input[data-slot="${firstMissingSlot}"]`)
                 if (firstMissingInput) {
-                    firstMissingInput.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                    const fieldContainer = firstMissingInput.closest('.col-md-4') || firstMissingInput.parentElement
+                    const scrollTarget = fieldContainer || firstMissingInput
+                    scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'center' })
                     setTimeout(() => {
-                        firstMissingInput.focus()
+                        const focusTarget = (fieldContainer && fieldContainer.querySelector('button')) || firstMissingInput
+                        if (focusTarget && typeof focusTarget.focus === 'function') {
+                            focusTarget.focus()
+                        }
                     }, 300)
                 }
                 
@@ -793,10 +804,23 @@
     }
 
     function clearPhotoInput(slot, form) {
-        const input = form.querySelector(`input[data-slot="${slot}"]`)
-        if (!input) return
-        input.value = ''
-        input.dispatchEvent(new Event('change', { bubbles: true }))
+        // Clear both camera and gallery inputs for this slot
+        const cameraInput = form.querySelector(`input[data-slot="${slot}"].list-car-photo-camera`)
+        const galleryInput = form.querySelector(`input[data-slot="${slot}"].list-car-photo-gallery`)
+        const legacyInput = form.querySelector(`input[data-slot="${slot}"].list-car-photo`)
+        
+        if (cameraInput) {
+            cameraInput.value = ''
+            cameraInput.dispatchEvent(new Event('change', { bubbles: true }))
+        }
+        if (galleryInput) {
+            galleryInput.value = ''
+            galleryInput.dispatchEvent(new Event('change', { bubbles: true }))
+        }
+        if (legacyInput) {
+            legacyInput.value = ''
+            legacyInput.dispatchEvent(new Event('change', { bubbles: true }))
+        }
     }
 
     function resetPhotoPreviews(form) {
