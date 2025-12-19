@@ -1,0 +1,227 @@
+Advertisement(async () => {
+  const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+  function setValue(el, value) {
+    if (!el) return;
+    el.focus();
+    el.value = value;
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  function pickSelect(selectEl, preferredValue) {
+    if (!selectEl) return;
+    const opts = Array.from(selectEl.options);
+    const pick =
+      (preferredValue && opts.find(o => o.value === preferredValue)) ||
+      opts.find(o => o.value && !o.disabled) ||
+      opts[0];
+    setValue(selectEl, pick?.value ?? '');
+  }
+
+  function yyyymmFromDate(d) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    return `${y}-${m}`;
+  }
+
+  function yyyyMMddFromDate(d) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }
+
+  async function makePngFile(label) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1280;
+    canvas.height = 960;
+    const ctx = canvas.getContext('2d');
+
+    // random background
+    const hue = Math.floor(Math.random() * 360);
+    ctx.fillStyle = `hsl(${hue} 70% 45%)`;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // label box
+    ctx.fillStyle = 'rgba(0,0,0,0.45)';
+    ctx.fillRect(40, 40, canvas.width - 80, 220);
+
+    ctx.fillStyle = 'white';
+    ctx.font = 'bold 56px Arial';
+    ctx.fillText('InspectionWale Test Upload', 70, 120);
+
+    ctx.font = 'bold 48px Arial';
+    ctx.fillText(label, 70, 185);
+
+    ctx.font = '32px Arial';
+    ctx.fillText(new Date().toISOString(), 70, 235);
+
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+    const safe = label.replace(/[^a-z0-9-_]+/gi, '_').slice(0, 80);
+    return new File([blob], `${safe}.png`, { type: 'image/png' });
+  }
+
+  function tryAttachFile(inputEl, file) {
+    try {
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      inputEl.files = dt.files;
+      inputEl.dispatchEvent(new Event('change', { bubbles: true }));
+      return inputEl.files && inputEl.files.length === 1;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  async function openSellCarModal() {
+    const modalEl = document.getElementById('listCarModal');
+    if (!modalEl) throw new Error('Sell Car modal (#listCarModal) not found');
+
+    // If already open, fine
+    const isShown = modalEl.classList.contains('show');
+    if (isShown) return modalEl;
+
+    // Bootstrap show (preferred)
+    if (window.bootstrap?.Modal) {
+      const modal = window.bootstrap.Modal.getInstance(modalEl) || new window.bootstrap.Modal(modalEl);
+      modal.show();
+      await sleep(300);
+      return modalEl;
+    }
+
+    // Fallback show (no bootstrap)
+    modalEl.style.display = 'block';
+    modalEl.classList.add('show');
+    modalEl.removeAttribute('aria-hidden');
+    await sleep(150);
+    return modalEl;
+  }
+
+  const REQUIRED_SLOTS = [
+    'exteriorFront','exteriorBack','exteriorLeft','exteriorRight',
+    'engine','battery','firewall','rhsApron','lhsApron',
+    'tyreLhsFront','tyreLhsBack','tyreRhsFront','tyreRhsBack','tyreSpare',
+    'seatFrontView','seatRearView','dashboard','interiorCluster'
+  ];
+
+  async function fillSellCarForm() {
+    const form = document.getElementById('listCarForm');
+    if (!form) throw new Error('Sell Car form (#listCarForm) not found');
+
+    setValue(form.querySelector('#sellerName'), 'Test Seller');
+    setValue(form.querySelector('#sellerMobile'), '9876543210');
+    setValue(form.querySelector('#sellerEmail'), `test${Date.now()}@example.com`);
+    pickSelect(form.querySelector('#sellerType'), 'Individual');
+
+    setValue(form.querySelector('#carMake'), 'Maruti');
+    setValue(form.querySelector('#carModel'), 'Swift');
+    setValue(form.querySelector('#carEdition'), 'VXi');
+
+    // registrationYear is type="month"
+    const reg = form.querySelector('#registrationYear');
+    const regDate = new Date();
+    regDate.setFullYear(regDate.getFullYear() - 3);
+    setValue(reg, yyyymmFromDate(regDate));
+
+    setValue(form.querySelector('#kmsDriven'), String(42000 + Math.floor(Math.random() * 3000)));
+    setValue(form.querySelector('#expectedPrice'), String(450000 + Math.floor(Math.random() * 50000)));
+    setValue(form.querySelector('#carLocation'), 'Mumbai');
+    pickSelect(form.querySelector('#carFuelType'), 'Petrol');
+    setValue(form.querySelector('#carVariant'), 'VXi');
+
+    // optional date
+    const ins = form.querySelector('#insuranceValidity');
+    if (ins) {
+      const insDate = new Date();
+      insDate.setDate(insDate.getDate() + 30);
+      setValue(ins, yyyyMMddFromDate(insDate));
+    }
+
+    pickSelect(form.querySelector('#accidentalHistory'), 'No');
+    pickSelect(form.querySelector('#warrantyAvailable'), 'No');
+    pickSelect(form.querySelector('#spareKeyAvailable'), 'Yes');
+    pickSelect(form.querySelector('#transmissionType'), 'Manual');
+    pickSelect(form.querySelector('#airbags'), '2');
+
+    // optional checkboxes (random)
+    ['cruiseControl','parkingAssistant','audioSystemWorking','abs','sunroof','serviceRecords'].forEach(id => {
+      const cb = form.querySelector(`#${id}`);
+      if (cb) cb.checked = Math.random() > 0.5;
+    });
+
+    return form;
+  }
+
+  async function fillPhotosAuto(form) {
+    // Use gallery inputs so it behaves like “Choose from Device”
+    for (const slot of REQUIRED_SLOTS) {
+      const input = form.querySelector(`input.list-car-photo-gallery[data-slot="${slot}"]`)
+        || form.querySelector(`input.list-car-photo-camera[data-slot="${slot}"]`)
+        || form.querySelector(`input.list-car-photo[data-slot="${slot}"]`);
+
+      if (!input) throw new Error(`Photo input not found for slot: ${slot}`);
+
+      const label = `slot:${slot}`;
+      const file = await makePngFile(label);
+
+      const ok = tryAttachFile(input, file);
+      if (!ok) return false; // browser blocked it -> fallback to manual
+      await sleep(50);
+    }
+    return true;
+  }
+
+  async function fillPhotosManual(form) {
+    alert('Manual photo mode: you will be prompted slot-by-slot. Select a photo, then press OK to continue.');
+    for (const slot of REQUIRED_SLOTS) {
+      const container =
+        form.querySelector(`input[data-slot="${slot}"]`)?.closest('.col-md-4') ||
+        form.querySelector(`input[data-slot="${slot}"]`)?.parentElement;
+
+      if (container) container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      // Prefer the visible “Choose from Device” button if present
+      const chooseBtn = container?.querySelector('button.btn-outline-secondary') || null;
+      if (chooseBtn) chooseBtn.click();
+      else {
+        const input = form.querySelector(`input.list-car-photo-gallery[data-slot="${slot}"]`)
+          || form.querySelector(`input.list-car-photo-camera[data-slot="${slot}"]`)
+          || form.querySelector(`input.list-car-photo[data-slot="${slot}"]`);
+        input?.click();
+      }
+
+      alert(`Upload photo for: ${slot}\nAfter selecting, press OK to continue.`);
+      await sleep(100);
+    }
+  }
+
+  async function submitForm(form) {
+    const btn = document.getElementById('listCarSubmitBtn') || form.querySelector('button[type="submit"]');
+    if (btn) btn.click();
+    else form.requestSubmit?.();
+  }
+
+  // ---- RUN ----
+  await openSellCarModal();
+  const form = await fillSellCarForm();
+
+  // Ask how you want photos handled
+  const mode = (prompt('Photos mode: A = auto-generate placeholders, M = manual select', 'A') || 'A').trim().toUpperCase();
+
+  if (mode === 'M') {
+    await fillPhotosManual(form);
+  } else {
+    const ok = await fillPhotosAuto(form);
+    if (!ok) {
+      console.warn('Auto photo attach blocked by browser. Switching to manual mode.');
+      await fillPhotosManual(form);
+    }
+  }
+
+  // Final submit
+  await sleep(200);
+  await submitForm(form);
+
+  console.log('Sell Car test run complete (submitted).');
+})();

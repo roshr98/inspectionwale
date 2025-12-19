@@ -33,3 +33,6 @@ __pycache__/
 # add-placeholder-*.ps1
 # add-placeholder-*.py
 # verify-deployment.ps1
+
+# Local notes
+CHATGPT_PROMPT.txt

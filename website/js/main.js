@@ -116,7 +116,7 @@
     const LISTINGS_ASSET_BASE = 'https://inspectionwale-car-listings.s3.amazonaws.com/'
     const SOLD_KEYWORDS = ['sold', 'sold out', 'sold-out', 'soldout', 'sold_out', 'booked', 'reserved', 'unavailable', 'not available', 'pending sale', 'pending-sale', 'under offer', 'deposit taken']
     
-    // Image compression settings - optimized for fast upload with good quality
+git     // Image compression settings - optimized for fast upload with good quality
     const MAX_IMAGE_WIDTH = 1280
     const MAX_IMAGE_HEIGHT = 960
     const JPEG_QUALITY = 0.80
@@ -261,6 +261,23 @@
         initTestDriveForm()
         initDetailModal()
         fetchAndRenderListings()
+
+        try {
+            const stored = sessionStorage.getItem('iw_booking_prefill_listing')
+            if (stored) {
+                sessionStorage.removeItem('iw_booking_prefill_listing')
+                const listing = JSON.parse(stored)
+                if (listing && listing.car) {
+                    prefillBookingForm(listing)
+                    const bookingSection = document.getElementById('book')
+                    if (bookingSection) {
+                        bookingSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                    }
+                }
+            }
+        } catch (e) {
+            // ignore storage/parse errors
+        }
     })
 
     async function fetchAndRenderListings() {

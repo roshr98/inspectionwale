@@ -317,6 +317,10 @@
             overflow: hidden;
         }
 
+        .car-card-img-wrapper.js-view-details {
+            cursor: pointer;
+        }
+
         .featured-badge {
             position: absolute;
             top: 12px;
@@ -891,7 +895,7 @@
                                     <div class="text-center py-2" style="background: #f5f5f5;">
                                         <small class="text-muted" style="font-size: 12px; font-family: 'Roboto', sans-serif;">
                                             <i class="fas fa-camera me-1"></i> 
-                                            <a href="#" id="photoCountText" onclick="event.preventDefault(); document.getElementById('carDetailCarouselMain').querySelector('.carousel-control-next').click(); return false;" style="color: #007bff; text-decoration: underline; cursor: pointer;" title="Click to browse all photos">46 Photos</a>
+                                            <a href="#" id="photoCountText" style="color: #007bff; text-decoration: underline; cursor: pointer;" title="Click to browse all photos">46 Photos</a>
                                         </small>
                                     </div>
                                 </div>
@@ -955,12 +959,7 @@
                                 
                                 <!-- Rating -->
                                 <div class="mb-3">
-                                    <small class="text-muted">Verified by InspectionWale</small>
-                                    <div>
-                                        <span style="color: #ffa500;">★★★★★</span> 
-                                        <strong>5.0</strong> 
-                                        <span class="text-muted">Inspected</span>
-                                    </div>
+                                    <a href="#" id="carDetailRatingsLink" style="color: #007bff; text-decoration: underline; cursor: pointer; font-weight: 600;">Get car ratings by InspectionWale</a>
                                 </div>
 
                                 <!-- Key Stats Row -->
@@ -1035,6 +1034,18 @@
                         <div class="row g-0">
                             <!-- Left Column: Vehicle Features (50%) -->
                             <div class="col-lg-6" style="background: white; padding: 25px 40px; border-top: 1px solid #e0e0e0;">
+                                <!-- Why Book an Inspection Section (moved here) -->
+                                <div style="background: #fff3cd; padding: 20px; border-radius: 8px; border-left: 3px solid #ffc107; margin-bottom: 20px;">
+                                    <h6 class="mb-2" style="font-weight: 600; color: #1a1a1a; font-size: 16px;">
+                                        <i class="fas fa-clipboard-check" style="color: #ffc107;"></i> Why Book an Inspection?
+                                    </h6>
+                                    <p style="margin-bottom: 0; color: #333; font-size: 13px; line-height: 1.5;">
+                                        Before making your purchase decision, we highly recommend booking a professional pre-purchase inspection from InspectionWale.
+                                        Our certified inspectors will thoroughly examine the vehicle's mechanical condition, bodywork, electronics, and provide a detailed report
+                                        including actual market value assessment. Get peace of mind knowing exactly what you're buying!
+                                    </p>
+                                </div>
+
                                 <h5 class="mb-3" style="font-weight: 600; color: #1a1a1a; font-size: 18px;">
                                     <i class="fas fa-cogs" style="color: #26a69a;"></i> Vehicle Features
                                 </h5>
@@ -1089,19 +1100,10 @@
                             <div class="col-lg-6" style="background: white; padding: 25px 40px; border-top: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0;">
                                 <!-- Smaller Advertisement -->
                                 <div style="width: 100%; max-width: 100%; margin-bottom: 20px;">
-                                    <img src="/Images/ads-1.jpg" alt="Advertisement" class="w-100" style="display: block; border-radius: 8px; max-height: 200px; object-fit: cover;" onerror="this.onerror=null; this.src='/Images/ads-1.png';">
-                                </div>
-
-                                <!-- Why Book an Inspection Section -->
-                                <div style="background: #fff3cd; padding: 20px; border-radius: 8px; border-left: 3px solid #ffc107; margin-bottom: 20px;">
-                                    <h6 class="mb-2" style="font-weight: 600; color: #1a1a1a; font-size: 16px;">
-                                        <i class="fas fa-clipboard-check" style="color: #ffc107;"></i> Why Book an Inspection?
-                                    </h6>
-                                    <p style="margin-bottom: 0; color: #333; font-size: 13px; line-height: 1.5;">
-                                        Before making your purchase decision, we highly recommend booking a professional pre-purchase inspection from InspectionWale. 
-                                        Our certified inspectors will thoroughly examine the vehicle's mechanical condition, bodywork, electronics, and provide a detailed report 
-                                        including actual market value assessment. Get peace of mind knowing exactly what you're buying!
-                                    </p>
+                                    <div id="iwPostAdTrigger" class="w-100" role="button" tabindex="0" style="display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 8px; border: 1px solid #dee2e6; background: #f8f9fa; min-height: 200px; cursor: pointer;">
+                                        <div class="text-muted" style="font-weight: 700; font-size: 14px;">Post an ad</div>
+                                        <div class="text-muted" style="font-size: 12px;">Click to send inquiry</div>
+                                    </div>
                                 </div>
 
                                 <!-- Services We Provide -->
@@ -1203,6 +1205,76 @@
                     </div>
 
 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post an Ad Inquiry Modal (minimal fields) -->
+    <div class="modal fade" id="postAdInquiryModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" style="font-weight: 700;">Post an ad</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="postAdInquiryForm">
+                    <div class="modal-body">
+                        <div id="postAdInquiryStatus" class="small" style="display:none;"></div>
+
+                        <div class="mb-3">
+                            <label for="postAdName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="postAdName" name="name" autocomplete="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="postAdPhone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="postAdPhone" name="phone" autocomplete="tel" required>
+                        </div>
+                        <div class="mb-0">
+                            <label for="postAdMessage" class="form-label">Message</label>
+                            <textarea class="form-control" id="postAdMessage" name="message" rows="3" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" id="postAdInquirySubmitBtn">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full Photo Gallery Modal -->
+    <div class="modal fade" id="photoGalleryModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content" style="background: #000;">
+                <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.15);">
+                    <div class="d-flex flex-column">
+                        <h5 class="modal-title" id="photoGalleryTitle" style="color: #fff; font-weight: 700;">Photos</h5>
+                        <small class="text-muted" id="photoGalleryCount" style="color: rgba(255,255,255,0.65) !important;"></small>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0" style="background: #000;">
+                    <div class="container-fluid p-0">
+                        <div class="row g-0" style="min-height: calc(100vh - 72px);">
+                            <div class="col-12" style="padding: 16px 16px 8px 16px;">
+                                <div id="photoGalleryCarousel" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner" id="photoGalleryCarouselInner" style="border-radius: 10px; overflow: hidden; background: #000;"></div>
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#photoGalleryCarousel" data-bs-slide="prev" style="width: 56px;">
+                                        <span class="carousel-control-prev-icon" style="filter: drop-shadow(0 0 2px rgba(0,0,0,0.6));"></span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#photoGalleryCarousel" data-bs-slide="next" style="width: 56px;">
+                                        <span class="carousel-control-next-icon" style="filter: drop-shadow(0 0 2px rgba(0,0,0,0.6));"></span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="col-12" style="padding: 8px 16px 16px 16px;">
+                                <div id="photoGalleryThumbnails" style="display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px;"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1627,6 +1699,38 @@
         return highlights.slice(0, 3);
     }
 
+    function getListingSellerTypeLabel(listing) {
+        const candidates = [
+            listing?.sellerType,
+            listing?.seller_type,
+            listing?.seller?.type,
+            listing?.seller?.sellerType,
+            listing?.seller?.seller_type,
+            listing?.metadata?.sellerType,
+            listing?.metadata?.seller_type,
+            listing?.car?.sellerType,
+            listing?.car?.seller_type,
+            listing?.ownerType,
+            listing?.owner_type
+        ];
+
+        for (const candidate of candidates) {
+            const value = safeLower(candidate);
+            if (!value) continue;
+            if (value.includes('dealer') || value.includes('agency') || value.includes('showroom')) return 'Dealer';
+            if (value.includes('individual') || value.includes('owner')) return 'Individual';
+        }
+
+        const tagTokens = [];
+        if (Array.isArray(listing?.tags)) tagTokens.push(...listing.tags);
+        if (Array.isArray(listing?.flags)) tagTokens.push(...listing.flags);
+        if (Array.isArray(listing?.labels)) tagTokens.push(...listing.labels);
+
+        if (tagTokens.some(token => safeLower(token).includes('dealer'))) return 'Dealer';
+
+        return 'Individual';
+    }
+
     function normalizeString(value) {
         const unwrapped = unwrapValue(value);
         if (typeof unwrapped === 'string') {
@@ -1850,9 +1954,8 @@
                 ? '<span class="text-muted fw-semibold">Sold Out</span>'
                 : `<button class="btn btn-link make-offer-link p-0 js-make-offer" type="button" ${listingIdAttr}>Make Offer</button>`;
             
-            // Get seller type - default to "Individual" if not specified
-            const sellerType = listing?.sellerType || listing?.seller?.type || 'Individual';
-            const sellerClass = sellerType.toLowerCase() === 'dealer' ? 'dealer' : '';
+            const sellerType = getListingSellerTypeLabel(listing);
+            const sellerClass = sellerType === 'Dealer' ? 'dealer' : '';
             
             // Get location for badge - only show if location exists
             const locationForBadge = city && city.toLowerCase() !== 'location na' ? city : '';
@@ -1861,7 +1964,7 @@
             return `
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="${cardClass}">
-                        <div class="car-card-img-wrapper">
+                        <div class="car-card-img-wrapper ${isSoldOut ? '' : 'js-view-details'}" ${listingIdAttr}>
                             <img src="${primaryPhoto}" alt="${title}" class="car-card-img" width="400" height="240" loading="lazy" decoding="async" onerror="this.src='${FALLBACK_IMAGE}'">
                             ${featured ? '<span class="featured-badge">Featured</span>' : ''}
                             ${isSoldOut ? '<div class="sold-out-banner">Sold Out</div>' : ''}
@@ -2412,27 +2515,21 @@
             `;
         }).join('');
         
-        // Set photo count with clickable link
+        // Set photo count with clickable link (opens full gallery)
         const photoCountEl = document.getElementById('photoCountText');
         if (photoCountEl) {
             const photoText = `${finalPhotos.length} Photo${finalPhotos.length !== 1 ? 's' : ''}`;
             photoCountEl.textContent = photoText;
             photoCountEl.title = `Click to browse all ${finalPhotos.length} photos`;
-            // Make it start auto-sliding on click
-            photoCountEl.onclick = function(e) {
+            photoCountEl.onclick = function (e) {
                 e.preventDefault();
-                const carouselEl = document.getElementById('carDetailCarouselMain');
-                let bsCarousel = bootstrap.Carousel.getInstance(carouselEl);
-                if (!bsCarousel) {
-                    bsCarousel = new bootstrap.Carousel(carouselEl, {
-                        interval: 2000,  // Auto-slide every 2 seconds
-                        ride: 'carousel'
-                    });
-                }
-                bsCarousel.cycle();
+                window.openPhotoGallery(finalPhotos, fullTitle);
                 return false;
             };
         }
+
+        // Ensure gallery modal has latest context too
+        window.__iwLastGallery = { photos: finalPhotos, title: fullTitle };
 
         // Populate thumbnails (show only first 3 images stacked vertically)
         const thumbnailContainer = document.getElementById('carDetailThumbnails');
@@ -2597,9 +2694,38 @@
                         const modal = new bootstrap.Modal(inspectionModal);
                         modal.show();
                     } else {
-                        // Redirect to home page booking section
-                        window.location.href = '/#book-inspection';
+                        // Redirect to home page booking section with prefilled listing details
+                        try {
+                            if (currentDetailListing) {
+                                sessionStorage.setItem('iw_booking_prefill_listing', JSON.stringify(currentDetailListing));
+                            }
+                        } catch (e) {}
+                        window.location.href = '/#book';
                     }
+                }, 300);
+            });
+        }
+
+        // Add "Get car ratings" link handler
+        const ratingsLink = document.getElementById('carDetailRatingsLink');
+        if (ratingsLink) {
+            const newRatingsLink = ratingsLink.cloneNode(true);
+            ratingsLink.parentNode.replaceChild(newRatingsLink, ratingsLink);
+
+            newRatingsLink.addEventListener('click', function (e) {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                const detailModal = bootstrap.Modal.getInstance(document.getElementById('carDetailModal'));
+                if (detailModal) detailModal.hide();
+
+                setTimeout(() => {
+                    try {
+                        if (currentDetailListing) {
+                            sessionStorage.setItem('iw_booking_prefill_listing', JSON.stringify(currentDetailListing));
+                        }
+                    } catch (err) {}
+                    window.location.href = '/#book';
                 }, 300);
             });
         }
@@ -2608,8 +2734,166 @@
     </script>
 
     <script>
+    // Full photo gallery modal helper
+    window.openPhotoGallery = function (photos, title) {
+        try {
+            if (!window.bootstrap || !bootstrap.Modal) return;
+            const modalEl = document.getElementById('photoGalleryModal');
+            if (!modalEl) return;
+
+            const safePhotos = Array.isArray(photos) && photos.length ? photos : [window.FALLBACK_IMAGE || '/Images/brand_logo_new_1.png'];
+            const modalTitleEl = document.getElementById('photoGalleryTitle');
+            const modalCountEl = document.getElementById('photoGalleryCount');
+            const carouselInner = document.getElementById('photoGalleryCarouselInner');
+            const thumbs = document.getElementById('photoGalleryThumbnails');
+
+            if (modalTitleEl) modalTitleEl.textContent = title ? `${title} Photos` : 'Photos';
+            if (modalCountEl) modalCountEl.textContent = `${safePhotos.length} Photo${safePhotos.length !== 1 ? 's' : ''}`;
+
+            if (carouselInner) {
+                carouselInner.innerHTML = safePhotos.map((p, idx) => {
+                    const url = window.ensureAbsoluteUrl(p) || window.FALLBACK_IMAGE || p;
+                    return `
+                        <div class="carousel-item${idx === 0 ? ' active' : ''}">
+                            <img src="${url}" class="d-block w-100" alt="Photo ${idx + 1}" style="height: calc(100vh - 190px); object-fit: contain; background: #000;" onerror="this.src='${window.FALLBACK_IMAGE || '/Images/brand_logo_new_1.png'}';">
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            if (thumbs) {
+                thumbs.innerHTML = safePhotos.map((p, idx) => {
+                    const url = window.ensureAbsoluteUrl(p) || window.FALLBACK_IMAGE || p;
+                    return `
+                        <div class="photo-thumb-card" data-idx="${idx}" style="flex: 0 0 auto; width: 96px; height: 72px; border-radius: 8px; overflow: hidden; border: 2px solid ${idx === 0 ? '#0d6efd' : 'rgba(255,255,255,0.25)'}; cursor: pointer;">
+                            <img src="${url}" alt="Thumb ${idx + 1}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='${window.FALLBACK_IMAGE || '/Images/brand_logo_new_1.png'}';">
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            const modal = new bootstrap.Modal(modalEl);
+            modal.show();
+
+            // Init carousel with auto-slide
+            const carouselEl = document.getElementById('photoGalleryCarousel');
+            let bsCarousel = bootstrap.Carousel.getInstance(carouselEl);
+            if (bsCarousel) {
+                bsCarousel.dispose();
+            }
+            bsCarousel = new bootstrap.Carousel(carouselEl, { interval: 2000, ride: 'carousel' });
+
+            // Thumbnail click -> jump
+            if (thumbs) {
+                thumbs.querySelectorAll('.photo-thumb-card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        const idx = Number(card.getAttribute('data-idx') || 0);
+                        const c = bootstrap.Carousel.getInstance(carouselEl);
+                        if (c) c.to(idx);
+                    });
+                });
+            }
+
+            // Sync active thumb on slide
+            carouselEl.addEventListener('slid.bs.carousel', function (e) {
+                if (!thumbs) return;
+                const activeIdx = Number(e.to || 0);
+                thumbs.querySelectorAll('.photo-thumb-card').forEach((card, idx) => {
+                    card.style.border = idx === activeIdx ? '2px solid #0d6efd' : '2px solid rgba(255,255,255,0.25)';
+                });
+                const activeCard = thumbs.querySelector(`.photo-thumb-card[data-idx="${activeIdx}"]`);
+                if (activeCard && activeCard.scrollIntoView) {
+                    activeCard.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                }
+            }, { once: false });
+
+            // Pause carousel when modal closes
+            modalEl.addEventListener('hidden.bs.modal', function () {
+                const c = bootstrap.Carousel.getInstance(carouselEl);
+                if (c) c.pause();
+            }, { once: true });
+        } catch (err) {
+            console.warn('Photo gallery failed', err);
+        }
+    };
+    </script>
+
+    <script>
     // Google Reviews Loader for Marketplace
     document.addEventListener('DOMContentLoaded', function () {
+        // Post an ad inquiry (opens a small form and sends email via /api/ads)
+        const postAdTrigger = document.getElementById('iwPostAdTrigger')
+        if (postAdTrigger && window.bootstrap && bootstrap.Modal) {
+            const openPostAd = () => {
+                const modalEl = document.getElementById('postAdInquiryModal')
+                if (!modalEl) return
+                const modal = new bootstrap.Modal(modalEl)
+                modal.show()
+            }
+
+            postAdTrigger.addEventListener('click', openPostAd)
+            postAdTrigger.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    openPostAd()
+                }
+            })
+        }
+
+        const postAdForm = document.getElementById('postAdInquiryForm')
+        if (postAdForm) {
+            const statusEl = document.getElementById('postAdInquiryStatus')
+            const submitBtn = document.getElementById('postAdInquirySubmitBtn')
+
+            const showStatus = (msg, type) => {
+                if (!statusEl) return
+                statusEl.style.display = 'block'
+                statusEl.className = `small alert ${type === 'success' ? 'alert-success' : 'alert-danger'}`
+                statusEl.textContent = msg
+            }
+
+            postAdForm.addEventListener('submit', async (e) => {
+                e.preventDefault()
+
+                const name = (document.getElementById('postAdName')?.value || '').trim()
+                const phone = (document.getElementById('postAdPhone')?.value || '').trim()
+                const message = (document.getElementById('postAdMessage')?.value || '').trim()
+
+                if (!name || !phone || !message) {
+                    showStatus('Please fill name, phone number and message.', 'error')
+                    return
+                }
+
+                if (submitBtn) submitBtn.disabled = true
+                try {
+                    const res = await fetch('/api/ads', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        body: JSON.stringify({
+                            type: 'post_ad_inquiry',
+                            name,
+                            phone,
+                            message,
+                            page: 'car-marketplace'
+                        })
+                    })
+
+                    const data = await res.json().catch(() => null)
+                    if (!res.ok || !data || data.ok !== true) {
+                        showStatus('Failed to submit inquiry. Please try again.', 'error')
+                        return
+                    }
+
+                    showStatus('Inquiry submitted. Our team will contact you soon.', 'success')
+                    postAdForm.reset()
+                } catch (err) {
+                    showStatus('Failed to submit inquiry. Please try again.', 'error')
+                } finally {
+                    if (submitBtn) submitBtn.disabled = false
+                }
+            })
+        }
+
         (async function () {
             const container = document.getElementById('marketplaceGoogleReviewsContainer')
             if (!container) {
