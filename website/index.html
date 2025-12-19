@@ -1848,6 +1848,113 @@
                                         <option value="Hybrid">Hybrid</option>
                                     </select>
                                 </div>
+                                <div class="col-md-4">
+                                    <label for="carVariant" class="form-label">Variant<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="carVariant" name="variant" placeholder="e.g., VXi, ZXi+, SX Executive" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="insuranceValidity" class="form-label">Insurance Validity</label>
+                                    <input type="text" class="form-control" id="insuranceValidity" name="insuranceValidity" placeholder="e.g., Valid till Dec 2025 or Expired">
+                                    <div class="form-text">Leave blank if no insurance.</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="accidentalHistory" class="form-label">Accidental History<span class="text-danger">*</span></label>
+                                    <select class="form-select" id="accidentalHistory" name="accidentalHistory" required>
+                                        <option value="">Select</option>
+                                        <option value="No">No</option>
+                                        <option value="Yes">Yes</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="warrantyAvailable" class="form-label">Warranty Available<span class="text-danger">*</span></label>
+                                    <select class="form-select" id="warrantyAvailable" name="warrantyAvailable" required>
+                                        <option value="">Select</option>
+                                        <option value="No">No</option>
+                                        <option value="Yes">Yes</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="spareKeyAvailable" class="form-label">Spare Key Available<span class="text-danger">*</span></label>
+                                    <select class="form-select" id="spareKeyAvailable" name="spareKeyAvailable" required>
+                                        <option value="">Select</option>
+                                        <option value="No">No</option>
+                                        <option value="Yes">Yes</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <h6 class="text-uppercase text-muted mb-3 mt-4">Vehicle Features</h6>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-4">
+                                    <label for="transmissionType" class="form-label">Transmission Type<span class="text-danger">*</span></label>
+                                    <select class="form-select" id="transmissionType" name="transmissionType" required>
+                                        <option value="">Select</option>
+                                        <option value="Manual">Manual</option>
+                                        <option value="Automatic">Automatic</option>
+                                        <option value="Semi-Automatic">Semi-Automatic</option>
+                                        <option value="Others">Others</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="airbags" class="form-label">Number of Airbags</label>
+                                    <select class="form-select" id="airbags" name="airbags">
+                                        <option value="">Select</option>
+                                        <option value="0">0</option>
+                                        <option value="2">2</option>
+                                        <option value="4">4</option>
+                                        <option value="6">6</option>
+                                        <option value="6+">6+</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4"></div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="cruiseControl" name="cruiseControl">
+                                        <label class="form-check-label" for="cruiseControl">
+                                            Cruise Control
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="parkingAssistant" name="parkingAssistant">
+                                        <label class="form-check-label" for="parkingAssistant">
+                                            Parking Assistant
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="audioSystemWorking" name="audioSystemWorking">
+                                        <label class="form-check-label" for="audioSystemWorking">
+                                            Audio System Working
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="abs" name="abs">
+                                        <label class="form-check-label" for="abs">
+                                            ABS (Anti-lock Braking)
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="sunroof" name="sunroof">
+                                        <label class="form-check-label" for="sunroof">
+                                            Sunroof
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="serviceRecords" name="serviceRecords">
+                                        <label class="form-check-label" for="serviceRecords">
+                                            Service Records Available
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
 
                             <h6 class="text-uppercase text-muted mb-3">Upload Required Photos</h6>
@@ -1909,16 +2016,188 @@
                                         </button>
                                     </div>
                                 </div>
+                                <!-- Engine Compartment Section -->
                                 <div class="col-md-4 col-sm-6">
-                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoInteriorSeat">
+                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoEngine">
                                         <i class="fas fa-camera text-primary me-2"></i>
-                                        Interior &mdash; Seats<span class="text-danger">*</span>
+                                        Engine<span class="text-danger">*</span>
                                     </label>
-                                    <input type="file" class="form-control list-car-photo" id="photoInteriorSeat" data-slot="interiorSeat" accept="image/*" capture="environment" required>
-                                    <div class="form-text">Include dashboard + seats.</div>
+                                    <input type="file" class="form-control list-car-photo" id="photoEngine" data-slot="engine" accept="image/*" capture="environment" required>
+                                    <div class="form-text">Clear view of engine bay.</div>
                                     <div class="mt-2 position-relative">
-                                        <img class="img-fluid rounded d-none" data-preview="interiorSeat" alt="Interior seat preview">
-                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="interiorSeat" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo">
+                                        <img class="img-fluid rounded d-none" data-preview="engine" alt="Engine preview">
+                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="engine" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoBattery">
+                                        <i class="fas fa-camera text-primary me-2"></i>
+                                        Battery<span class="text-danger">*</span>
+                                    </label>
+                                    <input type="file" class="form-control list-car-photo" id="photoBattery" data-slot="battery" accept="image/*" capture="environment" required>
+                                    <div class="form-text">Battery and terminals visible.</div>
+                                    <div class="mt-2 position-relative">
+                                        <img class="img-fluid rounded d-none" data-preview="battery" alt="Battery preview">
+                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="battery" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoFirewall">
+                                        <i class="fas fa-camera text-primary me-2"></i>
+                                        Firewall<span class="text-danger">*</span>
+                                    </label>
+                                    <input type="file" class="form-control list-car-photo" id="photoFirewall" data-slot="firewall" accept="image/*" capture="environment" required>
+                                    <div class="form-text">Engine bay firewall view.</div>
+                                    <div class="mt-2 position-relative">
+                                        <img class="img-fluid rounded d-none" data-preview="firewall" alt="Firewall preview">
+                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="firewall" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- Apron Section -->
+                                <div class="col-md-4 col-sm-6">
+                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoRhsApron">
+                                        <i class="fas fa-camera text-primary me-2"></i>
+                                        RHS Apron<span class="text-danger">*</span>
+                                    </label>
+                                    <input type="file" class="form-control list-car-photo" id="photoRhsApron" data-slot="rhsApron" accept="image/*" capture="environment" required>
+                                    <div class="form-text">Right side apron.</div>
+                                    <div class="mt-2 position-relative">
+                                        <img class="img-fluid rounded d-none" data-preview="rhsApron" alt="RHS Apron preview">
+                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="rhsApron" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoLhsApron">
+                                        <i class="fas fa-camera text-primary me-2"></i>
+                                        LHS Apron<span class="text-danger">*</span>
+                                    </label>
+                                    <input type="file" class="form-control list-car-photo" id="photoLhsApron" data-slot="lhsApron" accept="image/*" capture="environment" required>
+                                    <div class="form-text">Left side apron.</div>
+                                    <div class="mt-2 position-relative">
+                                        <img class="img-fluid rounded d-none" data-preview="lhsApron" alt="LHS Apron preview">
+                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="lhsApron" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- Tyres Section -->
+                                <div class="col-md-4 col-sm-6">
+                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoTyreLhsFront">
+                                        <i class="fas fa-camera text-primary me-2"></i>
+                                        Tyre &mdash; LHS Front<span class="text-danger">*</span>
+                                    </label>
+                                    <input type="file" class="form-control list-car-photo" id="photoTyreLhsFront" data-slot="tyreLhsFront" accept="image/*" capture="environment" required>
+                                    <div class="form-text">Left front tyre tread.</div>
+                                    <div class="mt-2 position-relative">
+                                        <img class="img-fluid rounded d-none" data-preview="tyreLhsFront" alt="LHS Front Tyre preview">
+                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="tyreLhsFront" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoTyreLhsBack">
+                                        <i class="fas fa-camera text-primary me-2"></i>
+                                        Tyre &mdash; LHS Back<span class="text-danger">*</span>
+                                    </label>
+                                    <input type="file" class="form-control list-car-photo" id="photoTyreLhsBack" data-slot="tyreLhsBack" accept="image/*" capture="environment" required>
+                                    <div class="form-text">Left rear tyre tread.</div>
+                                    <div class="mt-2 position-relative">
+                                        <img class="img-fluid rounded d-none" data-preview="tyreLhsBack" alt="LHS Back Tyre preview">
+                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="tyreLhsBack" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoTyreRhsFront">
+                                        <i class="fas fa-camera text-primary me-2"></i>
+                                        Tyre &mdash; RHS Front<span class="text-danger">*</span>
+                                    </label>
+                                    <input type="file" class="form-control list-car-photo" id="photoTyreRhsFront" data-slot="tyreRhsFront" accept="image/*" capture="environment" required>
+                                    <div class="form-text">Right front tyre tread.</div>
+                                    <div class="mt-2 position-relative">
+                                        <img class="img-fluid rounded d-none" data-preview="tyreRhsFront" alt="RHS Front Tyre preview">
+                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="tyreRhsFront" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoTyreRhsBack">
+                                        <i class="fas fa-camera text-primary me-2"></i>
+                                        Tyre &mdash; RHS Back<span class="text-danger">*</span>
+                                    </label>
+                                    <input type="file" class="form-control list-car-photo" id="photoTyreRhsBack" data-slot="tyreRhsBack" accept="image/*" capture="environment" required>
+                                    <div class="form-text">Right rear tyre tread.</div>
+                                    <div class="mt-2 position-relative">
+                                        <img class="img-fluid rounded d-none" data-preview="tyreRhsBack" alt="RHS Back Tyre preview">
+                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="tyreRhsBack" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoTyreSpare">
+                                        <i class="fas fa-camera text-primary me-2"></i>
+                                        Tyre &mdash; Spare<span class="text-danger">*</span>
+                                    </label>
+                                    <input type="file" class="form-control list-car-photo" id="photoTyreSpare" data-slot="tyreSpare" accept="image/*" capture="environment" required>
+                                    <div class="form-text">Spare tyre condition.</div>
+                                    <div class="mt-2 position-relative">
+                                        <img class="img-fluid rounded d-none" data-preview="tyreSpare" alt="Spare Tyre preview">
+                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="tyreSpare" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- Interior Section -->
+                                <div class="col-md-4 col-sm-6">
+                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoSeatFrontView">
+                                        <i class="fas fa-camera text-primary me-2"></i>
+                                        Front Seat View<span class="text-danger">*</span>
+                                    </label>
+                                    <input type="file" class="form-control list-car-photo" id="photoSeatFrontView" data-slot="seatFrontView" accept="image/*" capture="environment" required>
+                                    <div class="form-text">Front seat area view.</div>
+                                    <div class="mt-2 position-relative">
+                                        <img class="img-fluid rounded d-none" data-preview="seatFrontView" alt="Front Seat preview">
+                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="seatFrontView" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoSeatRearView">
+                                        <i class="fas fa-camera text-primary me-2"></i>
+                                        Rear Seat View<span class="text-danger">*</span>
+                                    </label>
+                                    <input type="file" class="form-control list-car-photo" id="photoSeatRearView" data-slot="seatRearView" accept="image/*" capture="environment" required>
+                                    <div class="form-text">Rear seat area view.</div>
+                                    <div class="mt-2 position-relative">
+                                        <img class="img-fluid rounded d-none" data-preview="seatRearView" alt="Rear Seat preview">
+                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="seatRearView" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-6">
+                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoDashboard">
+                                        <i class="fas fa-camera text-primary me-2"></i>
+                                        Dashboard<span class="text-danger">*</span>
+                                    </label>
+                                    <input type="file" class="form-control list-car-photo" id="photoDashboard" data-slot="dashboard" accept="image/*" capture="environment" required>
+                                    <div class="form-text">Dashboard and controls view.</div>
+                                    <div class="mt-2 position-relative">
+                                        <img class="img-fluid rounded d-none" data-preview="dashboard" alt="Dashboard preview">
+                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="dashboard" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo">
                                             <i class="fas fa-times"></i>
                                         </button>
                                     </div>
@@ -1926,13 +2205,28 @@
                                 <div class="col-md-4 col-sm-6">
                                     <label class="form-label fw-semibold d-flex align-items-center" for="photoInteriorCluster">
                                         <i class="fas fa-camera text-primary me-2"></i>
-                                        Interior &mdash; Instrument Cluster<span class="text-danger">*</span>
+                                        Instrument Cluster<span class="text-danger">*</span>
                                     </label>
                                     <input type="file" class="form-control list-car-photo" id="photoInteriorCluster" data-slot="interiorCluster" accept="image/*" capture="environment" required>
                                     <div class="form-text">Clear odometer reading.</div>
                                     <div class="mt-2 position-relative">
                                         <img class="img-fluid rounded d-none" data-preview="interiorCluster" alt="Instrument cluster preview">
                                         <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="interiorCluster" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- Documents Section -->
+                                <div class="col-md-4 col-sm-6">
+                                    <label class="form-label fw-semibold d-flex align-items-center" for="photoCngPlate">
+                                        <i class="fas fa-camera text-primary me-2"></i>
+                                        CNG Plate <span class="text-muted small">(Optional)</span>
+                                    </label>
+                                    <input type="file" class="form-control list-car-photo" id="photoCngPlate" data-slot="cngPlate" accept="image/*" capture="environment">
+                                    <div class="form-text">If CNG fitted.</div>
+                                    <div class="mt-2 position-relative">
+                                        <img class="img-fluid rounded d-none" data-preview="cngPlate" alt="CNG Plate preview">
+                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="cngPlate" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo">
                                             <i class="fas fa-times"></i>
                                         </button>
                                     </div>

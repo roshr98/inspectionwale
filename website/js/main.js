@@ -105,7 +105,12 @@
 
 (function(){
     const API_ENDPOINT = 'https://423cmvhw3g.execute-api.us-east-1.amazonaws.com/prod/customer-listings'
-    const REQUIRED_PHOTO_SLOTS = ['exteriorFront', 'exteriorBack', 'exteriorLeft', 'exteriorRight', 'interiorSeat', 'interiorCluster']
+    const REQUIRED_PHOTO_SLOTS = [
+        'exteriorFront', 'exteriorBack', 'exteriorLeft', 'exteriorRight',
+        'engine', 'battery', 'firewall', 'rhsApron', 'lhsApron',
+        'tyreLhsFront', 'tyreLhsBack', 'tyreRhsFront', 'tyreRhsBack', 'tyreSpare',
+        'seatFrontView', 'seatRearView', 'dashboard', 'interiorCluster'
+    ]
     const DOCUMENT_SLOT = 'rcDocument'
     const FALLBACK_IMAGES = ['/Images/Car-1.jpg', '/Images/Car-2.jpg', '/Images/Car-3.jpg', '/Images/Car-4.jpg']
     const LISTINGS_ASSET_BASE = 'https://inspectionwale-car-listings.s3.amazonaws.com/'
@@ -845,7 +850,22 @@
             edition: formData.get('carEdition') || '',
             registrationYear: formData.get('registrationYear') || '',
             kmsDriven: formData.get('kmsDriven') || '',
-            expectedPrice: formData.get('expectedPrice') || ''
+            expectedPrice: formData.get('expectedPrice') || '',
+            location: formData.get('location') || '',
+            fuelType: formData.get('fuelType') || '',
+            variant: formData.get('variant') || '',
+            insuranceValidity: formData.get('insuranceValidity') || '',
+            accidentalHistory: formData.get('accidentalHistory') === 'Yes',
+            warrantyAvailable: formData.get('warrantyAvailable') === 'Yes',
+            spareKeyAvailable: formData.get('spareKeyAvailable') === 'Yes',
+            transmissionType: formData.get('transmissionType') || '',
+            cruiseControl: formData.get('cruiseControl') === 'on',
+            parkingAssistant: formData.get('parkingAssistant') === 'on',
+            audioSystemWorking: formData.get('audioSystemWorking') === 'on',
+            airbags: formData.get('airbags') || '',
+            abs: formData.get('abs') === 'on',
+            sunroof: formData.get('sunroof') === 'on',
+            serviceRecords: formData.get('serviceRecords') === 'on'
         }
 
         const photos = []

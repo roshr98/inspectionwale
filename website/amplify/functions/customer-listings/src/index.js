@@ -30,8 +30,13 @@ const REVIEW_RECIPIENTS = Array.from(new Set([
   DEFAULT_SOURCE_EMAIL
 ].map(normaliseString).filter(Boolean)))
 
-const REQUIRED_PHOTO_SLOTS = ['exteriorFront', 'exteriorBack', 'exteriorLeft', 'exteriorRight', 'interiorSeat', 'interiorCluster']
-const DOCUMENT_SLOTS = ['rcDocument']
+const REQUIRED_PHOTO_SLOTS = [
+  'exteriorFront', 'exteriorBack', 'exteriorLeft', 'exteriorRight',
+  'engine', 'battery', 'firewall', 'rhsApron', 'lhsApron',
+  'tyreLhsFront', 'tyreLhsBack', 'tyreRhsFront', 'tyreRhsBack', 'tyreSpare',
+  'seatFrontView', 'seatRearView', 'dashboard', 'interiorCluster'
+]
+const DOCUMENT_SLOTS = ['rcDocument', 'cngPlate']
 const ALL_ALLOWED_SLOTS = [...REQUIRED_PHOTO_SLOTS, ...DOCUMENT_SLOTS]
 
 function trimTrailingSlash(v) {
@@ -252,6 +257,21 @@ async function handleSubmitListing(body) {
   const carFuelType = normaliseString(car.fuelType)
   const sellerType = normaliseString(seller.type) || 'Individual'
 
+  // New fields from expanded form
+  const variant = normaliseString(car.variant)
+  const insuranceValidity = normaliseString(car.insuranceValidity)
+  const accidentalHistory = car.accidentalHistory === true
+  const warrantyAvailable = car.warrantyAvailable === true
+  const spareKeyAvailable = car.spareKeyAvailable === true
+  const transmissionType = normaliseString(car.transmissionType)
+  const cruiseControl = car.cruiseControl === true
+  const parkingAssistant = car.parkingAssistant === true
+  const audioSystemWorking = car.audioSystemWorking === true
+  const airbags = normaliseString(car.airbags)
+  const abs = car.abs === true
+  const sunroof = car.sunroof === true
+  const serviceRecords = car.serviceRecords === true
+
   if (!carMake || !carModel || !registrationYear || !kmsDriven || !expectedPrice || !carLocation) {
     return fail(400, 'car_details_incomplete')
   }
@@ -299,7 +319,20 @@ async function handleSubmitListing(body) {
       expectedPrice,
       location: carLocation,
       city: carLocation,
-      fuelType: carFuelType
+      fuelType: carFuelType,
+      variant,
+      insuranceValidity,
+      accidentalHistory,
+      warrantyAvailable,
+      spareKeyAvailable,
+      transmissionType,
+      cruiseControl,
+      parkingAssistant,
+      audioSystemWorking,
+      airbags,
+      abs,
+      sunroof,
+      serviceRecords
     },
     photos: photos.reduce((acc, photo) => {
       if (photo && photo.slot && photo.key) {
