@@ -1,4 +1,4 @@
-Advertisement(async () => {
+(async () => {
   const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
   function setValue(el, value) {
@@ -109,21 +109,25 @@ Advertisement(async () => {
     const form = document.getElementById('listCarForm');
     if (!form) throw new Error('Sell Car form (#listCarForm) not found');
 
+    console.log('Filling seller details...');
     setValue(form.querySelector('#sellerName'), 'Test Seller');
     setValue(form.querySelector('#sellerMobile'), '9876543210');
     setValue(form.querySelector('#sellerEmail'), `test${Date.now()}@example.com`);
     pickSelect(form.querySelector('#sellerType'), 'Individual');
 
+    console.log('Filling car basic details...');
     setValue(form.querySelector('#carMake'), 'Maruti');
     setValue(form.querySelector('#carModel'), 'Swift');
     setValue(form.querySelector('#carEdition'), 'VXi');
 
     // registrationYear is type="month"
     const reg = form.querySelector('#registrationYear');
+    if (!reg) console.warn('registrationYear field not found');
     const regDate = new Date();
     regDate.setFullYear(regDate.getFullYear() - 3);
     setValue(reg, yyyymmFromDate(regDate));
 
+    console.log('Filling pricing and location...');
     setValue(form.querySelector('#kmsDriven'), String(42000 + Math.floor(Math.random() * 3000)));
     setValue(form.querySelector('#expectedPrice'), String(450000 + Math.floor(Math.random() * 50000)));
     setValue(form.querySelector('#carLocation'), 'Mumbai');
@@ -131,6 +135,7 @@ Advertisement(async () => {
     setValue(form.querySelector('#carVariant'), 'VXi');
 
     // optional date
+    console.log('Filling insurance validity...');
     const ins = form.querySelector('#insuranceValidity');
     if (ins) {
       const insDate = new Date();
@@ -138,6 +143,7 @@ Advertisement(async () => {
       setValue(ins, yyyyMMddFromDate(insDate));
     }
 
+    console.log('Filling history and warranties...');
     pickSelect(form.querySelector('#accidentalHistory'), 'No');
     pickSelect(form.querySelector('#warrantyAvailable'), 'No');
     pickSelect(form.querySelector('#spareKeyAvailable'), 'Yes');
@@ -145,30 +151,41 @@ Advertisement(async () => {
     pickSelect(form.querySelector('#airbags'), '2');
 
     // optional checkboxes (random)
+    console.log('Setting optional features...');
     ['cruiseControl','parkingAssistant','audioSystemWorking','abs','sunroof','serviceRecords'].forEach(id => {
       const cb = form.querySelector(`#${id}`);
       if (cb) cb.checked = Math.random() > 0.5;
     });
 
+    console.log('Form filling complete!');
     return form;
   }
 
   async function fillPhotosAuto(form) {
-    // Use gallery inputs so it behaves like “Choose from Device”
+    console.log('Starting photo auto-fill for', REQUIRED_SLOTS.length, 'slots...');
+    // Use gallery inputs so it behaves like "Choose from Device"
     for (const slot of REQUIRED_SLOTS) {
       const input = form.querySelector(`input.list-car-photo-gallery[data-slot="${slot}"]`)
         || form.querySelector(`input.list-car-photo-camera[data-slot="${slot}"]`)
         || form.querySelector(`input.list-car-photo[data-slot="${slot}"]`);
 
-      if (!input) throw new Error(`Photo input not found for slot: ${slot}`);
+      if (!input) {
+        console.error(`Photo input not found for slot: ${slot}`);
+        throw new Error(`Photo input not found for slot: ${slot}`);
+      }
 
       const label = `slot:${slot}`;
       const file = await makePngFile(label);
 
       const ok = tryAttachFile(input, file);
-      if (!ok) return false; // browser blocked it -> fallback to manual
+      if (!ok) {
+        console.warn('Browser blocked auto photo attach, switching to manual mode');
+        return false; // browser blocked it -> fallback to manual
+      }
+      console.log(`✓ Attached photo for ${slot}`);
       await sleep(50);
     }
+    console.log('All photos attached successfully!');
     return true;
   }
 
@@ -203,15 +220,21 @@ Advertisement(async () => {
   }
 
   // ---- RUN ----
+  console.log('=== Starting Sell Car Form Auto-Fill ===');
+  console.log('Opening modal...');
   await openSellCarModal();
+  
+  console.log('Filling form fields...');
   const form = await fillSellCarForm();
 
   // Ask how you want photos handled
   const mode = (prompt('Photos mode: A = auto-generate placeholders, M = manual select', 'A') || 'A').trim().toUpperCase();
 
   if (mode === 'M') {
+    console.log('Manual photo mode selected');
     await fillPhotosManual(form);
   } else {
+    console.log('Auto photo mode selected');
     const ok = await fillPhotosAuto(form);
     if (!ok) {
       console.warn('Auto photo attach blocked by browser. Switching to manual mode.');
@@ -220,8 +243,9 @@ Advertisement(async () => {
   }
 
   // Final submit
+  console.log('Submitting form...');
   await sleep(200);
   await submitForm(form);
 
-  console.log('Sell Car test run complete (submitted).');
+  console.log('✅ Sell Car test run complete (submitted).');
 })();
