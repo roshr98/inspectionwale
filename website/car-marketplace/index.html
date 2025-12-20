@@ -2457,8 +2457,6 @@
         const edition = car.edition || '';
         const fullTitle = edition ? `${title} ${edition}` : title;
         const year = car.registrationYear || '';
-        const kms = car.kmsDriven || 0;
-        const kmsFormatted = kms ? new Intl.NumberFormat('en-IN').format(kms) + ' km' : 'N/A';
         const price = car.expectedPrice || 0;
         const priceFormatted = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(price);
         const fuel = car.fuelType || 'N/A';
@@ -2476,13 +2474,14 @@
         const modalTitleEl = document.getElementById('carDetailModalTitle');
         if (modalTitleEl) modalTitleEl.textContent = fullTitle;
         
-        // Set kilometers display
-        const kmsDisplayEl = document.getElementById('carDetailKmsDisplay');
-        if (kmsDisplayEl) kmsDisplayEl.textContent = kmsFormatted;
-        
         // Generate dynamic badges based on car features
         const badges = [];
         const kms = parseInt(String(car.kmsDriven || '').replace(/[^0-9]/g, '')) || 0;
+        const kmsFormatted = kms ? new Intl.NumberFormat('en-IN').format(kms) + ' km' : 'N/A';
+        
+        // Set kilometers display
+        const kmsDisplayEl = document.getElementById('carDetailKmsDisplay');
+        if (kmsDisplayEl) kmsDisplayEl.textContent = kmsFormatted;
         
         // Low Mileage badge (< 50000 KM)
         if (kms > 0 && kms < 50000) {
