@@ -985,7 +985,7 @@
                                 <!-- Contact Form -->
                                 <h6 class="mb-3" style="font-weight: 700; font-size: 16px;">Got Questions? Contact the Dealer</h6>
                                 
-                                <select class="form-select mb-3" style="border: 1px solid #ddd; padding: 12px; font-size: 14px; border-radius: 6px;">
+                                <select id="carDetailInquiryType" class="form-select mb-3" style="border: 1px solid #ddd; padding: 12px; font-size: 14px; border-radius: 6px;">
                                     <option selected>This Vehicle's Availability</option>
                                     <option>Request Test Drive</option>
                                     <option>Pricing Question</option>
@@ -995,21 +995,23 @@
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-6">
-                                        <input type="text" class="form-control" placeholder="First Name" style="border: 1px solid #ddd; padding: 12px; font-size: 14px; border-radius: 6px;">
+                                        <input type="text" id="carDetailFirstName" class="form-control" placeholder="First Name" required style="border: 1px solid #ddd; padding: 12px; font-size: 14px; border-radius: 6px;">
                                     </div>
                                     <div class="col-6">
-                                        <input type="text" class="form-control" placeholder="Last Name" style="border: 1px solid #ddd; padding: 12px; font-size: 14px; border-radius: 6px;">
+                                        <input type="text" id="carDetailLastName" class="form-control" placeholder="Last Name" required style="border: 1px solid #ddd; padding: 12px; font-size: 14px; border-radius: 6px;">
                                     </div>
                                 </div>
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-6">
-                                        <input type="email" class="form-control" placeholder="Email" required style="border: 1px solid #ddd; padding: 12px; font-size: 14px; border-radius: 6px;">
+                                        <input type="email" id="carDetailEmail" class="form-control" placeholder="Email" required style="border: 1px solid #ddd; padding: 12px; font-size: 14px; border-radius: 6px;">
                                     </div>
                                     <div class="col-6">
-                                        <input type="tel" class="form-control" placeholder="Phone" pattern="[0-9]{10}" required style="border: 1px solid #ddd; padding: 12px; font-size: 14px; border-radius: 6px;">
+                                        <input type="tel" id="carDetailPhone" class="form-control" placeholder="Phone" pattern="[0-9]{10}" required style="border: 1px solid #ddd; padding: 12px; font-size: 14px; border-radius: 6px;">
                                     </div>
                                 </div>
+                                
+                                <div id="carDetailContactAlert" class="alert d-none" role="alert"></div>
 
                                 <textarea class="form-control mb-3" rows="4" id="carDetailContactMessage" placeholder="Is your Used 2022 Nissan Altima 2.5 SV listed for ₹1,30,000 still available?" style="border: 1px solid #ddd; padding: 12px; font-size: 14px; border-radius: 6px;"></textarea>
 
@@ -2709,19 +2711,95 @@
             const newRequestBtn = requestInfoBtn.cloneNode(true);
             requestInfoBtn.parentNode.replaceChild(newRequestBtn, requestInfoBtn);
             
-            newRequestBtn.addEventListener('click', function() {
-                // Close the detail modal
-                const detailModal = bootstrap.Modal.getInstance(document.getElementById('carDetailModal'));
-                if (detailModal) detailModal.hide();
+            newRequestBtn.addEventListener('click', async function() {
+                const firstName = document.getElementById('carDetailFirstName')?.value.trim();
+                const lastName = document.getElementById('carDetailLastName')?.value.trim();
+                const email = document.getElementById('carDetailEmail')?.value.trim();
+                const phone = document.getElementById('carDetailPhone')?.value.trim();
+                const message = document.getElementById('carDetailContactMessage')?.value.trim();
+                const inquiryType = document.getElementById('carDetailInquiryType')?.value || 'This Vehicle\'s Availability';
+                const alertBox = document.getElementById('carDetailContactAlert');
                 
-                // Open the reserve listing modal with pre-filled data
-                setTimeout(() => {
-                    if (currentDetailListing && typeof window.openReserveModal === 'function') {
-                        window.openReserveModal(currentDetailListing.listingId);
+                // Validation
+                if (!firstName || !lastName || !email || !phone) {
+                    alertBox.className = 'alert alert-danger';
+                    alertBox.textContent = 'Please fill in all required fields (First Name, Last Name, Email, Phone)';
+                    alertBox.classList.remove('d-none');
+                    return;
+                }
+                
+                if (!currentDetailListing) {
+                    alertBox.className = 'alert alert-danger';
+                    alertBox.textContent = 'Car details not found. Please try again.';
+                    alertBox.classList.remove('d-none');
+                    return;
+                }
+                
+                const car = currentDetailListing.car || {};
+                const carTitle = `${car.make || ''} ${car.model || ''} ${car.edition || ''}`.trim();
+                const carYear = car.registrationYear || 'N/A';
+                const carPrice = car.expectedPrice ? new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(car.expectedPrice) : 'Contact for price';
+                
+                const payload = {
+                    formType: 'marketplace-inquiry',
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    mobile: phone,
+                    inquiryType: inquiryType,
+                    message: message || `Inquiry about ${carTitle}`,
+                    carMake: car.make || '',
+                    carModel: car.model || '',
+                    carYear: carYear,
+                    carPrice: car.expectedPrice || '',
+                    carTitle: carTitle,
+                    listingId: currentDetailListing.listingId || ''
+                };
+                
+                newRequestBtn.disabled = true;
+                newRequestBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                alertBox.classList.add('d-none');
+                
+                try {
+                    const res = await fetch('/api/quote', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    if (res.ok) {
+                        alertBox.className = 'alert alert-success';
+                        alertBox.textContent = 'Thank you! Your inquiry has been sent. We will contact you shortly.';
+                        alertBox.classList.remove('d-none');
+                        
+                        // Clear form
+                        document.getElementById('carDetailFirstName').value = '';
+                        document.getElementById('carDetailLastName').value = '';
+                        document.getElementById('carDetailEmail').value = '';
+                        document.getElementById('carDetailPhone').value = '';
+                        document.getElementById('carDetailContactMessage').value = '';
+                        
+                        newRequestBtn.innerHTML = '<i class="fas fa-check"></i> Request Sent!';
+                        setTimeout(() => {
+                            newRequestBtn.innerHTML = 'Request Info';
+                            newRequestBtn.disabled = false;
+                        }, 3000);
                     } else {
-                        alert('Please contact us at +91-9167558998 to inquire about this vehicle.');
+                        const errorData = await res.json().catch(() => null);
+                        alertBox.className = 'alert alert-danger';
+                        alertBox.textContent = errorData?.error || 'Failed to send request. Please try again.';
+                        alertBox.classList.remove('d-none');
+                        newRequestBtn.innerHTML = 'Request Info';
+                        newRequestBtn.disabled = false;
                     }
-                }, 300);
+                } catch (err) {
+                    console.error('Request info failed:', err);
+                    alertBox.className = 'alert alert-danger';
+                    alertBox.textContent = 'Unable to send request. Please call us at +91-9167558998.';
+                    alertBox.classList.remove('d-none');
+                    newRequestBtn.innerHTML = 'Request Info';
+                    newRequestBtn.disabled = false;
+                }
             });
         }
 
@@ -2733,21 +2811,39 @@
             bookInspectionBtn.parentNode.replaceChild(newBookBtn, bookInspectionBtn);
             
             newBookBtn.addEventListener('click', function() {
-                // Scroll to top of page
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                if (!currentDetailListing) {
+                    alert('Car details not found. Please try again.');
+                    return;
+                }
                 
                 // Close the detail modal
                 const detailModal = bootstrap.Modal.getInstance(document.getElementById('carDetailModal'));
                 if (detailModal) detailModal.hide();
                 
-                // Open the inspection booking modal
+                // Open the inspection booking modal with prefilled data
                 setTimeout(() => {
                     const inspectionModal = document.getElementById('bookingModal');
                     if (inspectionModal) {
+                        const car = currentDetailListing.car || {};
+                        const carTitle = `${car.make || ''} ${car.model || ''} ${car.edition || ''}`.trim();
+                        
+                        // Prefill form fields
+                        const makeModelField = inspectionModal.querySelector('#bk_make');
+                        const regYearField = inspectionModal.querySelector('#bk_year');
+                        const kmsField = inspectionModal.querySelector('#bk_kms');
+                        const carTypeField = inspectionModal.querySelector('#bk_cartype');
+                        const listingIdField = inspectionModal.querySelector('#bk_listingId');
+                        
+                        if (makeModelField) makeModelField.value = carTitle;
+                        if (regYearField) regYearField.value = car.registrationYear || '';
+                        if (kmsField) kmsField.value = car.kmsDriven || '';
+                        if (carTypeField) carTypeField.value = 'used';
+                        if (listingIdField) listingIdField.value = currentDetailListing.listingId || '';
+                        
                         const modal = new bootstrap.Modal(inspectionModal);
                         modal.show();
                     } else {
-                        // Redirect to home page booking section with prefilled listing details
+                        // Fallback: redirect to home page booking section with prefilled listing details
                         try {
                             if (currentDetailListing) {
                                 sessionStorage.setItem('iw_booking_prefill_listing', JSON.stringify(currentDetailListing));
