@@ -584,6 +584,7 @@
 
         const alertBox = document.getElementById('listCarFormAlert')
         const submitBtn = document.getElementById('listCarSubmitBtn')
+        const modalEl = document.getElementById('listCarModal')
 
         // Handle both camera and gallery photo inputs
         form.querySelectorAll('.list-car-photo-camera, .list-car-photo-gallery').forEach(input => {
@@ -734,7 +735,6 @@
             }
         })
 
-        const modalEl = document.getElementById('listCarModal')
         if (modalEl) {
             modalEl.addEventListener('hidden.bs.modal', () => {
                 hideAlert(alertBox)
