@@ -111,7 +111,7 @@
 
     console.log('Filling seller details...');
     setValue(form.querySelector('#sellerName'), 'Test Seller');
-    setValue(form.querySelector('#sellerMobile'), '9876543210');
+    setValue(form.querySelector('#sellerMobile'), '9167558998');
     setValue(form.querySelector('#sellerEmail'), `test${Date.now()}@example.com`);
     pickSelect(form.querySelector('#sellerType'), 'Individual');
 
