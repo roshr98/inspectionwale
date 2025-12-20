@@ -1,6 +1,9 @@
 User-agent: *
 Allow: /
 
+# Sitemap
+Sitemap: https://www.inspectionwale.com/sitemap.xml
+
 # Block internal inspector tools
 Disallow: /inspector-*.html$
 Disallow: /password-*.html$

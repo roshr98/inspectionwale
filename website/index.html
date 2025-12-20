@@ -3,11 +3,15 @@
 
 <head>
     <meta charset="utf-8">
-    <title>inspectionWale - Pre-Purchase Car Inspection Services in Mumbai, Navi Mumbai, Thane & Pune | 160+ Point Check</title>
+    <title>Car Inspection Services in Mumbai, Navi Mumbai, Thane, Kalyan & Dombivli | inspectionWale - 160+ Point Check</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta name="description" content="Expert pre-purchase car inspection services in Mumbai, Navi Mumbai, Thane & Pune. 160+ point inspection, same-day reports, unbiased evaluation. Book online inspection for used cars. Trusted by 1000+ buyers.">
-    <meta name="keywords" content="car inspection Mumbai, pre purchase car inspection, used car check, vehicle inspection Maharashtra, car evaluation Mumbai, auto inspection services, car buyer inspection, 160 point inspection">
+    <meta name="description" content="Professional car inspection services in Mumbai, Navi Mumbai, Thane, Kalyan, Dombivli & Pune. 160+ point pre-purchase inspection, same-day reports, certified inspectors. Book used car inspection online today! Serving Mumbai Metropolitan Region.">
+    <meta name="keywords" content="car inspection Mumbai, car inspection Navi Mumbai, car inspection Thane, car inspection Kalyan, car inspection Dombivli, pre purchase car inspection Mumbai, used car inspection near me, vehicle inspection Maharashtra, car evaluation Mumbai, auto inspection services Mumbai, pre-purchase inspection Thane, used car check Navi Mumbai, 160 point inspection, certified car inspector Mumbai, car buyer inspection Kalyan, automobile inspection Dombivli">
     <meta name="author" content="inspectionWale">
+    <meta name="geo.region" content="IN-MH">
+    <meta name="geo.placename" content="Mumbai, Navi Mumbai, Thane, Kalyan, Dombivli">
+    <meta name="geo.position" content="19.0760;72.8777">
+    <meta name="ICBM" content="19.0760, 72.8777">
     <link rel="canonical" href="https://www.inspectionwale.com/">
     <script>
         (function redirectMarketplace() {
@@ -32,8 +36,8 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.inspectionwale.com/">
-    <meta property="og:title" content="inspectionWale - Expert Car Inspection Services in Mumbai, Navi Mumbai, Thane & Pune">
-    <meta property="og:description" content="160+ point pre-purchase car inspection. Same-day reports. Unbiased evaluation by certified inspectors. Book your car inspection online today!">
+    <meta property="og:title" content="Car Inspection in Mumbai, Navi Mumbai, Thane, Kalyan & Dombivli | inspectionWale">
+    <meta property="og:description" content="160+ point pre-purchase car inspection in Mumbai, Navi Mumbai, Thane, Kalyan & Dombivli. Same-day reports by certified inspectors. Book your used car inspection online today!">
     <meta property="og:image" content="https://www.inspectionwale.com/Images/brand_logo_new_1.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -43,8 +47,8 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://www.inspectionwale.com/">
-    <meta name="twitter:title" content="inspectionWale - Expert Car Inspection Services">
-    <meta name="twitter:description" content="160+ point pre-purchase car inspection in Mumbai, Navi Mumbai, Thane & Pune. Same-day reports by certified inspectors.">
+    <meta name="twitter:title" content="Car Inspection in Mumbai, Navi Mumbai, Thane, Kalyan & Dombivli">
+    <meta name="twitter:description" content="160+ point pre-purchase car inspection. Same-day reports by certified inspectors. Serving Mumbai Metropolitan Region.">
     <meta name="twitter:image" content="https://www.inspectionwale.com/Images/brand_logo_new_1.png">
 
     <!-- Favicon -->
@@ -167,19 +171,33 @@
       "areaServed": [
         {
           "@type": "City",
-          "name": "Mumbai"
+          "name": "Mumbai",
+          "sameAs": "https://en.wikipedia.org/wiki/Mumbai"
         },
         {
           "@type": "City",
-          "name": "Navi Mumbai"
+          "name": "Navi Mumbai",
+          "sameAs": "https://en.wikipedia.org/wiki/Navi_Mumbai"
         },
         {
           "@type": "City",
-          "name": "Thane"
+          "name": "Thane",
+          "sameAs": "https://en.wikipedia.org/wiki/Thane"
         },
         {
           "@type": "City",
-          "name": "Pune"
+          "name": "Kalyan",
+          "sameAs": "https://en.wikipedia.org/wiki/Kalyan,_Maharashtra"
+        },
+        {
+          "@type": "City",
+          "name": "Dombivli",
+          "sameAs": "https://en.wikipedia.org/wiki/Dombivli"
+        },
+        {
+          "@type": "City",
+          "name": "Pune",
+          "sameAs": "https://en.wikipedia.org/wiki/Pune"
         }
       ],
       "hasOfferCatalog": {
@@ -715,7 +733,7 @@
         <div id="header-carousel" class="carousel" aria-hidden="false">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="w-100" src="Images/final_banner.jpg" alt="inspectionWale banner" width="1920" height="600" fetchpriority="high" decoding="async" style="width:100%; height: 550px; max-height: 550px; object-fit:cover; object-position: 20% center; border-radius: 20px;">
+                    <img class="w-100" src="Images/final_banner.jpg" alt="inspectionWale banner" width="1920" height="600" fetchpriority="high" decoding="async" style="width:100%; height: 550px; max-height: 550px; object-fit:cover; object-position: 20% center;">
                     <div class="carousel-caption d-flex align-items-center hero-caption">
                         <div class="container">
                             <div class="row gy-4 align-items-start justify-content-between hero-caption-row">
@@ -3243,7 +3261,7 @@
                             const full = Math.floor(rating)
                             const half = rating % 1 >= 0.5 ? 1 : 0
                             const empty = 5 - full - half
-                            document.getElementById('overallStars').innerHTML = '★'.repeat(full) + (half ? '⯨' : '') + '☆'.repeat(empty)
+                            document.getElementById('overallStars').innerHTML = '★'.repeat(full) + (half ? '<i class="fas fa-star-half-alt"></i>' : '') + '☆'.repeat(empty)
                         }
 
                         function getStars(rating) {

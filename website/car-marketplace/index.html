@@ -1246,6 +1246,59 @@
         </div>
     </div>
 
+    <!-- MARKETPLACE BOOKING INSPECTION MODAL -->
+    <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content" style="border-radius: 16px; overflow: hidden;">
+                <div class="modal-header" style="background: linear-gradient(135deg, #1a2a3a 0%, #2d4a5e 100%); border: none;">
+                    <h5 class="modal-title text-white" id="bookingModalLabel" style="font-style: italic;">Book an Inspection</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4" style="background: linear-gradient(180deg, #f5f5f5 0%, #e8e8e8 100%);">
+                    <form id="marketplaceBookingForm" novalidate>
+                        <input type="hidden" id="bk_listingId" name="listingId">
+                        <input type="hidden" id="bk_cartype" name="carType" value="used">
+                        <div class="alert alert-info mb-3" id="bookingCarInfo" style="display:none;">
+                            <strong>Selected Car:</strong> <span id="bookingCarDisplay"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bk_name" class="form-label">Name *</label>
+                            <input type="text" id="bk_name" name="name" class="form-control form-control-lg" placeholder="Your name" required style="border-radius: 8px; border: none; background: #fff;">
+                        </div>
+                        <div class="mb-3">
+                            <label for="bk_mobile" class="form-label">Mobile Number *</label>
+                            <input type="tel" id="bk_mobile" name="mobile" class="form-control form-control-lg" placeholder="10-digit mobile number" required pattern="[0-9]{10}" style="border-radius: 8px; border: none; background: #fff;">
+                        </div>
+                        <div class="mb-3">
+                            <label for="bk_email" class="form-label">Email *</label>
+                            <input type="email" id="bk_email" name="email" class="form-control form-control-lg" placeholder="Your email" required style="border-radius: 8px; border: none; background: #fff;">
+                        </div>
+                        <div class="mb-3">
+                            <label for="bk_address" class="form-label">Address *</label>
+                            <textarea id="bk_address" name="address" class="form-control" rows="2" placeholder="Your address for inspection" required style="border-radius: 8px; border: none; background: #fff;"></textarea>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="bk_make" class="form-label">Make & Model *</label>
+                                <input type="text" id="bk_make" name="makeModel" class="form-control form-control-lg" placeholder="e.g., Honda City" readonly style="border-radius: 8px; border: none; background: #e9ecef;">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="bk_year" class="form-label">Registration Year *</label>
+                                <input type="text" id="bk_year" name="regYear" class="form-control form-control-lg" placeholder="e.g., 2018" readonly style="border-radius: 8px; border: none; background: #e9ecef;">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="bk_kms" class="form-label">KMs Driven *</label>
+                            <input type="text" id="bk_kms" name="kmsDriven" class="form-control form-control-lg" placeholder="e.g., 45000" readonly style="border-radius: 8px; border: none; background: #e9ecef;">
+                        </div>
+                        <button type="submit" class="btn w-100 py-3" id="marketplaceBookingSubmit" style="background: #D81324; color: #fff; border-radius: 30px; font-size: 1rem; font-weight: 600; text-transform: uppercase;">Book Inspection</button>
+                        <div class="alert mt-3" id="bookingAlert" style="display:none;" role="alert"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Full Photo Gallery Modal -->
     <div class="modal fade" id="photoGalleryModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen">
@@ -2833,6 +2886,8 @@
                         const kmsField = inspectionModal.querySelector('#bk_kms');
                         const carTypeField = inspectionModal.querySelector('#bk_cartype');
                         const listingIdField = inspectionModal.querySelector('#bk_listingId');
+                        const carInfoAlert = inspectionModal.querySelector('#bookingCarInfo');
+                        const carDisplaySpan = inspectionModal.querySelector('#bookingCarDisplay');
                         
                         if (makeModelField) makeModelField.value = carTitle;
                         if (regYearField) regYearField.value = car.registrationYear || '';
@@ -2840,18 +2895,84 @@
                         if (carTypeField) carTypeField.value = 'used';
                         if (listingIdField) listingIdField.value = currentDetailListing.listingId || '';
                         
+                        // Show car info alert
+                        if (carInfoAlert && carDisplaySpan) {
+                            carDisplaySpan.textContent = carTitle + (car.registrationYear ? ` (${car.registrationYear})` : '');
+                            carInfoAlert.style.display = 'block';
+                        }
+                        
                         const modal = new bootstrap.Modal(inspectionModal);
                         modal.show();
                     } else {
-                        // Fallback: redirect to home page booking section with prefilled listing details
-                        try {
-                            if (currentDetailListing) {
-                                sessionStorage.setItem('iw_booking_prefill_listing', JSON.stringify(currentDetailListing));
-                            }
-                        } catch (e) {}
-                        window.location.href = '/#book';
+                        alert('Booking form not available. Please try again.');
                     }
                 }, 300);
+            });
+        }
+
+        // Handle marketplace booking form submission
+        const marketplaceBookingForm = document.getElementById('marketplaceBookingForm');
+        if (marketplaceBookingForm) {
+            marketplaceBookingForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const submitBtn = document.getElementById('marketplaceBookingSubmit');
+                const alertBox = document.getElementById('bookingAlert');
+                
+                if (!marketplaceBookingForm.checkValidity()) {
+                    marketplaceBookingForm.classList.add('was-validated');
+                    return;
+                }
+                
+                // Get form data
+                const formData = new FormData(marketplaceBookingForm);
+                const data = {};
+                formData.forEach((value, key) => { data[key] = value; });
+                
+                // Add car URL
+                const listingId = data.listingId;
+                if (listingId) {
+                    data.carUrl = window.location.origin + window.location.pathname + '?listingId=' + encodeURIComponent(listingId);
+                }
+                
+                // Set form type for email routing
+                data.formType = 'marketplace-inspection';
+                
+                try {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<span class=\"spinner-border spinner-border-sm me-2\"></span>Sending...';
+                    
+                    const response = await fetch('/api/quote', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                    
+                    if (response.ok) {
+                        alertBox.className = 'alert alert-success mt-3';
+                        alertBox.textContent = 'Inspection booked successfully! We will contact you shortly.';
+                        alertBox.style.display = 'block';
+                        
+                        // Reset form after 2 seconds and close modal
+                        setTimeout(() => {
+                            marketplaceBookingForm.reset();
+                            marketplaceBookingForm.classList.remove('was-validated');
+                            const modal = bootstrap.Modal.getInstance(document.getElementById('bookingModal'));
+                            if (modal) modal.hide();
+                            alertBox.style.display = 'none';
+                        }, 2000);
+                    } else {
+                        throw new Error('Server error');
+                    }
+                } catch (error) {
+                    console.error('Booking submission error:', error);
+                    alertBox.className = 'alert alert-danger mt-3';
+                    alertBox.textContent = 'Failed to submit. Please call us at 9167558998';
+                    alertBox.style.display = 'block';
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Book Inspection';
+                }
             });
         }
 
