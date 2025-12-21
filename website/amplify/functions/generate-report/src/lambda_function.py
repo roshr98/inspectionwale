@@ -1095,6 +1095,50 @@ def generate_pdf(data, image_files):
     story.append(structure_card)
     story.append(Spacer(1, 12))
     
+    # PAGE 12: TEST DRIVE
+    story.append(PageBreak())
+    story.append(create_section_header('Test Drive Assessment'))
+    
+    test_drive_fields = [
+        (bilingual_text('Steering Performance', 'स्टीयरिंग प्रदर्शन'), 'test_steering_performance'),
+        (bilingual_text('Steering Alignment', 'स्टीयरिंग संरेखण'), 'test_steering_alignment'),
+        (bilingual_text('Ignition', 'इग्निशन'), 'test_ignition'),
+        (bilingual_text('Clutch Performance', 'क्लच'), 'test_clutch_performance'),
+        (bilingual_text('Brake Performance', 'ब्रेक'), 'test_brake_performance'),
+        (bilingual_text('Gear Shifting', 'गियर शिफ्टिंग'), 'test_gear_shifting'),
+        (bilingual_text('Acceleration', 'त्वरण'), 'test_acceleration'),
+        (bilingual_text('CNG Mode', 'CNG मोड'), 'test_cng_mode'),
+        (bilingual_text('Suspension', 'सस्पेंशन'), 'test_suspension'),
+        (bilingual_text('Engine Noise', 'इंजन शोर'), 'test_engine_noise'),
+        (bilingual_text('Wheel Alignment', 'व्हील संरेखण'), 'test_wheel_alignment'),
+        (bilingual_text('Repair Cost (₹)', 'मरम्मत लागत'), 'test_drive_repair_cost'),
+    ]
+    
+    test_drive_card = create_two_column_card_table(test_drive_fields)
+    story.append(test_drive_card)
+    story.append(Spacer(1, 12))
+    
+    # PAGE 13: DISCLAIMER
+    story.append(PageBreak())
+    story.append(create_section_header('Disclaimer / अस्वीकरण'))
+    
+    disclaimer_english = \"\"\"This inspection report is prepared based on a visual and functional assessment of the vehicle at the time of inspection. 
+The report is for information purposes only and does not constitute a warranty or guarantee of the vehicle's condition, performance, 
+or suitability for any particular purpose. InspectionWale and its inspectors shall not be liable for any loss, damage, or expense 
+arising from reliance on this report. The buyer is advised to conduct their own due diligence and obtain independent verification 
+before making any purchase decision. This report is valid for 2 days or 20 km from the date of inspection, whichever comes first. 
+Odometer readings are based on the instrument cluster display and have not been independently verified.\"\"\"
+    
+    disclaimer_hindi = \"\"\"यह निरीक्षण रिपोर्ट निरीक्षण के समय वाहन के दृश्य और कार्यात्मक मूल्यांकन के आधार पर तैयार की गई है। 
+रिपोर्ट केवल सूचना के उद्देश्यों के लिए है और वाहन की स्थिति, प्रदर्शन, या किसी विशेष उद्देश्य के लिए उपयुक्तता की 
+वारंटी या गारंटी नहीं है। इंस्पेक्शनवाले और इसके निरीक्षक इस रिपोर्ट पर निर्भरता से उत्पन्न किसी भी नुकसान, क्षति, 
+या खर्च के लिए उत्तरदायी नहीं होंगे। खरीदार को सलाह दी जाती है कि वे कोई खरीद निर्णय लेने से पहले अपनी स्वयं की 
+जांच करें और स्वतंत्र सत्यापन प्राप्त करें। यह रिपोर्ट निरीक्षण की तारीख से 2 दिन या 20 किमी के लिए मान्य है, 
+जो भी पहले हो। ओडोमीटर रीडिंग इंस्ट्रूमेंट क्लस्टर डिस्प्ले पर आधारित हैं और स्वतंत्र रूप से सत्यापित नहीं हैं।\"\"\"
+    
+    disclaimer_text = f'<font face=\"{FONT_FAMILY}\" size=\"9\"><b>English:</b><br/>{disclaimer_english}<br/><br/><b>हिंदी:</b><br/></font><font face=\"{FONT_HINDI}\" size=\"9\">{disclaimer_hindi}</font>'
+    story.append(create_notes_card(disclaimer_text))
+    
     # DETAILED NOTES
     if data.get('paintNotes') or data.get('interiorNotes') or data.get('engineNotes'):
         story.append(create_section_header('Detailed Inspection Notes'))
@@ -1124,24 +1168,6 @@ def generate_pdf(data, image_files):
             issues_text += f"<b>Recommendations:</b><br/>{data.get('recommendations')}"
         story.append(create_notes_card(f'<font face="Helvetica">{issues_text}</font>'))
         story.append(Spacer(1, 12))
-    
-    # RATINGS - Keep together
-    ratings_section = [
-        create_section_header('Overall Ratings'),
-        create_ratings_card()
-    ]
-    story.append(KeepTogether(ratings_section))
-    story.append(Spacer(1, 16))
-    
-    # PHOTOS
-    if image_files:
-        story.append(create_section_header('Vehicle Photos'))
-        captions = ['RC Book', 'Chassis Plate', 'Odometer', 'Front Bumper', 'Bonnet', 
-                   'Grille', 'Dashboard', 'Seats', 'Engine Bay']
-        image_elements = create_image_grid(image_files, captions)
-        if image_elements:
-            for elem in image_elements:
-                story.append(elem)
     
     # Build PDF
     doc.build(story, canvasmaker=FooterCanvas)
