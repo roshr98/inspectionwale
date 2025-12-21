@@ -968,6 +968,63 @@ def generate_pdf(data, image_files):
     for element in create_exterior_page('Rear Exterior', 'photo_rear', rear_fields, image_files, data):
         story.append(element)
     
+    # PAGES 7-8: INTERIOR
+    story.append(PageBreak())
+    dashboard_fields = [
+        (bilingual_text('Is MIL Light On', 'MIL लाइट चालू है'), 'is_mil_light_on'),
+        (bilingual_text('Dashboard Condition', 'डैशबोर्ड'), 'dashboard_condition'),
+        (bilingual_text('Music System Working', 'म्यूजिक सिस्टम'), 'music_system_working'),
+        (bilingual_text('Steering Controls', 'स्टीयरिंग कंट्रोल'), 'steering_controls_working'),
+        (bilingual_text('Paddle Shifters', 'पैडल शिफ्टर्स'), 'paddle_shifters_working'),
+        (bilingual_text('Hand Brake', 'हैंड ब्रेक'), 'hand_brake_working'),
+        (bilingual_text('Speakers', 'स्पीकर'), 'speakers_working'),
+        (bilingual_text('AC Vents', 'AC वेंट'), 'ac_vents_condition'),
+        (bilingual_text('Is AC Working', 'AC काम कर रहा है'), 'is_ac_working'),
+        (bilingual_text('Steering Type', 'स्टीयरिंग प्रकार'), 'steering_type'),
+        (bilingual_text('Cruise Control', 'क्रूज़ कंट्रोल'), 'cruise_control_available'),
+        (bilingual_text('Navigation System', 'नेविगेशन'), 'navigation_system_working'),
+        (bilingual_text('Glove Box', 'ग्लव बॉक्स'), 'glove_box_condition'),
+        (bilingual_text('Cabin Lights', 'केबिन लाइट'), 'cabin_lights_working'),
+        (bilingual_text('Headlights', 'हेडलाइट्स'), 'headlights_working'),
+        (bilingual_text('Wipers', 'वाइपर्स'), 'wipers_working'),
+        (bilingual_text('Trip Switch', 'ट्रिप स्विच'), 'trip_switch_working'),
+        (bilingual_text('Boot Lever', 'बूट लीवर'), 'boot_lever_working'),
+        (bilingual_text('Indicators', 'इंडिकेटर्स'), 'indicators_working'),
+        (bilingual_text('Central Lock', 'सेंट्रल लॉक'), 'central_lock_working'),
+        (bilingual_text('Rear Wiper', 'पीछे वाइपर'), 'rear_wiper_working'),
+        (bilingual_text('Rear View Mirror', 'रियर व्यू मिरर'), 'rear_view_mirror_working'),
+        (bilingual_text('Bonnet Lever', 'बोनट लीवर'), 'bonnet_lever_working'),
+        (bilingual_text('Side Mirror Adjust', 'साइड मिरर'), 'side_mirror_adjustments_working'),
+        (bilingual_text('Fuel Lid Lever', 'फ्यूल लीवर'), 'fuel_lid_lever_working'),
+        (bilingual_text('Power Windows', 'पावर विंडोज़'), 'power_windows_working'),
+    ]
+    story.append(create_section_header('Interior - Dashboard & Controls'))
+    for element in create_exterior_page('', 'photo_dashboard', dashboard_fields, image_files, data):
+        story.append(element)
+    
+    story.append(Spacer(1, 12))
+    story.append(PageBreak())
+    cabin_fields = [
+        (bilingual_text('Front Seat Condition', 'सामने सीट'), 'front_seat_condition'),
+        (bilingual_text('Seat Adjustment Type', 'सीट एडजस्टमेंट'), 'seat_adjustment_type'),
+        (bilingual_text('Seat Adjustments', 'एडजस्टमेंट काम'), 'seat_adjustments_working'),
+        (bilingual_text('Seat Belts', 'सीट बेल्ट'), 'seat_belts_working'),
+        (bilingual_text('Front RHS Panel', 'दाईं पैनल'), 'front_rhs_interior_panel'),
+        (bilingual_text('Arm Rest', 'आर्म रेस्ट'), 'arm_rest_condition'),
+        (bilingual_text('Front LHS Panel', 'बाईं पैनल'), 'front_lhs_interior_panel'),
+        (bilingual_text('Rear Seat Condition', 'पीछे सीट'), 'rear_seat_condition'),
+        (bilingual_text('Rear Seatbelts', 'सीटबेल्ट'), 'rear_seatbelts_working'),
+        (bilingual_text('Rear Arm-rest', 'आर्म-रेस्ट'), 'rear_arm_rest_condition'),
+        (bilingual_text('Rear RHS Panel', 'दाईं पैनल'), 'rear_rhs_interior_panel'),
+        (bilingual_text('Rear AC Vent', 'पीछे AC वेंट'), 'rear_ac_vent'),
+        (bilingual_text('Rear LHS Panel', 'बाईं पैनल'), 'rear_lhs_interior_panel'),
+        (bilingual_text('Boot Condition', 'बूट'), 'boot_condition'),
+        (bilingual_text('Jack & Car Kit', 'जैक किट'), 'jack_car_kit_available'),
+    ]
+    story.append(create_section_header('Interior - Seats & Cabin'))
+    for element in create_exterior_page('', 'photo_cabin', cabin_fields, image_files, data):
+        story.append(element)
+    
     # DETAILED NOTES
     if data.get('paintNotes') or data.get('interiorNotes') or data.get('engineNotes'):
         story.append(create_section_header('Detailed Inspection Notes'))
