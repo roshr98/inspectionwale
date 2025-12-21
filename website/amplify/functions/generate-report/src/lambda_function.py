@@ -1025,6 +1025,76 @@ def generate_pdf(data, image_files):
     for element in create_exterior_page('', 'photo_cabin', cabin_fields, image_files, data):
         story.append(element)
     
+    # PAGE 9: ENGINE
+    story.append(Spacer(1, 12))
+    story.append(PageBreak())
+    engine_fields = [
+        (bilingual_text('Oil Leaks', 'तेल रिसाव'), 'engine_oil_leaks'),
+        (bilingual_text('Battery Condition', 'बैटरी'), 'battery_condition'),
+        (bilingual_text('Hose Pipes', 'होज़ पाइप'), 'hose_pipes_condition'),
+        (bilingual_text('Engine Oil', 'इंजन ऑयल'), 'engine_oil_condition'),
+        (bilingual_text('Wiring', 'वायरिंग'), 'wiring_condition'),
+        (bilingual_text('Engine Mounting', 'इंजन माउंटिंग'), 'engine_mounting'),
+        (bilingual_text('Brake Oil Level', 'ब्रेक ऑयल'), 'brake_oil_level'),
+        (bilingual_text('Coolant Level', 'कूलेंट'), 'coolant_level'),
+        (bilingual_text('Belts', 'बेल्ट'), 'belts_condition'),
+        (bilingual_text('Firewall Rust Free', 'फायरवॉल जंग मुक्त'), 'firewall_rust_free'),
+        (bilingual_text('Repair Cost (₹)', 'मरम्मत लागत'), 'engine_repair_cost'),
+    ]
+    story.append(create_section_header('Engine Inspection'))
+    for element in create_exterior_page('', 'photo_engine', engine_fields, image_files, data):
+        story.append(element)
+    
+    # PAGE 10: TIRES/WHEELS
+    story.append(Spacer(1, 12))
+    story.append(PageBreak())
+    story.append(create_section_header('Tires & Wheels'))
+    
+    tire_positions = [
+        ('Front RHS', 'tire_brand_front_rhs', 'wheel_type_front_rhs', 'tire_life_front_rhs', 'tire_cost_front_rhs'),
+        ('Front LHS', 'tire_brand_front_lhs', 'wheel_type_front_lhs', 'tire_life_front_lhs', 'tire_cost_front_lhs'),
+        ('Rear RHS', 'tire_brand_rear_rhs', 'wheel_type_rear_rhs', 'tire_life_rear_rhs', 'tire_cost_rear_rhs'),
+        ('Rear LHS', 'tire_brand_rear_lhs', 'wheel_type_rear_lhs', 'tire_life_rear_lhs', 'tire_cost_rear_lhs'),
+        ('Spare', 'tire_brand_spare', 'wheel_type_spare', 'tire_life_spare', 'tire_cost_spare'),
+    ]
+    
+    for position, brand_field, wheel_field, life_field, cost_field in tire_positions:
+        tire_data = [
+            (bilingual_text(f'{position} Tire Brand', f'{position} टायर ब्रांड'), data.get(brand_field, 'N/A')),
+            (bilingual_text('Wheel Type', 'व्हील प्रकार'), data.get(wheel_field, 'N/A')),
+            (bilingual_text('Remaining Life (%)', 'शेष जीवन'), data.get(life_field, 'N/A')),
+            (bilingual_text('Replacement Cost (₹)', 'प्रतिस्थापन लागत'), data.get(cost_field, 'N/A')),
+        ]
+        tire_card = create_two_column_card_table(tire_data)
+        story.append(tire_card)
+        story.append(Spacer(1, 8))
+    
+    # PAGE 11: STRUCTURE
+    story.append(PageBreak())
+    story.append(create_section_header('Structure Inspection'))
+    
+    structure_fields = [
+        (bilingual_text('Upper Member', 'ऊपरी सदस्य'), 'structure_upper_member'),
+        (bilingual_text('LHS Apron', 'बाईं एप्रन'), 'structure_lhs_apron'),
+        (bilingual_text('RHS Apron', 'दाईं एप्रन'), 'structure_rhs_apron'),
+        (bilingual_text('RHS A Pillar', 'RHS A पिलर'), 'structure_rhs_a_pillar'),
+        (bilingual_text('LHS A Pillar', 'LHS A पिलर'), 'structure_lhs_a_pillar'),
+        (bilingual_text('RHS B Pillar', 'RHS B पिलर'), 'structure_rhs_b_pillar'),
+        (bilingual_text('LHS B Pillar', 'LHS B पिलर'), 'structure_lhs_b_pillar'),
+        (bilingual_text('RHS C Pillar', 'RHS C पिलर'), 'structure_rhs_c_pillar'),
+        (bilingual_text('LHS C Pillar', 'LHS C पिलर'), 'structure_lhs_c_pillar'),
+        (bilingual_text('Tail Gate/Boot Frame', 'टेल गेट फ्रेम'), 'structure_tail_gate_frame'),
+        (bilingual_text('RHS Fender Wall', 'दाईं फेंडर वॉल'), 'structure_rhs_fender_wall'),
+        (bilingual_text('LHS Fender Wall', 'बाईं फेंडर वॉल'), 'structure_lhs_fender_wall'),
+        (bilingual_text('Lower Member', 'निचला सदस्य'), 'structure_lower_member'),
+        (bilingual_text('Cross Member', 'क्रॉस सदस्य'), 'structure_cross_member'),
+        (bilingual_text('Dicky Tub', 'डिकी टब'), 'structure_dicky_tub'),
+    ]
+    
+    structure_card = create_two_column_card_table(structure_fields)
+    story.append(structure_card)
+    story.append(Spacer(1, 12))
+    
     # DETAILED NOTES
     if data.get('paintNotes') or data.get('interiorNotes') or data.get('engineNotes'):
         story.append(create_section_header('Detailed Inspection Notes'))
