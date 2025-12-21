@@ -446,7 +446,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Fuel Type <span class="required">*</span></label>
-                            <select class="form-select" name="fuelType" required>
+                            <select class="form-select" name="fuelType" required id="fuelTypeSelect">
                                 <option value="">Select Fuel Type</option>
                                 <option value="Petrol">Petrol</option>
                                 <option value="Diesel">Diesel</option>
@@ -455,6 +455,32 @@
                                 <option value="Hybrid">Hybrid</option>
                             </select>
                         </div>
+                        
+                        <!-- CNG CONDITIONAL FIELDS -->
+                        <div id="cngDetailsSection" style="display:none;">
+                            <div class="form-group">
+                                <label class="form-label">CNG Fitment Type</label>
+                                <select class="form-select" name="cng_fitment_type">
+                                    <option value="">Select Fitment Type</option>
+                                    <option value="Company">Company Fitted</option>
+                                    <option value="Authorized">Authorized Center</option>
+                                    <option value="Private">Private Workshop</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">CNG Validity Date</label>
+                                <input type="date" class="form-input" name="cng_validity_date">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">CNG Endorsed on RC</label>
+                                <select class="form-select" name="cng_endorsed_rc">
+                                    <option value="">Select Option</option>
+                                    <option value="Yes">Yes / हाँ</option>
+                                    <option value="No">No / नहीं</option>
+                                </select>
+                            </div>
+                        </div>
+                        
                         <div class="form-group">
                             <label class="form-label">Odometer Reading (km) <span class="required">*</span></label>
                             <input type="number" class="form-input" name="odometerReading" required placeholder="45000">
@@ -519,10 +545,86 @@
                     </div>
                 </div>
 
-                <!-- KEY HIGHLIGHTS -->
+                <!-- RATINGS SECTION -->
                 <div class="section">
                     <div class="section-header">
                         <div class="section-icon"><i class="fas fa-star"></i></div>
+                        <div class="section-title">Overall Ratings (1-5 Stars)</div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Interior Rating <span class="required">*</span></label>
+                            <select class="form-select" name="rating_interior" required>
+                                <option value="">Select Rating</option>
+                                <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+                                <option value="4">⭐⭐⭐⭐ Good</option>
+                                <option value="3">⭐⭐⭐ Average</option>
+                                <option value="2">⭐⭐ Fair</option>
+                                <option value="1">⭐ Poor</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Exterior Rating <span class="required">*</span></label>
+                            <select class="form-select" name="rating_exterior" required>
+                                <option value="">Select Rating</option>
+                                <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+                                <option value="4">⭐⭐⭐⭐ Good</option>
+                                <option value="3">⭐⭐⭐ Average</option>
+                                <option value="2">⭐⭐ Fair</option>
+                                <option value="1">⭐ Poor</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Engine Rating <span class="required">*</span></label>
+                            <select class="form-select" name="rating_engine" required>
+                                <option value="">Select Rating</option>
+                                <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+                                <option value="4">⭐⭐⭐⭐ Good</option>
+                                <option value="3">⭐⭐⭐ Average</option>
+                                <option value="2">⭐⭐ Fair</option>
+                                <option value="1">⭐ Poor</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Structure Rating <span class="required">*</span></label>
+                            <select class="form-select" name="rating_structure" required>
+                                <option value="">Select Rating</option>
+                                <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+                                <option value="4">⭐⭐⭐⭐ Good</option>
+                                <option value="3">⭐⭐⭐ Average</option>
+                                <option value="2">⭐⭐ Fair</option>
+                                <option value="1">⭐ Poor</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Test Drive Rating <span class="required">*</span></label>
+                            <select class="form-select" name="rating_test_drive" required>
+                                <option value="">Select Rating</option>
+                                <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+                                <option value="4">⭐⭐⭐⭐ Good</option>
+                                <option value="3">⭐⭐⭐ Average</option>
+                                <option value="2">⭐⭐ Fair</option>
+                                <option value="1">⭐ Poor</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Electrical Rating <span class="required">*</span></label>
+                            <select class="form-select" name="rating_electrical" required>
+                                <option value="">Select Rating</option>
+                                <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+                                <option value="4">⭐⭐⭐⭐ Good</option>
+                                <option value="3">⭐⭐⭐ Average</option>
+                                <option value="2">⭐⭐ Fair</option>
+                                <option value="1">⭐ Poor</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KEY HIGHLIGHTS -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-clipboard-check"></i></div>
                         <div class="section-title">Key Highlights & Summary</div>
                     </div>
                     <div class="form-grid">
@@ -1027,6 +1129,20 @@
             
             if (inspectorName) {
                 document.getElementById('inspectorName').textContent = `Inspector: ${inspectorName}`;
+            }
+            
+            // CNG conditional fields
+            const fuelTypeSelect = document.getElementById('fuelTypeSelect');
+            const cngSection = document.getElementById('cngDetailsSection');
+            
+            if (fuelTypeSelect && cngSection) {
+                fuelTypeSelect.addEventListener('change', function() {
+                    if (this.value === 'CNG' || this.value.includes('CNG')) {
+                        cngSection.style.display = 'contents';
+                    } else {
+                        cngSection.style.display = 'none';
+                    }
+                });
             }
         });
 
