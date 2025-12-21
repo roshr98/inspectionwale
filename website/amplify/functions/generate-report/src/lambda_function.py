@@ -479,15 +479,33 @@ def create_star_rating_table(label, rating):
     return [label, star_drawing]
 
 
-def create_ratings_card():
-    """Ratings card with actual drawn stars"""
+def create_ratings_card(data):
+    """Ratings card with actual drawn stars and bilingual labels"""
     ratings_data = [
-        create_star_rating_table('Interior', 4.0),
-        create_star_rating_table('Exterior / Body', 4.5),
-        create_star_rating_table('Engine', 4.0),
-        create_star_rating_table('Structure', 5.0),
-        create_star_rating_table('Test Drive', 4.5),
-        create_star_rating_table('Electrical', 4.0),
+        create_star_rating_table(
+            bilingual_text('Interior', 'आंतरिक'),
+            float(data.get('rating_interior', 0))
+        ),
+        create_star_rating_table(
+            bilingual_text('Exterior', 'बाहरी'),
+            float(data.get('rating_exterior', 0))
+        ),
+        create_star_rating_table(
+            bilingual_text('Engine', 'इंजन'),
+            float(data.get('rating_engine', 0))
+        ),
+        create_star_rating_table(
+            bilingual_text('Structure', 'संरचना'),
+            float(data.get('rating_structure', 0))
+        ),
+        create_star_rating_table(
+            bilingual_text('Test Drive', 'टेस्ट ड्राइव'),
+            float(data.get('rating_test_drive', 0))
+        ),
+        create_star_rating_table(
+            bilingual_text('Electrical', 'विद्युतीय'),
+            float(data.get('rating_electrical', 0))
+        ),
     ]
     
     col_widths = [(CONTENT_WIDTH - 28) * 0.36, (CONTENT_WIDTH - 28) * 0.64]
@@ -623,19 +641,35 @@ def generate_pdf(data, image_files):
     # VEHICLE DETAILS - 2 COLUMN
     story.append(create_section_header('Vehicle Registration Details'))
     vehicle_data = [
-        ('Vehicle Number', data.get('registrationNumber')),
-        ('Make / Model', f"{data.get('make', '')} {data.get('model', '')}"),
-        ('Variant', data.get('variant')),
-        ('Chassis Number', data.get('chassisNumber') or data.get('vinNumber')),
-        ('Engine Number', data.get('engineNumber')),
-        ('Manufacture Year', data.get('manufactureYear')),
-        ('Registration Date', data.get('registrationDate')),
-        ('Fuel Type', data.get('fuelType')),
-        ('Color', data.get('color')),
-        ('Odometer Reading', f"{data.get('odometerReading', '')} km"),
-        ('Number of Owners', data.get('ownersCount')),
+        (bilingual_text('Vehicle Number', 'गाड़ी नंबर'), data.get('registrationNumber')),
+        (bilingual_text('Make / Model', 'कंपनी / मॉडल'), f"{data.get('make', '')} {data.get('model', '')}"),
+        (bilingual_text('Variant', 'वेरिएंट'), data.get('variant')),
+        (bilingual_text('Chassis Number', 'चेसिस नंबर'), data.get('chassisNumber') or data.get('vinNumber')),
+        (bilingual_text('Engine Number', 'इंजन नंबर'), data.get('engineNumber')),
+        (bilingual_text('Manufacturing Date', 'वाहन निर्माण की तारीख'), data.get('manufactureYear')),
+        (bilingual_text('Registration Date', 'वाहन पंजीकरण तारीख'), data.get('registrationDate')),
+        (bilingual_text('Fuel Type', 'ईंधन प्रकार'), data.get('fuelType')),
+        (bilingual_text('Color', 'रंग'), data.get('color')),
+        (bilingual_text('Odometer Reading', 'ओडोमीटर रीडिंग'), f"{data.get('odometerReading', '')} km"),
+        (bilingual_text('Number of Owners', 'मालिकों की संख्या'), data.get('ownersCount')),
+        (bilingual_text('RC Type', 'आर सी प्रकार'), data.get('rcType', 'Individual')),
+        (bilingual_text('Hypothecation', 'लोन'), data.get('hypothecation', 'No')),
     ]
+    
+    # Add CNG details if applicable
+    if data.get('fuelType', '').upper() in ['CNG', 'CNG+PETROL', 'PETROL+CNG']:
+        vehicle_data.extend([
+            (bilingual_text('CNG Fitment Type', 'CNG फिटमेंट प्रकार'), data.get('cng_fitment_type', 'N/A')),
+            (bilingual_text('CNG Validity Date', 'CNG वैधता तिथि'), data.get('cng_validity_date', 'N/A')),
+            (bilingual_text('CNG Endorsed on RC', 'RC पर CNG endorsed'), data.get('cng_endorsed_rc', 'N/A')),
+        ])
+    
     story.append(create_two_column_card_table(vehicle_data))
+    story.append(Spacer(1, 12))
+    
+    # RATINGS SECTION
+    story.append(create_section_header('Overall Ratings'))
+    story.append(create_ratings_card(data))
     story.append(Spacer(1, 12))
     
     # OWNER DETAILS - 2 COLUMN
