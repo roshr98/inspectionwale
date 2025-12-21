@@ -598,6 +598,113 @@ def create_image_grid(image_files, captions):
             ('TOPPADDING', (0, 1), (0, 1), 6),
             ('BOTTOMPADDING', (0, 1), (0, 1), 10),
         ]))
+
+
+def create_highlights_card(data):
+    """Create Key Highlights card with bilingual labels"""
+    highlights_data = [
+        (bilingual_text('Is car Accidental', 'क्या कार दुर्घटनाग्रस्त है'), data.get('isAccidental', 'No')),
+        (bilingual_text('Flood Damage', 'बाढ़ क्षति'), data.get('floodDamage', 'No')),
+        (bilingual_text('RC & Chassis Match', 'आरसी और चेसिस मेल'), data.get('rcChassisMatch', 'Yes')),
+        (bilingual_text('Fire Damage', 'आग क्षति'), data.get('fireDamage', 'No')),
+        (bilingual_text('Service Log Available', 'सर्विस लॉग'), data.get('serviceLogAvailable', 'No')),
+        (bilingual_text('Insurance Type', 'बीमा प्रकार'), data.get('insuranceType', 'Comprehensive')),
+        (bilingual_text('Insurance Validity', 'बीमा वैधता'), data.get('insuranceValidity', 'N/A')),
+    ]
+    return create_two_column_card_table(highlights_data)
+
+
+def create_additional_comments_card(data):
+    """Create Additional Comments card with bilingual section headers"""
+    comments_sections = [
+        (bilingual_text('Engine Comment', 'इंजन टिप्पणी'), data.get('engineComment', '')),
+        (bilingual_text('Structure Comment', 'संरचना टिप्पणी'), data.get('structureComment', '')),
+        (bilingual_text('Test Drive Comment', 'टेस्ट ड्राइव टिप्पणी'), data.get('testDriveComment', '')),
+        (bilingual_text('Exterior Comment', 'बाहरी टिप्पणी'), data.get('exteriorComment', '')),
+        (bilingual_text('Interior Comment', 'आंतरिक टिप्पणी'), data.get('interiorComment', '')),
+    ]
+    
+    # Filter out empty comments
+    comments_data = [(label, comment) for label, comment in comments_sections if comment]
+    
+    if not comments_data:
+        return None
+    
+    return create_two_column_card_table(comments_data)
+
+
+def create_document_images_grid(image_files):
+    """Create 2x2 grid for document images with bilingual captions"""
+    if not image_files:
+        return None
+    
+    # Define document image fields with bilingual captions
+    doc_fields = [
+        ('doc_rhs_apron', bilingual_text('RHS Apron', 'दाहिनी एप्रन')),
+        ('doc_lhs_apron', bilingual_text('LHS Apron', 'बाईं एप्रन')),
+        ('doc_chassis_plate', bilingual_text('Chassis Plate', 'चेसिस प्लेट')),
+        ('doc_cng_plate', bilingual_text('CNG Plate', 'सीएनजी प्लेट')),
+    ]
+    
+    image_width = (CONTENT_WIDTH - 12) / 2
+    image_height = 65 * mm
+    
+    rows = []
+    row_data = []
+    
+    for field_name, caption in doc_fields:
+        if field_name in image_files:
+            img_obj = io.BytesIO(image_files[field_name]['content'])
+            img = RLImage(img_obj, width=image_width, height=image_height)
+            
+            caption_style = ParagraphStyle(
+                'DocCaption',
+                fontSize=FONT_BODY,
+                fontName=f'{FONT_FAMILY}-Bold',
+                textColor=COLOR_LABEL,
+                alignment=TA_CENTER
+            )
+            caption_para = Paragraph(caption, caption_style)
+            
+            cell_data = [[caption_para], [img]]
+            cell_table = Table(cell_data, colWidths=[image_width])
+            cell_table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (0, 1), COLOR_CARD_BG),
+                ('BOX', (0, 0), (0, 1), 1, COLOR_BORDER),
+                ('ALIGN', (0, 0), (0, 1), 'CENTER'),
+                ('VALIGN', (0, 0), (0, 1), 'MIDDLE'),
+                ('TOPPADDING', (0, 0), (0, 0), 8),
+                ('BOTTOMPADDING', (0, 0), (0, 0), 6),
+                ('TOPPADDING', (0, 1), (0, 1), 6),
+                ('BOTTOMPADDING', (0, 1), (0, 1), 8),
+            ]))
+            
+            row_data.append(cell_table)
+            
+            # Create row every 2 images
+            if len(row_data) == 2:
+                rows.append(row_data)
+                row_data = []
+    
+    # Add remaining images if any
+    if row_data:
+        while len(row_data) < 2:
+            row_data.append('')  # Empty cell
+        rows.append(row_data)
+    
+    if not rows:
+        return None
+    
+    grid_table = Table(rows, colWidths=[image_width, image_width])
+    grid_table.setStyle(TableStyle([
+        ('LEFTPADDING', (0, 0), (-1, -1), 0),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+        ('TOPPADDING', (0, 0), (-1, -1), 0),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+    ]))
+    
+    return grid_table
         
         row_data.append(cell_table)
         
@@ -690,14 +797,28 @@ def generate_pdf(data, image_files):
         ('Inspection Date', datetime.now().strftime('%d %b %Y')),
     ]
     story.append(create_two_column_card_table(inspector_data))
+    
+    # PAGE BREAK BEFORE PAGE 2
+    story.append(PageBreak())
+    
+    # PAGE 2: KEY HIGHLIGHTS + DOCUMENTS
+    story.append(create_section_header('Key Highlights'))
+    story.append(create_highlights_card(data))
     story.append(Spacer(1, 12))
     
-    # KEY HIGHLIGHTS
-    story.append(create_section_header('Key Highlights'))
-    highlights = data.get('highlights', 'No highlights provided.')
-    highlights_text = f'<font face="Helvetica">{highlights}</font>'
-    story.append(create_notes_card(highlights_text))
-    story.append(Spacer(1, 12))
+    # ADDITIONAL COMMENTS
+    comments_card = create_additional_comments_card(data)
+    if comments_card:
+        story.append(create_section_header('Additional Comments'))
+        story.append(comments_card)
+        story.append(Spacer(1, 12))
+    
+    # DOCUMENT IMAGES (2x2 grid)
+    doc_images_grid = create_document_images_grid(image_files)
+    if doc_images_grid:
+        story.append(create_section_header('Important Documents'))
+        story.append(doc_images_grid)
+        story.append(Spacer(1, 12))
     
     # DETAILED NOTES
     if data.get('paintNotes') or data.get('interiorNotes') or data.get('engineNotes'):
