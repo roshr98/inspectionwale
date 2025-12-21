@@ -671,6 +671,59 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="form-label">Is Car Accidental? <span class="required">*</span></label>
+                            <div class="rating-group">
+                                <div class="rating-option">
+                                    <input type="radio" id="isAccidentalNo" name="isAccidental" value="No" checked>
+                                    <label for="isAccidentalNo" class="rating-label">✓ No</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" id="isAccidentalYes" name="isAccidental" value="Yes">
+                                    <label for="isAccidentalYes" class="rating-label">✗ Yes</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">RC & Chassis Match? <span class="required">*</span></label>
+                            <div class="rating-group">
+                                <div class="rating-option">
+                                    <input type="radio" id="rcMatchYes" name="rcChassisMatch" value="Yes" checked>
+                                    <label for="rcMatchYes" class="rating-label">✓ Yes</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" id="rcMatchNo" name="rcChassisMatch" value="No">
+                                    <label for="rcMatchNo" class="rating-label">✗ No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Service Log Available? <span class="required">*</span></label>
+                            <div class="rating-group">
+                                <div class="rating-option">
+                                    <input type="radio" id="serviceLogYes" name="serviceLogAvailable" value="Yes">
+                                    <label for="serviceLogYes" class="rating-label">✓ Yes</label>
+                                </div>
+                                <div class="rating-option">
+                                    <input type="radio" id="serviceLogNo" name="serviceLogAvailable" value="No" checked>
+                                    <label for="serviceLogNo" class="rating-label">✗ No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Insurance Type <span class="required">*</span></label>
+                            <select class="form-select" name="insuranceType" required>
+                                <option value="">Select</option>
+                                <option value="Comprehensive">Comprehensive / व्यापक</option>
+                                <option value="Third Party">Third Party / तृतीय पक्ष</option>
+                                <option value="Expired">Expired / समाप्त</option>
+                                <option value="None">None / कोई नहीं</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Insurance Validity Date</label>
+                            <input type="date" class="form-input" name="insuranceValidity">
+                        </div>
                     </div>
                     <div class="form-group" style="margin-top: 20px;">
                         <label class="form-label">Top Comments / Key Highlights</label>
@@ -2319,6 +2372,31 @@
                     <div class="form-group" style="margin-top: 30px;">
                         <label class="form-label">Test Drive Observations</label>
                         <textarea class="form-textarea" name="testDriveNotes" placeholder="Engine performance, gear shifting, brakes response, handling, noise levels, vibrations, AC performance..."></textarea>
+                    </div>
+
+                    <!-- SECTION-SPECIFIC COMMENTS -->
+                    <div class="photo-section-title" style="margin-top: 30px;">
+                        <i class="fas fa-comments"></i> Section-Specific Comments (Optional)
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Engine Comment</label>
+                        <textarea class="form-textarea" name="engineComment" placeholder="Overall comment on engine condition..." rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Structure Comment</label>
+                        <textarea class="form-textarea" name="structureComment" placeholder="Overall comment on structure/body integrity..." rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Test Drive Comment</label>
+                        <textarea class="form-textarea" name="testDriveComment" placeholder="Overall comment on test drive performance..." rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Exterior Comment</label>
+                        <textarea class="form-textarea" name="exteriorComment" placeholder="Overall comment on exterior condition..." rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Interior Comment</label>
+                        <textarea class="form-textarea" name="interiorComment" placeholder="Overall comment on interior condition..." rows="2"></textarea>
                     </div>
 
                     <div class="form-group" style="margin-top: 30px;">
