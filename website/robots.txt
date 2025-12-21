@@ -8,12 +8,13 @@ Sitemap: https://www.inspectionwale.com/sitemap.xml
 Disallow: /inspector-*.html$
 Disallow: /password-*.html$
 Disallow: /pdf_template.html
+Disallow: /inspector-form-auto-fill-script.js
 
-# Block development files
+# Block development/documentation files
 Disallow: /amplify/
+Disallow: /docs/
+Disallow: /archive/
 Disallow: /*.json$
-Disallow: /deploy-*.ps1$
-Disallow: /deploy-*.sh$
 Disallow: /*.md$
 
 # Block unused template image directory
@@ -24,5 +25,3 @@ Allow: /css/
 Allow: /js/
 Allow: /lib/
 Allow: /Images/
-
-Sitemap: https://www.inspectionwale.com/sitemap.xml
