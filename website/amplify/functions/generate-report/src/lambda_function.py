@@ -708,82 +708,166 @@ def create_document_images_grid(image_files):
 
 
 def create_exterior_page(page_title, image_field, data_fields, image_files, data):
-    """Generic function to create exterior pages with image and details"""
+    """Generic function to create exterior pages with BIG image on LEFT, content on RIGHT and BOTTOM"""
+    from reportlab.platypus import KeepTogether
+    
     elements = []
     
-    # Page title
-    elements.append(create_section_header(page_title))
+    # Page title (keep with content)
+    title = create_section_header(page_title)
     
     # Check if image exists
     has_image = image_field in image_files
     
     if has_image:
-        # Image on left, details on right layout
-        image_width = (CONTENT_WIDTH - 6) * 0.45
-        details_width = (CONTENT_WIDTH - 6) * 0.55
-        image_height = 80 * mm
+        # LAYOUT: Big image LEFT (60%), smaller content RIGHT (40%)
+        image_width = CONTENT_WIDTH * 0.58
+        content_width = CONTENT_WIDTH * 0.38
+        image_height = 110 * mm  # BIGGER image
         
         img_obj = io.BytesIO(image_files[image_field]['content'])
         img = RLImage(img_obj, width=image_width, height=image_height)
         
-        # Image card
+        # Image card with border
         img_table = Table([[img]], colWidths=[image_width])
         img_table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (0, 0), COLOR_CARD_BG),
             ('BOX', (0, 0), (0, 0), 1, COLOR_BORDER),
             ('ALIGN', (0, 0), (0, 0), 'CENTER'),
             ('VALIGN', (0, 0), (0, 0), 'MIDDLE'),
-            ('TOPPADDING', (0, 0), (0, 0), 10),
-            ('BOTTOMPADDING', (0, 0), (0, 0), 10),
+            ('TOPPADDING', (0, 0), (0, 0), 8),
+            ('BOTTOMPADDING', (0, 0), (0, 0), 8),
+            ('LEFTPADDING', (0, 0), (0, 0), 8),
+            ('RIGHTPADDING', (0, 0), (0, 0), 8),
         ]))
         
-        # Details card
-        details_data = [(label, data.get(field, 'N/A')) for label, field in data_fields]
-        details_table_data = []
-        for label, value in details_data:
-            details_table_data.append([label, value])
+        # TOP section: key details (compact, right side)
+        top_details = data_fields[:min(6, len(data_fields))]  # First 6 fields
+        top_data = []
+        for label, field in top_details:
+            value = data.get(field, 'N/A')
+            top_data.append([label, value])
         
-        details_inner = Table(details_table_data, colWidths=[details_width * 0.55, details_width * 0.45])
-        details_inner.setStyle(TableStyle([
-            ('FONT', (0, 0), (0, -1), f'{FONT_FAMILY}-Bold', FONT_SMALL),
-            ('FONT', (1, 0), (1, -1), FONT_FAMILY, FONT_SMALL),
+        top_table = Table(top_data, colWidths=[content_width * 0.6, content_width * 0.4])
+        top_table.setStyle(TableStyle([
+            ('FONT', (0, 0), (0, -1), f'{FONT_FAMILY}-Bold', FONT_SMALL - 1),
+            ('FONT', (1, 0), (1, -1), FONT_FAMILY, FONT_SMALL - 1),
             ('TEXTCOLOR', (0, 0), (0, -1), COLOR_LABEL),
             ('TEXTCOLOR', (1, 0), (1, -1), COLOR_TEXT),
             ('LEFTPADDING', (0, 0), (-1, -1), 0),
             ('RIGHTPADDING', (0, 0), (-1, -1), 0),
-            ('TOPPADDING', (0, 0), (-1, -1), 6),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
+            ('TOPPADDING', (0, 0), (-1, -1), 4),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
             ('VALIGN', (0, 0), (-1, -1), 'TOP'),
         ]))
         
-        details_card = Table([[details_inner]], colWidths=[details_width])
-        details_card.setStyle(TableStyle([
+        top_card = Table([[top_table]], colWidths=[content_width])
+        top_card.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (0, 0), COLOR_CARD_BG),
             ('BOX', (0, 0), (0, 0), 1, COLOR_BORDER),
-            ('LEFTPADDING', (0, 0), (0, 0), 12),
-            ('RIGHTPADDING', (0, 0), (0, 0), 12),
-            ('TOPPADDING', (0, 0), (0, 0), 12),
-            ('BOTTOMPADDING', (0, 0), (0, 0), 12),
+            ('LEFTPADDING', (0, 0), (0, 0), 10),
+            ('RIGHTPADDING', (0, 0), (0, 0), 10),
+            ('TOPPADDING', (0, 0), (0, 0), 10),
+            ('BOTTOMPADDING', (0, 0), (0, 0), 10),
             ('VALIGN', (0, 0), (0, 0), 'TOP'),
         ]))
         
-        # Combine image and details side by side
-        page_table = Table([[img_table, details_card]], colWidths=[image_width, details_width])
-        page_table.setStyle(TableStyle([
+        # TOP ROW: Image LEFT + Key Details RIGHT
+        top_row = Table([[img_table, top_card]], colWidths=[image_width, content_width])
+        top_row.setStyle(TableStyle([
             ('LEFTPADDING', (0, 0), (-1, -1), 0),
-            ('RIGHTPADDING', (0, 0), (0, 0), 6),
+            ('RIGHTPADDING', (0, 0), (0, 0), 8),
             ('TOPPADDING', (0, 0), (-1, -1), 0),
             ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
             ('VALIGN', (0, 0), (-1, -1), 'TOP'),
         ]))
         
-        elements.append(page_table)
+        # BOTTOM section: remaining details (full width below)
+        if len(data_fields) > 6:
+            bottom_details = data_fields[6:]
+            bottom_data = []
+            for label, field in bottom_details:
+                value = data.get(field, 'N/A')
+                bottom_data.append([label, value])
+            
+            # Split into 2 columns
+            col1_data = bottom_data[:len(bottom_data)//2 + len(bottom_data)%2]
+            col2_data = bottom_data[len(bottom_data)//2 + len(bottom_data)%2:]
+            
+            # Equalize lengths
+            while len(col1_data) > len(col2_data):
+                col2_data.append(['', ''])
+            
+            col_width = (CONTENT_WIDTH - 12) / 2
+            
+            col1_table = Table(col1_data, colWidths=[col_width * 0.6, col_width * 0.4])
+            col1_table.setStyle(TableStyle([
+                ('FONT', (0, 0), (0, -1), f'{FONT_FAMILY}-Bold', FONT_SMALL - 1),
+                ('FONT', (1, 0), (1, -1), FONT_FAMILY, FONT_SMALL - 1),
+                ('TEXTCOLOR', (0, 0), (0, -1), COLOR_LABEL),
+                ('TEXTCOLOR', (1, 0), (1, -1), COLOR_TEXT),
+                ('LEFTPADDING', (0, 0), (-1, -1), 0),
+                ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+                ('TOPPADDING', (0, 0), (-1, -1), 4),
+                ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
+                ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+            ]))
+            
+            col2_table = Table(col2_data, colWidths=[col_width * 0.6, col_width * 0.4])
+            col2_table.setStyle(TableStyle([
+                ('FONT', (0, 0), (0, -1), f'{FONT_FAMILY}-Bold', FONT_SMALL - 1),
+                ('FONT', (1, 0), (1, -1), FONT_FAMILY, FONT_SMALL - 1),
+                ('TEXTCOLOR', (0, 0), (0, -1), COLOR_LABEL),
+                ('TEXTCOLOR', (1, 0), (1, -1), COLOR_TEXT),
+                ('LEFTPADDING', (0, 0), (-1, -1), 0),
+                ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+                ('TOPPADDING', (0, 0), (-1, -1), 4),
+                ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
+                ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+            ]))
+            
+            bottom_row = Table([[col1_table, col2_table]], colWidths=[col_width, col_width])
+            bottom_row.setStyle(TableStyle([
+                ('LEFTPADDING', (0, 0), (-1, -1), 0),
+                ('RIGHTPADDING', (0, 0), (0, 0), 12),
+                ('TOPPADDING', (0, 0), (-1, -1), 0),
+                ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
+                ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+            ]))
+            
+            bottom_card = Table([[bottom_row]], colWidths=[CONTENT_WIDTH])
+            bottom_card.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (0, 0), COLOR_CARD_BG),
+                ('BOX', (0, 0), (0, 0), 1, COLOR_BORDER),
+                ('LEFTPADDING', (0, 0), (0, 0), 12),
+                ('RIGHTPADDING', (0, 0), (0, 0), 12),
+                ('TOPPADDING', (0, 0), (0, 0), 10),
+                ('BOTTOMPADDING', (0, 0), (0, 0), 10),
+            ]))
+            
+            # KEEP EVERYTHING TOGETHER: Title + Top Row + Bottom Details
+            elements = [KeepTogether([
+                title,
+                Spacer(1, 8),
+                top_row,
+                Spacer(1, 8),
+                bottom_card
+            ])]
+        else:
+            # Only top section if <= 6 fields
+            elements = [KeepTogether([
+                title,
+                Spacer(1, 8),
+                top_row
+            ])]
     else:
-        # No image, just show details
+        # No image, just show details in 2 columns
         details_data = [(label, data.get(field, 'N/A')) for label, field in data_fields]
         details_card = create_two_column_card_table(details_data)
-        elements.append(details_card)
+        elements = [KeepTogether([title, Spacer(1, 8), details_card])]
     
+    # Add spacing after section
+    elements.append(Spacer(1, 12))
     return elements
 
 
@@ -898,8 +982,7 @@ def generate_pdf(data, image_files):
         (bilingual_text('Front Windshield Condition', 'विंडशील्ड की स्थिति'), 'front_windshield_condition'),
         (bilingual_text('Headlight Condition', 'हेडलाइट की स्थिति'), 'headlight_condition'),
     ]
-    for element in create_exterior_page('Front Exterior', 'photo_front', front_fields, image_files, data):
-        story.append(element)
+    story.extend(create_exterior_page('Front Exterior', 'photo_front', front_fields, image_files, data))
     
     # PAGE 4: RHS EXTERIOR
     story.append(PageBreak())
@@ -921,8 +1004,7 @@ def generate_pdf(data, image_files):
         (bilingual_text('RHS Windows Original', 'विंडोज़ मूल'), 'is_rhs_windows_company_fitted'),
         (bilingual_text('RHS Side Mirror Condition', 'साइड मिरर'), 'rhs_side_mirror_condition'),
     ]
-    for element in create_exterior_page('Right Side (RHS) Exterior', 'photo_rhs', rhs_fields, image_files, data):
-        story.append(element)
+    story.extend(create_exterior_page('Right Side (RHS) Exterior', 'photo_rhs', rhs_fields, image_files, data))
     
     # PAGE 5: LHS EXTERIOR
     story.append(PageBreak())
@@ -944,8 +1026,7 @@ def generate_pdf(data, image_files):
         (bilingual_text('LHS Windows Original', 'विंडोज़ मूल'), 'is_lhs_windows_company_fitted'),
         (bilingual_text('LHS Side Mirror Condition', 'साइड मिरर'), 'lhs_side_mirror_condition'),
     ]
-    for element in create_exterior_page('Left Side (LHS) Exterior', 'photo_lhs', lhs_fields, image_files, data):
-        story.append(element)
+    story.extend(create_exterior_page('Left Side (LHS) Exterior', 'photo_lhs', lhs_fields, image_files, data))
     
     # PAGE 6: REAR EXTERIOR
     story.append(PageBreak())
@@ -965,8 +1046,7 @@ def generate_pdf(data, image_files):
         (bilingual_text('Paint Depth (µm)', 'पेंट की गहराई'), 'paint_depth_roof'),
         (bilingual_text('Is Repainted', 'फिर से रंगा गया'), 'is_roof_repainted'),
     ]
-    for element in create_exterior_page('Rear Exterior', 'photo_rear', rear_fields, image_files, data):
-        story.append(element)
+    story.extend(create_exterior_page('Rear Exterior', 'photo_rear', rear_fields, image_files, data))
     
     # PAGES 7-8: INTERIOR
     story.append(PageBreak())
@@ -999,8 +1079,7 @@ def generate_pdf(data, image_files):
         (bilingual_text('Power Windows', 'पावर विंडोज़'), 'power_windows_working'),
     ]
     story.append(create_section_header('Interior - Dashboard & Controls'))
-    for element in create_exterior_page('', 'photo_dashboard', dashboard_fields, image_files, data):
-        story.append(element)
+    story.extend(create_exterior_page('', 'photo_dashboard', dashboard_fields, image_files, data))
     
     story.append(Spacer(1, 12))
     story.append(PageBreak())
@@ -1022,8 +1101,7 @@ def generate_pdf(data, image_files):
         (bilingual_text('Jack & Car Kit', 'जैक किट'), 'jack_car_kit_available'),
     ]
     story.append(create_section_header('Interior - Seats & Cabin'))
-    for element in create_exterior_page('', 'photo_cabin', cabin_fields, image_files, data):
-        story.append(element)
+    story.extend(create_exterior_page('', 'photo_cabin', cabin_fields, image_files, data))
     
     # PAGE 9: ENGINE
     story.append(Spacer(1, 12))
@@ -1042,8 +1120,7 @@ def generate_pdf(data, image_files):
         (bilingual_text('Repair Cost (₹)', 'मरम्मत लागत'), 'engine_repair_cost'),
     ]
     story.append(create_section_header('Engine Inspection'))
-    for element in create_exterior_page('', 'photo_engine', engine_fields, image_files, data):
-        story.append(element)
+    story.extend(create_exterior_page('', 'photo_engine', engine_fields, image_files, data))
     
     # PAGE 10: TIRES/WHEELS
     story.append(Spacer(1, 12))
