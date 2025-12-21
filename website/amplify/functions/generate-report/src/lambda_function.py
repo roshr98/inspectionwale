@@ -705,27 +705,90 @@ def create_document_images_grid(image_files):
     ]))
     
     return grid_table
+
+
+def create_exterior_page(page_title, image_field, data_fields, image_files, data):
+    """Generic function to create exterior pages with image and details"""
+    elements = []
+    
+    # Page title
+    elements.append(create_section_header(page_title))
+    
+    # Check if image exists
+    has_image = image_field in image_files
+    
+    if has_image:
+        # Image on left, details on right layout
+        image_width = (CONTENT_WIDTH - 6) * 0.45
+        details_width = (CONTENT_WIDTH - 6) * 0.55
+        image_height = 80 * mm
         
-        row_data.append(cell_table)
+        img_obj = io.BytesIO(image_files[image_field]['content'])
+        img = RLImage(img_obj, width=image_width, height=image_height)
         
-        if len(row_data) == 3 or i == len(image_files) - 1:
-            while len(row_data) < 3:
-                row_data.append('')
-            
-            row_table = Table([row_data], colWidths=[image_width] * 3)
-            row_table.setStyle(TableStyle([
-                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-                ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-            ]))
-            elements.append(row_table)
-            elements.append(Spacer(1, 12))
-            row_data = []
+        # Image card
+        img_table = Table([[img]], colWidths=[image_width])
+        img_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (0, 0), COLOR_CARD_BG),
+            ('BOX', (0, 0), (0, 0), 1, COLOR_BORDER),
+            ('ALIGN', (0, 0), (0, 0), 'CENTER'),
+            ('VALIGN', (0, 0), (0, 0), 'MIDDLE'),
+            ('TOPPADDING', (0, 0), (0, 0), 10),
+            ('BOTTOMPADDING', (0, 0), (0, 0), 10),
+        ]))
+        
+        # Details card
+        details_data = [(label, data.get(field, 'N/A')) for label, field in data_fields]
+        details_table_data = []
+        for label, value in details_data:
+            details_table_data.append([label, value])
+        
+        details_inner = Table(details_table_data, colWidths=[details_width * 0.55, details_width * 0.45])
+        details_inner.setStyle(TableStyle([
+            ('FONT', (0, 0), (0, -1), f'{FONT_FAMILY}-Bold', FONT_SMALL),
+            ('FONT', (1, 0), (1, -1), FONT_FAMILY, FONT_SMALL),
+            ('TEXTCOLOR', (0, 0), (0, -1), COLOR_LABEL),
+            ('TEXTCOLOR', (1, 0), (1, -1), COLOR_TEXT),
+            ('LEFTPADDING', (0, 0), (-1, -1), 0),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+            ('TOPPADDING', (0, 0), (-1, -1), 6),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
+            ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ]))
+        
+        details_card = Table([[details_inner]], colWidths=[details_width])
+        details_card.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (0, 0), COLOR_CARD_BG),
+            ('BOX', (0, 0), (0, 0), 1, COLOR_BORDER),
+            ('LEFTPADDING', (0, 0), (0, 0), 12),
+            ('RIGHTPADDING', (0, 0), (0, 0), 12),
+            ('TOPPADDING', (0, 0), (0, 0), 12),
+            ('BOTTOMPADDING', (0, 0), (0, 0), 12),
+            ('VALIGN', (0, 0), (0, 0), 'TOP'),
+        ]))
+        
+        # Combine image and details side by side
+        page_table = Table([[img_table, details_card]], colWidths=[image_width, details_width])
+        page_table.setStyle(TableStyle([
+            ('LEFTPADDING', (0, 0), (-1, -1), 0),
+            ('RIGHTPADDING', (0, 0), (0, 0), 6),
+            ('TOPPADDING', (0, 0), (-1, -1), 0),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
+            ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ]))
+        
+        elements.append(page_table)
+    else:
+        # No image, just show details
+        details_data = [(label, data.get(field, 'N/A')) for label, field in data_fields]
+        details_card = create_two_column_card_table(details_data)
+        elements.append(details_card)
     
     return elements
 
 
 def generate_pdf(data, image_files):
-    """Generate PDF with final design"""
+    \"\"\"Generate PDF with final design\"\"\"
     buffer = io.BytesIO()
     
     doc = SimpleDocTemplate(
@@ -819,6 +882,91 @@ def generate_pdf(data, image_files):
         story.append(create_section_header('Important Documents'))
         story.append(doc_images_grid)
         story.append(Spacer(1, 12))
+    
+    # PAGE 3: FRONT EXTERIOR
+    story.append(PageBreak())
+    front_fields = [
+        (bilingual_text('Front Bumper Condition', 'सामने बम्पर की स्थिति'), 'front_bumper_condition'),
+        (bilingual_text('Paint Depth (µm)', 'पेंट की गहराई'), 'paint_depth_front_bumper'),
+        (bilingual_text('Is Repainted', 'क्या फिर से रंगा गया'), 'is_front_bumper_repainted'),
+        (bilingual_text('Hood/Bonnet Condition', 'बोनट की स्थिति'), 'hood_condition'),
+        (bilingual_text('Bonnet Paint Depth (µm)', 'बोनट पेंट की गहराई'), 'paint_depth_hood'),
+        (bilingual_text('Is Bonnet Repainted', 'क्या बोनट फिर से रंगा गया'), 'is_hood_repainted'),
+        (bilingual_text('Is Bonnet Company Fitted', 'क्या कंपनी फिटेड है'), 'is_hood_company_fitted'),
+        (bilingual_text('Front Grill Condition', 'सामने ग्रिल'), 'front_grill_condition'),
+        (bilingual_text('Is Front Windshield Original', 'क्या विंडशील्ड मूल है'), 'is_front_windshield_original'),
+        (bilingual_text('Front Windshield Condition', 'विंडशील्ड की स्थिति'), 'front_windshield_condition'),
+        (bilingual_text('Headlight Condition', 'हेडलाइट की स्थिति'), 'headlight_condition'),
+    ]
+    for element in create_exterior_page('Front Exterior', 'photo_front', front_fields, image_files, data):
+        story.append(element)
+    
+    # PAGE 4: RHS EXTERIOR
+    story.append(PageBreak())
+    rhs_fields = [
+        (bilingual_text('RHS Fender Condition', 'दाएं फेंडर'), 'rhs_fender_condition'),
+        (bilingual_text('Paint Depth (µm)', 'पेंट की गहराई'), 'paint_depth_rhs_fender'),
+        (bilingual_text('Is Repainted', 'फिर से रंगा गया'), 'is_rhs_fender_repainted'),
+        (bilingual_text('RHS Front Door Condition', 'दाएं सामने दरवाज़ा'), 'rhs_front_door_condition'),
+        (bilingual_text('Paint Depth (µm)', 'पेंट की गहराई'), 'paint_depth_rhs_front_door'),
+        (bilingual_text('Is Repainted', 'फिर से रंगा गया'), 'is_rhs_front_door_repainted'),
+        (bilingual_text('Is Company Fitted', 'कंपनी फिटेड'), 'is_rhs_front_door_company_fitted'),
+        (bilingual_text('RHS Quarter Panel Condition', 'क्वार्टर पैनल'), 'rhs_quarter_panel_condition'),
+        (bilingual_text('Paint Depth (µm)', 'पेंट की गहराई'), 'paint_depth_rhs_quarter'),
+        (bilingual_text('Is Repainted', 'फिर से रंगा गया'), 'is_rhs_quarter_repainted'),
+        (bilingual_text('RHS Rear Door Condition', 'पीछे दरवाज़ा'), 'rhs_rear_door_condition'),
+        (bilingual_text('Paint Depth (µm)', 'पेंट की गहराई'), 'paint_depth_rhs_rear_door'),
+        (bilingual_text('Is Repainted', 'फिर से रंगा गया'), 'is_rhs_rear_door_repainted'),
+        (bilingual_text('Is Company Fitted', 'कंपनी फिटेड'), 'is_rhs_rear_door_company_fitted'),
+        (bilingual_text('RHS Windows Original', 'विंडोज़ मूल'), 'is_rhs_windows_company_fitted'),
+        (bilingual_text('RHS Side Mirror Condition', 'साइड मिरर'), 'rhs_side_mirror_condition'),
+    ]
+    for element in create_exterior_page('Right Side (RHS) Exterior', 'photo_rhs', rhs_fields, image_files, data):
+        story.append(element)
+    
+    # PAGE 5: LHS EXTERIOR
+    story.append(PageBreak())
+    lhs_fields = [
+        (bilingual_text('LHS Fender Condition', 'बाएं फेंडर'), 'lhs_fender_condition'),
+        (bilingual_text('Paint Depth (µm)', 'पेंट की गहराई'), 'paint_depth_lhs_fender'),
+        (bilingual_text('Is Repainted', 'फिर से रंगा गया'), 'is_lhs_fender_repainted'),
+        (bilingual_text('LHS Front Door Condition', 'बाएं सामने दरवाज़ा'), 'lhs_front_door_condition'),
+        (bilingual_text('Paint Depth (µm)', 'पेंट की गहराई'), 'paint_depth_lhs_front_door'),
+        (bilingual_text('Is Repainted', 'फिर से रंगा गया'), 'is_lhs_front_door_repainted'),
+        (bilingual_text('Is Company Fitted', 'कंपनी फिटेड'), 'is_lhs_front_door_company_fitted'),
+        (bilingual_text('LHS Quarter Panel Condition', 'क्वार्टर पैनल'), 'lhs_quarter_panel_condition'),
+        (bilingual_text('Paint Depth (µm)', 'पेंट की गहराई'), 'paint_depth_lhs_quarter'),
+        (bilingual_text('Is Repainted', 'फिर से रंगा गया'), 'is_lhs_quarter_repainted'),
+        (bilingual_text('LHS Rear Door Condition', 'पीछे दरवाज़ा'), 'lhs_rear_door_condition'),
+        (bilingual_text('Paint Depth (µm)', 'पेंट की गहराई'), 'paint_depth_lhs_rear_door'),
+        (bilingual_text('Is Repainted', 'फिर से रंगा गया'), 'is_lhs_rear_door_repainted'),
+        (bilingual_text('Is Company Fitted', 'कंपनी फिटेड'), 'is_lhs_rear_door_company_fitted'),
+        (bilingual_text('LHS Windows Original', 'विंडोज़ मूल'), 'is_lhs_windows_company_fitted'),
+        (bilingual_text('LHS Side Mirror Condition', 'साइड मिरर'), 'lhs_side_mirror_condition'),
+    ]
+    for element in create_exterior_page('Left Side (LHS) Exterior', 'photo_lhs', lhs_fields, image_files, data):
+        story.append(element)
+    
+    # PAGE 6: REAR EXTERIOR
+    story.append(PageBreak())
+    rear_fields = [
+        (bilingual_text('Rear Bumper Condition', 'पीछे बम्पर'), 'rear_bumper_condition'),
+        (bilingual_text('Paint Depth (µm)', 'पेंट की गहराई'), 'paint_depth_rear_bumper'),
+        (bilingual_text('Is Repainted', 'फिर से रंगा गया'), 'is_rear_bumper_repainted'),
+        (bilingual_text('Rear Windshield Condition', 'पीछे विंडशील्ड'), 'rear_windshield_condition'),
+        (bilingual_text('Is Original', 'मूल है'), 'is_rear_windshield_original'),
+        (bilingual_text('Tail Gate Condition', 'टेल गेट'), 'tail_gate_condition'),
+        (bilingual_text('Paint Depth (µm)', 'पेंट की गहराई'), 'paint_depth_tail_gate'),
+        (bilingual_text('Is Repainted', 'फिर से रंगा गया'), 'is_tail_gate_repainted'),
+        (bilingual_text('Is Original', 'मूल है'), 'is_tail_gate_company_fitted'),
+        (bilingual_text('Tail Lights Condition', 'टेल लाइट्स'), 'tail_lights_condition'),
+        (bilingual_text('Roof Top Condition', 'छत'), 'roof_top_condition'),
+        (bilingual_text('Roof Type', 'छत प्रकार'), 'roof_type'),
+        (bilingual_text('Paint Depth (µm)', 'पेंट की गहराई'), 'paint_depth_roof'),
+        (bilingual_text('Is Repainted', 'फिर से रंगा गया'), 'is_roof_repainted'),
+    ]
+    for element in create_exterior_page('Rear Exterior', 'photo_rear', rear_fields, image_files, data):
+        story.append(element)
     
     # DETAILED NOTES
     if data.get('paintNotes') or data.get('interiorNotes') or data.get('engineNotes'):
