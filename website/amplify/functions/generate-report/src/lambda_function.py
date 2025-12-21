@@ -13,6 +13,7 @@ import boto3
 import io
 import base64
 import math
+import os
 from datetime import datetime
 from PIL import Image
 from reportlab.lib.pagesizes import A4
@@ -22,6 +23,20 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfgen import canvas
 from reportlab.lib.colors import HexColor
 from reportlab.graphics.shapes import Drawing, Polygon, String
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+
+# REGISTER HINDI FONT
+try:
+    FONT_PATH = os.path.join(os.path.dirname(__file__), '..', 'fonts', 'NotoSansDevanagari-Regular.ttf')
+    pdfmetrics.registerFont(TTFont('NotoSansHindi', FONT_PATH))
+    HINDI_FONT_AVAILABLE = True
+    print("✓ Hindi font loaded successfully")
+except Exception as e:
+    print(f"⚠ Warning: Could not load Hindi font: {e}")
+    HINDI_FONT_AVAILABLE = False
 
 # VIBRANT COLOR PALETTE
 COLOR_PRIMARY = HexColor('#004a99')      # Primary blue
@@ -45,6 +60,13 @@ FONT_SMALL = 11 * 0.75       # 8.25pt
 PAGE_MARGIN = 18 * mm
 PAGE_WIDTH, PAGE_HEIGHT = A4
 CONTENT_WIDTH = PAGE_WIDTH - (2 * PAGE_MARGIN)
+
+
+def bilingual_text(english, hindi):
+    """Create bilingual text: English / Hindi"""
+    if HINDI_FONT_AVAILABLE and hindi:
+        return f"{english} / {hindi}"
+    return english
 
 
 def compress_image(image_data, max_width=1200, max_height=1200, quality=85):
