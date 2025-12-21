@@ -18,13 +18,12 @@ from datetime import datetime
 from PIL import Image
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import mm
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image as RLImage, KeepTogether
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image as RLImage, KeepTogether, PageBreak
 from reportlab.lib.styles import ParagraphStyle
+from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT, TA_JUSTIFY
 from reportlab.pdfgen import canvas
 from reportlab.lib.colors import HexColor
 from reportlab.graphics.shapes import Drawing, Polygon, String
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 
@@ -633,10 +632,86 @@ def create_additional_comments_card(data):
     return create_two_column_card_table(comments_data)
 
 
-def create_document_images_grid(image_files):
-    """Create 2x2 grid for document images with bilingual captions"""
-    if not image_files:
+def create_single_image_card(image_field, image_files, title, content_fields=None, data=None):
+    """Create ONE card: image LEFT (48%), content RIGHT (48%)
+    This is the function used for ALL images to ensure individual cards"""
+    from reportlab.platypus import KeepTogether
+    
+    if image_field not in image_files:
         return None
+    
+    # Image dimensions
+    image_width = CONTENT_WIDTH * 0.48
+    content_right_width = CONTENT_WIDTH * 0.48
+    image_height = 95 * mm
+    
+    img_obj = io.BytesIO(image_files[image_field]['content'])
+    img = RLImage(img_obj, width=image_width, height=image_height)
+    
+    # If content fields provided, create content table
+    if content_fields and data:
+        content_data = []
+        for label, field in content_fields:
+            value = data.get(field, 'N/A')
+            content_data.append([label, value])
+        
+        content_table = Table(content_data, colWidths=[content_right_width * 0.58, content_right_width * 0.42])
+        content_table.setStyle(TableStyle([
+            ('FONT', (0, 0), (0, -1), f'{FONT_FAMILY}-Bold', FONT_SMALL),
+            ('FONT', (1, 0), (1, -1), FONT_FAMILY, FONT_SMALL),
+            ('TEXTCOLOR', (0, 0), (0, -1), COLOR_LABEL),
+            ('TEXTCOLOR', (1, 0), (1, -1), COLOR_TEXT),
+            ('LEFTPADDING', (0, 0), (-1, -1), 0),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+            ('TOPPADDING', (0, 0), (-1, -1), 5),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 5),
+            ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ]))
+        
+        card_content = [[img, content_table]]
+    else:
+        # Just image with title centered below
+        title_style = ParagraphStyle(
+            'ImageTitle',
+            fontSize=FONT_BODY,
+            fontName=f'{FONT_FAMILY}-Bold',
+            textColor=COLOR_LABEL,
+            alignment=TA_CENTER
+        )
+        title_para = Paragraph(title, title_style)
+        
+        # Center the image with title below
+        image_cell = [[img], [Spacer(1, 6)], [title_para]]
+        image_table = Table(image_cell, colWidths=[image_width])
+        image_table.setStyle(TableStyle([
+            ('LEFTPADDING', (0, 0), (-1, -1), 0),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+            ('TOPPADDING', (0, 0), (-1, -1), 0),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ]))
+        
+        card_content = [[image_table]]
+    
+    card_table = Table(card_content, colWidths=[image_width, content_right_width] if content_fields else [CONTENT_WIDTH])
+    card_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, -1), COLOR_CARD_BG),
+        ('BOX', (0, 0), (-1, -1), 1, COLOR_BORDER),
+        ('LEFTPADDING', (0, 0), (-1, -1), 12),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 12),
+        ('TOPPADDING', (0, 0), (-1, -1), 12),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+    ]))
+    
+    return KeepTogether([card_table])
+
+
+def create_document_images_individual_cards(image_files):
+    """Create INDIVIDUAL CARDS for each document image (not grid)"""
+    if not image_files:
+        return []
     
     # Define document image fields with bilingual captions
     doc_fields = [
@@ -646,65 +721,15 @@ def create_document_images_grid(image_files):
         ('doc_cng_plate', bilingual_text('CNG Plate', 'सीएनजी प्लेट')),
     ]
     
-    image_width = (CONTENT_WIDTH - 12) / 2
-    image_height = 65 * mm
-    
-    rows = []
-    row_data = []
-    
+    elements = []
     for field_name, caption in doc_fields:
         if field_name in image_files:
-            img_obj = io.BytesIO(image_files[field_name]['content'])
-            img = RLImage(img_obj, width=image_width, height=image_height)
-            
-            caption_style = ParagraphStyle(
-                'DocCaption',
-                fontSize=FONT_BODY,
-                fontName=f'{FONT_FAMILY}-Bold',
-                textColor=COLOR_LABEL,
-                alignment=TA_CENTER
-            )
-            caption_para = Paragraph(caption, caption_style)
-            
-            cell_data = [[caption_para], [img]]
-            cell_table = Table(cell_data, colWidths=[image_width])
-            cell_table.setStyle(TableStyle([
-                ('BACKGROUND', (0, 0), (0, 1), COLOR_CARD_BG),
-                ('BOX', (0, 0), (0, 1), 1, COLOR_BORDER),
-                ('ALIGN', (0, 0), (0, 1), 'CENTER'),
-                ('VALIGN', (0, 0), (0, 1), 'MIDDLE'),
-                ('TOPPADDING', (0, 0), (0, 0), 8),
-                ('BOTTOMPADDING', (0, 0), (0, 0), 6),
-                ('TOPPADDING', (0, 1), (0, 1), 6),
-                ('BOTTOMPADDING', (0, 1), (0, 1), 8),
-            ]))
-            
-            row_data.append(cell_table)
-            
-            # Create row every 2 images
-            if len(row_data) == 2:
-                rows.append(row_data)
-                row_data = []
+            card = create_single_image_card(field_name, image_files, caption)
+            if card:
+                elements.append(card)
+                elements.append(Spacer(1, 8))
     
-    # Add remaining images if any
-    if row_data:
-        while len(row_data) < 2:
-            row_data.append('')  # Empty cell
-        rows.append(row_data)
-    
-    if not rows:
-        return None
-    
-    grid_table = Table(rows, colWidths=[image_width, image_width])
-    grid_table.setStyle(TableStyle([
-        ('LEFTPADDING', (0, 0), (-1, -1), 0),
-        ('RIGHTPADDING', (0, 0), (-1, -1), 0),
-        ('TOPPADDING', (0, 0), (-1, -1), 0),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
-        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-    ]))
-    
-    return grid_table
+    return elements
 
 
 def create_exterior_page(page_title, image_field, data_fields, image_files, data):
@@ -808,19 +833,10 @@ def create_exterior_page(page_title, image_field, data_fields, image_files, data
     if elements:
         return [KeepTogether(elements)]
     return elements
-    else:
-        # No image, just show details in 2 columns
-        details_data = [(label, data.get(field, 'N/A')) for label, field in data_fields]
-        details_card = create_two_column_card_table(details_data)
-        elements = [KeepTogether([title, Spacer(1, 8), details_card])]
-    
-    # Add spacing after section
-    elements.append(Spacer(1, 12))
-    return elements
 
 
 def generate_pdf(data, image_files):
-    \"\"\"Generate PDF with final design\"\"\"
+    """Generate PDF with final design"""
     buffer = io.BytesIO()
     
     doc = SimpleDocTemplate(
@@ -908,12 +924,11 @@ def generate_pdf(data, image_files):
         story.append(comments_card)
         story.append(Spacer(1, 12))
     
-    # DOCUMENT IMAGES (2x2 grid)
-    doc_images_grid = create_document_images_grid(image_files)
-    if doc_images_grid:
+    # DOCUMENT IMAGES - Individual cards (not grid)
+    doc_image_cards = create_document_images_individual_cards(image_files)
+    if doc_image_cards:
         story.append(create_section_header('Important Documents'))
-        story.append(doc_images_grid)
-        story.append(Spacer(1, 12))
+        story.extend(doc_image_cards)
     
     # PAGE 3: FRONT EXTERIOR
     story.append(PageBreak())
@@ -1070,29 +1085,57 @@ def generate_pdf(data, image_files):
     story.append(create_section_header('Engine Inspection'))
     story.extend(create_exterior_page('', 'photo_engine', engine_fields, image_files, data))
     
-    # PAGE 10: TIRES/WHEELS
+    # PAGE 10: TIRES/WHEELS - 5 INDIVIDUAL CARDS (ONE PER TIRE)
     story.append(Spacer(1, 12))
     story.append(PageBreak())
-    story.append(create_section_header('Tires & Wheels'))
+    story.append(create_section_header('Tires & Wheels / टायर और पहिए'))
     
-    tire_positions = [
-        ('Front RHS', 'tire_brand_front_rhs', 'wheel_type_front_rhs', 'tire_life_front_rhs', 'tire_cost_front_rhs'),
-        ('Front LHS', 'tire_brand_front_lhs', 'wheel_type_front_lhs', 'tire_life_front_lhs', 'tire_cost_front_lhs'),
-        ('Rear RHS', 'tire_brand_rear_rhs', 'wheel_type_rear_rhs', 'tire_life_rear_rhs', 'tire_cost_rear_rhs'),
-        ('Rear LHS', 'tire_brand_rear_lhs', 'wheel_type_rear_lhs', 'tire_life_rear_lhs', 'tire_cost_rear_lhs'),
-        ('Spare', 'tire_brand_spare', 'wheel_type_spare', 'tire_life_spare', 'tire_cost_spare'),
+    # Each tire gets its OWN card with image LEFT and content RIGHT
+    tire_specs = [
+        ('Front RHS Tire', 'photo_tire_front_rhs', [
+            (bilingual_text('Tire Brand', 'टायर ब्रांड'), 'tire_brand_front_rhs'),
+            (bilingual_text('Wheel Type', 'व्हील प्रकार'), 'wheel_type_front_rhs'),
+            (bilingual_text('Remaining Life (%)', 'शेष जीवन'), 'tire_life_front_rhs'),
+            (bilingual_text('Replacement Cost (₹)', 'प्रतिस्थापन लागत'), 'tire_cost_front_rhs'),
+        ]),
+        ('Rear RHS Tire', 'photo_tire_rear_rhs', [
+            (bilingual_text('Tire Brand', 'टायर ब्रांड'), 'tire_brand_rear_rhs'),
+            (bilingual_text('Wheel Type', 'व्हील प्रकार'), 'wheel_type_rear_rhs'),
+            (bilingual_text('Remaining Life (%)', 'शेष जीवन'), 'tire_life_rear_rhs'),
+            (bilingual_text('Replacement Cost (₹)', 'प्रतिस्थापन लागत'), 'tire_cost_rear_rhs'),
+        ]),
+        ('Front LHS Tire', 'photo_tire_front_lhs', [
+            (bilingual_text('Tire Brand', 'टायर ब्रांड'), 'tire_brand_front_lhs'),
+            (bilingual_text('Wheel Type', 'व्हील प्रकार'), 'wheel_type_front_lhs'),
+            (bilingual_text('Remaining Life (%)', 'शेष जीवन'), 'tire_life_front_lhs'),
+            (bilingual_text('Replacement Cost (₹)', 'प्रतिस्थापन लागत'), 'tire_cost_front_lhs'),
+        ]),
+        ('Rear LHS Tire', 'photo_tire_rear_lhs', [
+            (bilingual_text('Tire Brand', 'टायर ब्रांड'), 'tire_brand_rear_lhs'),
+            (bilingual_text('Wheel Type', 'व्हील प्रकार'), 'wheel_type_rear_lhs'),
+            (bilingual_text('Remaining Life (%)', 'शेष जीवन'), 'tire_life_rear_lhs'),
+            (bilingual_text('Replacement Cost (₹)', 'प्रतिस्थापन लागत'), 'tire_cost_rear_lhs'),
+        ]),
+        ('Spare Tire', 'photo_tire_spare', [
+            (bilingual_text('Tire Brand', 'टायर ब्रांड'), 'tire_brand_spare'),
+            (bilingual_text('Wheel Type', 'व्हील प्रकार'), 'wheel_type_spare'),
+            (bilingual_text('Remaining Life (%)', 'शेष जीवन'), 'tire_life_spare'),
+            (bilingual_text('Replacement Cost (₹)', 'प्रतिस्थापन लागत'), 'tire_cost_spare'),
+        ]),
     ]
     
-    for position, brand_field, wheel_field, life_field, cost_field in tire_positions:
-        tire_data = [
-            (bilingual_text(f'{position} Tire Brand', f'{position} टायर ब्रांड'), data.get(brand_field, 'N/A')),
-            (bilingual_text('Wheel Type', 'व्हील प्रकार'), data.get(wheel_field, 'N/A')),
-            (bilingual_text('Remaining Life (%)', 'शेष जीवन'), data.get(life_field, 'N/A')),
-            (bilingual_text('Replacement Cost (₹)', 'प्रतिस्थापन लागत'), data.get(cost_field, 'N/A')),
-        ]
-        tire_card = create_two_column_card_table(tire_data)
-        story.append(tire_card)
-        story.append(Spacer(1, 8))
+    # Create individual card for EACH tire
+    for tire_title, tire_image_field, tire_fields in tire_specs:
+        card = create_single_image_card(tire_image_field, image_files, tire_title, tire_fields, data)
+        if card:
+            story.append(card)
+            story.append(Spacer(1, 10))
+        else:
+            # If no image, show as simple data card
+            tire_data = [(label, data.get(field, 'N/A')) for label, field in tire_fields]
+            story.append(create_section_header(tire_title))
+            story.append(create_two_column_card_table(tire_data))
+            story.append(Spacer(1, 10))
     
     # PAGE 11: STRUCTURE
     story.append(PageBreak())
@@ -1143,58 +1186,7 @@ def generate_pdf(data, image_files):
     story.append(test_drive_card)
     story.append(Spacer(1, 12))
     
-    # PAGE 13: DISCLAIMER
-    story.append(PageBreak())
-    story.append(create_section_header('Disclaimer / अस्वीकरण'))
-    
-    disclaimer_english = \"\"\"This inspection report is prepared based on a visual and functional assessment of the vehicle at the time of inspection. 
-The report is for information purposes only and does not constitute a warranty or guarantee of the vehicle's condition, performance, 
-or suitability for any particular purpose. InspectionWale and its inspectors shall not be liable for any loss, damage, or expense 
-arising from reliance on this report. The buyer is advised to conduct their own due diligence and obtain independent verification 
-before making any purchase decision. This report is valid for 2 days or 20 km from the date of inspection, whichever comes first. 
-Odometer readings are based on the instrument cluster display and have not been independently verified.\"\"\"
-    
-    disclaimer_hindi = \"\"\"यह निरीक्षण रिपोर्ट निरीक्षण के समय वाहन के दृश्य और कार्यात्मक मूल्यांकन के आधार पर तैयार की गई है। 
-रिपोर्ट केवल सूचना के उद्देश्यों के लिए है और वाहन की स्थिति, प्रदर्शन, या किसी विशेष उद्देश्य के लिए उपयुक्तता की 
-वारंटी या गारंटी नहीं है। इंस्पेक्शनवाले और इसके निरीक्षक इस रिपोर्ट पर निर्भरता से उत्पन्न किसी भी नुकसान, क्षति, 
-या खर्च के लिए उत्तरदायी नहीं होंगे। खरीदार को सलाह दी जाती है कि वे कोई खरीद निर्णय लेने से पहले अपनी स्वयं की 
-जांच करें और स्वतंत्र सत्यापन प्राप्त करें। यह रिपोर्ट निरीक्षण की तारीख से 2 दिन या 20 किमी के लिए मान्य है, 
-जो भी पहले हो। ओडोमीटर रीडिंग इंस्ट्रूमेंट क्लस्टर डिस्प्ले पर आधारित हैं और स्वतंत्र रूप से सत्यापित नहीं हैं।\"\"\"
-    
-    disclaimer_text = f'<font face=\"{FONT_FAMILY}\" size=\"9\"><b>English:</b><br/>{disclaimer_english}<br/><br/><b>हिंदी:</b><br/></font><font face=\"{FONT_HINDI}\" size=\"9\">{disclaimer_hindi}</font>'
-    story.append(create_notes_card(disclaimer_text))
-    
-    # DETAILED NOTES
-    if data.get('paintNotes') or data.get('interiorNotes') or data.get('engineNotes'):
-        story.append(create_section_header('Detailed Inspection Notes'))
-        notes_text = ""
-        if data.get('paintNotes'):
-            notes_text += f"<b>Exterior/Paint:</b> {data.get('paintNotes')}<br/><br/>"
-        if data.get('interiorNotes'):
-            notes_text += f"<b>Interior:</b> {data.get('interiorNotes')}<br/><br/>"
-        if data.get('engineNotes'):
-            notes_text += f"<b>Engine:</b> {data.get('engineNotes')}<br/><br/>"
-        if data.get('tiresNotes'):
-            notes_text += f"<b>Tires & Wheels:</b> {data.get('tiresNotes')}<br/><br/>"
-        if data.get('structureNotes'):
-            notes_text += f"<b>Structure:</b> {data.get('structureNotes')}<br/><br/>"
-        if data.get('testDriveNotes'):
-            notes_text += f"<b>Test Drive:</b> {data.get('testDriveNotes')}<br/><br/>"
-        story.append(create_notes_card(f'<font face="Helvetica">{notes_text.rstrip("<br/><br/>")}</font>'))
-        story.append(Spacer(1, 12))
-    
-    # ISSUES & RECOMMENDATIONS
-    if data.get('issuesFound') or data.get('recommendations'):
-        story.append(create_section_header('Issues & Recommendations'))
-        issues_text = ""
-        if data.get('issuesFound'):
-            issues_text += f"<b>Issues Found:</b><br/>{data.get('issuesFound')}<br/><br/>"
-        if data.get('recommendations'):
-            issues_text += f"<b>Recommendations:</b><br/>{data.get('recommendations')}"
-        story.append(create_notes_card(f'<font face="Helvetica">{issues_text}</font>'))
-        story.append(Spacer(1, 12))
-    
-    # DISCLAIMER - Bilingual (English + Hindi)
+    # PAGE 13: DISCLAIMER - Place only once at the end
     story.append(PageBreak())
     story.append(create_section_header('Disclaimer / अस्वीकरण'))
     
@@ -1223,7 +1215,7 @@ By availing of our services, you acknowledge and accept these terms and conditio
     disclaimer_hindi_style = ParagraphStyle(
         'DisclaimerHindi',
         fontSize=FONT_SMALL - 1,
-        fontName=f'{FONT_FAMILY_HINDI}',
+        fontName='NotoSansHindi' if HINDI_FONT_AVAILABLE else FONT_FAMILY,
         textColor=COLOR_TEXT,
         leading=16,
         alignment=TA_JUSTIFY
