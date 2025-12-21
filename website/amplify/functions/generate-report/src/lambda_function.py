@@ -708,158 +708,106 @@ def create_document_images_grid(image_files):
 
 
 def create_exterior_page(page_title, image_field, data_fields, image_files, data):
-    """Generic function to create exterior pages with BIG image on LEFT, content on RIGHT and BOTTOM"""
+    """Create ONE integrated card: image LEFT, content RIGHT and BOTTOM"""
     from reportlab.platypus import KeepTogether
     
     elements = []
     
-    # Page title (keep with content)
-    title = create_section_header(page_title)
+    # Page title
+    if page_title:
+        title = create_section_header(page_title)
+        elements.append(title)
+        elements.append(Spacer(1, 8))
     
     # Check if image exists
     has_image = image_field in image_files
     
     if has_image:
-        # LAYOUT: Big image LEFT (60%), smaller content RIGHT (40%)
-        image_width = CONTENT_WIDTH * 0.58
-        content_width = CONTENT_WIDTH * 0.38
-        image_height = 110 * mm  # BIGGER image
+        # Image dimensions - BIG image on left
+        image_width = CONTENT_WIDTH * 0.48
+        content_right_width = CONTENT_WIDTH * 0.48
+        gap = 8  # Gap between image and content
+        image_height = 95 * mm
         
         img_obj = io.BytesIO(image_files[image_field]['content'])
         img = RLImage(img_obj, width=image_width, height=image_height)
         
-        # Image card with border
-        img_table = Table([[img]], colWidths=[image_width])
-        img_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (0, 0), COLOR_CARD_BG),
-            ('BOX', (0, 0), (0, 0), 1, COLOR_BORDER),
-            ('ALIGN', (0, 0), (0, 0), 'CENTER'),
-            ('VALIGN', (0, 0), (0, 0), 'MIDDLE'),
-            ('TOPPADDING', (0, 0), (0, 0), 8),
-            ('BOTTOMPADDING', (0, 0), (0, 0), 8),
-            ('LEFTPADDING', (0, 0), (0, 0), 8),
-            ('RIGHTPADDING', (0, 0), (0, 0), 8),
-        ]))
-        
-        # TOP section: key details (compact, right side)
-        top_details = data_fields[:min(6, len(data_fields))]  # First 6 fields
-        top_data = []
-        for label, field in top_details:
+        # Upper right content (first half of fields)
+        split_point = len(data_fields) // 2
+        upper_fields = data_fields[:split_point]
+        upper_data = []
+        for label, field in upper_fields:
             value = data.get(field, 'N/A')
-            top_data.append([label, value])
+            upper_data.append([label, value])
         
-        top_table = Table(top_data, colWidths=[content_width * 0.6, content_width * 0.4])
-        top_table.setStyle(TableStyle([
-            ('FONT', (0, 0), (0, -1), f'{FONT_FAMILY}-Bold', FONT_SMALL - 1),
-            ('FONT', (1, 0), (1, -1), FONT_FAMILY, FONT_SMALL - 1),
+        upper_table = Table(upper_data, colWidths=[content_right_width * 0.58, content_right_width * 0.42])
+        upper_table.setStyle(TableStyle([
+            ('FONT', (0, 0), (0, -1), f'{FONT_FAMILY}-Bold', FONT_SMALL),
+            ('FONT', (1, 0), (1, -1), FONT_FAMILY, FONT_SMALL),
             ('TEXTCOLOR', (0, 0), (0, -1), COLOR_LABEL),
             ('TEXTCOLOR', (1, 0), (1, -1), COLOR_TEXT),
             ('LEFTPADDING', (0, 0), (-1, -1), 0),
             ('RIGHTPADDING', (0, 0), (-1, -1), 0),
-            ('TOPPADDING', (0, 0), (-1, -1), 4),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
+            ('TOPPADDING', (0, 0), (-1, -1), 5),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 5),
             ('VALIGN', (0, 0), (-1, -1), 'TOP'),
         ]))
         
-        top_card = Table([[top_table]], colWidths=[content_width])
-        top_card.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (0, 0), COLOR_CARD_BG),
-            ('BOX', (0, 0), (0, 0), 1, COLOR_BORDER),
-            ('LEFTPADDING', (0, 0), (0, 0), 10),
-            ('RIGHTPADDING', (0, 0), (0, 0), 10),
-            ('TOPPADDING', (0, 0), (0, 0), 10),
-            ('BOTTOMPADDING', (0, 0), (0, 0), 10),
-            ('VALIGN', (0, 0), (0, 0), 'TOP'),
+        # Lower right content (second half of fields)
+        lower_fields = data_fields[split_point:]
+        lower_data = []
+        for label, field in lower_fields:
+            value = data.get(field, 'N/A')
+            lower_data.append([label, value])
+        
+        lower_table = Table(lower_data, colWidths=[content_right_width * 0.58, content_right_width * 0.42])
+        lower_table.setStyle(TableStyle([
+            ('FONT', (0, 0), (0, -1), f'{FONT_FAMILY}-Bold', FONT_SMALL),
+            ('FONT', (1, 0), (1, -1), FONT_FAMILY, FONT_SMALL),
+            ('TEXTCOLOR', (0, 0), (0, -1), COLOR_LABEL),
+            ('TEXTCOLOR', (1, 0), (1, -1), COLOR_TEXT),
+            ('LEFTPADDING', (0, 0), (-1, -1), 0),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+            ('TOPPADDING', (0, 0), (-1, -1), 5),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 5),
+            ('VALIGN', (0, 0), (-1, -1), 'TOP'),
         ]))
         
-        # TOP ROW: Image LEFT + Key Details RIGHT
-        top_row = Table([[img_table, top_card]], colWidths=[image_width, content_width])
-        top_row.setStyle(TableStyle([
+        # Stack upper and lower content vertically on right side
+        right_content = [[upper_table], [Spacer(1, 6)], [lower_table]]
+        right_stack = Table(right_content, colWidths=[content_right_width])
+        right_stack.setStyle(TableStyle([
             ('LEFTPADDING', (0, 0), (-1, -1), 0),
-            ('RIGHTPADDING', (0, 0), (0, 0), 8),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 0),
             ('TOPPADDING', (0, 0), (-1, -1), 0),
             ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
             ('VALIGN', (0, 0), (-1, -1), 'TOP'),
         ]))
         
-        # BOTTOM section: remaining details (full width below)
-        if len(data_fields) > 6:
-            bottom_details = data_fields[6:]
-            bottom_data = []
-            for label, field in bottom_details:
-                value = data.get(field, 'N/A')
-                bottom_data.append([label, value])
-            
-            # Split into 2 columns
-            col1_data = bottom_data[:len(bottom_data)//2 + len(bottom_data)%2]
-            col2_data = bottom_data[len(bottom_data)//2 + len(bottom_data)%2:]
-            
-            # Equalize lengths
-            while len(col1_data) > len(col2_data):
-                col2_data.append(['', ''])
-            
-            col_width = (CONTENT_WIDTH - 12) / 2
-            
-            col1_table = Table(col1_data, colWidths=[col_width * 0.6, col_width * 0.4])
-            col1_table.setStyle(TableStyle([
-                ('FONT', (0, 0), (0, -1), f'{FONT_FAMILY}-Bold', FONT_SMALL - 1),
-                ('FONT', (1, 0), (1, -1), FONT_FAMILY, FONT_SMALL - 1),
-                ('TEXTCOLOR', (0, 0), (0, -1), COLOR_LABEL),
-                ('TEXTCOLOR', (1, 0), (1, -1), COLOR_TEXT),
-                ('LEFTPADDING', (0, 0), (-1, -1), 0),
-                ('RIGHTPADDING', (0, 0), (-1, -1), 0),
-                ('TOPPADDING', (0, 0), (-1, -1), 4),
-                ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
-                ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-            ]))
-            
-            col2_table = Table(col2_data, colWidths=[col_width * 0.6, col_width * 0.4])
-            col2_table.setStyle(TableStyle([
-                ('FONT', (0, 0), (0, -1), f'{FONT_FAMILY}-Bold', FONT_SMALL - 1),
-                ('FONT', (1, 0), (1, -1), FONT_FAMILY, FONT_SMALL - 1),
-                ('TEXTCOLOR', (0, 0), (0, -1), COLOR_LABEL),
-                ('TEXTCOLOR', (1, 0), (1, -1), COLOR_TEXT),
-                ('LEFTPADDING', (0, 0), (-1, -1), 0),
-                ('RIGHTPADDING', (0, 0), (-1, -1), 0),
-                ('TOPPADDING', (0, 0), (-1, -1), 4),
-                ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
-                ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-            ]))
-            
-            bottom_row = Table([[col1_table, col2_table]], colWidths=[col_width, col_width])
-            bottom_row.setStyle(TableStyle([
-                ('LEFTPADDING', (0, 0), (-1, -1), 0),
-                ('RIGHTPADDING', (0, 0), (0, 0), 12),
-                ('TOPPADDING', (0, 0), (-1, -1), 0),
-                ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
-                ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-            ]))
-            
-            bottom_card = Table([[bottom_row]], colWidths=[CONTENT_WIDTH])
-            bottom_card.setStyle(TableStyle([
-                ('BACKGROUND', (0, 0), (0, 0), COLOR_CARD_BG),
-                ('BOX', (0, 0), (0, 0), 1, COLOR_BORDER),
-                ('LEFTPADDING', (0, 0), (0, 0), 12),
-                ('RIGHTPADDING', (0, 0), (0, 0), 12),
-                ('TOPPADDING', (0, 0), (0, 0), 10),
-                ('BOTTOMPADDING', (0, 0), (0, 0), 10),
-            ]))
-            
-            # KEEP EVERYTHING TOGETHER: Title + Top Row + Bottom Details
-            elements = [KeepTogether([
-                title,
-                Spacer(1, 8),
-                top_row,
-                Spacer(1, 8),
-                bottom_card
-            ])]
-        else:
-            # Only top section if <= 6 fields
-            elements = [KeepTogether([
-                title,
-                Spacer(1, 8),
-                top_row
-            ])]
+        # ONE INTEGRATED CARD: Image LEFT + Content RIGHT
+        card_content = [[img, right_stack]]
+        card_table = Table(card_content, colWidths=[image_width, content_right_width])
+        card_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, -1), COLOR_CARD_BG),
+            ('BOX', (0, 0), (-1, -1), 1, COLOR_BORDER),
+            ('LEFTPADDING', (0, 0), (-1, -1), 12),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 12),
+            ('TOPPADDING', (0, 0), (-1, -1), 12),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
+            ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ]))
+        
+        elements.append(card_table)
+    else:
+        # No image, just show details in 2 columns
+        details_data = [(label, data.get(field, 'N/A')) for label, field in data_fields]
+        details_card = create_two_column_card_table(details_data)
+        elements.append(details_card)
+    
+    # Wrap in KeepTogether to prevent page splits
+    if elements:
+        return [KeepTogether(elements)]
+    return elements
     else:
         # No image, just show details in 2 columns
         details_data = [(label, data.get(field, 'N/A')) for label, field in data_fields]
@@ -1245,6 +1193,60 @@ Odometer readings are based on the instrument cluster display and have not been 
             issues_text += f"<b>Recommendations:</b><br/>{data.get('recommendations')}"
         story.append(create_notes_card(f'<font face="Helvetica">{issues_text}</font>'))
         story.append(Spacer(1, 12))
+    
+    # DISCLAIMER - Bilingual (English + Hindi)
+    story.append(PageBreak())
+    story.append(create_section_header('Disclaimer / अस्वीकरण'))
+    
+    disclaimer_english = """inspectionwale.com offers comprehensive vehicle information based on visual inspections conducted on certain parameters. However, we do not guarantee the condition of the engine or any other mechanical components post-inspection. We recommend referencing the vehicle's service history to confirm meter tampering and conducting an OBD scan to identify major engine issues.
+
+Please note that our inspection reports do not serve as guarantees or warranties. Additionally, these reports are valid for two days or 20 kilometers after the inspection. Any alterations made to the vehicle by the seller or dealer after our inspection are not within our purview.
+
+By availing of our services, you acknowledge and accept these terms and conditions. inspectionwale.com shall not be held liable for any discrepancies or damages arising post-inspection."""
+
+    disclaimer_hindi = """inspectionwale.com कुछ मापदंडों पर किए गए दृश्य निरीक्षण के आधार पर व्यापक वाहन जानकारी प्रदान करता है। हालांकि, हम निरीक्षण के बाद इंजन या किसी अन्य यांत्रिक घटक की स्थिति की गारंटी नहीं देते हैं। हम मीटर से छेड़छाड़ की पुष्टि करने के लिए वाहन के सेवा इतिहास का संदर्भ लेने और प्रमुख इंजन समस्याओं की पहचान करने के लिए OBD स्कैन करने की सलाह देते हैं।
+
+कृपया ध्यान दें कि हमारी निरीक्षण रिपोर्ट गारंटी या वारंटी के रूप में काम नहीं करती हैं। साथ ही, ये रिपोर्ट निरीक्षण के बाद दो दिन या 20 किलोमीटर तक वैध होती हैं। हमारे निरीक्षण के बाद विक्रेता या डीलर द्वारा वाहन में किया गया कोई भी बदलाव हमारे दायरे में नहीं है।
+
+हमारी सेवाओं का लाभ उठाकर, आप इन नियमों और शर्तों को स्वीकार करते हैं। निरीक्षण के बाद उत्पन्न होने वाली किसी भी विसंगति या क्षति के लिए inspectionwale.com को उत्तरदायी नहीं ठहराया जाएगा।"""
+    
+    disclaimer_style = ParagraphStyle(
+        'Disclaimer',
+        fontSize=FONT_SMALL - 1,
+        fontName=FONT_FAMILY,
+        textColor=COLOR_TEXT,
+        leading=14,
+        alignment=TA_JUSTIFY,
+        spaceAfter=8
+    )
+    
+    disclaimer_hindi_style = ParagraphStyle(
+        'DisclaimerHindi',
+        fontSize=FONT_SMALL - 1,
+        fontName=f'{FONT_FAMILY_HINDI}',
+        textColor=COLOR_TEXT,
+        leading=16,
+        alignment=TA_JUSTIFY
+    )
+    
+    disclaimer_card_data = [
+        [Paragraph(disclaimer_english, disclaimer_style)],
+        [Spacer(1, 8)],
+        [Paragraph(disclaimer_hindi, disclaimer_hindi_style)]
+    ]
+    
+    disclaimer_table = Table(disclaimer_card_data, colWidths=[CONTENT_WIDTH])
+    disclaimer_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (0, -1), COLOR_CARD_BG),
+        ('BOX', (0, 0), (0, -1), 1, COLOR_BORDER),
+        ('LEFTPADDING', (0, 0), (-1, -1), 12),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 12),
+        ('TOPPADDING', (0, 0), (0, 0), 12),
+        ('BOTTOMPADDING', (0, -1), (0, -1), 12),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+    ]))
+    
+    story.append(disclaimer_table)
     
     # Build PDF
     doc.build(story, canvasmaker=FooterCanvas)
