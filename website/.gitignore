@@ -29,8 +29,10 @@ __pycache__/
 *.pyc
 *.pyo
 
-# Local development/testing
-.env
-.env.local
+# Scripts (optional - uncomment if you don't want to commit helper scripts)
+# add-placeholder-*.ps1
+# add-placeholder-*.py
+# verify-deployment.ps1
 
-# Note: docs/ and archive/ are tracked for reference
+# Local notes
+CHATGPT_PROMPT.txt

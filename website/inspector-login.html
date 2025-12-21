@@ -285,12 +285,7 @@
             loginBtn.innerHTML = '<span class="spinner"></span>Signing in...';
             
             try {
-                // Use Lambda Function URL directly for both local and production
-                const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-                    ? 'https://zlhxjgzxlzbgtr7ryvqcmveptu0onjod.lambda-url.us-east-1.on.aws/'
-                    : '/api/inspector-login';
-                
-                const response = await fetch(apiUrl, {
+                const response = await fetch('/api/inspector-login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
