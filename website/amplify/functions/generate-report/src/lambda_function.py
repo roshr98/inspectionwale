@@ -161,7 +161,7 @@ class FooterCanvas(canvas.Canvas):
         self.rect(0, 0, PAGE_WIDTH, PAGE_HEIGHT, fill=1, stroke=0)
     
     def draw_footer(self, page_num, total_pages):
-        """Draw footer with COLORFUL ICONS"""
+        """Draw footer with achievement icons in single line"""
         footer_y = PAGE_MARGIN - 5 * mm
         
         # White footer box
@@ -171,85 +171,156 @@ class FooterCanvas(canvas.Canvas):
         self.rect(PAGE_MARGIN, footer_y - 3 * mm, 
                  PAGE_WIDTH - 2 * PAGE_MARGIN, 12 * mm, fill=1, stroke=1)
         
-        # RED ENVELOPE ICON
-        icon_x = PAGE_MARGIN + 3 * mm
-        icon_y = footer_y + 5.5 * mm
-        self.setFillColor(HexColor('#ef4444'))
-        self.rect(icon_x - 2, icon_y - 1.5, 4 * mm, 3 * mm, fill=1, stroke=0)
-        self.setStrokeColor(HexColor('#dc2626'))
-        self.setLineWidth(0.8)
-        self.rect(icon_x - 1.5, icon_y - 1, 3 * mm, 2 * mm, fill=0, stroke=1)
-        self.line(icon_x - 1.5, icon_y + 1, icon_x, icon_y - 0.2)
-        self.line(icon_x + 1.5, icon_y + 1, icon_x, icon_y - 0.2)
-        self.setFont(FONT_FAMILY, FONT_SMALL)
-        self.setFillColor(COLOR_FOOTER)
-        self.drawString(icon_x + 3 * mm, footer_y + 5 * mm, 'hello@inspectionwale.com')
+        # Logo/Brand on left
+        self.setFont(f'{FONT_FAMILY}-Bold', 10)
+        self.setFillColor(COLOR_PRIMARY)
+        self.drawString(PAGE_MARGIN + 5 * mm, footer_y + 6 * mm, 'InspectionWale')
         
-        # GREEN PHONE ICON
-        center_x = PAGE_WIDTH / 2
-        icon_x = center_x - 30 * mm
+        # Achievement icons - single line
+        center_start = PAGE_MARGIN + 50 * mm
+        icon_y = footer_y + 5.5 * mm
+        
+        # Achievement 1: GREEN CHECK + "2000+ Cars inspected"
+        icon_x = center_start
         self.setFillColor(HexColor('#22c55e'))
         self.circle(icon_x, icon_y, 2 * mm, fill=1, stroke=0)
-        self.setFillColor(HexColor('#ffffff'))
-        self.roundRect(icon_x - 1 * mm, icon_y - 1.2 * mm, 2 * mm, 2.4 * mm, 0.3, fill=1, stroke=0)
-        self.setFillColor(HexColor('#16a34a'))
-        self.rect(icon_x - 0.5 * mm, icon_y + 0.7 * mm, 1 * mm, 0.3 * mm, fill=1, stroke=0)
-        self.setFont(FONT_FAMILY, FONT_SMALL)
-        self.setFillColor(COLOR_FOOTER)
-        self.drawString(icon_x + 3 * mm, footer_y + 5 * mm, '9167558998')
-        
-        # BLUE GLOBE ICON
-        icon_x = PAGE_WIDTH - PAGE_MARGIN - 55 * mm
-        self.setFillColor(HexColor('#3b82f6'))
-        self.circle(icon_x, icon_y, 2 * mm, fill=1, stroke=0)
         self.setStrokeColor(HexColor('#ffffff'))
-        self.setLineWidth(0.6)
-        self.circle(icon_x, icon_y, 1.3 * mm, fill=0, stroke=1)
-        self.line(icon_x, icon_y - 1.3 * mm, icon_x, icon_y + 1.3 * mm)
-        self.line(icon_x - 1.3 * mm, icon_y, icon_x + 1.3 * mm, icon_y)
+        self.setLineWidth(1.2)
+        self.line(icon_x - 1 * mm, icon_y, icon_x - 0.3 * mm, icon_y - 1 * mm)
+        self.line(icon_x - 0.3 * mm, icon_y - 1 * mm, icon_x + 1.2 * mm, icon_y + 1 * mm)
         self.setFont(FONT_FAMILY, FONT_SMALL)
         self.setFillColor(COLOR_FOOTER)
-        self.drawString(icon_x + 3 * mm, footer_y + 5 * mm, 'inspectionwale.com')
+        self.drawString(icon_x + 3 * mm, footer_y + 5 * mm, '2000+ Cars inspected')
+        
+        # Achievement 2: DOCUMENT ICON + "Easy reports"
+        icon_x = center_start + 50 * mm
+        self.setFillColor(HexColor('#3b82f6'))
+        self.roundRect(icon_x - 1.5 * mm, icon_y - 2 * mm, 3 * mm, 4 * mm, 0.3, fill=1, stroke=0)
+        self.setFillColor(HexColor('#ffffff'))
+        self.rect(icon_x - 1 * mm, icon_y + 0.5 * mm, 2 * mm, 0.3 * mm, fill=1, stroke=0)
+        self.rect(icon_x - 1 * mm, icon_y - 0.3 * mm, 2 * mm, 0.3 * mm, fill=1, stroke=0)
+        self.rect(icon_x - 1 * mm, icon_y - 1.1 * mm, 2 * mm, 0.3 * mm, fill=1, stroke=0)
+        self.setFont(FONT_FAMILY, FONT_SMALL)
+        self.setFillColor(COLOR_FOOTER)
+        self.drawString(icon_x + 3 * mm, footer_y + 5 * mm, 'Easy reports')
+        
+        # Achievement 3: RUPEE ICON + "Pricing"
+        icon_x = center_start + 85 * mm
+        self.setFillColor(HexColor('#f59e0b'))
+        self.circle(icon_x, icon_y, 2 * mm, fill=1, stroke=0)
+        self.setFont(f'{FONT_FAMILY}-Bold', 8)
+        self.setFillColor(HexColor('#ffffff'))
+        self.drawCentredString(icon_x, icon_y - 1 * mm, '₹')
+        self.setFont(FONT_FAMILY, FONT_SMALL)
+        self.setFillColor(COLOR_FOOTER)
+        self.drawString(icon_x + 3 * mm, footer_y + 5 * mm, 'Pricing')
         
         # Page number
         self.setFont(FONT_FAMILY, FONT_SMALL - 1)
         self.setFillColor(COLOR_META)
         self.drawCentredString(PAGE_WIDTH / 2, footer_y + 1 * mm, f'Page {page_num} of {total_pages}')
         
-        # Disclaimer
+        # Contact info at bottom
         self.setFont(FONT_FAMILY, FONT_SMALL - 2)
-        self.drawCentredString(PAGE_WIDTH / 2, footer_y - 1.5 * mm, 
-                               'Professional vehicle inspection report. Valid for 2 days or 20 km.')
+        self.setFillColor(COLOR_LABEL)
+        contact_text = 'hello@inspectionwale.com | 9167558998 | inspectionwale.com'
+        self.drawCentredString(PAGE_WIDTH / 2, footer_y - 1.5 * mm, contact_text)
 
 
 def create_header(data):
-    """Create header with vibrant blue border"""
+    """Create new header: Hassle-Free Car Buying Experience"""
     report_id = f"INS-{int(datetime.now().timestamp())}"
     report_date = datetime.now().strftime('%d %b %Y')
+    location = data.get('inspection_location', 'Mumbai')
+    inspector_name = data.get('inspector_name', 'Certified Inspector')
     
-    header_data = [
-        ['InspectionWale\nRebranded from Whizzcheck', 
-         'Vehicle Inspection Report', 
-         f'Inspection ID:\n{report_id}\n\nDate:\n{report_date}']
-    ]
+    # Main title
+    title_style = ParagraphStyle(
+        'HeaderTitle',
+        fontSize=16,
+        textColor=COLOR_PRIMARY,
+        fontName=f'{FONT_FAMILY}-Bold',
+        alignment=TA_CENTER,
+        spaceAfter=2,
+    )
     
-    header_table = Table(header_data, colWidths=[60*mm, 80*mm, 34*mm])
+    # Subtitle
+    subtitle_style = ParagraphStyle(
+        'HeaderSubtitle',
+        fontSize=12,
+        textColor=COLOR_PRIMARY,
+        fontName=f'{FONT_FAMILY}-Bold',
+        alignment=TA_CENTER,
+        spaceAfter=3,
+    )
+    
+    # Tagline
+    tagline_style = ParagraphStyle(
+        'HeaderTagline',
+        fontSize=8,
+        textColor=COLOR_LABEL,
+        fontName=FONT_FAMILY,
+        alignment=TA_CENTER,
+        spaceAfter=0,
+    )
+    
+    title = Paragraph("VEHICLE INSPECTION REPORT", title_style)
+    subtitle = Paragraph("The Hassle-Free Car Buying Experience", subtitle_style)
+    tagline = Paragraph("Repair Estimate | Price Advice | Neutral | Uncomplicated | Comprehensive", tagline_style)
+    
+    # Left side: Title, subtitle, tagline
+    left_content = Table(
+        [[title], [subtitle], [tagline]],
+        colWidths=[120*mm]
+    )
+    left_content.setStyle(TableStyle([
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('LEFTPADDING', (0, 0), (-1, -1), 0),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+        ('TOPPADDING', (0, 0), (-1, -1), 0),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 2),
+    ]))
+    
+    # Right side: Inspection details
+    meta_style = ParagraphStyle(
+        'MetaLabel',
+        fontSize=8,
+        textColor=COLOR_LABEL,
+        fontName=FONT_FAMILY,
+        alignment=TA_RIGHT,
+    )
+    
+    meta_value_style = ParagraphStyle(
+        'MetaValue',
+        fontSize=8,
+        textColor=COLOR_TEXT,
+        fontName=f'{FONT_FAMILY}-Bold',
+        alignment=TA_RIGHT,
+    )
+    
+    right_content = Table([
+        [Paragraph("Inspection ID:", meta_style), Paragraph(report_id, meta_value_style)],
+        [Paragraph("Date:", meta_style), Paragraph(report_date, meta_value_style)],
+        [Paragraph("Location:", meta_style), Paragraph(location, meta_value_style)],
+        [Paragraph("Inspector:", meta_style), Paragraph(inspector_name, meta_value_style)],
+    ], colWidths=[25*mm, 25*mm])
+    
+    right_content.setStyle(TableStyle([
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('LEFTPADDING', (0, 0), (-1, -1), 2),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+        ('TOPPADDING', (0, 0), (-1, -1), 1),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 1),
+    ]))
+    
+    # Combine left and right
+    header_table = Table([[left_content, right_content]], colWidths=[120*mm, 54*mm])
     header_table.setStyle(TableStyle([
-        ('FONT', (0, 0), (0, 0), f'{FONT_FAMILY}-Bold', FONT_TITLE),
-        ('TEXTCOLOR', (0, 0), (0, 0), COLOR_PRIMARY),
-        ('VALIGN', (0, 0), (0, 0), 'TOP'),
-        ('FONT', (1, 0), (1, 0), f'{FONT_FAMILY}-Bold', FONT_TITLE),
-        ('TEXTCOLOR', (1, 0), (1, 0), COLOR_PRIMARY),
-        ('ALIGN', (1, 0), (1, 0), 'CENTER'),
-        ('VALIGN', (1, 0), (1, 0), 'MIDDLE'),
-        ('FONT', (2, 0), (2, 0), FONT_FAMILY, FONT_SMALL),
-        ('TEXTCOLOR', (2, 0), (2, 0), COLOR_META),
-        ('ALIGN', (2, 0), (2, 0), 'RIGHT'),
-        ('VALIGN', (2, 0), (2, 0), 'TOP'),
-        ('LINEBELOW', (0, 0), (-1, -1), 3, HexColor('#3b82f6')),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('LINEBELOW', (0, 0), (-1, -1), 2, COLOR_PRIMARY),
         ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
         ('BACKGROUND', (0, 0), (-1, -1), COLOR_CARD_BG),
-        ('BOX', (0, 0), (-1, -1), 1, COLOR_BORDER),
+        ('BOX', (0, 0), (-1, -1), 0.5, COLOR_BORDER),
         ('LEFTPADDING', (0, 0), (-1, -1), 10),
         ('RIGHTPADDING', (0, 0), (-1, -1), 10),
         ('TOPPADDING', (0, 0), (-1, -1), 10),
