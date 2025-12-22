@@ -144,7 +144,7 @@ async function renderPdfFromPayload(payload) {
     ? {
         args: chromium.args,
         executablePath: await chromium.executablePath(),
-        headless: chromium.headless,
+        headless: true,
       }
     : { headless: true };
 

@@ -3,6 +3,12 @@ backend/
 # Local/dev artifacts
 website/workspace/
 
+# Local deploy bundles (built ZIPs, temp packaging dirs)
+.deploy/
+
+# Local test outputs
+website/test-output/
+
 # Never commit node_modules (does not affect already-tracked files)
 **/node_modules/
 
