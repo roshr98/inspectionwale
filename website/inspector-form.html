@@ -91,6 +91,10 @@
       #statusMessage.bad { background: #fee2e2; color: #991b1b; }
       .note { font-size: 12px; color: #475569; padding: 0 12px 12px; }
       .field { min-width: 0; }
+
+      .img-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+      .btn-small { padding: 8px 12px; font-size: 13px; }
+      .img-help { margin-top: 6px; font-size: 12px; color: #475569; word-break: break-word; }
     </style>
   </head>
 
@@ -109,7 +113,7 @@
     <div class="container">
       <div class="hero">
         <h1>Generate Report (Placeholders Schema)</h1>
-        <p>Fill what you know — blanks are allowed. Images must be absolute URLs.</p>
+        <p>Fill what you know — blanks are allowed. Images can be URLs or captured from phone (auto-compressed).</p>
       </div>
 
       <form id="inspectionForm">
@@ -401,7 +405,7 @@
 
         <!-- IMAGES -->
         <div class="section">
-          <div class="section-header">Images (Absolute URLs)</div>
+          <div class="section-header">Images</div>
           <div class="grid">
             <div class="field"><label>RHS Apron</label><input name="images.rhs_apron" type="url" placeholder="https://..." /></div>
             <div class="field"><label>LHS Apron</label><input name="images.lhs_apron" type="url" placeholder="https://..." /></div>
@@ -425,6 +429,7 @@
             <div class="field"><label>Tyre LHS Rear</label><input name="images.tyre_lhs_rear" type="url" placeholder="https://..." /></div>
             <div class="field"><label>Spare Tyre</label><input name="images.spare_tyre" type="url" placeholder="https://..." /></div>
           </div>
+          <div class="note">Tip: Use Camera/Gallery buttons to attach photos from phone. Images are resized to 600×400 and compressed automatically.</div>
         </div>
 
         <div class="submit-row">
@@ -480,6 +485,237 @@
         return String(v);
       }
 
+      function isProbablyHttpUrl(value) {
+        if (!value) return false;
+        try {
+          const u = new URL(value);
+          return u.protocol === 'http:' || u.protocol === 'https:';
+        } catch (_) {
+          return false;
+        }
+      }
+
+      function isDataImageUrl(value) {
+        if (!value) return false;
+        return /^data:image\/(png|jpe?g|webp);base64,/i.test(value);
+      }
+
+      function clearFieldErrors(formEl) {
+        const fields = Array.from(formEl.querySelectorAll('[data-invalid="true"]'));
+        fields.forEach((el) => {
+          el.dataset.invalid = 'false';
+          el.removeAttribute('aria-invalid');
+        });
+      }
+
+      function markInvalid(el) {
+        if (!el) return;
+        el.dataset.invalid = 'true';
+        el.setAttribute('aria-invalid', 'true');
+      }
+
+      function validatePayloadAndMark(formEl, payload) {
+        const errors = [];
+
+        const required = [
+          { name: 'inspection.id', label: 'Inspection ID' },
+          { name: 'inspection.date', label: 'Inspection Date' },
+          { name: 'inspection.location', label: 'Inspection Location' },
+          { name: 'vehicle.registration_number', label: 'Vehicle Registration Number' }
+        ];
+
+        let firstInvalidEl = null;
+        for (const req of required) {
+          const v = req.name.split('.').reduce((acc, k) => (acc && acc[k] !== undefined ? acc[k] : undefined), payload);
+          const ok = typeof v === 'string' && v.trim().length > 0;
+          if (!ok) {
+            errors.push(`${req.label} is required.`);
+            const el = formEl.querySelector(`[name="${req.name}"]`);
+            markInvalid(el);
+            if (!firstInvalidEl) firstInvalidEl = el;
+          }
+        }
+
+        // Images: allow empty. If provided, must be http(s) URL or data:image/* base64
+        if (payload.images && typeof payload.images === 'object') {
+          for (const [k, v] of Object.entries(payload.images)) {
+            const value = typeof v === 'string' ? v.trim() : '';
+            if (!value) continue;
+            if (!(isProbablyHttpUrl(value) || isDataImageUrl(value))) {
+              errors.push(`Image '${k}' must be a valid https URL or an attached photo.`);
+              const el = formEl.querySelector(`[name="images.${k}"]`);
+              markInvalid(el);
+              if (!firstInvalidEl) firstInvalidEl = el;
+            }
+          }
+        }
+
+        return { ok: errors.length === 0, errors, firstInvalidEl };
+      }
+
+      function clamp(n, min, max) {
+        return Math.max(min, Math.min(max, n));
+      }
+
+      function formatBytes(bytes) {
+        if (!Number.isFinite(bytes)) return '';
+        if (bytes < 1024) return `${bytes} B`;
+        if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`;
+        return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+      }
+
+      async function blobToDataURL(blob) {
+        return await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(String(reader.result || ''));
+          reader.onerror = () => reject(new Error('Failed to read image'));
+          reader.readAsDataURL(blob);
+        });
+      }
+
+      async function fileToImageBitmap(file) {
+        if (window.createImageBitmap) {
+          try {
+            return await createImageBitmap(file);
+          } catch (_) {
+            // fall through to Image()
+          }
+        }
+
+        const url = URL.createObjectURL(file);
+        try {
+          const img = await new Promise((resolve, reject) => {
+            const el = new Image();
+            el.onload = () => resolve(el);
+            el.onerror = () => reject(new Error('Unsupported image format'));
+            el.src = url;
+          });
+          return img;
+        } finally {
+          URL.revokeObjectURL(url);
+        }
+      }
+
+      async function compressImageToDataURL(file, opts) {
+        const targetWidth = opts && opts.targetWidth ? opts.targetWidth : 600;
+        const targetHeight = opts && opts.targetHeight ? opts.targetHeight : 400;
+        const maxBytes = opts && opts.maxBytes ? opts.maxBytes : 280 * 1024;
+        const mimeType = 'image/jpeg';
+
+        const source = await fileToImageBitmap(file);
+        const sourceWidth = source.width;
+        const sourceHeight = source.height;
+        if (!sourceWidth || !sourceHeight) throw new Error('Invalid image');
+
+        const canvas = document.createElement('canvas');
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+        const ctx = canvas.getContext('2d', { alpha: false });
+        if (!ctx) throw new Error('Canvas not supported');
+
+        // Cover crop to exact 600x400 so PDF layout remains consistent
+        const scale = Math.max(targetWidth / sourceWidth, targetHeight / sourceHeight);
+        const drawWidth = sourceWidth * scale;
+        const drawHeight = sourceHeight * scale;
+        const dx = Math.round((targetWidth - drawWidth) / 2);
+        const dy = Math.round((targetHeight - drawHeight) / 2);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, targetWidth, targetHeight);
+        ctx.drawImage(source, dx, dy, drawWidth, drawHeight);
+
+        let quality = 0.82;
+        let bestBlob = null;
+
+        for (let i = 0; i < 8; i++) {
+          const q = clamp(quality, 0.4, 0.9);
+          // eslint-disable-next-line no-await-in-loop
+          const blob = await new Promise((resolve) => canvas.toBlob(resolve, mimeType, q));
+          if (!blob) throw new Error('Failed to encode image');
+
+          bestBlob = blob;
+          if (blob.size <= maxBytes) break;
+          quality -= 0.07;
+        }
+
+        const dataUrl = await blobToDataURL(bestBlob);
+        return { dataUrl, bytes: bestBlob.size, width: targetWidth, height: targetHeight };
+      }
+
+      function enhanceImageFields() {
+        const urlInputs = Array.from(document.querySelectorAll('input[name^="images."][type="url"]'));
+        if (urlInputs.length === 0) return;
+
+        urlInputs.forEach((urlInput, index) => {
+          // Create hidden file pickers (camera + gallery)
+          const cameraInput = document.createElement('input');
+          cameraInput.type = 'file';
+          cameraInput.accept = 'image/*';
+          cameraInput.capture = 'environment';
+          cameraInput.style.display = 'none';
+          cameraInput.id = `imgCamera_${index}`;
+
+          const galleryInput = document.createElement('input');
+          galleryInput.type = 'file';
+          galleryInput.accept = 'image/*';
+          galleryInput.style.display = 'none';
+          galleryInput.id = `imgGallery_${index}`;
+
+          const actions = document.createElement('div');
+          actions.className = 'img-actions';
+
+          const cameraBtn = document.createElement('button');
+          cameraBtn.type = 'button';
+          cameraBtn.className = 'btn btn-secondary btn-small';
+          cameraBtn.textContent = 'Camera';
+          cameraBtn.addEventListener('click', () => cameraInput.click());
+
+          const galleryBtn = document.createElement('button');
+          galleryBtn.type = 'button';
+          galleryBtn.className = 'btn btn-secondary btn-small';
+          galleryBtn.textContent = 'Gallery';
+          galleryBtn.addEventListener('click', () => galleryInput.click());
+
+          const help = document.createElement('div');
+          help.className = 'img-help';
+          help.textContent = 'Optional: paste an image URL, or attach a photo.';
+
+          actions.appendChild(cameraBtn);
+          actions.appendChild(galleryBtn);
+
+          const field = urlInput.closest('.field');
+          if (!field) return;
+          field.appendChild(cameraInput);
+          field.appendChild(galleryInput);
+          field.appendChild(actions);
+          field.appendChild(help);
+
+          const handleFile = async (file) => {
+            if (!file) return;
+
+            help.textContent = 'Compressing...';
+            try {
+              const result = await compressImageToDataURL(file, {
+                targetWidth: 600,
+                targetHeight: 400,
+                maxBytes: 280 * 1024
+              });
+              urlInput.value = result.dataUrl;
+              help.textContent = `Attached: ${file.name || 'image'} (${result.width}×${result.height}, ${formatBytes(result.bytes)})`;
+            } catch (err) {
+              console.error(err);
+              help.textContent = `Image failed: ${err && err.message ? err.message : 'Unable to process image'}. Try Gallery or use an image URL.`;
+            } finally {
+              cameraInput.value = '';
+              galleryInput.value = '';
+            }
+          };
+
+          cameraInput.addEventListener('change', () => handleFile(cameraInput.files && cameraInput.files[0]));
+          galleryInput.addEventListener('change', () => handleFile(galleryInput.files && galleryInput.files[0]));
+        });
+      }
+
       document.addEventListener('DOMContentLoaded', () => {
         const inspectorName = sessionStorage.getItem('inspectorName') || '';
         document.getElementById('inspectorName').textContent = inspectorName ? `Inspector: ${inspectorName}` : 'Inspector';
@@ -492,6 +728,8 @@
 
         const idField = document.getElementById('inspection_id');
         if (idField && !idField.value) idField.value = `INS-${Date.now()}`;
+
+        enhanceImageFields();
       });
 
       document.getElementById('inspectionForm').addEventListener('submit', async (e) => {
@@ -512,6 +750,9 @@
           setDeep(payload, name, safeString(value).trim());
         }
 
+        // Clear previous invalid markers
+        clearFieldErrors(e.target);
+
         // Ensure inspector name comes from login (source of truth)
         const inspectorName = sessionStorage.getItem('inspectorName') || '';
         if (inspectorName) {
@@ -526,6 +767,20 @@
         }
         if (!payload.flags.has_hypothecation) {
           payload.flags.has_hypothecation = payload.vehicle && payload.vehicle.hypothecation ? 'true' : 'false';
+        }
+
+        // Basic validations (keep template read-only; adjust inputs here)
+        const validation = validatePayloadAndMark(e.target, payload);
+        if (!validation.ok) {
+          statusDiv.className = 'bad';
+          statusDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> Please fix: ${validation.errors[0]}`;
+          statusDiv.style.display = 'block';
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="fas fa-file-pdf"></i> Generate PDF';
+          if (validation.firstInvalidEl && typeof validation.firstInvalidEl.focus === 'function') {
+            validation.firstInvalidEl.focus();
+          }
+          return;
         }
 
         try {
