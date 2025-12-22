@@ -95,6 +95,11 @@
       .img-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
       .btn-small { padding: 8px 12px; font-size: 13px; }
       .img-help { margin-top: 6px; font-size: 12px; color: #475569; word-break: break-word; }
+
+      .rating-field { position: relative; }
+      .rating-field input { padding-right: 80px; }
+      .rating-stars { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #fbbf24; font-size: 16px; pointer-events: none; }
+      input[data-invalid="true"] { border-color: #ef4444; background: #fef2f2; }
     </style>
   </head>
 
@@ -179,14 +184,14 @@
 
         <!-- RATINGS -->
         <div class="section">
-          <div class="section-header">Ratings</div>
+          <div class="section-header">Ratings (1-5 stars)</div>
           <div class="grid">
-            <div class="field"><label>Interior</label><input name="ratings.interior" type="text" /></div>
-            <div class="field"><label>Exterior</label><input name="ratings.exterior" type="text" /></div>
-            <div class="field"><label>Engine</label><input name="ratings.engine" type="text" /></div>
-            <div class="field"><label>Test Drive</label><input name="ratings.test_drive" type="text" /></div>
-            <div class="field"><label>Structure</label><input name="ratings.structure" type="text" /></div>
-            <div class="field"><label>Electrical</label><input name="ratings.electrical" type="text" /></div>
+            <div class="field rating-field"><label>Interior</label><input name="ratings.interior" type="number" min="1" max="5" step="1" /><span class="rating-stars"></span></div>
+            <div class="field rating-field"><label>Exterior</label><input name="ratings.exterior" type="number" min="1" max="5" step="1" /><span class="rating-stars"></span></div>
+            <div class="field rating-field"><label>Engine</label><input name="ratings.engine" type="number" min="1" max="5" step="1" /><span class="rating-stars"></span></div>
+            <div class="field rating-field"><label>Test Drive</label><input name="ratings.test_drive" type="number" min="1" max="5" step="1" /><span class="rating-stars"></span></div>
+            <div class="field rating-field"><label>Structure</label><input name="ratings.structure" type="number" min="1" max="5" step="1" /><span class="rating-stars"></span></div>
+            <div class="field rating-field"><label>Electrical</label><input name="ratings.electrical" type="number" min="1" max="5" step="1" /><span class="rating-stars"></span></div>
           </div>
         </div>
 
@@ -521,7 +526,9 @@
           { name: 'inspection.id', label: 'Inspection ID' },
           { name: 'inspection.date', label: 'Inspection Date' },
           { name: 'inspection.location', label: 'Inspection Location' },
-          { name: 'vehicle.registration_number', label: 'Vehicle Registration Number' }
+          { name: 'inspection.inspector_name', label: 'Inspector Name' },
+          { name: 'vehicle.registration_number', label: 'Vehicle Registration Number' },
+          { name: 'vehicle.make_model', label: 'Make + Model' }
         ];
 
         let firstInvalidEl = null;
@@ -533,6 +540,37 @@
             const el = formEl.querySelector(`[name="${req.name}"]`);
             markInvalid(el);
             if (!firstInvalidEl) firstInvalidEl = el;
+          }
+        }
+
+        // Validate ratings (1-5)
+        const ratingKeys = ['interior', 'exterior', 'engine', 'test_drive', 'structure', 'electrical'];
+        if (payload.ratings && typeof payload.ratings === 'object') {
+          for (const key of ratingKeys) {
+            const v = payload.ratings[key];
+            if (v !== '' && v !== undefined && v !== null) {
+              const n = Number(v);
+              if (!Number.isInteger(n) || n < 1 || n > 5) {
+                errors.push(`Rating '${key}' must be 1-5 stars.`);
+                const el = formEl.querySelector(`[name="ratings.${key}"]`);
+                markInvalid(el);
+                if (!firstInvalidEl) firstInvalidEl = el;
+              }
+            }
+          }
+        }
+
+        // Validate date format (YYYY-MM-DD)
+        const dateFields = ['inspection.date', 'vehicle.registration_date', 'vehicle.insurance_validity', 'vehicle.cng.validity'];
+        for (const path of dateFields) {
+          const v = path.split('.').reduce((acc, k) => (acc && acc[k] !== undefined ? acc[k] : undefined), payload);
+          if (v && typeof v === 'string' && v.trim().length > 0) {
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(v.trim())) {
+              errors.push(`Date field '${path}' must be YYYY-MM-DD format.`);
+              const el = formEl.querySelector(`[name="${path}"]`);
+              markInvalid(el);
+              if (!firstInvalidEl) firstInvalidEl = el;
+            }
           }
         }
 
@@ -730,7 +768,27 @@
         if (idField && !idField.value) idField.value = `INS-${Date.now()}`;
 
         enhanceImageFields();
+        wireRatingStars();
       });
+
+      function wireRatingStars() {
+        const ratingInputs = document.querySelectorAll('.rating-field input[type="number"]');
+        ratingInputs.forEach((input) => {
+          const updateStars = () => {
+            const span = input.parentElement.querySelector('.rating-stars');
+            if (!span) return;
+            const val = parseInt(input.value, 10);
+            if (Number.isInteger(val) && val >= 1 && val <= 5) {
+              span.textContent = '★'.repeat(val) + '☆'.repeat(5 - val);
+            } else {
+              span.textContent = '';
+            }
+          };
+          input.addEventListener('input', updateStars);
+          input.addEventListener('change', updateStars);
+          updateStars();
+        });
+      }
 
       document.getElementById('inspectionForm').addEventListener('submit', async (e) => {
         e.preventDefault();
