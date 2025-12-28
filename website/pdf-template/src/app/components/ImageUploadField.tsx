@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Camera, Upload, Link as LinkIcon, X, Image as ImageIcon } from 'lucide-react';
 import { getImageDisplayUrl, ImageData, fileToBase64, compressImage } from '../../utils/imageHandler';
+import { isInspectionApiEnabled, uploadInspectionImageBase64 } from '../../utils/inspectionApi';
 
 interface ImageUploadFieldProps {
   label: string;
@@ -30,14 +31,54 @@ export function ImageUploadField({ label, value, onChange, fieldName, imageType 
       // Compress with specific dimensions for report layout
       const compressedBase64 = await compressImage(base64, 500, imageType);
       
+      const uploadedAt = new Date().toISOString();
+
+      // If backend is configured, upload to S3 via API and store URL (keeps localStorage + DDB small).
+      if (isInspectionApiEnabled()) {
+        try {
+          let inspectionId = '';
+          try {
+            const raw = localStorage.getItem('inspectionData');
+            const parsed = raw ? JSON.parse(raw) : null;
+            inspectionId = String(parsed?.inspection?.id || '').trim();
+          } catch (_e) {
+            // ignore
+          }
+
+          if (inspectionId) {
+            const resp = await uploadInspectionImageBase64({
+              inspectionId,
+              fieldName,
+              fileName: file.name,
+              contentType: file.type || undefined,
+              base64: compressedBase64,
+            });
+
+            if (resp && resp.success && resp.url) {
+              const imageData: ImageData = {
+                url: resp.url,
+                fileName: file.name,
+                uploadedAt,
+              };
+              onChange(imageData);
+              console.log(`✅ Image uploaded to S3: ${label} (${imageType})`);
+              return;
+            }
+          }
+        } catch (e) {
+          console.warn('Image API upload failed; falling back to base64.', e);
+        }
+      }
+
+      // Offline/local fallback
       const imageData: ImageData = {
         base64: compressedBase64,
         fileName: file.name,
-        uploadedAt: new Date().toISOString()
+        uploadedAt,
       };
-      
+
       onChange(imageData);
-      console.log(`✅ Image uploaded: ${label} (${imageType})`);
+      console.log(`✅ Image uploaded (local): ${label} (${imageType})`);
     } catch (error) {
       console.error('Error uploading image:', error);
       alert('Failed to upload image. Please try again.');

@@ -8,41 +8,41 @@ export function Page8RearCabinBoot() {
   
   return (
     <InspectionPage pageNumber={8}>
-      <h2 className="section-header">Rear Cabin Inspection</h2>
+      <h2 className="section-header-bilingual">Rear Cabin Inspection / पिछली केबिन निरीक्षण</h2>
 
       {/* Rear Cabin Details */}
       <div className="detail-card">
-        <h3 className="card-title">Rear Cabin</h3>
+        <h3 className="card-title">Rear Cabin / पिछली केबिन</h3>
         <div className="detail-grid">
           <div className="detail-item">
-            <span className="detail-label">Rear Seat Condition</span>
+            <span className="detail-label">Rear Seat Condition / पिछली सीट स्थिति</span>
             <span className="detail-value">{data.rear_seats.condition}</span>
           </div>
           <div className="detail-item">
-            <span className="detail-label">Arm Rest</span>
+            <span className="detail-label">Arm Rest / आर्म रेस्ट</span>
             <span className="detail-value">{data.rear_seats.arm_rest}</span>
           </div>
           <div className="detail-item">
-            <span className="detail-label">Rear AC Vent</span>
+            <span className="detail-label">Rear AC Vent / पिछला एसी वेंट</span>
             <span className="detail-value">{data.rear_seats.ac_vent}</span>
           </div>
           <div className="detail-item">
-            <span className="detail-label">RHS Interior Panel</span>
+            <span className="detail-label">RHS Interior Panel / दाहिना आंतरिक पैनल</span>
             <span className="detail-value">{data.rear_seats.rhs_panel}</span>
           </div>
           <div className="detail-item">
-            <span className="detail-label">LHS Interior Panel</span>
+            <span className="detail-label">LHS Interior Panel / बायां आंतरिक पैनल</span>
             <span className="detail-value">{data.rear_seats.lhs_panel}</span>
           </div>
         </div>
       </div>
 
       {/* Boot Section */}
-      <h2 className="section-header">Boot Inspection</h2>
+      <h2 className="section-header-bilingual">Boot Inspection / बूट निरीक्षण</h2>
 
       <div className="image-card-full">
         <img src={data.images.boot_space} alt="Boot" className="inspection-image" />
-        <div className="image-label">Boot Image</div>
+        <div className="image-label">Boot Image / बूट छवि</div>
       </div>
 
       <div className="detail-card">
@@ -53,7 +53,7 @@ export function Page8RearCabinBoot() {
             ) : (
               <XCircle className="x-icon-small" />
             )}
-            <span className="icon-detail-label">Boot Condition</span>
+            <span className="icon-detail-label">Boot Condition / बूट स्थिति</span>
             <span className="icon-detail-value">{data.boot.condition}</span>
           </div>
           <div className="icon-detail-item">
@@ -62,7 +62,7 @@ export function Page8RearCabinBoot() {
             ) : (
               <XCircle className="x-icon-small" />
             )}
-            <span className="icon-detail-label">Jack & Tool Kit</span>
+            <span className="icon-detail-label">Jack & Tool Kit / जैक और टूल किट</span>
             <span className="icon-detail-value">{data.boot.jack_available}</span>
           </div>
         </div>
@@ -70,7 +70,7 @@ export function Page8RearCabinBoot() {
 
       {/* Interior Comments */}
       <div className="detail-card">
-        <h3 className="card-title">Interior Comments</h3>
+        <h3 className="card-title">Interior Comments / आंतरिक टिप्पणियाँ</h3>
         <div className="comment-box">
           <p>{data.comments.interior_additional}</p>
         </div>

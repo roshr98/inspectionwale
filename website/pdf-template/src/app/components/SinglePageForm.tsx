@@ -3,6 +3,7 @@ import { Save, FileText, Trash2, Database } from 'lucide-react';
 import { getInspectionData, saveInspectionData, clearInspectionData } from '../../utils/dataLoader';
 import { prefillInspectionForm, clearInspectionForm } from '../../utils/testDataHelper';
 import { ImageUploadField } from './ImageUploadField';
+import { isInspectionApiEnabled, upsertInspection } from '../../utils/inspectionApi';
 
 interface SinglePageFormProps {
   onSave: (formData: any) => void;
@@ -18,6 +19,19 @@ export function SinglePageForm({ onSave, onViewReport }: SinglePageFormProps) {
     const timer = setTimeout(() => {
       saveInspectionData(formData);
       console.log('✅ Form data auto-saved to cache');
+
+      if (isInspectionApiEnabled()) {
+        try {
+          const inspectionId = String(formData?.inspection?.id || '').trim();
+          if (inspectionId) {
+            upsertInspection(inspectionId, formData).catch((e) => {
+              console.warn('Inspection API upsert failed:', e);
+            });
+          }
+        } catch (e) {
+          console.warn('Inspection API sync skipped:', e);
+        }
+      }
     }, 500); // Debounce for 500ms to avoid excessive saves
 
     return () => clearTimeout(timer);

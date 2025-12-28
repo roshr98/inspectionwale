@@ -33,19 +33,6 @@ export default function App() {
     initTestDataHelper();
   }, []);
 
-  useEffect(() => {
-    if (view === 'report') {
-      // Deterministic signal for headless renderers (e.g., Playwright in Lambda)
-      document.documentElement.setAttribute('data-report-ready', 'false');
-      const id = window.setTimeout(() => {
-        document.documentElement.setAttribute('data-report-ready', 'true');
-      }, 0);
-      return () => window.clearTimeout(id);
-    }
-    document.documentElement.removeAttribute('data-report-ready');
-    return;
-  }, [view]);
-
   const handleSaveData = (formData: any) => {
     saveInspectionData(formData);
     // Trigger re-render to update the report view with new data
@@ -59,6 +46,30 @@ export default function App() {
   const handleViewForm = () => {
     setView('form');
   };
+
+  // Signal to the Lambda PDF renderer that the report is ready.
+  useEffect(() => {
+    if (view !== 'report') {
+      try {
+        document.documentElement.removeAttribute('data-report-ready');
+      } catch (_e) {
+        // ignore
+      }
+      return;
+    }
+
+    const markReady = () => {
+      try {
+        document.documentElement.setAttribute('data-report-ready', 'true');
+      } catch (_e) {
+        // ignore
+      }
+    };
+
+    // Let the report layout paint before marking ready.
+    const t = window.setTimeout(markReady, 0);
+    return () => window.clearTimeout(t);
+  }, [view]);
 
   return (
     <div className="bg-white">
