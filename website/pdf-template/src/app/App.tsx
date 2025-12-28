@@ -1,0 +1,92 @@
+import React, { useState, useEffect } from 'react';
+import { SinglePageForm } from './components/SinglePageForm';
+import { Page1Header } from './components/Page1Header';
+import { Page2KeyHighlights } from './components/Page2KeyHighlights';
+import { Page3FrontView } from './components/Page3FrontView';
+import { Page4RHSSide } from './components/Page4RHSSide';
+import { Page5LHSSide } from './components/Page5LHSSide';
+import { Page6RearRoof } from './components/Page6RearRoof';
+import { Page7Interior } from './components/Page7Interior';
+import { Page8RearCabinBoot } from './components/Page8RearCabinBoot';
+import { Page9EngineTyres } from './components/Page9EngineTyres';
+import { Page10StructurePerformance } from './components/Page10StructurePerformance';
+import { PageDisclaimer } from './components/PageDisclaimer';
+import { saveInspectionData } from '../utils/dataLoader';
+import { initTestDataHelper } from '../utils/testDataHelper';
+import '../styles/inspector-form.css';
+import '../styles/image-upload.css';
+import '../styles/single-page-form.css';
+
+export default function App() {
+  const [view, setView] = useState<'form' | 'report'>(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('view') === 'report' ? 'report' : 'form';
+    } catch (_e) {
+      return 'form';
+    }
+  });
+  const [, setUpdateTrigger] = useState(0); // Used to force re-render when data changes
+
+  // Initialize test data helper for development
+  useEffect(() => {
+    initTestDataHelper();
+  }, []);
+
+  useEffect(() => {
+    if (view === 'report') {
+      // Deterministic signal for headless renderers (e.g., Playwright in Lambda)
+      document.documentElement.setAttribute('data-report-ready', 'false');
+      const id = window.setTimeout(() => {
+        document.documentElement.setAttribute('data-report-ready', 'true');
+      }, 0);
+      return () => window.clearTimeout(id);
+    }
+    document.documentElement.removeAttribute('data-report-ready');
+    return;
+  }, [view]);
+
+  const handleSaveData = (formData: any) => {
+    saveInspectionData(formData);
+    // Trigger re-render to update the report view with new data
+    setUpdateTrigger(prev => prev + 1);
+  };
+
+  const handleViewReport = () => {
+    setView('report');
+  };
+
+  const handleViewForm = () => {
+    setView('form');
+  };
+
+  return (
+    <div className="bg-white">
+      {view === 'form' ? (
+        <SinglePageForm onSave={handleSaveData} onViewReport={handleViewReport} />
+      ) : (
+        <>
+          <div className="report-header-actions no-print">
+            <button onClick={handleViewForm} className="back-to-form-btn">
+              ← Back to Form
+            </button>
+            <button onClick={() => window.print()} className="print-btn">
+              🖨️ Print Report
+            </button>
+          </div>
+          <Page1Header />
+          <Page2KeyHighlights />
+          <Page3FrontView />
+          <Page4RHSSide />
+          <Page5LHSSide />
+          <Page6RearRoof />
+          <Page7Interior />
+          <Page8RearCabinBoot />
+          <Page9EngineTyres />
+          <Page10StructurePerformance />
+          <PageDisclaimer />
+        </>
+      )}
+    </div>
+  );
+}

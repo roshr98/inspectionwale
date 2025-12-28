@@ -3,102 +3,66 @@ const path = require('path');
 const fs = require('fs').promises;
 
 // NOTE:
-// - This renderer treats the template as immutable.
-// - It does ONLY {{...}} string substitution.
-// - It does not inject or execute template JS.
+// - This renderer serves and executes the built React report app.
+// - The inspection payload is injected via localStorage (key: "inspectionData").
+// - The report is opened using `/?view=report` and we wait for `html[data-report-ready="true"]`.
 
 const TEMPLATE_ROOT = path.join(__dirname, 'pdf-template');
-const TEMPLATE_DIR = path.join(TEMPLATE_ROOT, 'inspection-report', 'v1');
-const DIST_ASSETS_DIR = path.join(TEMPLATE_ROOT, 'dist', 'assets');
+const DIST_DIR = path.join(TEMPLATE_ROOT, 'dist');
 
-function htmlEscape(value) {
-  return String(value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+function contentTypeForPath(filePath) {
+  const ext = path.extname(filePath).toLowerCase();
+  if (ext === '.html') return 'text/html; charset=utf-8';
+  if (ext === '.css') return 'text/css; charset=utf-8';
+  if (ext === '.js') return 'application/javascript; charset=utf-8';
+  if (ext === '.json') return 'application/json; charset=utf-8';
+  if (ext === '.svg') return 'image/svg+xml';
+  if (ext === '.png') return 'image/png';
+  if (ext === '.jpg' || ext === '.jpeg') return 'image/jpeg';
+  if (ext === '.woff2') return 'font/woff2';
+  if (ext === '.woff') return 'font/woff';
+  if (ext === '.ttf') return 'font/ttf';
+  if (ext === '.ico') return 'image/x-icon';
+  return 'application/octet-stream';
 }
 
-function getByDottedPath(obj, dottedPath) {
-  const parts = dottedPath.split('.').map((p) => p.trim()).filter(Boolean);
-  let cur = obj;
-  for (const key of parts) {
-    if (cur && Object.prototype.hasOwnProperty.call(cur, key)) {
-      cur = cur[key];
-    } else {
-      return undefined;
-    }
-  }
-  return cur;
-}
-
-function bindPlaceholders(templateHtml, payload) {
-  return templateHtml.replace(/\{\{\s*([a-zA-Z0-9_.-]+)\s*\}\}/g, (_m, keyPath) => {
-    const value = getByDottedPath(payload, keyPath);
-    if (value === undefined || value === null) return '';
-    return htmlEscape(String(value));
-  });
-}
-
-async function createTemplateServer(boundHtml) {
+async function createTemplateServer() {
   const server = http.createServer(async (req, res) => {
     try {
       const urlPath = (req.url || '/').split('?')[0];
 
-      if (urlPath === '/' || urlPath === '/index.html') {
-        res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-        res.end(boundHtml);
+      // Serve SPA entry
+      const requestedRel = (urlPath === '/' || urlPath === '/index.html') ? 'index.html' : urlPath.replace(/^\//, '');
+      const requestedPath = path.normalize(path.join(DIST_DIR, requestedRel));
+      const allowedBase = path.normalize(DIST_DIR) + path.sep;
+
+      if (!requestedPath.startsWith(allowedBase)) {
+        res.writeHead(403);
+        res.end('Forbidden');
         return;
       }
 
-      if (urlPath === '/style.css') {
-        const cssPath = path.join(TEMPLATE_DIR, 'style.css');
-        const css = await fs.readFile(cssPath);
-        res.writeHead(200, { 'Content-Type': 'text/css; charset=utf-8' });
-        res.end(css);
-        return;
-      }
-
-      if (urlPath.startsWith('/assets/')) {
-        const rel = urlPath.replace(/^\//, '');
-        const requestedPath = path.normalize(path.join(TEMPLATE_ROOT, rel));
-        const allowedBase = path.normalize(path.join(TEMPLATE_ROOT, 'dist')) + path.sep;
-
-        if (!requestedPath.startsWith(allowedBase)) {
-          res.writeHead(403);
-          res.end('Forbidden');
+      let fileToServe = requestedPath;
+      try {
+        const stat = await fs.stat(fileToServe);
+        if (stat.isDirectory()) {
+          fileToServe = path.join(fileToServe, 'index.html');
+        }
+      } catch (_e) {
+        // If an asset is missing, return 404 (do not SPA-fallback).
+        if (requestedRel.startsWith('assets/')) {
+          res.writeHead(404);
+          res.end('Not found');
           return;
         }
 
-        if (requestedPath.endsWith('.js')) {
-          // IMPORTANT: prevent executing template JS while still satisfying requests.
-          res.writeHead(200, { 'Content-Type': 'application/javascript; charset=utf-8' });
-          res.end('export {};');
-          return;
-        }
-
-        const file = await fs.readFile(requestedPath);
-        const ext = path.extname(requestedPath).toLowerCase();
-        const type = ext === '.css'
-          ? 'text/css; charset=utf-8'
-          : ext === '.svg'
-            ? 'image/svg+xml'
-            : ext === '.png'
-              ? 'image/png'
-              : ext === '.jpg' || ext === '.jpeg'
-                ? 'image/jpeg'
-                : ext === '.woff2'
-                  ? 'font/woff2'
-                  : 'application/octet-stream';
-
-        res.writeHead(200, { 'Content-Type': type });
-        res.end(file);
-        return;
+        // Fallback to SPA index.html for unknown non-asset routes.
+        fileToServe = path.join(DIST_DIR, 'index.html');
       }
 
-      res.writeHead(404);
-      res.end('Not found');
+      const file = await fs.readFile(fileToServe);
+      res.writeHead(200, { 'Content-Type': contentTypeForPath(fileToServe) });
+      res.end(file);
     } catch (e) {
       res.writeHead(500);
       res.end('Server error');
@@ -115,11 +79,6 @@ async function createTemplateServer(boundHtml) {
   };
 }
 
-async function loadTemplateHtml() {
-  const indexPath = path.join(TEMPLATE_DIR, 'index.html');
-  return fs.readFile(indexPath, 'utf8');
-}
-
 async function resolvePlaywright() {
   // Prefer playwright-core + AWS Lambda Chromium (recommended for Lambda packaging).
   // Fall back to playwright (dev/local).
@@ -134,10 +93,7 @@ async function resolvePlaywright() {
 }
 
 async function renderPdfFromPayload(payload) {
-  const templateHtml = await loadTemplateHtml();
-  const boundHtml = bindPlaceholders(templateHtml, payload || {});
-
-  const server = await createTemplateServer(boundHtml);
+  const server = await createTemplateServer();
 
   const { chromium, pwChromium } = await resolvePlaywright();
   const launchOptions = chromium
@@ -152,8 +108,25 @@ async function renderPdfFromPayload(payload) {
   try {
     const page = await browser.newPage({ viewport: { width: 794, height: 1123 } });
 
-    await page.goto(`${server.baseUrl}/index.html`, { waitUntil: 'load' });
-    await page.waitForTimeout(250);
+    await page.addInitScript((data) => {
+      try {
+        localStorage.setItem('inspectionData', JSON.stringify(data || {}));
+      } catch (_e) {
+        // ignore
+      }
+    }, payload || {});
+
+    await page.goto(`${server.baseUrl}/?view=report`, { waitUntil: 'load' });
+
+    // Ensure fonts and layout settle before printing
+    try {
+      await page.evaluate(() => (document.fonts ? document.fonts.ready : Promise.resolve()));
+    } catch (_e) {
+      // ignore
+    }
+
+    await page.waitForSelector('html[data-report-ready="true"]', { timeout: 10_000 });
+    await page.waitForFunction(() => document.querySelectorAll('.inspection-page').length >= 11, { timeout: 10_000 });
 
     const pdfBuffer = await page.pdf({
       format: 'A4',
