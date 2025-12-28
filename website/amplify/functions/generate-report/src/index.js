@@ -5,6 +5,7 @@ const {
   PutCommand,
   GetCommand,
   UpdateCommand,
+  BatchGetCommand,
   ScanCommand,
 } = require('@aws-sdk/lib-dynamodb');
 
@@ -83,6 +84,21 @@ function encodeCursor(key) {
   return Buffer.from(JSON.stringify(key), 'utf8').toString('base64');
 }
 
+function decodeOffsetCursor(cursor) {
+  if (!cursor) return 0;
+  const raw = Buffer.from(String(cursor), 'base64').toString('utf8');
+  const obj = safeJsonParse(raw, null);
+  const off = Number(obj && obj.offset);
+  return Number.isFinite(off) && off >= 0 ? off : 0;
+}
+
+function encodeOffsetCursor(offset) {
+  if (offset == null) return null;
+  const off = Number(offset);
+  if (!Number.isFinite(off) || off < 0) return null;
+  return Buffer.from(JSON.stringify({ offset: off }), 'utf8').toString('base64');
+}
+
 function sanitizeFileName(name) {
   return String(name || 'image')
     .replace(/[^a-zA-Z0-9._-]+/g, '_')
@@ -109,6 +125,12 @@ async function handleInspectionApi(event) {
   const tableName = process.env.INSPECTIONS_TABLE;
   if (!tableName) return json(500, { success: false, message: 'INSPECTIONS_TABLE is not configured.' });
 
+  // INSPECTIONS_TABLE uses a composite key: (reportId, timestamp).
+  // For CRUD records we write to a stable "LATEST" sort key so each inspectionId has one mutable item.
+  // The PDF generator continues to write immutable audit rows with real timestamps.
+  const LATEST_TS = 'LATEST';
+  const INDEX_PK = 'INSPECTION_INDEX';
+
   const method = getMethod(event);
   const path = getPath(event);
 
@@ -125,7 +147,7 @@ async function handleInspectionApi(event) {
     await docClient.send(
       new UpdateCommand({
         TableName: tableName,
-        Key: { reportId: inspectionId },
+        Key: { reportId: inspectionId, timestamp: LATEST_TS },
         UpdateExpression:
           'SET #type = :t, #data = :d, updatedAt = :u, createdAt = if_not_exists(createdAt, :c) REMOVE deletedAt',
         ExpressionAttributeNames: {
@@ -141,6 +163,24 @@ async function handleInspectionApi(event) {
       })
     );
 
+    // Maintain a simple index of inspection IDs for reliable listing.
+    // Note: list_append can produce duplicates; list endpoint de-dupes.
+    await docClient.send(
+      new UpdateCommand({
+        TableName: tableName,
+        Key: { reportId: INDEX_PK, timestamp: LATEST_TS },
+        UpdateExpression:
+          'SET #type = :t, updatedAt = :u, inspectionIds = list_append(if_not_exists(inspectionIds, :empty), :one)',
+        ExpressionAttributeNames: { '#type': 'type' },
+        ExpressionAttributeValues: {
+          ':t': 'INSPECTION_INDEX',
+          ':u': nowIso,
+          ':empty': [],
+          ':one': [inspectionId],
+        },
+      })
+    );
+
     return json(200, { success: true, inspectionId, message: 'Saved' });
   }
 
@@ -151,7 +191,9 @@ async function handleInspectionApi(event) {
     const inspectionId = String(idFromPath || idFromQuery || '').trim();
     if (!inspectionId) return json(400, { success: false, message: 'Missing id.' });
 
-    const resp = await docClient.send(new GetCommand({ TableName: tableName, Key: { reportId: inspectionId } }));
+    const resp = await docClient.send(
+      new GetCommand({ TableName: tableName, Key: { reportId: inspectionId, timestamp: LATEST_TS } })
+    );
     if (!resp || !resp.Item) return json(404, { success: false, message: 'Not found' });
     if (resp.Item.deletedAt) return json(404, { success: false, message: 'Not found' });
 
@@ -163,23 +205,50 @@ async function handleInspectionApi(event) {
     const limitRaw = event.queryStringParameters && event.queryStringParameters.limit;
     const limit = Math.max(1, Math.min(50, Number(limitRaw || 20)));
     const cursor = event.queryStringParameters && event.queryStringParameters.cursor;
-    const ExclusiveStartKey = decodeCursor(cursor);
+    const offset = decodeOffsetCursor(cursor);
 
-    const resp = await docClient.send(
-      new ScanCommand({
-        TableName: tableName,
-        Limit: limit,
-        ExclusiveStartKey,
-        FilterExpression: '#type = :t AND attribute_not_exists(deletedAt)',
-        ExpressionAttributeNames: { '#type': 'type' },
-        ExpressionAttributeValues: { ':t': 'INSPECTION' },
+    const indexResp = await docClient.send(
+      new GetCommand({ TableName: tableName, Key: { reportId: INDEX_PK, timestamp: LATEST_TS } })
+    );
+
+    const rawIds = Array.isArray(indexResp?.Item?.inspectionIds) ? indexResp.Item.inspectionIds : [];
+
+    // De-dupe while keeping most recent first.
+    const seen = new Set();
+    const dedupedNewestFirst = [];
+    for (let i = rawIds.length - 1; i >= 0; i -= 1) {
+      const id = String(rawIds[i] || '').trim();
+      if (!id || seen.has(id)) continue;
+      seen.add(id);
+      dedupedNewestFirst.push(id);
+    }
+
+    const pageIds = dedupedNewestFirst.slice(offset, offset + limit);
+    if (pageIds.length === 0) {
+      return json(200, { success: true, items: [], cursor: null });
+    }
+
+    const batch = await docClient.send(
+      new BatchGetCommand({
+        RequestItems: {
+          [tableName]: {
+            Keys: pageIds.map((id) => ({ reportId: id, timestamp: LATEST_TS })),
+          },
+        },
       })
     );
 
+    const fetched = (batch.Responses && batch.Responses[tableName]) ? batch.Responses[tableName] : [];
+    const byId = new Map(fetched.map((it) => [String(it.reportId), it]));
+    const items = pageIds.map((id) => byId.get(id)).filter((it) => it && !it.deletedAt);
+
+    const nextOffset = offset + pageIds.length;
+    const nextCursor = nextOffset < dedupedNewestFirst.length ? encodeOffsetCursor(nextOffset) : null;
+
     return json(200, {
       success: true,
-      items: resp.Items || [],
-      cursor: encodeCursor(resp.LastEvaluatedKey),
+      items,
+      cursor: nextCursor,
     });
   }
 
@@ -192,7 +261,7 @@ async function handleInspectionApi(event) {
     await docClient.send(
       new UpdateCommand({
         TableName: tableName,
-        Key: { reportId: inspectionId },
+        Key: { reportId: inspectionId, timestamp: LATEST_TS },
         UpdateExpression: 'SET deletedAt = :d, updatedAt = :u',
         ExpressionAttributeValues: { ':d': new Date().toISOString(), ':u': new Date().toISOString() },
       })
