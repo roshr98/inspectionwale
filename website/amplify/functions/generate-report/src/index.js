@@ -30,6 +30,11 @@ function parseJsonBody(event) {
   return JSON.parse(raw);
 }
 
+// Lambda Function URLs (and API Gateway/Lambda proxy in general) have a hard response payload limit.
+// Returning large PDFs as base64 will exceed this quickly when many images are embedded.
+// If the generated PDF is larger than this threshold, we skip inline base64 and rely on S3 `reportUrl`.
+const MAX_INLINE_PDF_BYTES = Number(process.env.MAX_INLINE_PDF_BYTES || 3_500_000);
+
 // ========== MAIN HANDLER ==========
 exports.handler = async (event) => {
   if (event && event.requestContext && event.requestContext.http && event.requestContext.http.method === 'OPTIONS') {
@@ -93,16 +98,37 @@ exports.handler = async (event) => {
       }));
     }
 
+    const inlinePdfAllowed = pdfBuffer.length <= MAX_INLINE_PDF_BYTES;
+    const hasS3Url = Boolean(reportUrl);
+
+    if (!inlinePdfAllowed && !hasS3Url) {
+      // We generated a PDF that is too large to return inline, but we also can't provide an S3 URL.
+      // Returning base64 would trigger a 413 from the Lambda runtime.
+      return {
+        statusCode: 500,
+        headers: corsHeaders(),
+        body: JSON.stringify({
+          success: false,
+          message: 'Generated PDF is too large to return inline and no REPORTS_BUCKET is configured for reportUrl.',
+          reportId,
+        }),
+      };
+    }
+
     return {
       statusCode: 200,
       headers: corsHeaders(),
       body: JSON.stringify({
         success: true,
-        message: 'Report generated successfully',
+        message: inlinePdfAllowed
+          ? 'Report generated successfully'
+          : 'Report generated successfully (too large for inline download; use reportUrl).',
         reportId,
         reportUrl,
         filename: `Inspection_Report_${reportId}.pdf`,
-        pdfData: pdfBuffer.toString('base64'),
+        pdfData: inlinePdfAllowed ? pdfBuffer.toString('base64') : null,
+        pdfBytes: pdfBuffer.length,
+        inlinePdf: inlinePdfAllowed,
       }),
     };
   } catch (error) {

@@ -81,7 +81,7 @@ async function main() {
     process.exit(1);
   }
 
-  if (!res.ok || !json.success || !json.pdfData) {
+  if (!res.ok || !json.success || (!json.pdfData && !json.reportUrl)) {
     const bodyPreview = JSON.stringify({ status: res.status, body: json }, null, 2);
     const traceback = (json && typeof json === 'object' && (json.traceback || (json.body && json.body.traceback))) ? String(json.traceback || json.body.traceback) : '';
     if (traceback.includes('parse_multipart') || traceback.includes('boundary=') || traceback.includes('lambda_function.py')) {
@@ -95,7 +95,21 @@ async function main() {
     process.exit(1);
   }
 
-  const pdfBytes = Buffer.from(String(json.pdfData), 'base64');
+  let pdfBytes;
+  if (json.pdfData) {
+    pdfBytes = Buffer.from(String(json.pdfData), 'base64');
+  } else {
+    const reportUrl = String(json.reportUrl);
+    console.log('No inline pdfData; downloading from reportUrl:', reportUrl);
+    const r = await fetch(reportUrl);
+    if (!r.ok) {
+      console.error('Failed to download reportUrl:', r.status, await r.text());
+      process.exit(1);
+    }
+    const ab = await r.arrayBuffer();
+    pdfBytes = Buffer.from(ab);
+  }
+
   await fs.writeFile(outPath, pdfBytes);
 
   console.log(`✅ Saved Lambda PDF: ${outPath}`);

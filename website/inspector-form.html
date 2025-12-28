@@ -852,25 +852,43 @@
           });
 
           const result = await res.json();
-          if (!res.ok || !result || !result.success || !result.pdfData) {
+          if (!res.ok || !result || !result.success || (!result.pdfData && !result.reportUrl)) {
             throw new Error((result && result.message) || 'Failed to generate report');
           }
 
-          const byteCharacters = atob(result.pdfData);
-          const byteNumbers = new Array(byteCharacters.length);
-          for (let i = 0; i < byteCharacters.length; i++) byteNumbers[i] = byteCharacters.charCodeAt(i);
-          const blob = new Blob([new Uint8Array(byteNumbers)], { type: 'application/pdf' });
-          const blobUrl = URL.createObjectURL(blob);
+          const fileName = result.filename || `Inspection_Report_${(payload.inspection && payload.inspection.id) || Date.now()}.pdf`;
 
-          const link = document.createElement('a');
-          link.href = blobUrl;
-          link.download = result.filename || `Inspection_Report_${(payload.inspection && payload.inspection.id) || Date.now()}.pdf`;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
+          // Small PDFs come back inline as base64.
+          if (result.pdfData) {
+            const byteCharacters = atob(result.pdfData);
+            const byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) byteNumbers[i] = byteCharacters.charCodeAt(i);
+            const blob = new Blob([new Uint8Array(byteNumbers)], { type: 'application/pdf' });
+            const blobUrl = URL.createObjectURL(blob);
 
-          statusDiv.className = 'ok';
-          statusDiv.innerHTML = `<i class="fas fa-check-circle"></i> PDF generated. If download didn't start, <a href="${blobUrl}" download="${link.download}" style="font-weight:800; text-decoration:underline; color:inherit;">click here</a>.`;
+            const link = document.createElement('a');
+            link.href = blobUrl;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            statusDiv.className = 'ok';
+            statusDiv.innerHTML = `<i class="fas fa-check-circle"></i> PDF generated. If download didn't start, <a href="${blobUrl}" download="${fileName}" style="font-weight:800; text-decoration:underline; color:inherit;">click here</a>.`;
+          } else {
+            // Large PDFs are provided via S3 URL to avoid Lambda response size limits.
+            const reportUrl = String(result.reportUrl || '');
+            const link = document.createElement('a');
+            link.href = reportUrl;
+            link.target = '_blank';
+            link.rel = 'noopener';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            statusDiv.className = 'ok';
+            statusDiv.innerHTML = `<i class="fas fa-check-circle"></i> PDF generated. Download from <a href="${reportUrl}" target="_blank" rel="noopener" style="font-weight:800; text-decoration:underline; color:inherit;">report link</a>.`;
+          }
         } catch (err) {
           console.error(err);
           statusDiv.className = 'bad';
