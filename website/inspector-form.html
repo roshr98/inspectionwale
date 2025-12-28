@@ -121,7 +121,7 @@
         <p>Fill what you know — blanks are allowed. Images can be URLs or captured from phone (auto-compressed).</p>
       </div>
 
-      <form id="inspectionForm">
+      <form id="inspectionForm" novalidate>
         <!-- REPORT -->
         <div class="section">
           <div class="section-header">Report</div>
@@ -412,27 +412,27 @@
         <div class="section">
           <div class="section-header">Images</div>
           <div class="grid">
-            <div class="field"><label>RHS Apron</label><input name="images.rhs_apron" type="url" placeholder="https://..." /></div>
-            <div class="field"><label>LHS Apron</label><input name="images.lhs_apron" type="url" placeholder="https://..." /></div>
-            <div class="field"><label>Chassis Plate</label><input name="images.chassis_plate" type="url" placeholder="https://..." /></div>
-            <div class="field"><label>CNG Plate</label><input name="images.cng_plate" type="url" placeholder="https://..." /></div>
-            <div class="field"><label>Vehicle Front</label><input name="images.vehicle_front" type="url" placeholder="https://..." /></div>
-            <div class="field"><label>Vehicle RHS</label><input name="images.vehicle_rhs" type="url" placeholder="https://..." /></div>
-            <div class="field"><label>Vehicle LHS</label><input name="images.vehicle_lhs" type="url" placeholder="https://..." /></div>
-            <div class="field"><label>Vehicle Rear</label><input name="images.vehicle_rear" type="url" placeholder="https://..." /></div>
-            <div class="field"><label>Dashboard</label><input name="images.dashboard" type="url" placeholder="https://..." /></div>
-            <div class="field"><label>Cluster Meter</label><input name="images.cluster_meter" type="url" placeholder="https://..." /></div>
-            <div class="field"><label>Driver Cabin</label><input name="images.driver_cabin" type="url" placeholder="https://..." /></div>
-            <div class="field"><label>Rear Cabin</label><input name="images.rear_cabin" type="url" placeholder="https://..." /></div>
-            <div class="field"><label>Boot Space</label><input name="images.boot_space" type="url" placeholder="https://..." /></div>
-            <div class="field"><label>Engine Compartment</label><input name="images.engine_compartment" type="url" placeholder="https://..." /></div>
-            <div class="field"><label>Firewall</label><input name="images.firewall" type="url" placeholder="https://..." /></div>
-            <div class="field"><label>Battery</label><input name="images.battery" type="url" placeholder="https://..." /></div>
-            <div class="field"><label>Tyre RHS Front</label><input name="images.tyre_rhs_front" type="url" placeholder="https://..." /></div>
-            <div class="field"><label>Tyre RHS Rear</label><input name="images.tyre_rhs_rear" type="url" placeholder="https://..." /></div>
-            <div class="field"><label>Tyre LHS Front</label><input name="images.tyre_lhs_front" type="url" placeholder="https://..." /></div>
-            <div class="field"><label>Tyre LHS Rear</label><input name="images.tyre_lhs_rear" type="url" placeholder="https://..." /></div>
-            <div class="field"><label>Spare Tyre</label><input name="images.spare_tyre" type="url" placeholder="https://..." /></div>
+            <div class="field"><label>RHS Apron</label><input name="images.rhs_apron" type="text" inputmode="url" placeholder="https://..." /></div>
+            <div class="field"><label>LHS Apron</label><input name="images.lhs_apron" type="text" inputmode="url" placeholder="https://..." /></div>
+            <div class="field"><label>Chassis Plate</label><input name="images.chassis_plate" type="text" inputmode="url" placeholder="https://..." /></div>
+            <div class="field"><label>CNG Plate</label><input name="images.cng_plate" type="text" inputmode="url" placeholder="https://..." /></div>
+            <div class="field"><label>Vehicle Front</label><input name="images.vehicle_front" type="text" inputmode="url" placeholder="https://..." /></div>
+            <div class="field"><label>Vehicle RHS</label><input name="images.vehicle_rhs" type="text" inputmode="url" placeholder="https://..." /></div>
+            <div class="field"><label>Vehicle LHS</label><input name="images.vehicle_lhs" type="text" inputmode="url" placeholder="https://..." /></div>
+            <div class="field"><label>Vehicle Rear</label><input name="images.vehicle_rear" type="text" inputmode="url" placeholder="https://..." /></div>
+            <div class="field"><label>Dashboard</label><input name="images.dashboard" type="text" inputmode="url" placeholder="https://..." /></div>
+            <div class="field"><label>Cluster Meter</label><input name="images.cluster_meter" type="text" inputmode="url" placeholder="https://..." /></div>
+            <div class="field"><label>Driver Cabin</label><input name="images.driver_cabin" type="text" inputmode="url" placeholder="https://..." /></div>
+            <div class="field"><label>Rear Cabin</label><input name="images.rear_cabin" type="text" inputmode="url" placeholder="https://..." /></div>
+            <div class="field"><label>Boot Space</label><input name="images.boot_space" type="text" inputmode="url" placeholder="https://..." /></div>
+            <div class="field"><label>Engine Compartment</label><input name="images.engine_compartment" type="text" inputmode="url" placeholder="https://..." /></div>
+            <div class="field"><label>Firewall</label><input name="images.firewall" type="text" inputmode="url" placeholder="https://..." /></div>
+            <div class="field"><label>Battery</label><input name="images.battery" type="text" inputmode="url" placeholder="https://..." /></div>
+            <div class="field"><label>Tyre RHS Front</label><input name="images.tyre_rhs_front" type="text" inputmode="url" placeholder="https://..." /></div>
+            <div class="field"><label>Tyre RHS Rear</label><input name="images.tyre_rhs_rear" type="text" inputmode="url" placeholder="https://..." /></div>
+            <div class="field"><label>Tyre LHS Front</label><input name="images.tyre_lhs_front" type="text" inputmode="url" placeholder="https://..." /></div>
+            <div class="field"><label>Tyre LHS Rear</label><input name="images.tyre_lhs_rear" type="text" inputmode="url" placeholder="https://..." /></div>
+            <div class="field"><label>Spare Tyre</label><input name="images.spare_tyre" type="text" inputmode="url" placeholder="https://..." /></div>
           </div>
           <div class="note">Tip: Use Camera/Gallery buttons to attach photos from phone. Images are resized to 600×400 and compressed automatically.</div>
         </div>
@@ -681,7 +681,7 @@
       }
 
       function enhanceImageFields() {
-        const urlInputs = Array.from(document.querySelectorAll('input[name^="images."][type="url"]'));
+        const urlInputs = Array.from(document.querySelectorAll('input[name^="images."]'));
         if (urlInputs.length === 0) return;
 
         urlInputs.forEach((urlInput, index) => {
