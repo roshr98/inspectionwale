@@ -5,7 +5,6 @@ const {
   PutCommand,
   GetCommand,
   UpdateCommand,
-  BatchGetCommand,
   ScanCommand,
 } = require('@aws-sdk/lib-dynamodb');
 
@@ -228,18 +227,18 @@ async function handleInspectionApi(event) {
       return json(200, { success: true, items: [], cursor: null });
     }
 
-    const batch = await docClient.send(
-      new BatchGetCommand({
-        RequestItems: {
-          [tableName]: {
-            Keys: pageIds.map((id) => ({ reportId: id, timestamp: LATEST_TS })),
-          },
-        },
+    // Use individual GetItem calls instead of BatchGetItem.
+    // This avoids needing dynamodb:BatchGetItem permission while keeping list functional.
+    const fetched = await Promise.all(
+      pageIds.map(async (id) => {
+        const resp = await docClient.send(
+          new GetCommand({ TableName: tableName, Key: { reportId: id, timestamp: LATEST_TS } })
+        );
+        return resp && resp.Item ? resp.Item : null;
       })
     );
 
-    const fetched = (batch.Responses && batch.Responses[tableName]) ? batch.Responses[tableName] : [];
-    const byId = new Map(fetched.map((it) => [String(it.reportId), it]));
+    const byId = new Map(fetched.filter(Boolean).map((it) => [String(it.reportId), it]));
     const items = pageIds.map((id) => byId.get(id)).filter((it) => it && !it.deletedAt);
 
     const nextOffset = offset + pageIds.length;
@@ -386,7 +385,12 @@ exports.handler = async (event) => {
     const registrationNumber = payload.vehicle && payload.vehicle.registration_number ? String(payload.vehicle.registration_number) : 'UNKNOWN';
 
     console.log('Rendering PDF via Playwright...');
-    const pdfBuffer = await renderPdfFromPayload(payload);
+    const rendered = await renderPdfFromPayload(payload);
+    const pdfBuffer = Buffer.isBuffer(rendered) ? rendered : rendered && rendered.pdfBuffer;
+    const pdfDebug = !Buffer.isBuffer(rendered) && rendered && rendered.debug ? rendered.debug : null;
+    if (!pdfBuffer || !Buffer.isBuffer(pdfBuffer)) {
+      throw new Error('Renderer did not return a PDF buffer.');
+    }
     console.log('PDF bytes:', pdfBuffer.length);
 
     let reportUrl = null;
@@ -440,6 +444,7 @@ exports.handler = async (event) => {
       pdfData: inlinePdfAllowed ? pdfBuffer.toString('base64') : null,
       pdfBytes: pdfBuffer.length,
       inlinePdf: inlinePdfAllowed,
+      ...(payload.__debugPdf ? { pdfDebug } : {}),
     });
   } catch (error) {
     console.error('Report generation error:', error);
