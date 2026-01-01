@@ -25,7 +25,7 @@
     "rc_type": "Private",
     "hypothecation": "",
     "cng": {
-      "present": "false",
+      "present": "No",
       "type": "",
       "validity": "",
       "endorsed": ""
@@ -40,13 +40,13 @@
     "electrical": "4"
   },
   "flags": {
-    "accidental": "false",
-    "flood_damage": "false",
-    "fire_damage": "false",
-    "rc_chassis_match": "true",
-    "service_logs_available": "true",
-    "has_cng": "false",
-    "has_hypothecation": "false"
+    "accidental": "No",
+    "flood_damage": "No",
+    "fire_damage": "No",
+    "rc_chassis_match": "Yes",
+    "service_logs_available": "Yes",
+    "has_cng": "No",
+    "has_hypothecation": "No"
   },
   "comments": {
     "engine": "Engine sounds normal.",

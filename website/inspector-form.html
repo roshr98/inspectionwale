@@ -99,7 +99,9 @@
       .rating-field { position: relative; }
       .rating-field input { padding-right: 80px; }
       .rating-stars { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #fbbf24; font-size: 16px; pointer-events: none; }
-      input[data-invalid="true"] { border-color: #ef4444; background: #fef2f2; }
+      input[data-invalid="true"],
+      select[data-invalid="true"],
+      textarea[data-invalid="true"] { border-color: #ef4444; background: #fef2f2; }
     </style>
   </head>
 
@@ -156,27 +158,27 @@
             <div class="field"><label>Owner Name</label><input name="vehicle.owner_name" type="text" /></div>
             <div class="field"><label>Make + Model</label><input name="vehicle.make_model" type="text" /></div>
             <div class="field"><label>Variant</label><input name="vehicle.variant" type="text" /></div>
-            <div class="field"><label>Fuel Type</label><input name="vehicle.fuel_type" type="text" /></div>
+            <div class="field"><label>Fuel Type</label><input name="vehicle.fuel_type" type="text" list="dl_fuel_type" /></div>
             <div class="field"><label>Owner Count</label><input name="vehicle.owner_count" type="text" /></div>
-            <div class="field"><label>RC Type</label><input name="vehicle.rc_type" type="text" /></div>
+            <div class="field"><label>RC Type</label><input name="vehicle.rc_type" type="text" list="dl_rc_type" /></div>
             <div class="field"><label>Hypothecation</label><input name="vehicle.hypothecation" type="text" /></div>
 
             <div class="field">
-              <label>CNG Present ("true"/"false")</label>
+              <label>CNG Present (Yes/No)</label>
               <select name="vehicle.cng.present">
                 <option value=""></option>
-                <option value="true">true</option>
-                <option value="false">false</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
               </select>
             </div>
             <div class="field"><label>CNG Type</label><input name="vehicle.cng.type" type="text" /></div>
             <div class="field"><label>CNG Validity</label><input name="vehicle.cng.validity" type="date" /></div>
             <div class="field">
-              <label>CNG Endorsed ("true"/"false")</label>
+              <label>CNG Endorsed (Yes/No)</label>
               <select name="vehicle.cng.endorsed">
                 <option value=""></option>
-                <option value="true">true</option>
-                <option value="false">false</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
               </select>
             </div>
           </div>
@@ -199,195 +201,186 @@
         <div class="section">
           <div class="section-header">Flags</div>
           <div class="grid">
-            <div class="field"><label>Accidental</label><select name="flags.accidental"><option value=""></option><option value="true">true</option><option value="false">false</option></select></div>
-            <div class="field"><label>Flood Damage</label><select name="flags.flood_damage"><option value=""></option><option value="true">true</option><option value="false">false</option></select></div>
-            <div class="field"><label>Fire Damage</label><select name="flags.fire_damage"><option value=""></option><option value="true">true</option><option value="false">false</option></select></div>
-            <div class="field"><label>RC/Chassis Match</label><select name="flags.rc_chassis_match"><option value=""></option><option value="true">true</option><option value="false">false</option></select></div>
-            <div class="field"><label>Service Logs Available</label><select name="flags.service_logs_available"><option value=""></option><option value="true">true</option><option value="false">false</option></select></div>
-            <div class="field"><label>Has CNG</label><select name="flags.has_cng"><option value="false">false</option><option value="true">true</option></select></div>
-            <div class="field"><label>Has Hypothecation</label><select name="flags.has_hypothecation"><option value="false">false</option><option value="true">true</option></select></div>
+            <div class="field"><label>Accidental</label><select name="flags.accidental"><option value=""></option><option value="Yes">Yes</option><option value="No">No</option></select></div>
+            <div class="field"><label>Flood Damage</label><select name="flags.flood_damage"><option value=""></option><option value="Yes">Yes</option><option value="No">No</option></select></div>
+            <div class="field"><label>Fire Damage</label><select name="flags.fire_damage"><option value=""></option><option value="Yes">Yes</option><option value="No">No</option></select></div>
+            <div class="field"><label>RC/Chassis Match</label><select name="flags.rc_chassis_match"><option value=""></option><option value="Yes">Yes</option><option value="No">No</option></select></div>
+            <div class="field"><label>Service Logs Available</label><select name="flags.service_logs_available"><option value=""></option><option value="Yes">Yes</option><option value="No">No</option></select></div>
+            <div class="field"><label>Has CNG</label><select name="flags.has_cng"><option value=""></option><option value="Yes">Yes</option><option value="No">No</option></select></div>
+            <div class="field"><label>Has Hypothecation</label><select name="flags.has_hypothecation"><option value=""></option><option value="Yes">Yes</option><option value="No">No</option></select></div>
           </div>
           <div class="note">Note: If you leave Has CNG / Has Hypothecation empty, it is derived from Vehicle fields on submit.</div>
         </div>
 
-        <!-- COMMENTS -->
-        <div class="section">
-          <div class="section-header">Comments</div>
-          <div class="grid">
-            <div class="field"><label>Engine</label><textarea name="comments.engine"></textarea></div>
-            <div class="field"><label>Structure</label><textarea name="comments.structure"></textarea></div>
-            <div class="field"><label>Test Drive</label><textarea name="comments.test_drive"></textarea></div>
-            <div class="field"><label>Exterior</label><textarea name="comments.exterior"></textarea></div>
-            <div class="field"><label>Interior</label><textarea name="comments.interior"></textarea></div>
-            <div class="field"><label>Interior (Additional)</label><textarea name="comments.interior_additional"></textarea></div>
-          </div>
-        </div>
-
         <!-- PANELS -->
         <div class="section"><div class="section-header">Front</div><div class="grid">
-          <div class="field"><label>Bumper Condition</label><input name="front.bumper_condition" type="text" /></div>
-          <div class="field"><label>Bumper Repainted</label><input name="front.bumper_repainted" type="text" /></div>
-          <div class="field"><label>Bumper Paint Depth</label><input name="front.bumper_paint_depth" type="text" /></div>
-          <div class="field"><label>Bonnet Condition</label><input name="front.bonnet_condition" type="text" /></div>
-          <div class="field"><label>Bonnet Repainted</label><input name="front.bonnet_repainted" type="text" /></div>
-          <div class="field"><label>Bonnet Paint Depth</label><input name="front.bonnet_paint_depth" type="text" /></div>
-          <div class="field"><label>Bonnet Company Fitted</label><input name="front.bonnet_company_fitted" type="text" /></div>
-          <div class="field"><label>Grill Condition</label><input name="front.grill_condition" type="text" /></div>
-          <div class="field"><label>Windshield Original</label><input name="front.windshield_original" type="text" /></div>
-          <div class="field"><label>Windshield Condition</label><input name="front.windshield_condition" type="text" /></div>
-          <div class="field"><label>Headlight Condition</label><input name="front.headlight_condition" type="text" /></div>
+          <div class="field"><label>Bumper Condition</label><input name="front.bumper_condition" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Bumper Repainted</label><input name="front.bumper_repainted" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Bumper Paint Depth</label><input name="front.bumper_paint_depth" type="text" list="dl_paint_depth" /></div>
+          <div class="field"><label>Bonnet Condition</label><input name="front.bonnet_condition" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Bonnet Repainted</label><input name="front.bonnet_repainted" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Bonnet Paint Depth</label><input name="front.bonnet_paint_depth" type="text" list="dl_paint_depth" /></div>
+          <div class="field"><label>Bonnet Company Fitted</label><input name="front.bonnet_company_fitted" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Grille Condition</label><input name="front.grill_condition" type="text" list="dl_grille_condition" /></div>
+          <div class="field"><label>Windshield Original</label><input name="front.windshield_original" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Windshield Condition</label><input name="front.windshield_condition" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Headlight Condition</label><input name="front.headlight_condition" type="text" list="dl_condition" /></div>
         </div></div>
 
         <div class="section"><div class="section-header">RHS</div><div class="grid">
-          <div class="field"><label>Fender Condition</label><input name="rhs.fender_condition" type="text" /></div>
-          <div class="field"><label>Fender Repainted</label><input name="rhs.fender_repainted" type="text" /></div>
-          <div class="field"><label>Fender Paint Depth</label><input name="rhs.fender_paint_depth" type="text" /></div>
-          <div class="field"><label>Front Door Condition</label><input name="rhs.front_door_condition" type="text" /></div>
-          <div class="field"><label>Front Door Repainted</label><input name="rhs.front_door_repainted" type="text" /></div>
-          <div class="field"><label>Front Door Paint Depth</label><input name="rhs.front_door_paint_depth" type="text" /></div>
-          <div class="field"><label>Front Door Company Fitted</label><input name="rhs.front_door_company_fitted" type="text" /></div>
-          <div class="field"><label>Rear Door Condition</label><input name="rhs.rear_door_condition" type="text" /></div>
-          <div class="field"><label>Rear Door Repainted</label><input name="rhs.rear_door_repainted" type="text" /></div>
-          <div class="field"><label>Rear Door Paint Depth</label><input name="rhs.rear_door_paint_depth" type="text" /></div>
-          <div class="field"><label>Rear Door Company Fitted</label><input name="rhs.rear_door_company_fitted" type="text" /></div>
-          <div class="field"><label>Quarter Panel Condition</label><input name="rhs.quarter_panel_condition" type="text" /></div>
-          <div class="field"><label>Quarter Panel Repainted</label><input name="rhs.quarter_panel_repainted" type="text" /></div>
-          <div class="field"><label>Quarter Panel Paint Depth</label><input name="rhs.quarter_panel_paint_depth" type="text" /></div>
-          <div class="field"><label>Window Glass Original</label><input name="rhs.window_glass_original" type="text" /></div>
-          <div class="field"><label>Side Mirror Condition</label><input name="rhs.side_mirror_condition" type="text" /></div>
+          <div class="field"><label>Fender Condition</label><input name="rhs.fender_condition" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Fender Repainted</label><input name="rhs.fender_repainted" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Fender Paint Depth</label><input name="rhs.fender_paint_depth" type="text" list="dl_paint_depth" /></div>
+          <div class="field"><label>Front Door Condition</label><input name="rhs.front_door_condition" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Front Door Repainted</label><input name="rhs.front_door_repainted" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Front Door Paint Depth</label><input name="rhs.front_door_paint_depth" type="text" list="dl_paint_depth" /></div>
+          <div class="field"><label>Front Door Company Fitted</label><input name="rhs.front_door_company_fitted" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Rear Door Condition</label><input name="rhs.rear_door_condition" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Rear Door Repainted</label><input name="rhs.rear_door_repainted" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Rear Door Paint Depth</label><input name="rhs.rear_door_paint_depth" type="text" list="dl_paint_depth" /></div>
+          <div class="field"><label>Rear Door Company Fitted</label><input name="rhs.rear_door_company_fitted" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Quarter Panel Condition</label><input name="rhs.quarter_panel_condition" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Quarter Panel Repainted</label><input name="rhs.quarter_panel_repainted" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Quarter Panel Paint Depth</label><input name="rhs.quarter_panel_paint_depth" type="text" list="dl_paint_depth" /></div>
+          <div class="field"><label>Window Glass Original</label><input name="rhs.window_glass_original" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Side Mirror Condition</label><input name="rhs.side_mirror_condition" type="text" list="dl_condition" /></div>
         </div></div>
 
         <div class="section"><div class="section-header">LHS</div><div class="grid">
-          <div class="field"><label>Fender Condition</label><input name="lhs.fender_condition" type="text" /></div>
-          <div class="field"><label>Fender Repainted</label><input name="lhs.fender_repainted" type="text" /></div>
-          <div class="field"><label>Fender Paint Depth</label><input name="lhs.fender_paint_depth" type="text" /></div>
-          <div class="field"><label>Front Door Condition</label><input name="lhs.front_door_condition" type="text" /></div>
-          <div class="field"><label>Front Door Repainted</label><input name="lhs.front_door_repainted" type="text" /></div>
-          <div class="field"><label>Front Door Paint Depth</label><input name="lhs.front_door_paint_depth" type="text" /></div>
-          <div class="field"><label>Front Door Company Fitted</label><input name="lhs.front_door_company_fitted" type="text" /></div>
-          <div class="field"><label>Rear Door Condition</label><input name="lhs.rear_door_condition" type="text" /></div>
-          <div class="field"><label>Rear Door Repainted</label><input name="lhs.rear_door_repainted" type="text" /></div>
-          <div class="field"><label>Rear Door Paint Depth</label><input name="lhs.rear_door_paint_depth" type="text" /></div>
-          <div class="field"><label>Rear Door Company Fitted</label><input name="lhs.rear_door_company_fitted" type="text" /></div>
-          <div class="field"><label>Quarter Panel Condition</label><input name="lhs.quarter_panel_condition" type="text" /></div>
-          <div class="field"><label>Quarter Panel Repainted</label><input name="lhs.quarter_panel_repainted" type="text" /></div>
-          <div class="field"><label>Quarter Panel Paint Depth</label><input name="lhs.quarter_panel_paint_depth" type="text" /></div>
-          <div class="field"><label>Window Glass Original</label><input name="lhs.window_glass_original" type="text" /></div>
-          <div class="field"><label>Side Mirror Condition</label><input name="lhs.side_mirror_condition" type="text" /></div>
+          <div class="field"><label>Fender Condition</label><input name="lhs.fender_condition" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Fender Repainted</label><input name="lhs.fender_repainted" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Fender Paint Depth</label><input name="lhs.fender_paint_depth" type="text" list="dl_paint_depth" /></div>
+          <div class="field"><label>Front Door Condition</label><input name="lhs.front_door_condition" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Front Door Repainted</label><input name="lhs.front_door_repainted" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Front Door Paint Depth</label><input name="lhs.front_door_paint_depth" type="text" list="dl_paint_depth" /></div>
+          <div class="field"><label>Front Door Company Fitted</label><input name="lhs.front_door_company_fitted" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Rear Door Condition</label><input name="lhs.rear_door_condition" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Rear Door Repainted</label><input name="lhs.rear_door_repainted" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Rear Door Paint Depth</label><input name="lhs.rear_door_paint_depth" type="text" list="dl_paint_depth" /></div>
+          <div class="field"><label>Rear Door Company Fitted</label><input name="lhs.rear_door_company_fitted" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Quarter Panel Condition</label><input name="lhs.quarter_panel_condition" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Quarter Panel Repainted</label><input name="lhs.quarter_panel_repainted" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Quarter Panel Paint Depth</label><input name="lhs.quarter_panel_paint_depth" type="text" list="dl_paint_depth" /></div>
+          <div class="field"><label>Window Glass Original</label><input name="lhs.window_glass_original" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Side Mirror Condition</label><input name="lhs.side_mirror_condition" type="text" list="dl_condition" /></div>
         </div></div>
 
         <div class="section"><div class="section-header">Rear</div><div class="grid">
-          <div class="field"><label>Bumper Condition</label><input name="rear.bumper_condition" type="text" /></div>
-          <div class="field"><label>Bumper Repainted</label><input name="rear.bumper_repainted" type="text" /></div>
-          <div class="field"><label>Bumper Paint Depth</label><input name="rear.bumper_paint_depth" type="text" /></div>
-          <div class="field"><label>Windshield Condition</label><input name="rear.windshield_condition" type="text" /></div>
-          <div class="field"><label>Windshield Original</label><input name="rear.windshield_original" type="text" /></div>
-          <div class="field"><label>Tailgate Condition</label><input name="rear.tailgate_condition" type="text" /></div>
-          <div class="field"><label>Tailgate Repainted</label><input name="rear.tailgate_repainted" type="text" /></div>
-          <div class="field"><label>Tailgate Paint Depth</label><input name="rear.tailgate_paint_depth" type="text" /></div>
-          <div class="field"><label>Tailgate Original</label><input name="rear.tailgate_original" type="text" /></div>
-          <div class="field"><label>Tail Lights Condition</label><input name="rear.tail_lights_condition" type="text" /></div>
+          <div class="field"><label>Bumper Condition</label><input name="rear.bumper_condition" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Bumper Repainted</label><input name="rear.bumper_repainted" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Bumper Paint Depth</label><input name="rear.bumper_paint_depth" type="text" list="dl_paint_depth" /></div>
+          <div class="field"><label>Windshield Condition</label><input name="rear.windshield_condition" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Windshield Original</label><input name="rear.windshield_original" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Tailgate Condition</label><input name="rear.tailgate_condition" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Tailgate Repainted</label><input name="rear.tailgate_repainted" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Tailgate Paint Depth</label><input name="rear.tailgate_paint_depth" type="text" list="dl_paint_depth" /></div>
+          <div class="field"><label>Tailgate Original</label><input name="rear.tailgate_original" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Tail Lights Condition</label><input name="rear.tail_lights_condition" type="text" list="dl_condition" /></div>
         </div></div>
 
         <div class="section"><div class="section-header">Roof</div><div class="grid">
-          <div class="field"><label>Condition</label><input name="roof.condition" type="text" /></div>
-          <div class="field"><label>Type</label><input name="roof.type" type="text" /></div>
-          <div class="field"><label>Paint Depth</label><input name="roof.paint_depth" type="text" /></div>
-          <div class="field"><label>Repainted</label><input name="roof.repainted" type="text" /></div>
+          <div class="field"><label>Condition</label><input name="roof.condition" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Type</label><input name="roof.type" type="text" list="dl_roof_type" /></div>
+          <div class="field"><label>Paint Depth</label><input name="roof.paint_depth" type="text" list="dl_paint_depth" /></div>
+          <div class="field"><label>Repainted</label><input name="roof.repainted" type="text" list="dl_yes_no" /></div>
+          <div class="field" style="grid-column: span 4;"><label>Exterior Comments</label><textarea name="comments.exterior"></textarea></div>
         </div></div>
 
         <!-- INTERIOR / SEATS / BOOT / ENGINE -->
         <div class="section"><div class="section-header">Interior</div><div class="grid">
-          <div class="field"><label>MIL Light</label><input name="interior.mil_light" type="text" /></div>
-          <div class="field"><label>Dashboard Condition</label><input name="interior.dashboard_condition" type="text" /></div>
-          <div class="field"><label>Music System</label><input name="interior.music_system" type="text" /></div>
-          <div class="field"><label>Steering Controls</label><input name="interior.steering_controls" type="text" /></div>
-          <div class="field"><label>Paddle Shifters</label><input name="interior.paddle_shifters" type="text" /></div>
-          <div class="field"><label>Hand Brake</label><input name="interior.hand_brake" type="text" /></div>
-          <div class="field"><label>Speakers</label><input name="interior.speakers" type="text" /></div>
-          <div class="field"><label>AC Vents</label><input name="interior.ac_vents" type="text" /></div>
-          <div class="field"><label>AC Working</label><input name="interior.ac_working" type="text" /></div>
-          <div class="field"><label>Steering Type</label><input name="interior.steering_type" type="text" /></div>
-          <div class="field"><label>Cruise Control</label><input name="interior.cruise_control" type="text" /></div>
-          <div class="field"><label>Navigation</label><input name="interior.navigation" type="text" /></div>
-          <div class="field"><label>Glove Box</label><input name="interior.glove_box" type="text" /></div>
-          <div class="field"><label>Cabin Lights</label><input name="interior.cabin_lights" type="text" /></div>
-          <div class="field"><label>Headlights</label><input name="interior.headlights" type="text" /></div>
-          <div class="field"><label>Wipers</label><input name="interior.wipers" type="text" /></div>
-          <div class="field"><label>Trip Switch</label><input name="interior.trip_switch" type="text" /></div>
-          <div class="field"><label>Boot Lever</label><input name="interior.boot_lever" type="text" /></div>
-          <div class="field"><label>Central Lock</label><input name="interior.central_lock" type="text" /></div>
-          <div class="field"><label>Rear Wiper</label><input name="interior.rear_wiper" type="text" /></div>
-          <div class="field"><label>Rear View Mirror</label><input name="interior.rear_view_mirror" type="text" /></div>
-          <div class="field"><label>Bonnet Lever</label><input name="interior.bonnet_lever" type="text" /></div>
-          <div class="field"><label>Side Mirror Adjustment</label><input name="interior.side_mirror_adjustment" type="text" /></div>
-          <div class="field"><label>Fuel Lid Lever</label><input name="interior.fuel_lid_lever" type="text" /></div>
-          <div class="field"><label>Power Windows</label><input name="interior.power_windows" type="text" /></div>
+          <div class="field"><label>MIL Light</label><input name="interior.mil_light" type="text" list="dl_on_off" /></div>
+          <div class="field"><label>Dashboard Condition</label><input name="interior.dashboard_condition" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Music System</label><input name="interior.music_system" type="text" list="dl_working" /></div>
+          <div class="field"><label>Steering Controls</label><input name="interior.steering_controls" type="text" list="dl_working" /></div>
+          <div class="field"><label>Paddle Shifters</label><input name="interior.paddle_shifters" type="text" list="dl_working" /></div>
+          <div class="field"><label>Hand Brake</label><input name="interior.hand_brake" type="text" list="dl_working" /></div>
+          <div class="field"><label>Speakers</label><input name="interior.speakers" type="text" list="dl_working" /></div>
+          <div class="field"><label>AC Vents</label><input name="interior.ac_vents" type="text" list="dl_condition" /></div>
+          <div class="field"><label>AC Working</label><input name="interior.ac_working" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Steering Type</label><input name="interior.steering_type" type="text" list="dl_steering_type" /></div>
+          <div class="field"><label>Cruise Control</label><input name="interior.cruise_control" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Navigation</label><input name="interior.navigation" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Glove Box</label><input name="interior.glove_box" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Cabin Lights</label><input name="interior.cabin_lights" type="text" list="dl_working" /></div>
+          <div class="field"><label>Headlights</label><input name="interior.headlights" type="text" list="dl_working" /></div>
+          <div class="field"><label>Wipers</label><input name="interior.wipers" type="text" list="dl_working" /></div>
+          <div class="field"><label>Trip Switch</label><input name="interior.trip_switch" type="text" list="dl_working" /></div>
+          <div class="field"><label>Boot Lever</label><input name="interior.boot_lever" type="text" list="dl_working" /></div>
+          <div class="field"><label>Central Lock</label><input name="interior.central_lock" type="text" list="dl_working" /></div>
+          <div class="field"><label>Rear Wiper</label><input name="interior.rear_wiper" type="text" list="dl_working" /></div>
+          <div class="field"><label>Rear View Mirror</label><input name="interior.rear_view_mirror" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Bonnet Lever</label><input name="interior.bonnet_lever" type="text" list="dl_working" /></div>
+          <div class="field"><label>Side Mirror Adjustment</label><input name="interior.side_mirror_adjustment" type="text" list="dl_working" /></div>
+          <div class="field"><label>Fuel Lid Lever</label><input name="interior.fuel_lid_lever" type="text" list="dl_working" /></div>
+          <div class="field"><label>Power Windows</label><input name="interior.power_windows" type="text" list="dl_working" /></div>
+          <div class="field" style="grid-column: span 4;"><label>Interior Comments</label><textarea name="comments.interior"></textarea></div>
+          <div class="field" style="grid-column: span 4;"><label>Interior (Additional) Comments</label><textarea name="comments.interior_additional"></textarea></div>
         </div></div>
 
         <div class="section"><div class="section-header">Seats</div><div class="grid">
-          <div class="field"><label>Front Condition</label><input name="seats.front_condition" type="text" /></div>
-          <div class="field"><label>Adjustment Type</label><input name="seats.adjustment_type" type="text" /></div>
-          <div class="field"><label>Adjustment Working</label><input name="seats.adjustment_working" type="text" /></div>
-          <div class="field"><label>Seat Belts</label><input name="seats.seat_belts" type="text" /></div>
+          <div class="field"><label>Front Condition</label><input name="seats.front_condition" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Adjustment Type</label><input name="seats.adjustment_type" type="text" list="dl_seat_adjustment" /></div>
+          <div class="field"><label>Adjustment Working</label><input name="seats.adjustment_working" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Seat Belts</label><input name="seats.seat_belts" type="text" list="dl_working" /></div>
         </div></div>
 
         <div class="section"><div class="section-header">Rear Seats</div><div class="grid">
-          <div class="field"><label>Condition</label><input name="rear_seats.condition" type="text" /></div>
-          <div class="field"><label>Arm Rest</label><input name="rear_seats.arm_rest" type="text" /></div>
-          <div class="field"><label>AC Vent</label><input name="rear_seats.ac_vent" type="text" /></div>
-          <div class="field"><label>RHS Panel</label><input name="rear_seats.rhs_panel" type="text" /></div>
-          <div class="field"><label>LHS Panel</label><input name="rear_seats.lhs_panel" type="text" /></div>
+          <div class="field"><label>Condition</label><input name="rear_seats.condition" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Arm Rest</label><input name="rear_seats.arm_rest" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>AC Vent</label><input name="rear_seats.ac_vent" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>RHS Panel</label><input name="rear_seats.rhs_panel" type="text" list="dl_condition" /></div>
+          <div class="field"><label>LHS Panel</label><input name="rear_seats.lhs_panel" type="text" list="dl_condition" /></div>
         </div></div>
 
         <div class="section"><div class="section-header">Boot</div><div class="grid">
-          <div class="field"><label>Condition</label><input name="boot.condition" type="text" /></div>
-          <div class="field"><label>Jack Available</label><input name="boot.jack_available" type="text" /></div>
+          <div class="field"><label>Condition</label><input name="boot.condition" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Jack Available</label><input name="boot.jack_available" type="text" list="dl_yes_no" /></div>
         </div></div>
 
         <div class="section"><div class="section-header">Engine</div><div class="grid">
-          <div class="field"><label>Oil Leak</label><input name="engine.oil_leak" type="text" /></div>
-          <div class="field"><label>Battery Condition</label><input name="engine.battery_condition" type="text" /></div>
-          <div class="field"><label>Hose Pipes</label><input name="engine.hose_pipes" type="text" /></div>
-          <div class="field"><label>Oil Condition</label><input name="engine.oil_condition" type="text" /></div>
-          <div class="field"><label>Wiring</label><input name="engine.wiring" type="text" /></div>
-          <div class="field"><label>Mounting</label><input name="engine.mounting" type="text" /></div>
-          <div class="field"><label>Brake Oil Level</label><input name="engine.brake_oil_level" type="text" /></div>
-          <div class="field"><label>Coolant Level</label><input name="engine.coolant_level" type="text" /></div>
-          <div class="field"><label>Belts</label><input name="engine.belts" type="text" /></div>
-          <div class="field"><label>Firewall Rust</label><input name="engine.firewall_rust" type="text" /></div>
-          <div class="field"><label>Estimated Repair Cost</label><input name="engine.estimated_repair_cost" type="text" /></div>
+          <div class="field"><label>Oil Leak</label><input name="engine.oil_leak" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Battery Condition</label><input name="engine.battery_condition" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Hose Pipes</label><input name="engine.hose_pipes" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Oil Condition</label><input name="engine.oil_condition" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Wiring</label><input name="engine.wiring" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Mounting</label><input name="engine.mounting" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Brake Oil Level</label><input name="engine.brake_oil_level" type="text" list="dl_level" /></div>
+          <div class="field"><label>Coolant Level</label><input name="engine.coolant_level" type="text" list="dl_level" /></div>
+          <div class="field"><label>Belts</label><input name="engine.belts" type="text" list="dl_condition" /></div>
+          <div class="field"><label>Firewall Rust</label><input name="engine.firewall_rust" type="text" list="dl_yes_no" /></div>
+          <div class="field"><label>Estimated Repair Cost</label><input name="engine.estimated_repair_cost" type="text" list="dl_cost" /></div>
+          <div class="field" style="grid-column: span 4;"><label>Engine Comments</label><textarea name="comments.engine"></textarea></div>
         </div></div>
 
         <!-- TYRES -->
         <div class="section"><div class="section-header">Tyres</div><div class="grid">
-          <div class="field"><label>RHS Front Brand</label><input name="tyres.rhs_front.brand" type="text" /></div>
-          <div class="field"><label>RHS Front Wheel Type</label><input name="tyres.rhs_front.wheel_type" type="text" /></div>
-          <div class="field"><label>RHS Front Remaining Life</label><input name="tyres.rhs_front.remaining_life" type="text" /></div>
-          <div class="field"><label>RHS Front Estimated Cost</label><input name="tyres.rhs_front.estimated_cost" type="text" /></div>
-          <div class="field"><label>RHS Rear Brand</label><input name="tyres.rhs_rear.brand" type="text" /></div>
-          <div class="field"><label>RHS Rear Wheel Type</label><input name="tyres.rhs_rear.wheel_type" type="text" /></div>
-          <div class="field"><label>RHS Rear Remaining Life</label><input name="tyres.rhs_rear.remaining_life" type="text" /></div>
-          <div class="field"><label>RHS Rear Estimated Cost</label><input name="tyres.rhs_rear.estimated_cost" type="text" /></div>
-          <div class="field"><label>LHS Front Brand</label><input name="tyres.lhs_front.brand" type="text" /></div>
-          <div class="field"><label>LHS Front Wheel Type</label><input name="tyres.lhs_front.wheel_type" type="text" /></div>
-          <div class="field"><label>LHS Front Remaining Life</label><input name="tyres.lhs_front.remaining_life" type="text" /></div>
-          <div class="field"><label>LHS Front Estimated Cost</label><input name="tyres.lhs_front.estimated_cost" type="text" /></div>
-          <div class="field"><label>LHS Rear Brand</label><input name="tyres.lhs_rear.brand" type="text" /></div>
-          <div class="field"><label>LHS Rear Wheel Type</label><input name="tyres.lhs_rear.wheel_type" type="text" /></div>
-          <div class="field"><label>LHS Rear Remaining Life</label><input name="tyres.lhs_rear.remaining_life" type="text" /></div>
-          <div class="field"><label>LHS Rear Estimated Cost</label><input name="tyres.lhs_rear.estimated_cost" type="text" /></div>
-          <div class="field"><label>Spare Brand</label><input name="tyres.spare.brand" type="text" /></div>
-          <div class="field"><label>Spare Wheel Type</label><input name="tyres.spare.wheel_type" type="text" /></div>
-          <div class="field"><label>Spare Remaining Life</label><input name="tyres.spare.remaining_life" type="text" /></div>
-          <div class="field"><label>Spare Estimated Cost</label><input name="tyres.spare.estimated_cost" type="text" /></div>
+          <div class="field"><label>RHS Front Brand</label><input name="tyres.rhs_front.brand" type="text" list="dl_tyre_brand" /></div>
+          <div class="field"><label>RHS Front Wheel Type</label><input name="tyres.rhs_front.wheel_type" type="text" list="dl_wheel_type" /></div>
+          <div class="field"><label>RHS Front Remaining Life</label><input name="tyres.rhs_front.remaining_life" type="text" list="dl_tyre_life" /></div>
+          <div class="field"><label>RHS Front Estimated Cost</label><input name="tyres.rhs_front.estimated_cost" type="text" list="dl_cost" /></div>
+          <div class="field"><label>RHS Rear Brand</label><input name="tyres.rhs_rear.brand" type="text" list="dl_tyre_brand" /></div>
+          <div class="field"><label>RHS Rear Wheel Type</label><input name="tyres.rhs_rear.wheel_type" type="text" list="dl_wheel_type" /></div>
+          <div class="field"><label>RHS Rear Remaining Life</label><input name="tyres.rhs_rear.remaining_life" type="text" list="dl_tyre_life" /></div>
+          <div class="field"><label>RHS Rear Estimated Cost</label><input name="tyres.rhs_rear.estimated_cost" type="text" list="dl_cost" /></div>
+          <div class="field"><label>LHS Front Brand</label><input name="tyres.lhs_front.brand" type="text" list="dl_tyre_brand" /></div>
+          <div class="field"><label>LHS Front Wheel Type</label><input name="tyres.lhs_front.wheel_type" type="text" list="dl_wheel_type" /></div>
+          <div class="field"><label>LHS Front Remaining Life</label><input name="tyres.lhs_front.remaining_life" type="text" list="dl_tyre_life" /></div>
+          <div class="field"><label>LHS Front Estimated Cost</label><input name="tyres.lhs_front.estimated_cost" type="text" list="dl_cost" /></div>
+          <div class="field"><label>LHS Rear Brand</label><input name="tyres.lhs_rear.brand" type="text" list="dl_tyre_brand" /></div>
+          <div class="field"><label>LHS Rear Wheel Type</label><input name="tyres.lhs_rear.wheel_type" type="text" list="dl_wheel_type" /></div>
+          <div class="field"><label>LHS Rear Remaining Life</label><input name="tyres.lhs_rear.remaining_life" type="text" list="dl_tyre_life" /></div>
+          <div class="field"><label>LHS Rear Estimated Cost</label><input name="tyres.lhs_rear.estimated_cost" type="text" list="dl_cost" /></div>
+          <div class="field"><label>Spare Brand</label><input name="tyres.spare.brand" type="text" list="dl_tyre_brand" /></div>
+          <div class="field"><label>Spare Wheel Type</label><input name="tyres.spare.wheel_type" type="text" list="dl_wheel_type" /></div>
+          <div class="field"><label>Spare Remaining Life</label><input name="tyres.spare.remaining_life" type="text" list="dl_tyre_life" /></div>
+          <div class="field"><label>Spare Estimated Cost</label><input name="tyres.spare.estimated_cost" type="text" list="dl_cost" /></div>
         </div></div>
 
         <!-- STRUCTURE -->
         <div class="section"><div class="section-header">Structure</div><div class="grid">
-          <div class="field"><label>Upper Member</label><input name="structure.upper_member" type="text" /></div>
-          <div class="field"><label>LHS Apron</label><input name="structure.lhs_apron" type="text" /></div>
-          <div class="field"><label>RHS Apron</label><input name="structure.rhs_apron" type="text" /></div>
+          <div class="field"><label>Upper Member</label><input name="structure.upper_member" type="text" list="dl_ok_bad" /></div>
+          <div class="field"><label>LHS Apron</label><input name="structure.lhs_apron" type="text" list="dl_ok_bad" /></div>
+          <div class="field"><label>RHS Apron</label><input name="structure.rhs_apron" type="text" list="dl_ok_bad" /></div>
           <div class="field"><label>A Pillar LHS</label><input name="structure.a_pillar_lhs" type="text" /></div>
           <div class="field"><label>A Pillar RHS</label><input name="structure.a_pillar_rhs" type="text" /></div>
           <div class="field"><label>B Pillar LHS</label><input name="structure.b_pillar_lhs" type="text" /></div>
@@ -396,26 +389,28 @@
           <div class="field"><label>C Pillar RHS</label><input name="structure.c_pillar_rhs" type="text" /></div>
           <div class="field"><label>Fender Wall LHS</label><input name="structure.fender_wall_lhs" type="text" /></div>
           <div class="field"><label>Fender Wall RHS</label><input name="structure.fender_wall_rhs" type="text" /></div>
-          <div class="field"><label>Cross Member</label><input name="structure.cross_member" type="text" /></div>
-          <div class="field"><label>Lower Member</label><input name="structure.lower_member" type="text" /></div>
+          <div class="field"><label>Cross Member</label><input name="structure.cross_member" type="text" list="dl_ok_bad" /></div>
+          <div class="field"><label>Lower Member</label><input name="structure.lower_member" type="text" list="dl_ok_bad" /></div>
           <div class="field"><label>Dicky Tub</label><input name="structure.dicky_tub" type="text" /></div>
           <div class="field"><label>Tailgate Frame</label><input name="structure.tailgate_frame" type="text" /></div>
+          <div class="field" style="grid-column: span 4;"><label>Structure Comments</label><textarea name="comments.structure"></textarea></div>
         </div></div>
 
         <!-- PERFORMANCE -->
         <div class="section"><div class="section-header">Performance</div><div class="grid">
-          <div class="field"><label>Steering</label><input name="performance.steering" type="text" /></div>
-          <div class="field"><label>Alignment</label><input name="performance.alignment" type="text" /></div>
-          <div class="field"><label>Ignition</label><input name="performance.ignition" type="text" /></div>
-          <div class="field"><label>Clutch</label><input name="performance.clutch" type="text" /></div>
-          <div class="field"><label>Brakes</label><input name="performance.brakes" type="text" /></div>
-          <div class="field"><label>Gear Shift</label><input name="performance.gear_shift" type="text" /></div>
-          <div class="field"><label>Acceleration</label><input name="performance.acceleration" type="text" /></div>
-          <div class="field"><label>CNG Mode</label><input name="performance.cng_mode" type="text" /></div>
-          <div class="field"><label>Suspension</label><input name="performance.suspension" type="text" /></div>
-          <div class="field"><label>Engine Noise</label><input name="performance.engine_noise" type="text" /></div>
-          <div class="field"><label>Wheel Alignment</label><input name="performance.wheel_alignment" type="text" /></div>
-          <div class="field"><label>Estimated Repair Cost</label><input name="performance.estimated_repair_cost" type="text" /></div>
+          <div class="field"><label>Steering</label><input name="performance.steering" type="text" list="dl_ok_bad" /></div>
+          <div class="field"><label>Alignment</label><input name="performance.alignment" type="text" list="dl_ok_bad" /></div>
+          <div class="field"><label>Ignition</label><input name="performance.ignition" type="text" list="dl_ok_bad" /></div>
+          <div class="field"><label>Clutch</label><input name="performance.clutch" type="text" list="dl_ok_bad" /></div>
+          <div class="field"><label>Brakes</label><input name="performance.brakes" type="text" list="dl_ok_bad" /></div>
+          <div class="field"><label>Gear Shift</label><input name="performance.gear_shift" type="text" list="dl_ok_bad" /></div>
+          <div class="field"><label>Acceleration</label><input name="performance.acceleration" type="text" list="dl_ok_bad" /></div>
+          <div class="field"><label>CNG Mode</label><input name="performance.cng_mode" type="text" list="dl_ok_bad" /></div>
+          <div class="field"><label>Suspension</label><input name="performance.suspension" type="text" list="dl_ok_bad" /></div>
+          <div class="field"><label>Engine Noise</label><input name="performance.engine_noise" type="text" list="dl_engine_noise" /></div>
+          <div class="field"><label>Wheel Alignment</label><input name="performance.wheel_alignment" type="text" list="dl_ok_bad" /></div>
+          <div class="field"><label>Estimated Repair Cost</label><input name="performance.estimated_repair_cost" type="text" list="dl_cost" /></div>
+          <div class="field" style="grid-column: span 4;"><label>Test Drive Comments</label><textarea name="comments.test_drive"></textarea></div>
         </div></div>
 
         <!-- IMAGES -->
@@ -453,6 +448,179 @@
         </div>
       </form>
     </div>
+
+    <!-- Dropdown option sources (datalist keeps free-text while offering suggestions) -->
+    <datalist id="dl_yes_no">
+      <option value="Yes"></option>
+      <option value="No"></option>
+    </datalist>
+
+    <datalist id="dl_on_off">
+      <option value="On"></option>
+      <option value="Off"></option>
+    </datalist>
+
+    <datalist id="dl_working">
+      <option value="Working"></option>
+      <option value="Not Working"></option>
+      <option value="Intermittent"></option>
+      <option value="Needs Repair"></option>
+      <option value="N/A"></option>
+    </datalist>
+
+    <datalist id="dl_condition">
+      <option value="Good"></option>
+      <option value="OK"></option>
+      <option value="Average"></option>
+      <option value="Fair"></option>
+      <option value="Bad"></option>
+      <option value="Damaged"></option>
+      <option value="Scratched"></option>
+      <option value="Dented"></option>
+      <option value="Cracked"></option>
+      <option value="Broken"></option>
+      <option value="Missing"></option>
+      <option value="Repaired"></option>
+      <option value="Replaced"></option>
+      <option value="Needs Attention"></option>
+    </datalist>
+
+    <datalist id="dl_grille_condition">
+      <option value="Good"></option>
+      <option value="OK"></option>
+      <option value="Bad"></option>
+      <option value="Scratched"></option>
+      <option value="Cracked"></option>
+      <option value="Broken"></option>
+      <option value="Loose"></option>
+      <option value="Missing"></option>
+      <option value="Repaired"></option>
+      <option value="Replaced"></option>
+      <option value="Not Applicable"></option>
+    </datalist>
+
+    <datalist id="dl_ok_bad">
+      <option value="OK"></option>
+      <option value="Not OK"></option>
+      <option value="Needs Repair"></option>
+      <option value="Repaired"></option>
+      <option value="Replaced"></option>
+      <option value="N/A"></option>
+    </datalist>
+
+    <datalist id="dl_level">
+      <option value="OK"></option>
+      <option value="Low"></option>
+      <option value="High"></option>
+      <option value="Needs Top-up"></option>
+      <option value="Leaking"></option>
+      <option value="N/A"></option>
+    </datalist>
+
+    <datalist id="dl_paint_depth">
+      <option value="80"></option>
+      <option value="90"></option>
+      <option value="100"></option>
+      <option value="110"></option>
+      <option value="120"></option>
+      <option value="130"></option>
+      <option value="150"></option>
+      <option value="180"></option>
+      <option value="200"></option>
+      <option value=">200"></option>
+    </datalist>
+
+    <datalist id="dl_cost">
+      <option value="0"></option>
+      <option value="500"></option>
+      <option value="1000"></option>
+      <option value="2000"></option>
+      <option value="5000"></option>
+      <option value="10000"></option>
+      <option value="15000"></option>
+      <option value="20000"></option>
+      <option value="30000"></option>
+      <option value=">30000"></option>
+    </datalist>
+
+    <datalist id="dl_tyre_brand">
+      <option value="MRF"></option>
+      <option value="CEAT"></option>
+      <option value="Apollo"></option>
+      <option value="JK Tyre"></option>
+      <option value="Bridgestone"></option>
+      <option value="Michelin"></option>
+      <option value="Goodyear"></option>
+      <option value="Continental"></option>
+      <option value="Yokohama"></option>
+      <option value="Pirelli"></option>
+    </datalist>
+
+    <datalist id="dl_wheel_type">
+      <option value="Alloy"></option>
+      <option value="Steel"></option>
+    </datalist>
+
+    <datalist id="dl_tyre_life">
+      <option value="New"></option>
+      <option value="100%"></option>
+      <option value="90%"></option>
+      <option value="80%"></option>
+      <option value="70%"></option>
+      <option value="60%"></option>
+      <option value="50%"></option>
+      <option value="40%"></option>
+      <option value="30%"></option>
+      <option value="20%"></option>
+      <option value="10%"></option>
+      <option value="0%"></option>
+    </datalist>
+
+    <datalist id="dl_roof_type">
+      <option value="Hardtop"></option>
+      <option value="Sunroof"></option>
+      <option value="Panoramic Sunroof"></option>
+      <option value="Convertible"></option>
+      <option value="Soft Top"></option>
+      <option value="None"></option>
+    </datalist>
+
+    <datalist id="dl_steering_type">
+      <option value="Manual"></option>
+      <option value="Power"></option>
+      <option value="Electric"></option>
+      <option value="Hydraulic"></option>
+    </datalist>
+
+    <datalist id="dl_seat_adjustment">
+      <option value="Manual"></option>
+      <option value="Electric"></option>
+      <option value="Powered"></option>
+    </datalist>
+
+    <datalist id="dl_engine_noise">
+      <option value="Normal"></option>
+      <option value="Slight Noise"></option>
+      <option value="Abnormal Noise"></option>
+      <option value="Knocking"></option>
+      <option value="Vibration"></option>
+      <option value="N/A"></option>
+    </datalist>
+
+    <datalist id="dl_fuel_type">
+      <option value="Petrol"></option>
+      <option value="Diesel"></option>
+      <option value="CNG"></option>
+      <option value="Petrol+CNG"></option>
+      <option value="Electric"></option>
+      <option value="Hybrid"></option>
+    </datalist>
+
+    <datalist id="dl_rc_type">
+      <option value="Private"></option>
+      <option value="Commercial"></option>
+      <option value="Company"></option>
+    </datalist>
 
     <script>
       // Keep as a single point of change.
@@ -513,6 +681,12 @@
       function isDataImageUrl(value) {
         if (!value) return false;
         return /^data:image\/(png|jpe?g|webp);base64,/i.test(value);
+      }
+
+      function isYesNo(value) {
+        if (!value) return false;
+        const v = String(value).trim();
+        return v === 'Yes' || v === 'No';
       }
 
       function clearFieldErrors(formEl) {
@@ -581,6 +755,54 @@
               markInvalid(el);
               if (!firstInvalidEl) firstInvalidEl = el;
             }
+          }
+        }
+
+        // Manufacturing date: allow YYYY or MM/YYYY
+        const mfg = payload.vehicle && typeof payload.vehicle.manufacturing_date === 'string' ? payload.vehicle.manufacturing_date.trim() : '';
+        if (mfg) {
+          if (!/^\d{4}$/.test(mfg) && !/^(0[1-9]|1[0-2])\/\d{4}$/.test(mfg)) {
+            errors.push(`Manufacturing Date must be YYYY or MM/YYYY.`);
+            const el = formEl.querySelector('[name="vehicle.manufacturing_date"]');
+            markInvalid(el);
+            if (!firstInvalidEl) firstInvalidEl = el;
+          }
+        }
+
+        // Owner count: if provided, must be an integer
+        const ownerCountRaw = payload.vehicle && typeof payload.vehicle.owner_count === 'string' ? payload.vehicle.owner_count.trim() : '';
+        if (ownerCountRaw) {
+          const ownerCount = Number(ownerCountRaw);
+          if (!Number.isInteger(ownerCount) || ownerCount < 0) {
+            errors.push('Owner Count must be a non-negative integer.');
+            const el = formEl.querySelector('[name="vehicle.owner_count"]');
+            markInvalid(el);
+            if (!firstInvalidEl) firstInvalidEl = el;
+          }
+        }
+
+        // Validate Yes/No selects (when provided)
+        const yesNoPaths = [
+          'vehicle.cng.present',
+          'vehicle.cng.endorsed',
+          'flags.accidental',
+          'flags.flood_damage',
+          'flags.fire_damage',
+          'flags.rc_chassis_match',
+          'flags.service_logs_available',
+          'flags.has_cng',
+          'flags.has_hypothecation'
+        ];
+
+        for (const path of yesNoPaths) {
+          const v = path.split('.').reduce((acc, k) => (acc && acc[k] !== undefined ? acc[k] : undefined), payload);
+          const value = typeof v === 'string' ? v.trim() : '';
+          if (!value) continue;
+          if (!isYesNo(value)) {
+            errors.push(`Field '${path}' must be Yes or No.`);
+            const el = formEl.querySelector(`[name="${path}"]`);
+            markInvalid(el);
+            if (!firstInvalidEl) firstInvalidEl = el;
           }
         }
 
@@ -831,10 +1053,10 @@
         // Derive convenience flags if not explicitly provided
         if (!payload.flags) payload.flags = {};
         if (!payload.flags.has_cng) {
-          payload.flags.has_cng = payload.vehicle && payload.vehicle.cng && payload.vehicle.cng.present === 'true' ? 'true' : 'false';
+          payload.flags.has_cng = payload.vehicle && payload.vehicle.cng && payload.vehicle.cng.present === 'Yes' ? 'Yes' : 'No';
         }
         if (!payload.flags.has_hypothecation) {
-          payload.flags.has_hypothecation = payload.vehicle && payload.vehicle.hypothecation ? 'true' : 'false';
+          payload.flags.has_hypothecation = payload.vehicle && payload.vehicle.hypothecation ? 'Yes' : 'No';
         }
 
         // Basic validations (keep template read-only; adjust inputs here)

@@ -49,8 +49,8 @@
     "fire_damage": "",
     "rc_chassis_match": "",
     "service_logs_available": "",
-    "has_cng": "false",
-    "has_hypothecation": "false"
+    "has_cng": "",
+    "has_hypothecation": ""
   },
 
   "comments": {
