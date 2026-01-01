@@ -866,13 +866,25 @@
     
     function getPhotoLabelFromSlot(slot) {
         const labels = {
-            'exteriorFront': 'Exterior - Front',
-            'exteriorBack': 'Exterior - Back',
-            'exteriorLeft': 'Exterior - Left Side',
-            'exteriorRight': 'Exterior - Right Side',
-            'interiorSeat': 'Interior - Seats',
-            'interiorCluster': 'Interior - Instrument Cluster',
-            'rcDocument': 'RC Document (Optional)'
+            exteriorFront: 'Exterior - Front',
+            exteriorBack: 'Exterior - Back',
+            exteriorLeft: 'Exterior - Left Side',
+            exteriorRight: 'Exterior - Right Side',
+            engine: 'Engine Bay',
+            battery: 'Battery Area',
+            firewall: 'Firewall',
+            rhsApron: 'RHS Apron',
+            lhsApron: 'LHS Apron',
+            tyreLhsFront: 'Tyre - LHS Front',
+            tyreLhsBack: 'Tyre - LHS Back',
+            tyreRhsFront: 'Tyre - RHS Front',
+            tyreRhsBack: 'Tyre - RHS Back',
+            tyreSpare: 'Spare Tyre',
+            seatFrontView: 'Seats - Front View',
+            seatRearView: 'Seats - Rear View',
+            dashboard: 'Dashboard',
+            interiorCluster: 'Cluster / Instrument Panel',
+            rcDocument: 'RC Document (Optional)'
         }
         return labels[slot] || slot
     }

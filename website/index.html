@@ -3006,7 +3006,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             initHeroCarValueForms();
             initBookingPanelForm();
-            loadPopularMarketplaceCars();
             initInspectionModalForm({
                 formId: 'usedCarInspectionForm',
                 modalId: 'usedCarInspectionModal',
@@ -3019,6 +3018,11 @@
                 carType: 'New Car',
                 formType: 'new-car-modal'
             });
+
+            // Optional widget; don't break booking flows if missing
+            if (typeof loadPopularMarketplaceCars === 'function') {
+                loadPopularMarketplaceCars();
+            }
         });
 
         function initHeroCarValueForms() {
