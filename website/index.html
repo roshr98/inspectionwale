@@ -1428,7 +1428,7 @@
             position: relative;
         }
         .popular-cars-track {
-            transition: transform 0.3s ease;
+            /* Use native scrolling; avoid transform-based animation to prevent blank/white space */
             scroll-behavior: smooth;
             overflow-x: auto;
             scrollbar-width: none;
@@ -1647,37 +1647,168 @@
             }
         ];
         let popularSliderScrollBound = false;
+        let popularAutoScrollRaf = null;
+        let popularAutoScrollPaused = false;
+        let popularAutoScrollResumeTimer = null;
+        let popularLoopWidthPx = 0;
+        const POPULAR_AUTOSCROLL_SPEED_PX = 0.5; // ~30px/sec at 60fps
+
+        function getPopularTrackGapPx(track) {
+            const computed = window.getComputedStyle(track);
+            return parseInt(computed.columnGap || computed.gap || '16', 10) || 16;
+        }
+
+        function normalizePopularScroll(track) {
+            if (!track || !popularLoopWidthPx) return;
+            // Keep scrollLeft within [0, loopWidth)
+            if (track.scrollLeft >= popularLoopWidthPx) {
+                track.scrollLeft = track.scrollLeft % popularLoopWidthPx;
+            } else if (track.scrollLeft < 0) {
+                track.scrollLeft = (track.scrollLeft % popularLoopWidthPx + popularLoopWidthPx) % popularLoopWidthPx;
+            }
+        }
+
+        function pausePopularAutoScroll(ms = 2500) {
+            popularAutoScrollPaused = true;
+            if (popularAutoScrollResumeTimer) {
+                clearTimeout(popularAutoScrollResumeTimer);
+            }
+            popularAutoScrollResumeTimer = setTimeout(() => {
+                popularAutoScrollPaused = false;
+            }, ms);
+        }
+
+        function stopPopularAutoScroll() {
+            if (popularAutoScrollRaf) {
+                cancelAnimationFrame(popularAutoScrollRaf);
+                popularAutoScrollRaf = null;
+            }
+        }
+
+        function startPopularAutoScroll(track) {
+            stopPopularAutoScroll();
+            if (!track) return;
+
+            const step = () => {
+                popularAutoScrollRaf = requestAnimationFrame(step);
+                if (popularAutoScrollPaused) return;
+                if (!popularLoopWidthPx) return;
+
+                track.scrollLeft += POPULAR_AUTOSCROLL_SPEED_PX;
+                if (track.scrollLeft >= popularLoopWidthPx) {
+                    track.scrollLeft -= popularLoopWidthPx;
+                }
+            };
+            popularAutoScrollRaf = requestAnimationFrame(step);
+        }
+
+        function setupInfinitePopularCars(track) {
+            if (!track) return;
+            stopPopularAutoScroll();
+            popularLoopWidthPx = 0;
+
+            // Remove any previous clones
+            track.querySelectorAll('.popular-car-card[data-clone="1"]').forEach(node => node.remove());
+
+            const originals = Array.from(track.querySelectorAll('.popular-car-card'))
+                .filter(node => node.getAttribute('data-clone') !== '1');
+            if (originals.length < 2) {
+                popularLoopWidthPx = Math.max(track.scrollWidth - track.clientWidth, 0);
+                return;
+            }
+
+            const gap = getPopularTrackGapPx(track);
+            // Compute loop width from the originals only
+            popularLoopWidthPx = originals.reduce((sum, el) => sum + el.getBoundingClientRect().width, 0) + gap * (originals.length - 1);
+
+            // Clone once to allow seamless wrap-around
+            originals.forEach(card => {
+                const clone = card.cloneNode(true);
+                clone.setAttribute('data-clone', '1');
+                track.appendChild(clone);
+            });
+
+            track.scrollLeft = 0;
+            startPopularAutoScroll(track);
+        }
+
+        function rebuildPopularCars(track, listings) {
+            if (!track) return;
+            stopPopularAutoScroll();
+            track.scrollLeft = 0;
+
+            const cardsToShow = Array.isArray(listings) ? listings.slice(0, 6) : [];
+            track.innerHTML = cardsToShow.map((item, idx) => buildPopularCarCard(item, idx)).join('');
+
+            // Preload slider images (best-effort)
+            preloadPopularCarImages(cardsToShow);
+
+            bindPopularSliderScroll();
+            updatePopularCarsNav();
+            // Allow layout to settle before measuring widths
+            requestAnimationFrame(() => setupInfinitePopularCars(track));
+        }
+
+        function preloadPopularCarImages(listings) {
+            const urls = [];
+            (listings || []).forEach(item => {
+                const url = resolveListingPhoto(item);
+                if (url) urls.push(url);
+            });
+            // Also warm the fallback
+            if (POPULAR_FALLBACK_IMAGE) urls.push(POPULAR_FALLBACK_IMAGE);
+
+            const unique = Array.from(new Set(urls));
+            unique.forEach(url => {
+                try {
+                    const img = new Image();
+                    img.decoding = 'async';
+                    img.src = url;
+                } catch (e) {
+                    // ignore
+                }
+            });
+        }
 
         function scrollPopularCars(direction) {
             const track = document.getElementById('popularCarsTrack');
             if (!track) return;
 
-            // Ensure no transform-based animation is active (can cause blank/white space)
-            track.classList.remove('auto-scrolling');
+            pausePopularAutoScroll(3500);
+            normalizePopularScroll(track);
 
             const firstCard = track.querySelector('.popular-car-card');
-            const computed = window.getComputedStyle(track);
-            const gap = parseInt(computed.columnGap || computed.gap || '16', 10) || 16;
+            const gap = getPopularTrackGapPx(track);
             const step = firstCard ? firstCard.getBoundingClientRect().width + gap : 300;
 
-            const maxScrollLeft = Math.max(track.scrollWidth - track.clientWidth, 0);
-            const target = Math.min(Math.max(track.scrollLeft + direction * step, 0), maxScrollLeft);
+            const base = popularLoopWidthPx || Math.max(track.scrollWidth - track.clientWidth, 0);
+            if (!base) return;
+
+            let target = track.scrollLeft + direction * step;
+            // Wrap within loop width
+            target = (target % base + base) % base;
             track.scrollTo({ left: target, behavior: 'smooth' });
             setTimeout(updatePopularCarsNav, 350);
-        }
-
-        function resetPopularCarsTrack(track) {
-            if (!track) return;
-            track.classList.remove('auto-scrolling');
-            track.style.transform = '';
-            track.scrollLeft = 0;
         }
 
         function bindPopularSliderScroll() {
             if (popularSliderScrollBound) return;
             const track = document.getElementById('popularCarsTrack');
             if (!track) return;
-            track.addEventListener('scroll', updatePopularCarsNav);
+
+            track.addEventListener('scroll', () => {
+                pausePopularAutoScroll(3000);
+                // If user scrolls past loop boundary, normalize
+                normalizePopularScroll(track);
+                updatePopularCarsNav();
+            });
+
+            // Pause while user interacts
+            track.addEventListener('mouseenter', () => { popularAutoScrollPaused = true; });
+            track.addEventListener('mouseleave', () => { popularAutoScrollPaused = false; });
+            track.addEventListener('touchstart', () => { popularAutoScrollPaused = true; }, { passive: true });
+            track.addEventListener('touchend', () => { popularAutoScrollPaused = false; }, { passive: true });
+
             popularSliderScrollBound = true;
         }
 
@@ -1686,10 +1817,10 @@
             const prevBtn = document.querySelector('.popular-cars-nav-prev');
             const nextBtn = document.querySelector('.popular-cars-nav-next');
             if (!track || !prevBtn || !nextBtn) return;
-            const tolerance = 8;
-            const maxScrollLeft = Math.max(track.scrollWidth - track.clientWidth - tolerance, 0);
-            prevBtn.style.display = track.scrollLeft > tolerance ? 'flex' : 'none';
-            nextBtn.style.display = track.scrollLeft >= maxScrollLeft ? 'none' : 'flex';
+
+            // Infinite slider: keep arrows visible
+            prevBtn.style.display = 'flex';
+            nextBtn.style.display = 'flex';
         }
 
         // Price filter state
@@ -1721,8 +1852,6 @@
             const track = document.getElementById('popularCarsTrack');
             if (!track) return;
 
-            resetPopularCarsTrack(track);
-
             let filteredCars = allPopularCars;
             
             if (filter !== 'all' && PRICE_RANGES[filter]) {
@@ -1735,21 +1864,20 @@
 
             // Display filtered cars or fallbacks
             if (filteredCars.length > 0) {
-                const carsToShow = filteredCars.slice(0, 6);
-                track.innerHTML = carsToShow.map(buildPopularCarCard).join('');
+                rebuildPopularCars(track, filteredCars);
             } else {
-                // No cars in this price range - show message
+                stopPopularAutoScroll();
+                track.scrollLeft = 0;
                 track.innerHTML = `
-                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                    <div style="text-align: center; padding: 40px; width: 100%;">
                         <i class="fas fa-search" style="font-size: 3rem; color: #ddd; margin-bottom: 15px;"></i>
                         <p style="color: #666; font-size: 1rem;">No cars found in this price range</p>
                         <p style="color: #999; font-size: 0.9rem;">Try selecting a different filter</p>
                     </div>
                 `;
+                bindPopularSliderScroll();
+                updatePopularCarsNav();
             }
-
-            bindPopularSliderScroll();
-            updatePopularCarsNav();
         }
 
         function navigateToMarketplaceWithFilter(event) {
@@ -1772,44 +1900,43 @@
                 const payload = await response.json();
                 if (!payload.ok || !Array.isArray(payload.items)) {
                     allPopularCars = POPULAR_CAR_FALLBACKS;
-                    renderPopularCarFallbacks(track);
+                    rebuildPopularCars(track, allPopularCars);
                 } else {
                     const available = payload.items.filter(item => !isListingSold(item));
                     allPopularCars = available.length ? available : payload.items;
-                    const listings = allPopularCars.slice(0, 6);
-                    if (listings.length) {
-                        track.innerHTML = listings.map(buildPopularCarCard).join('');
+                    if (allPopularCars.length) {
+                        rebuildPopularCars(track, allPopularCars);
                     } else {
                         allPopularCars = POPULAR_CAR_FALLBACKS;
-                        renderPopularCarFallbacks(track);
+                        rebuildPopularCars(track, allPopularCars);
                     }
                 }
             } catch (error) {
                 console.error('Unable to load marketplace slider', error);
                 allPopularCars = POPULAR_CAR_FALLBACKS;
-                renderPopularCarFallbacks(track);
+                rebuildPopularCars(track, allPopularCars);
             } finally {
-                resetPopularCarsTrack(track);
                 bindPopularSliderScroll();
                 updatePopularCarsNav();
             }
         }
 
         function renderPopularCarFallbacks(track) {
-            track.innerHTML = POPULAR_CAR_FALLBACKS.map(buildPopularCarCard).join('');
+            rebuildPopularCars(track, POPULAR_CAR_FALLBACKS);
         }
 
-        function buildPopularCarCard(listing) {
+        function buildPopularCarCard(listing, index = 0) {
             const title = buildPopularListingTitle(listing);
             const price = formatListingPrice(listing?.car?.expectedPrice ?? listing.expectedPrice);
             const kms = formatListingKms(listing?.car?.kmsDriven ?? listing.kmsDriven);
             const photo = resolveListingPhoto(listing);
             const listingId = listing?.listingId;
             const ctaUrl = listingId ? `${MARKETPLACE_ENTRY}?listingId=${encodeURIComponent(listingId)}` : MARKETPLACE_ENTRY;
+            const eager = index < 2;
             return `
                 <div class="popular-car-card">
                     <div class="car-image-wrapper">
-                        <img src="${photo}" alt="${title}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${POPULAR_FALLBACK_IMAGE}'">
+                        <img src="${photo}" alt="${title}" loading="${eager ? 'eager' : 'lazy'}" fetchpriority="${eager ? 'high' : 'low'}" decoding="async" onerror="this.onerror=null;this.src='${POPULAR_FALLBACK_IMAGE}'">
                     </div>
                     <div class="car-info">
                         <h5 class="car-name">${title}</h5>
@@ -1899,6 +2026,10 @@
 
         window.addEventListener('resize', () => {
             updatePopularCarsNav();
+            const track = document.getElementById('popularCarsTrack');
+            if (track) {
+                requestAnimationFrame(() => setupInfinitePopularCars(track));
+            }
         });
     </script>
 
