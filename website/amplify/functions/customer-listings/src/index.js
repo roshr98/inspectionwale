@@ -444,6 +444,11 @@ function sanitizeListingForPublic(item) {
 
   const heroUrl = publicPhotos.exteriorFront && publicPhotos.exteriorFront.url
 
+  // Get seller type from various possible locations in the item
+  const sellerType = item.sellerType || 
+                     (item.seller && item.seller.type) || 
+                     'Individual'
+
   return {
     listingId: item.listingId,
     status: item.status,
@@ -453,6 +458,7 @@ function sanitizeListingForPublic(item) {
     summary: item.display && item.display.summary || '',
     heroUrl,
     photos: publicPhotos,
+    sellerType,
     createdAt: item.createdAt
   }
 }
