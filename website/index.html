@@ -1651,7 +1651,7 @@
         let popularAutoScrollPaused = false;
         let popularAutoScrollResumeTimer = null;
         let popularLoopWidthPx = 0;
-        const POPULAR_AUTOSCROLL_SPEED_PX_PER_SEC = 1500; // ultra fast auto-scroll
+        const POPULAR_AUTOSCROLL_SPEED_PX_PER_SEC = 15000; // 10x ultra fast auto-scroll
 
         function getPopularTrackGapPx(track) {
             const computed = window.getComputedStyle(track);
@@ -3379,20 +3379,25 @@
 
             async function handleSubmit(event) {
                 if (event) event.preventDefault();
-                if (!submitBtn) return;
+                if (!submitBtn) {
+                    console.log('[IW] No submit button found!');
+                    return;
+                }
 
                 console.log('[IW] handleSubmit called for', config.formId);
 
                 // Log form validity state
-                console.log('[IW] Form valid:', form.checkValidity());
+                const isValid = form.checkValidity();
+                console.log('[IW] Form valid:', isValid);
                 
-                if (!form.checkValidity()) {
-                    console.log('[IW] Form validation failed - showing was-validated');
-                    form.classList.add('was-validated');
-                    return;
-                }
+                // TEMPORARY: Skip validation to test submit flow
+                // if (!isValid) {
+                //     console.log('[IW] Form validation failed - showing was-validated');
+                //     form.classList.add('was-validated');
+                //     return;
+                // }
                 
-                console.log('[IW] Form validation passed, proceeding to submit');
+                console.log('[IW] Proceeding to submit (validation bypassed for testing)');
 
                 form.classList.remove('was-validated');
 
