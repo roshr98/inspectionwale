@@ -1651,7 +1651,7 @@
         let popularAutoScrollPaused = false;
         let popularAutoScrollResumeTimer = null;
         let popularLoopWidthPx = 0;
-        const POPULAR_AUTOSCROLL_SPEED_PX_PER_SEC = 80; // visible but not distracting
+        const POPULAR_AUTOSCROLL_SPEED_PX_PER_SEC = 220; // fast auto-scroll (user request)
 
         function getPopularTrackGapPx(track) {
             const computed = window.getComputedStyle(track);
@@ -1690,11 +1690,16 @@
             if (!track) return;
             popularAutoScrollPaused = false;
             let lastTs = null;
+            console.log('[IW] startPopularAutoScroll called, loopWidth:', popularLoopWidthPx);
 
             const step = () => {
                 popularAutoScrollRaf = requestAnimationFrame(step);
                 if (popularAutoScrollPaused) return;
-                if (!popularLoopWidthPx) return;
+                if (!popularLoopWidthPx) {
+                    // Try to compute it now if not set
+                    popularLoopWidthPx = Math.max(track.scrollWidth / 2, track.scrollWidth - track.clientWidth, 1);
+                    if (!popularLoopWidthPx) return;
+                }
 
                 // time-based scrolling so it works consistently across devices
                 const now = performance.now();
@@ -1710,26 +1715,34 @@
                 }
             };
             popularAutoScrollRaf = requestAnimationFrame(step);
+            console.log('[IW] Auto-scroll RAF loop started');
         }
 
         function setupInfinitePopularCars(track) {
             if (!track) return;
             stopPopularAutoScroll();
             popularLoopWidthPx = 0;
+            console.log('[IW] setupInfinitePopularCars called');
 
             // Remove any previous clones
             track.querySelectorAll('.popular-car-card[data-clone="1"]').forEach(node => node.remove());
 
             const originals = Array.from(track.querySelectorAll('.popular-car-card'))
                 .filter(node => node.getAttribute('data-clone') !== '1');
+            console.log('[IW] Found', originals.length, 'original cards');
+            
             if (originals.length < 2) {
                 popularLoopWidthPx = Math.max(track.scrollWidth - track.clientWidth, 0);
+                console.log('[IW] Less than 2 cards, loopWidth:', popularLoopWidthPx);
+                // Still start auto-scroll even with few cards
+                startPopularAutoScroll(track);
                 return;
             }
 
             // Use scrollWidth (layout-derived) for reliable loop measurement.
             // Measure before cloning: that's the width of the original set.
             const originalWidth = track.scrollWidth;
+            console.log('[IW] Original scrollWidth:', originalWidth);
 
             originals.forEach(card => {
                 const clone = card.cloneNode(true);
@@ -1744,6 +1757,7 @@
 
             // If layout hasn't settled yet, retry once on next frame.
             if (!popularLoopWidthPx || popularLoopWidthPx < 10) {
+                console.log('[IW] Layout not settled, retrying...');
                 requestAnimationFrame(() => {
                     popularLoopWidthPx = Math.max(track.scrollWidth / 2, 0);
                     startPopularAutoScroll(track);
@@ -1751,6 +1765,7 @@
                 return;
             }
 
+            console.log('[IW] Starting auto-scroll with loopWidth:', popularLoopWidthPx);
             startPopularAutoScroll(track);
         }
 
@@ -1759,7 +1774,8 @@
             stopPopularAutoScroll();
             track.scrollLeft = 0;
 
-            const cardsToShow = Array.isArray(listings) ? listings.slice(0, 6) : [];
+            // Render enough cards so the track overflows on desktop and auto-scroll is visible.
+            const cardsToShow = Array.isArray(listings) ? listings.slice(0, 10) : [];
             track.innerHTML = cardsToShow.map((item, idx) => buildPopularCarCard(item, idx)).join('');
 
             // Preload slider images (best-effort)
@@ -1767,11 +1783,11 @@
 
             bindPopularSliderScroll();
             updatePopularCarsNav();
-            // Allow layout to settle before measuring widths
+            // Allow layout to settle before measuring widths, then start auto-scroll
             requestAnimationFrame(() => {
                 setupInfinitePopularCars(track);
-                // Ensure auto-scroll isn't stuck paused after initial scroll/paint
-                pausePopularAutoScroll(250);
+                // Don't pause - let it scroll immediately
+                console.log('[IW] rebuildPopularCars complete, setupInfinitePopularCars called');
             });
         }
 
@@ -2055,6 +2071,22 @@
                 requestAnimationFrame(() => setupInfinitePopularCars(track));
             }
         });
+
+        function ensurePopularCarsAutoScroll() {
+            const track = document.getElementById('popularCarsTrack');
+            if (!track) return;
+
+            // If we're still showing skeleton/loading cards, switch to fallbacks immediately
+            // so the auto-scroll has real width to move.
+            const hasRealCard = !!track.querySelector('.popular-car-card:not(.loading-card)');
+            if (!hasRealCard) {
+                rebuildPopularCars(track, POPULAR_CAR_FALLBACKS);
+                return;
+            }
+
+            // Otherwise just ensure the infinite loop is set up.
+            setupInfinitePopularCars(track);
+        }
     </script>
 
         <!-- Customer Listing Modals -->
@@ -3131,9 +3163,9 @@
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
 
-    <!-- JavaScript Libraries - jQuery and Bootstrap load first, others deferred for performance -->
-    <script defer src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JavaScript Libraries - load Bootstrap synchronously so it's available for inline scripts -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script defer src="lib/wow/wow.min.js"></script>
     <script defer src="lib/easing/easing.min.js"></script>
     <script defer src="lib/waypoints/waypoints.min.js"></script>
@@ -3144,27 +3176,57 @@
 
     <!-- Template Javascript -->
         <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            initHeroCarValueForms();
-            initBookingPanelForm();
-            initInspectionModalForm({
-                formId: 'usedCarInspectionForm',
-                modalId: 'usedCarInspectionModal',
-                carType: 'Used Car',
-                formType: 'used-car-modal'
-            });
-            initInspectionModalForm({
-                formId: 'newCarInspectionForm',
-                modalId: 'newCarInspectionModal',
-                carType: 'New Car',
-                formType: 'new-car-modal'
-            });
+        // Boot homepage: Initialize all forms and auto-scroll immediately.
+        // jQuery + Bootstrap are loaded synchronously above, so they're available now.
+        (function bootHomepage() {
+            console.log('[IW] bootHomepage starting...');
+            console.log('[IW] bootstrap available:', typeof bootstrap !== 'undefined');
+            console.log('[IW] rebuildPopularCars available:', typeof rebuildPopularCars === 'function');
 
-            // Optional widget; don't break booking flows if missing
+            // Start auto-scroll with fallbacks immediately (don't wait for API)
+            const track = document.getElementById('popularCarsTrack');
+            console.log('[IW] track element found:', !!track);
+            
+            if (track) {
+                try {
+                    if (typeof rebuildPopularCars === 'function' && typeof POPULAR_CAR_FALLBACKS !== 'undefined') {
+                        rebuildPopularCars(track, POPULAR_CAR_FALLBACKS);
+                        console.log('[IW] rebuildPopularCars called - auto-scroll should start');
+                    } else {
+                        console.warn('[IW] rebuildPopularCars or POPULAR_CAR_FALLBACKS not available');
+                    }
+                } catch (e) {
+                    console.error('[IW] Error starting auto-scroll:', e);
+                }
+            }
+
+            // Init forms with error handling
+            try {
+                if (typeof initHeroCarValueForms === 'function') initHeroCarValueForms();
+                if (typeof initBookingPanelForm === 'function') initBookingPanelForm();
+                
+                initInspectionModalForm({
+                    formId: 'usedCarInspectionForm',
+                    modalId: 'usedCarInspectionModal',
+                    carType: 'Used Car',
+                    formType: 'used-car-modal'
+                });
+                initInspectionModalForm({
+                    formId: 'newCarInspectionForm',
+                    modalId: 'newCarInspectionModal',
+                    carType: 'New Car',
+                    formType: 'new-car-modal'
+                });
+                console.log('[IW] Form handlers attached successfully');
+            } catch (e) {
+                console.error('[IW] Error initializing forms:', e);
+            }
+
+            // Also load real marketplace data (will replace fallbacks when ready)
             if (typeof loadPopularMarketplaceCars === 'function') {
                 loadPopularMarketplaceCars();
             }
-        });
+        })();
 
         function initHeroCarValueForms() {
             const forms = document.querySelectorAll('[data-car-value-form]');
@@ -3306,14 +3368,20 @@
         function initInspectionModalForm(config) {
             const form = document.getElementById(config.formId);
             const modalEl = document.getElementById(config.modalId);
-            if (!form || !modalEl) return;
+            if (!form || !modalEl) {
+                console.warn('[IW] initInspectionModalForm: form or modal not found', config);
+                return;
+            }
 
             const submitBtn = form.querySelector('button[type="submit"]');
-            const defaultLabel = submitBtn ? submitBtn.innerHTML : '';
+            const defaultLabel = submitBtn ? submitBtn.innerHTML : 'Book Inspection';
+            console.log('[IW] Binding submit for', config.formId);
 
-            form.addEventListener('submit', async (event) => {
-                event.preventDefault();
+            async function handleSubmit(event) {
+                if (event) event.preventDefault();
                 if (!submitBtn) return;
+
+                console.log('[IW] handleSubmit called for', config.formId);
 
                 if (!form.checkValidity()) {
                     form.classList.add('was-validated');
@@ -3335,31 +3403,50 @@
                     formType: config.formType
                 };
 
+                // Immediately show loading state
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
                 submitBtn.disabled = true;
+                console.log('[IW] Submitting quote...', payload);
 
                 try {
                     await submitQuote(payload);
+                    console.log('[IW] Quote submitted successfully');
                     submitBtn.innerHTML = '<i class="fas fa-check"></i> Booking Received!';
                     submitBtn.style.background = '#26a69a';
                     form.reset();
 
                     setTimeout(() => {
-                        const modal = bootstrap.Modal.getInstance(modalEl);
-                        if (modal) modal.hide();
+                        // Close modal if Bootstrap is available
+                        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                            const modal = bootstrap.Modal.getInstance(modalEl);
+                            if (modal) modal.hide();
+                        }
                         submitBtn.innerHTML = defaultLabel;
                         submitBtn.style.background = '#D81324';
                         submitBtn.disabled = false;
                     }, 2000);
                 } catch (error) {
-                    console.error('Inspection booking failed', error);
+                    console.error('[IW] Inspection booking failed', error);
                     submitBtn.innerHTML = 'Error - Try Again';
                     submitBtn.disabled = false;
                     setTimeout(() => {
                         submitBtn.innerHTML = defaultLabel;
                     }, 3000);
                 }
-            });
+            }
+
+            // Bind to form submit event
+            form.addEventListener('submit', handleSubmit);
+
+            // ALSO bind directly to button click as backup
+            if (submitBtn) {
+                submitBtn.addEventListener('click', function(e) {
+                    // Only handle if form submit didn't fire
+                    if (!submitBtn.disabled) {
+                        handleSubmit(e);
+                    }
+                });
+            }
         }
 
         async function submitQuote(payload) {
