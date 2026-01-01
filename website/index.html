@@ -1651,7 +1651,7 @@
         let popularAutoScrollPaused = false;
         let popularAutoScrollResumeTimer = null;
         let popularLoopWidthPx = 0;
-        const POPULAR_AUTOSCROLL_SPEED_PX = 0.5; // ~30px/sec at 60fps
+        const POPULAR_AUTOSCROLL_SPEED_PX_PER_SEC = 80; // visible but not distracting
 
         function getPopularTrackGapPx(track) {
             const computed = window.getComputedStyle(track);
@@ -1689,13 +1689,22 @@
             stopPopularAutoScroll();
             if (!track) return;
             popularAutoScrollPaused = false;
+            let lastTs = null;
 
             const step = () => {
                 popularAutoScrollRaf = requestAnimationFrame(step);
                 if (popularAutoScrollPaused) return;
                 if (!popularLoopWidthPx) return;
 
-                track.scrollLeft += POPULAR_AUTOSCROLL_SPEED_PX;
+                // time-based scrolling so it works consistently across devices
+                const now = performance.now();
+                if (lastTs === null) {
+                    lastTs = now;
+                    return;
+                }
+                const dt = Math.min((now - lastTs) / 1000, 0.05);
+                lastTs = now;
+                track.scrollLeft += POPULAR_AUTOSCROLL_SPEED_PX_PER_SEC * dt;
                 if (track.scrollLeft >= popularLoopWidthPx) {
                     track.scrollLeft -= popularLoopWidthPx;
                 }
@@ -1820,9 +1829,7 @@
                 updatePopularCarsNav();
             });
 
-            // Pause while user interacts
-            track.addEventListener('mouseenter', () => { popularAutoScrollPaused = true; });
-            track.addEventListener('mouseleave', () => { popularAutoScrollPaused = false; });
+            // Pause while user interacts (touch only). Hover-pause was confusing.
             track.addEventListener('touchstart', () => { popularAutoScrollPaused = true; }, { passive: true });
             track.addEventListener('touchend', () => { popularAutoScrollPaused = false; }, { passive: true });
 
@@ -3356,7 +3363,15 @@
         }
 
         async function submitQuote(payload) {
-            const res = await fetch('/api/quote', {
+            // Live Server/localhost does not have the Amplify rewrite for /api/quote.
+            // Use the Lambda Function URL in local dev so submits work.
+            const host = (window.location && window.location.hostname) ? window.location.hostname : '';
+            const isLocal = host === 'localhost' || host === '127.0.0.1' || host === '0.0.0.0';
+            const quoteUrl = isLocal
+                ? 'https://dnocsuec6aeok3oykcujglp2hq0bocso.lambda-url.us-east-1.on.aws/'
+                : '/api/quote';
+
+            const res = await fetch(quoteUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
