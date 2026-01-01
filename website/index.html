@@ -1651,7 +1651,7 @@
         let popularAutoScrollPaused = false;
         let popularAutoScrollResumeTimer = null;
         let popularLoopWidthPx = 0;
-        const POPULAR_AUTOSCROLL_SPEED_PX_PER_SEC = 15000; // 10x ultra fast auto-scroll
+        const POPULAR_AUTOSCROLL_SPEED_PX_PER_SEC = 300000; // 20x faster auto-scroll
 
         function getPopularTrackGapPx(track) {
             const computed = window.getComputedStyle(track);
