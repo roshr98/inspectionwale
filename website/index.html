@@ -1688,6 +1688,7 @@
         function startPopularAutoScroll(track) {
             stopPopularAutoScroll();
             if (!track) return;
+            popularAutoScrollPaused = false;
 
             const step = () => {
                 popularAutoScrollRaf = requestAnimationFrame(step);
@@ -1717,18 +1718,30 @@
                 return;
             }
 
-            const gap = getPopularTrackGapPx(track);
-            // Compute loop width from the originals only
-            popularLoopWidthPx = originals.reduce((sum, el) => sum + el.getBoundingClientRect().width, 0) + gap * (originals.length - 1);
+            // Use scrollWidth (layout-derived) for reliable loop measurement.
+            // Measure before cloning: that's the width of the original set.
+            const originalWidth = track.scrollWidth;
 
-            // Clone once to allow seamless wrap-around
             originals.forEach(card => {
                 const clone = card.cloneNode(true);
                 clone.setAttribute('data-clone', '1');
                 track.appendChild(clone);
             });
 
+            // After clones are appended, the loop width remains the original width.
+            popularLoopWidthPx = originalWidth;
+
             track.scrollLeft = 0;
+
+            // If layout hasn't settled yet, retry once on next frame.
+            if (!popularLoopWidthPx || popularLoopWidthPx < 10) {
+                requestAnimationFrame(() => {
+                    popularLoopWidthPx = Math.max(track.scrollWidth / 2, 0);
+                    startPopularAutoScroll(track);
+                });
+                return;
+            }
+
             startPopularAutoScroll(track);
         }
 
@@ -1746,7 +1759,11 @@
             bindPopularSliderScroll();
             updatePopularCarsNav();
             // Allow layout to settle before measuring widths
-            requestAnimationFrame(() => setupInfinitePopularCars(track));
+            requestAnimationFrame(() => {
+                setupInfinitePopularCars(track);
+                // Ensure auto-scroll isn't stuck paused after initial scroll/paint
+                pausePopularAutoScroll(250);
+            });
         }
 
         function preloadPopularCarImages(listings) {
