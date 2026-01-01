@@ -1406,17 +1406,7 @@
             border-bottom-color: #26a69a;
             font-weight: 600;
         }
-        /* Auto-scroll animation for popular cars */
-        @keyframes auto-scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-        .popular-cars-track.auto-scrolling {
-            animation: auto-scroll 3s linear infinite;
-        }
-        .popular-cars-track.auto-scrolling:hover {
-            animation-play-state: paused;
-        }
+        /* Note: removed transform-based auto-scroll to avoid white/blank space while scrolling */
         @media (max-width: 767px) {
             .price-filter-tabs {
                 overflow-x: auto;
@@ -1661,12 +1651,26 @@
         function scrollPopularCars(direction) {
             const track = document.getElementById('popularCarsTrack');
             if (!track) return;
+
+            // Ensure no transform-based animation is active (can cause blank/white space)
+            track.classList.remove('auto-scrolling');
+
             const firstCard = track.querySelector('.popular-car-card');
             const computed = window.getComputedStyle(track);
             const gap = parseInt(computed.columnGap || computed.gap || '16', 10) || 16;
-            const cardWidth = firstCard ? firstCard.getBoundingClientRect().width + gap : 300;
-            track.scrollBy({ left: direction * cardWidth, behavior: 'smooth' });
+            const step = firstCard ? firstCard.getBoundingClientRect().width + gap : 300;
+
+            const maxScrollLeft = Math.max(track.scrollWidth - track.clientWidth, 0);
+            const target = Math.min(Math.max(track.scrollLeft + direction * step, 0), maxScrollLeft);
+            track.scrollTo({ left: target, behavior: 'smooth' });
             setTimeout(updatePopularCarsNav, 350);
+        }
+
+        function resetPopularCarsTrack(track) {
+            if (!track) return;
+            track.classList.remove('auto-scrolling');
+            track.style.transform = '';
+            track.scrollLeft = 0;
         }
 
         function bindPopularSliderScroll() {
@@ -1716,6 +1720,8 @@
             // Filter and display cars
             const track = document.getElementById('popularCarsTrack');
             if (!track) return;
+
+            resetPopularCarsTrack(track);
 
             let filteredCars = allPopularCars;
             
@@ -1783,30 +1789,10 @@
                 allPopularCars = POPULAR_CAR_FALLBACKS;
                 renderPopularCarFallbacks(track);
             } finally {
+                resetPopularCarsTrack(track);
                 bindPopularSliderScroll();
                 updatePopularCarsNav();
-                enableAutoScroll();
             }
-        }
-
-        function enableAutoScroll() {
-            const track = document.getElementById('popularCarsTrack');
-            if (!track) return;
-            
-            // Duplicate cards for infinite scroll effect
-            const cards = track.querySelectorAll('.popular-car-card');
-            if (cards.length < 3) return; // Need at least 3 cards
-            
-            // Clone cards and append
-            cards.forEach(card => {
-                const clone = card.cloneNode(true);
-                track.appendChild(clone);
-            });
-            
-            // Enable auto-scroll after a short delay
-            setTimeout(() => {
-                track.classList.add('auto-scrolling');
-            }, 1000);
         }
 
         function renderPopularCarFallbacks(track) {
@@ -1823,7 +1809,7 @@
             return `
                 <div class="popular-car-card">
                     <div class="car-image-wrapper">
-                        <img src="${photo}" alt="${title}" loading="lazy" onerror="this.src='${POPULAR_FALLBACK_IMAGE}'">
+                        <img src="${photo}" alt="${title}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${POPULAR_FALLBACK_IMAGE}'">
                     </div>
                     <div class="car-info">
                         <h5 class="car-name">${title}</h5>
