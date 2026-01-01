@@ -1651,7 +1651,7 @@
         let popularAutoScrollPaused = false;
         let popularAutoScrollResumeTimer = null;
         let popularLoopWidthPx = 0;
-        const POPULAR_AUTOSCROLL_SPEED_PX_PER_SEC = 220; // fast auto-scroll (user request)
+        const POPULAR_AUTOSCROLL_SPEED_PX_PER_SEC = 600; // very fast auto-scroll
 
         function getPopularTrackGapPx(track) {
             const computed = window.getComputedStyle(track);
@@ -3383,10 +3383,16 @@
 
                 console.log('[IW] handleSubmit called for', config.formId);
 
+                // Log form validity state
+                console.log('[IW] Form valid:', form.checkValidity());
+                
                 if (!form.checkValidity()) {
+                    console.log('[IW] Form validation failed - showing was-validated');
                     form.classList.add('was-validated');
                     return;
                 }
+                
+                console.log('[IW] Form validation passed, proceeding to submit');
 
                 form.classList.remove('was-validated');
 
@@ -3404,9 +3410,10 @@
                 };
 
                 // Immediately show loading state
+                console.log('[IW] Setting button to Sending state...');
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
                 submitBtn.disabled = true;
-                console.log('[IW] Submitting quote...', payload);
+                console.log('[IW] Button updated, calling submitQuote with payload:', payload);
 
                 try {
                     await submitQuote(payload);
