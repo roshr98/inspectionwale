@@ -1651,7 +1651,9 @@
         let popularAutoScrollPaused = false;
         let popularAutoScrollResumeTimer = null;
         let popularLoopWidthPx = 0;
-        const POPULAR_AUTOSCROLL_SPEED_PX_PER_SEC = 75000; // smooth fast auto-scroll
+        let popularCardWidth = 296; // card width + gap
+        const POPULAR_CARD_SCROLL_INTERVAL_MS = 2000; // Time between each card scroll (2 seconds)
+        let popularAutoScrollTimer = null;
 
         function getPopularTrackGapPx(track) {
             const computed = window.getComputedStyle(track);
@@ -1683,39 +1685,45 @@
                 cancelAnimationFrame(popularAutoScrollRaf);
                 popularAutoScrollRaf = null;
             }
+            if (popularAutoScrollTimer) {
+                clearInterval(popularAutoScrollTimer);
+                popularAutoScrollTimer = null;
+            }
         }
 
         function startPopularAutoScroll(track) {
             stopPopularAutoScroll();
             if (!track) return;
             popularAutoScrollPaused = false;
-            let lastTs = null;
-            console.log('[IW] startPopularAutoScroll called, loopWidth:', popularLoopWidthPx);
+            console.log('[IW] startPopularAutoScroll called - card-by-card mode');
 
-            const step = () => {
-                popularAutoScrollRaf = requestAnimationFrame(step);
+            // Calculate card width from first card
+            const firstCard = track.querySelector('.popular-car-card');
+            if (firstCard) {
+                const gap = getPopularTrackGapPx(track);
+                popularCardWidth = firstCard.getBoundingClientRect().width + gap;
+            }
+
+            // Scroll one card at a time with smooth animation
+            popularAutoScrollTimer = setInterval(() => {
                 if (popularAutoScrollPaused) return;
-                if (!popularLoopWidthPx) {
-                    // Try to compute it now if not set
-                    popularLoopWidthPx = Math.max(track.scrollWidth / 2, track.scrollWidth - track.clientWidth, 1);
-                    if (!popularLoopWidthPx) return;
+                
+                const maxScroll = track.scrollWidth - track.clientWidth;
+                if (maxScroll <= 0) return;
+
+                // Scroll by one card width
+                let newScrollLeft = track.scrollLeft + popularCardWidth;
+                
+                // If we've scrolled past halfway (where clones begin), reset to start
+                if (popularLoopWidthPx && newScrollLeft >= popularLoopWidthPx) {
+                    track.scrollLeft = 0;
+                    newScrollLeft = popularCardWidth;
                 }
 
-                // time-based scrolling so it works consistently across devices
-                const now = performance.now();
-                if (lastTs === null) {
-                    lastTs = now;
-                    return;
-                }
-                const dt = Math.min((now - lastTs) / 1000, 0.05);
-                lastTs = now;
-                track.scrollLeft += POPULAR_AUTOSCROLL_SPEED_PX_PER_SEC * dt;
-                if (track.scrollLeft >= popularLoopWidthPx) {
-                    track.scrollLeft -= popularLoopWidthPx;
-                }
-            };
-            popularAutoScrollRaf = requestAnimationFrame(step);
-            console.log('[IW] Auto-scroll RAF loop started');
+                track.scrollTo({ left: newScrollLeft, behavior: 'smooth' });
+            }, POPULAR_CARD_SCROLL_INTERVAL_MS);
+            
+            console.log('[IW] Card-by-card auto-scroll started, interval:', POPULAR_CARD_SCROLL_INTERVAL_MS, 'ms');
         }
 
         function setupInfinitePopularCars(track) {
@@ -1774,8 +1782,9 @@
             stopPopularAutoScroll();
             track.scrollLeft = 0;
 
-            // Render enough cards so the track overflows on desktop and auto-scroll is visible.
-            const cardsToShow = Array.isArray(listings) ? listings.slice(0, 10) : [];
+            // Use ALL listings from marketplace (not limited)
+            const cardsToShow = Array.isArray(listings) ? listings : [];
+            console.log('[IW] rebuildPopularCars with', cardsToShow.length, 'cars');
             track.innerHTML = cardsToShow.map((item, idx) => buildPopularCarCard(item, idx)).join('');
 
             // Preload slider images (best-effort)
