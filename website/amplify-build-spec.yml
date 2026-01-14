@@ -35,9 +35,15 @@ customRules:
   - source: /Used-Car-Marketplace
     target: /car-marketplace/index.html
     status: '200'
+  - source: /Used-Car-Marketplace/
+    target: /car-marketplace/index.html
+    status: '200'
   - source: /car-marketplace
     target: /car-marketplace/index.html
     status: '301'
+  - source: /car-marketplace/
+    target: /car-marketplace/index.html
+    status: '200'
   - source: /api/car-value
     target: https://565pfipvrdzny5ftic5htroshu0lltuf.lambda-url.us-east-1.on.aws/
     status: '200'
