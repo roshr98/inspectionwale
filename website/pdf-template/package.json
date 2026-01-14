@@ -8,6 +8,8 @@
     "dev": "vite"
   },
   "dependencies": {
+    "@fontsource/noto-sans": "5.2.6",
+    "@fontsource/noto-sans-devanagari": "5.2.6",
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.1",
     "@mui/icons-material": "7.3.5",

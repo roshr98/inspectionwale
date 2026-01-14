@@ -12,7 +12,17 @@
   page-break-after: always;
   display: flex;
   flex-direction: column;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+  font-family: 'Noto Sans', 'Noto Sans Devanagari', Arial, sans-serif;
+  font-weight: 400;
+}
+
+.info-val,
+.detail-value,
+.flag-value,
+.icon-detail-value,
+.tyre-value {
+  font-synthesis: none;
+  font-weight: 400;
 }
 
 /* ===========================
@@ -175,7 +185,6 @@
 
 .info-val {
   color: #111827;
-  font-weight: 600;
 }
 
 /* ===========================
@@ -248,7 +257,6 @@
 
 .detail-value {
   font-size: 11px;
-  font-weight: 600;
   color: #111827;
 }
 
@@ -365,7 +373,6 @@
 }
 
 .flag-value {
-  font-weight: 600;
   color: #111827;
 }
 
@@ -445,7 +452,8 @@
 
 .inspection-image-large {
   width: 100%;
-  height: 280px;
+  height: 100%;
+  min-height: 280px;
   object-fit: cover;
   object-position: center;
   display: block;
@@ -497,7 +505,7 @@
 
 .inspection-image-extra-large {
   width: 100%;
-  height: 350px;
+  height: 200px;
   object-fit: cover;
   object-position: center;
   display: block;
@@ -513,7 +521,7 @@
 
 .inspection-image-large-boot {
   width: 100%;
-  height: 240px;
+  height: 200px;
   object-fit: cover;
   object-position: center;
   display: block;
@@ -555,7 +563,6 @@
 }
 
 .icon-detail-value {
-  font-weight: 600;
   color: #111827;
   text-align: right;
 }
@@ -627,7 +634,6 @@
 }
 
 .tyre-value {
-  font-weight: 600;
   color: #111827;
 }
 

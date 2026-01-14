@@ -8,9 +8,10 @@ import { Page5LHSSide } from './components/Page5LHSSide';
 import { Page6RearRoof } from './components/Page6RearRoof';
 import { Page7Interior } from './components/Page7Interior';
 import { Page8RearCabinBoot } from './components/Page8RearCabinBoot';
-import { Page9EngineTyres } from './components/Page9EngineTyres';
-import { Page10StructurePerformance } from './components/Page10StructurePerformance';
-import { PageDisclaimer } from './components/PageDisclaimer';
+import { Page9Boot } from './components/Page9Boot';
+import { Page10EngineTyres } from './components/Page10EngineTyres';
+import { Page11StructurePerformance } from './components/Page11StructurePerformance';
+import { Page12Disclaimer } from './components/Page12Disclaimer';
 import { saveInspectionData } from '../utils/dataLoader';
 import { initTestDataHelper } from '../utils/testDataHelper';
 import '../styles/inspector-form.css';
@@ -58,7 +59,24 @@ export default function App() {
       return;
     }
 
-    const markReady = () => {
+    let cancelled = false;
+
+    const markReady = async () => {
+      try {
+        // Ensure webfonts are loaded before the Lambda renderer snapshots the page.
+        // This prevents per-glyph fallback (e.g., digits using a different font/weight).
+        // `document.fonts` is supported in Chromium.
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const fonts: any = (document as any).fonts;
+        if (fonts?.ready) {
+          await fonts.ready;
+        }
+      } catch (_e) {
+        // ignore
+      }
+
+      if (cancelled) return;
+
       try {
         document.documentElement.setAttribute('data-report-ready', 'true');
       } catch (_e) {
@@ -67,8 +85,14 @@ export default function App() {
     };
 
     // Let the report layout paint before marking ready.
-    const t = window.setTimeout(markReady, 0);
-    return () => window.clearTimeout(t);
+    const t = window.setTimeout(() => {
+      void markReady();
+    }, 0);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(t);
+    };
   }, [view]);
 
   return (
@@ -93,9 +117,10 @@ export default function App() {
           <Page6RearRoof />
           <Page7Interior />
           <Page8RearCabinBoot />
-          <Page9EngineTyres />
-          <Page10StructurePerformance />
-          <PageDisclaimer />
+          <Page9Boot />
+          <Page10EngineTyres />
+          <Page11StructurePerformance />
+          <Page12Disclaimer />
         </>
       )}
     </div>

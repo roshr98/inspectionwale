@@ -372,7 +372,7 @@
   }
 }
 
-/* Report Header Actions */
+/* Report Header Actions - Hidden during PDF generation */
 .report-header-actions {
   position: fixed;
   top: 20px;
@@ -384,6 +384,11 @@
   padding: 12px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Hide buttons when PDF is being generated (data-report-ready is set) */
+html[data-report-ready="true"] .report-header-actions {
+  display: none !important;
 }
 
 .back-to-form-btn,

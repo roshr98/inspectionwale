@@ -24,6 +24,21 @@ amplify/functions/*/node_modules/
 *.zip
 customer-listings.zip
 
+# Test outputs / reports (do not commit)
+test-output/
+test-results/
+playwright-report/
+pdf-template/test-output/
+pdf-template/test-results/
+pdf-template/playwright-report/
+pdf-template/test-pdfs/
+
+# Generated PDFs (test artifacts only)
+test-output/**/*.pdf
+test-pdfs/**/*.pdf
+archive/test-pdfs/**/*.pdf
+pdf-template/test-pdfs/**/*.pdf
+
 # Python
 __pycache__/
 *.pyc

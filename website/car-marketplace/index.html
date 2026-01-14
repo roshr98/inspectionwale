@@ -1220,6 +1220,10 @@
                     <div class="modal-body">
                         <div id="postAdInquiryStatus" class="small" style="display:none;"></div>
 
+                        <div class="small text-muted mb-3">
+                            Recommended banner image size: <b>970×200px</b> (JPG/PNG/WebP), max 300KB.
+                        </div>
+
                         <div class="mb-3">
                             <label for="postAdName" class="form-label">Name</label>
                             <input type="text" class="form-control" id="postAdName" name="name" autocomplete="name" required>
@@ -3571,7 +3575,8 @@
 
                 if (submitBtn) submitBtn.disabled = true
                 try {
-                    const res = await fetch('/api/ads', {
+                    const ADS_ENDPOINT = (window.IW_ADS_ENDPOINT || '/api/ads')
+                    const res = await fetch(ADS_ENDPOINT, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                         body: JSON.stringify({
@@ -3583,16 +3588,32 @@
                         })
                     })
 
-                    const data = await res.json().catch(() => null)
-                    if (!res.ok || !data || data.ok !== true) {
-                        showStatus('Failed to submit inquiry. Please try again.', 'error')
+                    const resClone = res.clone()
+                    const data = await resClone.json().catch(() => null)
+                    const text = data ? '' : await res.text().catch(() => '')
+
+                    if (!res.ok) {
+                        if (res.status === 404) {
+                            showStatus('Post-ad service is not configured (404). Please set the /api/ads routing in Amplify to your Ads Lambda URL.', 'error')
+                            return
+                        }
+                        const serverMsg = (data && (data.message || data.error)) ? (data.message || data.error) : (text || `Request failed (${res.status})`)
+                        showStatus(serverMsg, 'error')
+                        return
+                    }
+
+                    // Treat successful HTTP response as success even if JSON is empty.
+                    const okFlag = data && (data.ok === true || data.success === true)
+                    if (data && !okFlag) {
+                        const serverMsg = data.message || data.error || 'Failed to submit inquiry. Please try again.'
+                        showStatus(serverMsg, 'error')
                         return
                     }
 
                     showStatus('Inquiry submitted. Our team will contact you soon.', 'success')
                     postAdForm.reset()
                 } catch (err) {
-                    showStatus('Failed to submit inquiry. Please try again.', 'error')
+                    showStatus(err?.message || 'Failed to submit inquiry. Please try again.', 'error')
                 } finally {
                     if (submitBtn) submitBtn.disabled = false
                 }

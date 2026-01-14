@@ -6,6 +6,9 @@
     <title>Inspector Form - InspectionWale</title>
     <link href="Images/logo.png" rel="icon" />
 
+    <link rel="manifest" href="manifest.webmanifest" />
+    <meta name="theme-color" content="#0b556b" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
@@ -105,6 +108,92 @@
       input[data-invalid="true"],
       select[data-invalid="true"],
       textarea[data-invalid="true"] { border-color: #ef4444; background: #fef2f2; }
+
+      /* =========================
+         OFFLINE / SYNC UI
+         ========================= */
+      #iwOfflineBar {
+        max-width: 1200px;
+        margin: 10px auto 16px;
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 10px 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .iw-offline-left { display: flex; align-items: center; gap: 8px; }
+      .iw-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #10b981;
+        display: inline-block;
+      }
+      .iw-dot.offline { background: #ef4444; }
+      .iw-net-text { font-weight: 800; color: #0b556b; }
+      .iw-offline-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+      .iw-pill {
+        background: #e2e8f0;
+        color: #1a202c;
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-weight: 900;
+        font-size: 12px;
+      }
+
+      #iwQueueModal {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+      }
+      .iw-modal-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.6);
+      }
+      .iw-modal {
+        position: relative;
+        max-width: 760px;
+        margin: 8vh auto;
+        background: #fff;
+        border-radius: 14px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+        overflow: hidden;
+      }
+      .iw-modal-head, .iw-modal-foot {
+        padding: 12px;
+        background: #f8fafc;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .iw-modal-body { padding: 12px; max-height: 55vh; overflow: auto; }
+      .iw-row { padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 10px; }
+      .iw-row-sub { font-size: 12px; color: #475569; margin-top: 4px; }
+      .iw-status { font-size: 12px; font-weight: 900; color: #0b556b; margin-left: 6px; }
+
+      #iwToast {
+        position: fixed;
+        left: 50%;
+        bottom: 18px;
+        transform: translateX(-50%);
+        background: rgba(15, 23, 42, 0.92);
+        color: #fff;
+        padding: 10px 12px;
+        border-radius: 12px;
+        font-weight: 800;
+        display: none;
+        z-index: 10000;
+        max-width: 92vw;
+      }
+      #iwToast.ok { background: rgba(22, 163, 74, 0.92); }
+      #iwToast.bad { background: rgba(220, 38, 38, 0.92); }
     </style>
   </head>
 
@@ -628,6 +717,7 @@
     <script>
       // Keep as a single point of change.
       const PDF_ENDPOINT = 'https://mfy5ajp4e5lggmqypfbco34dd40ugreq.lambda-url.us-east-1.on.aws/';
+      window.__IW_PDF_ENDPOINT = PDF_ENDPOINT;
 
       (function guard() {
         const token = sessionStorage.getItem('inspectorToken');
@@ -974,6 +1064,8 @@
                 maxBytes: 280 * 1024
               });
               urlInput.value = result.dataUrl;
+              urlInput.dispatchEvent(new Event('input', { bubbles: true }));
+              urlInput.dispatchEvent(new Event('change', { bubbles: true }));
               help.textContent = `Attached: ${file.name || 'image'} (${result.width}×${result.height}, ${formatBytes(result.bytes)})`;
             } catch (err) {
               console.error(err);
@@ -1076,6 +1168,30 @@
           return;
         }
 
+        // Offline-first: queue the submission when offline (additive; does not change online flow).
+        if (window.__iwOffline && !navigator.onLine) {
+          try {
+            await window.__iwOffline.queueCurrentPayload(payload);
+            statusDiv.className = 'ok';
+            statusDiv.innerHTML = `<i class="fas fa-check-circle"></i> Saved offline. It will auto-sync and generate the PDF when you are back online.`;
+          } catch (queueErr) {
+            console.error(queueErr);
+            statusDiv.className = 'bad';
+            statusDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> Could not save offline: ${queueErr && queueErr.message ? queueErr.message : 'Unknown error'}`;
+          } finally {
+            statusDiv.style.display = 'block';
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-file-pdf"></i> Generate PDF';
+          }
+          return;
+        }
+
+        // When online, still save a draft snapshot (non-blocking best-effort).
+        if (window.__iwOffline) {
+          try { await window.__iwOffline.saveCurrentPayload(payload); } catch (_) {}
+        }
+
+        let queuedFallback = false;
         try {
           const res = await fetch(PDF_ENDPOINT, {
             method: 'POST',
@@ -1147,8 +1263,23 @@
           }
         } catch (err) {
           console.error(err);
-          statusDiv.className = 'bad';
-          statusDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> Error: ${err.message}`;
+          const msg = err && err.message ? String(err.message) : '';
+          const isNetwork = !navigator.onLine || msg.toLowerCase().includes('failed to fetch') || msg.toLowerCase().includes('network');
+
+          if (window.__iwOffline && isNetwork) {
+            try {
+              await window.__iwOffline.queueCurrentPayload(payload);
+              queuedFallback = true;
+              statusDiv.className = 'ok';
+              statusDiv.innerHTML = `<i class="fas fa-check-circle"></i> Network issue detected. Saved offline and queued for auto-sync.`;
+            } catch (queueErr) {
+              statusDiv.className = 'bad';
+              statusDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> Error: ${msg}. Also failed to save offline.`;
+            }
+          } else {
+            statusDiv.className = 'bad';
+            statusDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> Error: ${msg}`;
+          }
         } finally {
           statusDiv.style.display = 'block';
           submitBtn.disabled = false;
@@ -1156,5 +1287,7 @@
         }
       });
     </script>
+
+    <script type="module" src="js/offline/init-inspector-form.mjs"></script>
   </body>
 </html>
