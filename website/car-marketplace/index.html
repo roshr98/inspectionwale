@@ -3588,8 +3588,9 @@
                         })
                     })
 
-                    const resClone = res.clone()
-                    const data = await resClone.json().catch(() => null)
+                    const contentType = (res.headers.get('content-type') || '').toLowerCase()
+                    const expectsJson = contentType.includes('application/json')
+                    const data = expectsJson ? await res.json().catch(() => null) : null
                     const text = data ? '' : await res.text().catch(() => '')
 
                     if (!res.ok) {
@@ -3602,10 +3603,14 @@
                         return
                     }
 
-                    // Treat successful HTTP response as success even if JSON is empty.
+                    // Require a JSON success payload; otherwise it's likely misrouted (e.g. HTML fallback).
                     const okFlag = data && (data.ok === true || data.success === true)
-                    if (data && !okFlag) {
-                        const serverMsg = data.message || data.error || 'Failed to submit inquiry. Please try again.'
+                    if (!okFlag) {
+                        if (!expectsJson) {
+                            showStatus('Post-ad service is misconfigured (expected JSON). Please verify the /api/ads rewrite points to the Ads Lambda Function URL.', 'error')
+                            return
+                        }
+                        const serverMsg = (data && (data.message || data.error)) ? (data.message || data.error) : 'Failed to submit inquiry. Please try again.'
                         showStatus(serverMsg, 'error')
                         return
                     }

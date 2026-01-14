@@ -51,7 +51,7 @@ customRules:
     target: https://cznea7cetynoa5eqim53crc2xq0scqec.lambda-url.us-east-1.on.aws/
     status: '200'
   - source: /api/ads
-    target: https://<YOUR_ADS_LAMBDA_FUNCTION_URL>/
+    target: https://e5c4zwzl3vvb5t6fq3djkuhvjm0omhdm.lambda-url.us-east-1.on.aws/
     status: '200'
   - source: '</^[^.]+$|\.(?!(css|gif|ico|jpg|jpeg|js|png|txt|svg|woff|woff2|ttf|map|json|webp|xml|pdf|webmanifest|avif)$)([^.]+$)/>'
     target: /index.html
