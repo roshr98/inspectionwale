@@ -1232,6 +1232,11 @@
                             <label for="postAdPhone" class="form-label">Phone Number</label>
                             <input type="tel" class="form-control" id="postAdPhone" name="phone" autocomplete="tel" required>
                         </div>
+                        <div class="mb-3">
+                            <label for="postAdBannerUrl" class="form-label">Banner Image URL <span class="text-muted">(optional)</span></label>
+                            <input type="url" class="form-control" id="postAdBannerUrl" name="bannerImageUrl" placeholder="https://..." inputmode="url" autocomplete="url">
+                            <div class="form-text">Paste a public HTTPS link to your banner (you can upload it later to S3/CloudFront).</div>
+                        </div>
                         <div class="mb-0">
                             <label for="postAdMessage" class="form-label">Message</label>
                             <textarea class="form-control" id="postAdMessage" name="message" rows="3" required></textarea>
@@ -3566,10 +3571,16 @@
 
                 const name = (document.getElementById('postAdName')?.value || '').trim()
                 const phone = (document.getElementById('postAdPhone')?.value || '').trim()
+                const bannerImageUrl = (document.getElementById('postAdBannerUrl')?.value || '').trim()
                 const message = (document.getElementById('postAdMessage')?.value || '').trim()
 
                 if (!name || !phone || !message) {
                     showStatus('Please fill name, phone number and message.', 'error')
+                    return
+                }
+
+                if (bannerImageUrl && !/^https?:\/\//i.test(bannerImageUrl)) {
+                    showStatus('Banner Image URL must start with http:// or https:// (or leave it blank).', 'error')
                     return
                 }
 
@@ -3579,6 +3590,7 @@
                         type: 'post_ad_inquiry',
                         name,
                         phone,
+                        ...(bannerImageUrl ? { bannerImageUrl } : {}),
                         message,
                         page: 'car-marketplace'
                     }

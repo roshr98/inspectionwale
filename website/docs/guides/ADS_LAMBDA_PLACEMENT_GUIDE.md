@@ -1,6 +1,6 @@
 # Ads placement + “Post an ad” inquiry (Lambda-based)
 
-This document explains how the website’s **Post an ad** button works today (email inquiry), and how the **same Lambda** can be used later to serve real ads (approved ads feed) without adding any website admin UI.
+This document explains how the website’s **Post an ad** button works today (**lead capture**), and how the **same Lambda** can be used later to serve real ads (approved ads feed) without adding any website admin UI.
 
 ## 1) What’s implemented on the website
 
@@ -11,8 +11,8 @@ This document explains how the website’s **Post an ad** button works today (em
   - Phone number
   - Message
 - On submit, the page sends a `POST` request to `/api/ads`.
-- The Ads Lambda sends an email with subject:
-  - `Post an ad inquiry`
+- The Ads Lambda **stores the lead in DynamoDB**.
+- Email sending is optional and can be enabled later (SES).
 
 Where it is wired:
 - Marketplace UI/form: [car-marketplace/index.html](car-marketplace/index.html)
@@ -20,7 +20,7 @@ Where it is wired:
 
 ## 2) Ads Lambda behavior
 
-### A) POST (current use): ad inquiry email
+### A) POST (current use): capture a lead (optional email)
 
 Request:
 - URL: `/api/ads`
@@ -38,9 +38,9 @@ Request:
 ```
 
 Response:
-- `200` → `{ "ok": true }`
+- `200` → `{ "ok": true, "leadId": "lead_<uuid>", "delivery": "stored_only" | "stored_and_emailed" }`
 - `400` → missing fields
-- `500` → SES not configured / email send failed
+- `500` → DynamoDB table missing / write failed
 
 ### B) GET (future use): approved ads feed
 
@@ -71,7 +71,28 @@ Response:
 
 Note: the marketplace currently does **not** auto-render ads from GET (you asked to revert placements). This GET endpoint is kept so you can enable auto-ads later without rebuilding the backend.
 
-## 3) Required AWS setup (for email)
+## 3) Required AWS setup (lead capture)
+
+The Ads Lambda stores leads into DynamoDB.
+
+Required Lambda environment variables:
+- `ADS_TABLE` = DynamoDB table name (default: `inspectionwale-ads`)
+
+Required IAM permissions for the Lambda execution role:
+- `dynamodb:PutItem` on the table
+
+Lead item shape (stored in the same table as ads):
+- `adId`: `lead_<uuid>`
+- `status`: `lead` (so it will never show in the approved ads feed)
+- `type`: `post_ad_inquiry`
+- `name`, `phone`, `message`, `page`
+- Optional: `bannerImageUrl`
+- `createdAt`, `updatedAt`
+
+You can view leads in DynamoDB Console by filtering on:
+- `status = lead`
+
+## 4) Optional AWS setup (send email later)
 
 The Ads Lambda uses Amazon SES to send the inquiry email.
 
@@ -83,7 +104,7 @@ Important SES notes:
 - If your SES account is still in **sandbox**, you must verify both `SES_FROM` and `SES_TO`.
 - In production mode, you can send to unverified recipients (depending on SES settings).
 
-## 4) Required Amplify routing
+## 5) Required Amplify routing
 
 Make sure Amplify routes `/api/ads` to the Ads Lambda Function URL.
 
@@ -94,7 +115,7 @@ Configured in: [amplify-build-spec.yml](amplify-build-spec.yml)
 
 Replace the placeholder with your real Function URL.
 
-## 5) (Later) Console-driven real ads (DynamoDB + S3)
+## 6) (Later) Console-driven real ads (DynamoDB + S3)
 
 When you have real ads ready to show on the site, you can:
 
