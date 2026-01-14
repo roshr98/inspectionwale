@@ -74,7 +74,10 @@
       .section-header { background: #f8fafc; padding: 10px 12px; font-weight: 800; color: #0b556b; }
       .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; padding: 12px; }
       @media (max-width: 1050px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-      @media (max-width: 650px) { .grid { grid-template-columns: 1fr; } }
+      @media (max-width: 650px) { 
+        .grid { grid-template-columns: 1fr; } 
+        .field[style*="grid-column: span"] { grid-column: span 1 !important; }
+      }
       label { font-size: 12px; font-weight: 800; color: #334155; display: block; margin-bottom: 6px; }
       input, select, textarea {
         width: 100%;
@@ -1109,17 +1112,38 @@
             statusDiv.innerHTML = `<i class="fas fa-check-circle"></i> PDF generated. If download didn't start, <a href="${blobUrl}" download="${fileName}" style="font-weight:800; text-decoration:underline; color:inherit;">click here</a>.`;
           } else {
             // Large PDFs are provided via S3 URL to avoid Lambda response size limits.
+            // Force download by fetching the PDF and creating a blob URL
             const reportUrl = String(result.reportUrl || '');
-            const link = document.createElement('a');
-            link.href = reportUrl;
-            link.target = '_blank';
-            link.rel = 'noopener';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            try {
+              // Fetch the PDF and create a downloadable blob
+              const pdfResponse = await fetch(reportUrl);
+              if (!pdfResponse.ok) throw new Error('Failed to fetch PDF');
+              const pdfBlob = await pdfResponse.blob();
+              const blobUrl = URL.createObjectURL(pdfBlob);
+              
+              const link = document.createElement('a');
+              link.href = blobUrl;
+              link.download = fileName;
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+              
+              // Clean up blob URL after a short delay
+              setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
+            } catch (fetchErr) {
+              // Fallback: open in new tab if fetch fails (e.g., CORS issues)
+              console.warn('Could not auto-download, opening in new tab:', fetchErr);
+              const link = document.createElement('a');
+              link.href = reportUrl;
+              link.target = '_blank';
+              link.rel = 'noopener';
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+            }
 
             statusDiv.className = 'ok';
-            statusDiv.innerHTML = `<i class="fas fa-check-circle"></i> PDF generated. Download from <a href="${reportUrl}" target="_blank" rel="noopener" style="font-weight:800; text-decoration:underline; color:inherit;">report link</a>.`;
+            statusDiv.innerHTML = `<i class="fas fa-check-circle"></i> PDF generated. If download didn't start, <a href="${reportUrl}" download="${fileName}" target="_blank" rel="noopener" style="font-weight:800; text-decoration:underline; color:inherit;">click here</a>.`;
           }
         } catch (err) {
           console.error(err);

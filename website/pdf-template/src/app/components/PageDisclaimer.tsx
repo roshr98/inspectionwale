@@ -57,9 +57,7 @@ export function PageDisclaimer() {
           <p><strong>10. अंतिम निर्णय:</strong> यह रिपोर्ट एक सूचित निर्णय लेने में सहायता करने के लिए है। अंतिम खरीद निर्णय पूरी तरह से खरीदार के पास है।</p>
         </div>
 
-        <div className="signature-section">
-          <div className="signature-line-disclaimer"></div>
-          <p className="signature-text">Inspector's Signature</p>
+        <div className="company-footer">
           <p className="company-name">INSPECTIONWALE</p>
         </div>
       </div>

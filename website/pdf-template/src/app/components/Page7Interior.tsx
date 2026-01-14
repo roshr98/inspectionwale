@@ -3,6 +3,27 @@ import { InspectionPage } from './InspectionPage';
 import { CheckCircle, XCircle } from 'lucide-react';
 import { getInspectionData } from '../../utils/dataLoader';
 
+// Helper function to check if a value is "good" condition
+function isGoodCondition(value: string | undefined | null): boolean {
+  if (!value) return false;
+  const lowerVal = value.toLowerCase().trim();
+  return ['good', 'ok', 'excellent', 'working', 'yes'].includes(lowerVal);
+}
+
+// Helper function to check if MIL light is off (which is good - means no warning)
+function isMilLightOff(value: string | undefined | null): boolean {
+  if (!value) return false;
+  const lowerVal = value.toLowerCase().trim();
+  return lowerVal === 'off';
+}
+
+// Helper function to check if steering type is power-assisted (which is good)
+function isGoodSteeringType(value: string | undefined | null): boolean {
+  if (!value) return false;
+  const lowerVal = value.toLowerCase().trim();
+  return ['power', 'electric', 'hydraulic'].includes(lowerVal);
+}
+
 export function Page7Interior() {
   const data = getInspectionData();
   
@@ -29,7 +50,7 @@ export function Page7Interior() {
           <h3 className="card-title">Dashboard / डैशबोर्ड</h3>
           <div className="icon-detail-list">
             <div className="icon-detail-item">
-              {data.interior.mil_light === 'Working' || data.interior.mil_light === 'Yes' ? (
+              {isMilLightOff(data.interior.mil_light) ? (
                 <CheckCircle className="check-icon-small" />
               ) : (
                 <XCircle className="x-icon-small" />
@@ -38,7 +59,7 @@ export function Page7Interior() {
               <span className="icon-detail-value">{data.interior.mil_light}</span>
             </div>
             <div className="icon-detail-item">
-              {data.interior.dashboard_condition === 'Working' || data.interior.dashboard_condition === 'Yes' ? (
+              {isGoodCondition(data.interior.dashboard_condition) ? (
                 <CheckCircle className="check-icon-small" />
               ) : (
                 <XCircle className="x-icon-small" />
@@ -47,7 +68,7 @@ export function Page7Interior() {
               <span className="icon-detail-value">{data.interior.dashboard_condition}</span>
             </div>
             <div className="icon-detail-item">
-              {data.interior.music_system === 'Working' || data.interior.music_system === 'Yes' ? (
+              {isGoodCondition(data.interior.music_system) ? (
                 <CheckCircle className="check-icon-small" />
               ) : (
                 <XCircle className="x-icon-small" />
@@ -56,7 +77,7 @@ export function Page7Interior() {
               <span className="icon-detail-value">{data.interior.music_system}</span>
             </div>
             <div className="icon-detail-item">
-              {data.interior.steering_controls === 'Working' || data.interior.steering_controls === 'Yes' ? (
+              {isGoodCondition(data.interior.steering_controls) ? (
                 <CheckCircle className="check-icon-small" />
               ) : (
                 <XCircle className="x-icon-small" />
@@ -65,7 +86,7 @@ export function Page7Interior() {
               <span className="icon-detail-value">{data.interior.steering_controls}</span>
             </div>
             <div className="icon-detail-item">
-              {data.interior.paddle_shifters === 'Working' || data.interior.paddle_shifters === 'Yes' ? (
+              {isGoodCondition(data.interior.paddle_shifters) ? (
                 <CheckCircle className="check-icon-small" />
               ) : (
                 <XCircle className="x-icon-small" />
@@ -74,7 +95,7 @@ export function Page7Interior() {
               <span className="icon-detail-value">{data.interior.paddle_shifters}</span>
             </div>
             <div className="icon-detail-item">
-              {data.interior.hand_brake === 'Working' || data.interior.hand_brake === 'Yes' ? (
+              {isGoodCondition(data.interior.hand_brake) ? (
                 <CheckCircle className="check-icon-small" />
               ) : (
                 <XCircle className="x-icon-small" />
@@ -83,7 +104,7 @@ export function Page7Interior() {
               <span className="icon-detail-value">{data.interior.hand_brake}</span>
             </div>
             <div className="icon-detail-item">
-              {data.interior.speakers === 'Working' || data.interior.speakers === 'Yes' ? (
+              {isGoodCondition(data.interior.speakers) ? (
                 <CheckCircle className="check-icon-small" />
               ) : (
                 <XCircle className="x-icon-small" />
@@ -92,7 +113,7 @@ export function Page7Interior() {
               <span className="icon-detail-value">{data.interior.speakers}</span>
             </div>
             <div className="icon-detail-item">
-              {data.interior.ac_vents === 'Working' || data.interior.ac_vents === 'Yes' ? (
+              {isGoodCondition(data.interior.ac_vents) ? (
                 <CheckCircle className="check-icon-small" />
               ) : (
                 <XCircle className="x-icon-small" />
@@ -101,7 +122,7 @@ export function Page7Interior() {
               <span className="icon-detail-value">{data.interior.ac_vents}</span>
             </div>
             <div className="icon-detail-item">
-              {data.interior.ac_working === 'Working' || data.interior.ac_working === 'Yes' ? (
+              {isGoodCondition(data.interior.ac_working) ? (
                 <CheckCircle className="check-icon-small" />
               ) : (
                 <XCircle className="x-icon-small" />
@@ -117,7 +138,7 @@ export function Page7Interior() {
           <h3 className="card-title">Cluster Controls / क्लस्टर कंट्रोल</h3>
           <div className="icon-detail-list">
             <div className="icon-detail-item">
-              {data.interior.steering_type === 'Working' || data.interior.steering_type === 'Yes' ? (
+              {isGoodSteeringType(data.interior.steering_type) ? (
                 <CheckCircle className="check-icon-small" />
               ) : (
                 <XCircle className="x-icon-small" />
@@ -126,7 +147,7 @@ export function Page7Interior() {
               <span className="icon-detail-value">{data.interior.steering_type}</span>
             </div>
             <div className="icon-detail-item">
-              {data.interior.cruise_control === 'Working' || data.interior.cruise_control === 'Yes' ? (
+              {isGoodCondition(data.interior.cruise_control) ? (
                 <CheckCircle className="check-icon-small" />
               ) : (
                 <XCircle className="x-icon-small" />
@@ -135,7 +156,7 @@ export function Page7Interior() {
               <span className="icon-detail-value">{data.interior.cruise_control}</span>
             </div>
             <div className="icon-detail-item">
-              {data.interior.navigation === 'Working' || data.interior.navigation === 'Yes' ? (
+              {isGoodCondition(data.interior.navigation) ? (
                 <CheckCircle className="check-icon-small" />
               ) : (
                 <XCircle className="x-icon-small" />
@@ -144,7 +165,7 @@ export function Page7Interior() {
               <span className="icon-detail-value">{data.interior.navigation}</span>
             </div>
             <div className="icon-detail-item">
-              {data.interior.glove_box === 'Working' || data.interior.glove_box === 'Yes' ? (
+              {isGoodCondition(data.interior.glove_box) ? (
                 <CheckCircle className="check-icon-small" />
               ) : (
                 <XCircle className="x-icon-small" />
@@ -153,7 +174,7 @@ export function Page7Interior() {
               <span className="icon-detail-value">{data.interior.glove_box}</span>
             </div>
             <div className="icon-detail-item">
-              {data.interior.cabin_lights === 'Working' || data.interior.cabin_lights === 'Yes' ? (
+              {isGoodCondition(data.interior.cabin_lights) ? (
                 <CheckCircle className="check-icon-small" />
               ) : (
                 <XCircle className="x-icon-small" />
@@ -162,7 +183,7 @@ export function Page7Interior() {
               <span className="icon-detail-value">{data.interior.cabin_lights}</span>
             </div>
             <div className="icon-detail-item">
-              {data.interior.headlights === 'Working' || data.interior.headlights === 'Yes' ? (
+              {isGoodCondition(data.interior.headlights) ? (
                 <CheckCircle className="check-icon-small" />
               ) : (
                 <XCircle className="x-icon-small" />
@@ -171,7 +192,7 @@ export function Page7Interior() {
               <span className="icon-detail-value">{data.interior.headlights}</span>
             </div>
             <div className="icon-detail-item">
-              {data.interior.wipers === 'Working' || data.interior.wipers === 'Yes' ? (
+              {isGoodCondition(data.interior.wipers) ? (
                 <CheckCircle className="check-icon-small" />
               ) : (
                 <XCircle className="x-icon-small" />
@@ -180,7 +201,7 @@ export function Page7Interior() {
               <span className="icon-detail-value">{data.interior.wipers}</span>
             </div>
             <div className="icon-detail-item">
-              {data.interior.trip_switch === 'Working' || data.interior.trip_switch === 'Yes' ? (
+              {isGoodCondition(data.interior.trip_switch) ? (
                 <CheckCircle className="check-icon-small" />
               ) : (
                 <XCircle className="x-icon-small" />
@@ -189,7 +210,7 @@ export function Page7Interior() {
               <span className="icon-detail-value">{data.interior.trip_switch}</span>
             </div>
             <div className="icon-detail-item">
-              {data.interior.boot_lever === 'Working' || data.interior.boot_lever === 'Yes' ? (
+              {isGoodCondition(data.interior.boot_lever) ? (
                 <CheckCircle className="check-icon-small" />
               ) : (
                 <XCircle className="x-icon-small" />
@@ -232,29 +253,6 @@ export function Page7Interior() {
           <div className="detail-item">
             <span className="detail-label">Power Windows / पावर विंडोज</span>
             <span className="detail-value">{data.interior.power_windows}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Driver Cabin Section */}
-      <div className="image-card-full">
-        <img src={data.images.driver_cabin} alt="Driver Cabin" className="inspection-image" />
-        <div className="image-label">Driver Cabin Image / ड्राइवर केबिन छवि</div>
-      </div>
-
-      <div className="detail-card">
-        <div className="detail-grid">
-          <div className="detail-item">
-            <span className="detail-label">Front Seat Condition / फ्रंट सीट स्थिति</span>
-            <span className="detail-value">{data.seats.front_condition}</span>
-          </div>
-          <div className="detail-item">
-            <span className="detail-label">Seat Adjustment Type / सीट एडजस्टमेंट प्रकार</span>
-            <span className="detail-value">{data.seats.adjustment_type}</span>
-          </div>
-          <div className="detail-item">
-            <span className="detail-label">Seat Belts / सीट बेल्ट</span>
-            <span className="detail-value">{data.seats.seat_belts}</span>
           </div>
         </div>
       </div>

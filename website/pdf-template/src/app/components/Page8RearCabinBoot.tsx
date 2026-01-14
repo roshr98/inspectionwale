@@ -8,6 +8,31 @@ export function Page8RearCabinBoot() {
   
   return (
     <InspectionPage pageNumber={8}>
+      {/* Driver Cabin Section - Moved from Page 7 and Enlarged */}
+      <h2 className="section-header-bilingual">Driver Cabin Inspection / ड्राइवर केबिन निरीक्षण</h2>
+
+      <div className="image-card-extra-large">
+        <img src={data.images.driver_cabin} alt="Driver Cabin" className="inspection-image-extra-large" />
+        <div className="image-label">Driver Cabin Image / ड्राइवर केबिन छवि</div>
+      </div>
+
+      <div className="detail-card">
+        <div className="detail-grid">
+          <div className="detail-item">
+            <span className="detail-label">Front Seat Condition / फ्रंट सीट स्थिति</span>
+            <span className="detail-value">{data.seats.front_condition}</span>
+          </div>
+          <div className="detail-item">
+            <span className="detail-label">Seat Adjustment Type / सीट एडजस्टमेंट प्रकार</span>
+            <span className="detail-value">{data.seats.adjustment_type}</span>
+          </div>
+          <div className="detail-item">
+            <span className="detail-label">Seat Belts / सीट बेल्ट</span>
+            <span className="detail-value">{data.seats.seat_belts}</span>
+          </div>
+        </div>
+      </div>
+
       <h2 className="section-header-bilingual">Rear Cabin Inspection / पिछली केबिन निरीक्षण</h2>
 
       {/* Rear Cabin Details */}
@@ -40,8 +65,8 @@ export function Page8RearCabinBoot() {
       {/* Boot Section */}
       <h2 className="section-header-bilingual">Boot Inspection / बूट निरीक्षण</h2>
 
-      <div className="image-card-full">
-        <img src={data.images.boot_space} alt="Boot" className="inspection-image" />
+      <div className="image-card-large">
+        <img src={data.images.boot_space} alt="Boot" className="inspection-image-large-boot" />
         <div className="image-label">Boot Image / बूट छवि</div>
       </div>
 

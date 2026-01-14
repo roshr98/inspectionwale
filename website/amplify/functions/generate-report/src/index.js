@@ -394,6 +394,7 @@ exports.handler = async (event) => {
     console.log('PDF bytes:', pdfBuffer.length);
 
     let reportUrl = null;
+    const pdfFileName = `Inspection_Report_${reportId}.pdf`;
     if (process.env.REPORTS_BUCKET) {
       const fileName = `reports/${registrationNumber}_${now}.pdf`;
       console.log('Uploading PDF to S3:', fileName);
@@ -402,6 +403,7 @@ exports.handler = async (event) => {
         Key: fileName,
         Body: pdfBuffer,
         ContentType: 'application/pdf',
+        ContentDisposition: `attachment; filename="${pdfFileName}"`,
       }));
       reportUrl = `https://${process.env.REPORTS_BUCKET}.s3.amazonaws.com/${fileName}`;
     }
