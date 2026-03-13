@@ -1063,7 +1063,7 @@
                                     <h6 class="text-white mb-2" style="font-weight: 700; font-size: 14px;">Get Peace of Mind</h6>
                                     <p class="text-white mb-3" style="font-size: 12px; line-height: 1.4; opacity: 0.95;">Book a professional pre-purchase inspection from InspectionWale before buying</p>
                                     <button id="carDetailBookInspectionBtn" class="btn btn-light w-100" style="font-weight: 700; padding: 10px; border-radius: 6px; font-size: 13px; color: #26a69a;">
-                                        <i class="fas fa-calendar-check me-1"></i> Book Inspection
+                                        <i class="fas fa-calendar-check me-1"></i> Book Inspection @ ₹1,399
                                     </button>
                                 </div>
 
@@ -1338,7 +1338,8 @@
                             <label for="bk_kms" class="form-label">KMs Driven *</label>
                             <input type="text" id="bk_kms" name="kmsDriven" class="form-control form-control-lg" placeholder="e.g., 45000" readonly style="border-radius: 8px; border: none; background: #e9ecef;">
                         </div>
-                        <button type="submit" class="btn w-100 py-3" id="marketplaceBookingSubmit" style="background: #D81324; color: #fff; border-radius: 30px; font-size: 1rem; font-weight: 600; text-transform: uppercase;">Book Inspection</button>
+                        <button type="submit" class="btn w-100 py-3" id="marketplaceBookingSubmit" style="background: #D81324; color: #fff; border-radius: 30px; font-size: 1rem; font-weight: 600; text-transform: uppercase;">Book Inspection @ ₹1,399</button>
+                        <p class="text-muted text-center mt-2 mb-0" style="font-size: 12px;"><i class="fas fa-shield-alt me-1"></i> Secure payment via Razorpay</p>
                         <div class="alert mt-3" id="bookingAlert" style="display:none;" role="alert"></div>
                     </form>
                 </div>
@@ -3273,64 +3274,51 @@
                 const data = {};
                 formData.forEach((value, key) => { data[key] = value; });
                 
-                // Add car URL
-                const listingId = data.listingId;
-                if (listingId) {
-                    data.carUrl = window.location.origin + window.location.pathname + '?listingId=' + encodeURIComponent(listingId);
-                }
-                
-                // Set form type for email routing
-                data.formType = 'marketplace-inspection';
-
-                // Normalize to the payload format expected by /api/quote (matches the other booking flow in this page)
+                // Build payload for inspection bookings API
                 const payload = {
-                    // keep original keys too (back-compat)
-                    ...data,
-                    firstName: data.name || data.firstName || '',
-                    name: data.name || data.firstName || '',
+                    name: data.name || '',
                     mobile: data.mobile || '',
                     email: data.email || '',
                     address: data.address || '',
-                    carType: data.carType || 'Used Car',
-                    make: data.makeModel || data.make || '',
+                    inspectionType: 'used-car',
                     makeModel: data.makeModel || '',
-                    registrationYear: data.regYear || data.registrationYear || '',
                     regYear: data.regYear || '',
                     kmsDriven: data.kmsDriven || '',
-                    listingId: data.listingId || ''
+                    listingId: data.listingId || '',
+                    formType: 'marketplace-booking',
+                    source: 'marketplace'
                 };
                 
                 try {
                     submitBtn.disabled = true;
-                    submitBtn.innerHTML = '<span class=\"spinner-border spinner-border-sm me-2\"></span>Sending...';
+                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
                     
-                    const response = await fetch('/api/quote', {
+                    // Call the inspection bookings API
+                    const apiUrl = 'https://423cmvhw3g.execute-api.us-east-1.amazonaws.com/prod/inspection-bookings';
+                    const response = await fetch(apiUrl, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     });
                     
-                    const contentType = (response.headers.get('content-type') || '').toLowerCase()
-                    const isJson = contentType.includes('application/json')
-                    const respJson = isJson ? await response.json().catch(() => null) : null
-                    const okFlag = response.ok && (!isJson || (respJson && respJson.ok === true))
+                    const respJson = await response.json();
 
-                    if (okFlag) {
+                    if (response.ok && respJson.ok) {
                         alertBox.className = 'alert alert-success mt-3';
-                        alertBox.textContent = 'Inspection booked successfully! We will contact you shortly.';
+                        alertBox.innerHTML = '<i class="fas fa-check-circle me-2"></i>Booking created! Redirecting to payment...';
                         alertBox.style.display = 'block';
                         
-                        // Reset form after 2 seconds and close modal
+                        // Reset form and redirect to Razorpay
                         setTimeout(() => {
                             marketplaceBookingForm.reset();
                             marketplaceBookingForm.classList.remove('was-validated');
                             const modal = bootstrap.Modal.getInstance(document.getElementById('bookingModal'));
                             if (modal) modal.hide();
-                            alertBox.style.display = 'none';
-                        }, 2000);
+                            // Redirect to Razorpay payment URL
+                            window.location.href = respJson.paymentUrl;
+                        }, 1000);
                     } else {
-                        const serverMsg = respJson?.error || respJson?.message || (!response.ok ? `Request failed (${response.status})` : 'Unexpected server response')
-                        throw new Error(serverMsg);
+                        throw new Error(respJson.error || 'Booking failed');
                     }
                 } catch (error) {
                     console.error('Booking submission error:', error);
@@ -3339,7 +3327,7 @@
                     alertBox.style.display = 'block';
                 } finally {
                     submitBtn.disabled = false;
-                    submitBtn.innerHTML = 'Book Inspection';
+                    submitBtn.innerHTML = 'Book Inspection @ ₹1,399';
                 }
             });
         }

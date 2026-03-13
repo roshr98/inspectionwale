@@ -2648,7 +2648,8 @@
                                 <option value="4th Owner or more">4th Owner or more</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn w-100 py-3" style="background: #D81324; color: #fff; border-radius: 30px; font-size: 1rem; font-weight: 600; text-transform: uppercase;">Book Inspection</button>
+                        <button type="submit" class="btn w-100 py-3" style="background: #D81324; color: #fff; border-radius: 30px; font-size: 1rem; font-weight: 600; text-transform: uppercase;">Book Inspection @ ₹1,399</button>
+                        <p class="text-muted text-center mt-2 mb-0" style="font-size: 12px;"><i class="fas fa-shield-alt me-1"></i> Secure payment via Razorpay</p>
                     </form>
                 </div>
             </div>
@@ -2702,7 +2703,8 @@
                                 <option value="4th Owner or more">4th Owner or more</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn w-100 py-3" style="background: #D81324; color: #fff; border-radius: 30px; font-size: 1rem; font-weight: 600; text-transform: uppercase;">Book Inspection</button>
+                        <button type="submit" class="btn w-100 py-3" style="background: #D81324; color: #fff; border-radius: 30px; font-size: 1rem; font-weight: 600; text-transform: uppercase;">Book Inspection @ ₹1,399</button>
+                        <p class="text-muted text-center mt-2 mb-0" style="font-size: 12px;"><i class="fas fa-shield-alt me-1"></i> Secure payment via Razorpay</p>
                     </form>
                 </div>
             </div>
@@ -3069,63 +3071,73 @@
 
                 console.log('[IW] handleSubmit called for', config.formId);
 
-                // Log form validity state
+                // Validate form
                 const isValid = form.checkValidity();
-                console.log('[IW] Form valid:', isValid);
-                
-                // TEMPORARY: Skip validation to test submit flow
-                // if (!isValid) {
-                //     console.log('[IW] Form validation failed - showing was-validated');
-                //     form.classList.add('was-validated');
-                //     return;
-                // }
-                
-                console.log('[IW] Proceeding to submit (validation bypassed for testing)');
+                if (!isValid) {
+                    form.classList.add('was-validated');
+                    return;
+                }
 
                 form.classList.remove('was-validated');
 
                 const fd = new FormData(form);
                 const payload = {
-                    firstName: fd.get('name') || '',
+                    name: fd.get('name') || '',
                     mobile: fd.get('mobile') || '',
                     email: fd.get('email') || '',
-                    carType: config.carType,
-                    make: fd.get('makeModel') || '',
-                    registrationYear: fd.get('regYear') || '',
+                    inspectionType: config.carType === 'New Car' ? 'new-car' : 'used-car',
+                    makeModel: fd.get('makeModel') || '',
+                    regYear: fd.get('regYear') || '',
                     kmsDriven: fd.get('kmsDriven') || '',
                     ownership: fd.get('ownership') || '',
-                    formType: config.formType
+                    formType: config.formType,
+                    source: 'homepage'
                 };
 
-                // Immediately show loading state
-                console.log('[IW] Setting button to Sending state...');
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                // Show loading state
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
                 submitBtn.disabled = true;
-                console.log('[IW] Button updated, calling submitQuote with payload:', payload);
 
                 try {
-                    await submitQuote(payload);
-                    console.log('[IW] Quote submitted successfully');
-                    submitBtn.innerHTML = '<i class="fas fa-check"></i> Booking Received!';
+                    // Call the inspection bookings API
+                    const apiUrl = 'https://423cmvhw3g.execute-api.us-east-1.amazonaws.com/prod/inspection-bookings';
+                    const res = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const data = await res.json();
+                    
+                    if (!res.ok || !data.ok) {
+                        throw new Error(data.error || 'Booking failed');
+                    }
+
+                    console.log('[IW] Booking created:', data.bookingId);
+                    
+                    // Show success and redirect to Razorpay
+                    submitBtn.innerHTML = '<i class="fas fa-check"></i> Redirecting to Payment...';
                     submitBtn.style.background = '#26a69a';
                     form.reset();
 
+                    // Close modal and redirect to Razorpay payment page
                     setTimeout(() => {
-                        // Close modal if Bootstrap is available
                         if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
                             const modal = bootstrap.Modal.getInstance(modalEl);
                             if (modal) modal.hide();
                         }
-                        submitBtn.innerHTML = defaultLabel;
-                        submitBtn.style.background = '#D81324';
-                        submitBtn.disabled = false;
-                    }, 2000);
+                        // Redirect to Razorpay payment URL
+                        window.location.href = data.paymentUrl;
+                    }, 1000);
+
                 } catch (error) {
                     console.error('[IW] Inspection booking failed', error);
-                    submitBtn.innerHTML = 'Error - Try Again';
+                    submitBtn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error - Try Again';
+                    submitBtn.style.background = '#dc3545';
                     submitBtn.disabled = false;
                     setTimeout(() => {
                         submitBtn.innerHTML = defaultLabel;
+                        submitBtn.style.background = '#D81324';
                     }, 3000);
                 }
             }
@@ -3133,10 +3145,9 @@
             // Bind to form submit event
             form.addEventListener('submit', handleSubmit);
 
-            // ALSO bind directly to button click as backup
+            // Also bind directly to button click as backup
             if (submitBtn) {
                 submitBtn.addEventListener('click', function(e) {
-                    // Only handle if form submit didn't fire
                     if (!submitBtn.disabled) {
                         handleSubmit(e);
                     }
