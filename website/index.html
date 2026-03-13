@@ -371,11 +371,26 @@
         
         /* Mobile-specific styling for hero banner and modal fixes */
         @media (max-width: 991px) {
+            /* Modal fullscreen on mobile */
+            .modal-dialog {
+                margin: 0 !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                height: 100% !important;
+            }
+            
+            .modal-content {
+                border-radius: 0 !important;
+                min-height: 100vh !important;
+                width: 100% !important;
+            }
+            
             /* Modal footer fix for all mobile/tablet devices */
             .modal-body {
                 padding-bottom: 150px !important;
                 max-height: calc(100vh - 120px) !important;
                 overflow-y: auto !important;
+                width: 100% !important;
             }
             
             .modal-footer {
