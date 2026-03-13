@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin Dashboard - InspectionWale</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #ff6600;
+      --primary-dark: #e55a00;
+    }
+    body {
+      background: #f4f6f9;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .login-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      padding: 40px;
+      max-width: 400px;
+      width: 100%;
+    }
+    .login-card h2 {
+      color: var(--primary);
+      margin-bottom: 30px;
+    }
+    .btn-primary {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      border-color: var(--primary-dark);
+    }
+    .dashboard-container {
+      display: none;
+    }
+    .sidebar {
+      background: #1e293b;
+      min-height: 100vh;
+      padding: 20px 0;
+    }
+    .sidebar .logo {
+      color: var(--primary);
+      font-size: 1.5rem;
+      font-weight: bold;
+      padding: 0 20px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .sidebar .nav-link {
+      color: rgba(255,255,255,0.7);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s;
+    }
+    .sidebar .nav-link:hover, .sidebar .nav-link.active {
+      color: white;
+      background: rgba(255,102,0,0.2);
+      border-left: 3px solid var(--primary);
+    }
+    .main-content {
+      padding: 20px;
+    }
+    .page-header {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .table-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+    .table-card .card-header {
+      background: white;
+      border-bottom: 1px solid #eee;
+      padding: 15px 20px;
+    }
+    .table thead th {
+      background: #f8f9fa;
+      font-weight: 600;
+      color: #333;
+      border-bottom: 2px solid #dee2e6;
+    }
+    .badge-pending { background: #ffc107; color: #000; }
+    .badge-paid { background: #28a745; }
+    .badge-unpaid { background: #dc3545; }
+    .badge-approved { background: #28a745; }
+    .badge-rejected { background: #dc3545; }
+    .badge-sold { background: #6c757d; }
+    .action-btn {
+      padding: 4px 10px;
+      font-size: 0.85rem;
+    }
+    .modal-header {
+      background: var(--primary);
+      color: white;
+    }
+    .modal-header .btn-close {
+      filter: brightness(0) invert(1);
+    }
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .loading-overlay.hidden {
+      display: none;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .stats-card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .stats-card .number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--primary);
+    }
+    .refresh-btn {
+      cursor: pointer;
+    }
+    @media (max-width: 768px) {
+      .sidebar {
+        position: fixed;
+        z-index: 1000;
+        width: 250px;
+        transform: translateX(-100%);
+        transition: transform 0.3s;
+      }
+      .sidebar.show {
+        transform: translateX(0);
+      }
+      .main-content {
+        margin-left: 0 !important;
+      }
+      .mobile-toggle {
+        display: block !important;
+      }
+    }
+    .mobile-toggle {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading Overlay -->
+  <div id="loadingOverlay" class="loading-overlay hidden">
+    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
+  </div>
+
+  <!-- Login Screen -->
+  <div id="loginContainer" class="login-container">
+    <div class="login-card">
+      <h2 class="text-center"><i class="bi bi-shield-lock me-2"></i>Admin Login</h2>
+      <form id="loginForm">
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-control" id="adminPassword" placeholder="Enter admin password" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">
+          <i class="bi bi-box-arrow-in-right me-2"></i>Login
+        </button>
+      </form>
+      <p id="loginError" class="text-danger mt-3 text-center d-none">Invalid password</p>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dashboardContainer" class="dashboard-container">
+    <div class="row g-0">
+      <!-- Sidebar -->
+      <div class="col-auto sidebar" id="sidebar">
+        <div class="logo">
+          <i class="bi bi-speedometer2 me-2"></i>InspectionWale
+        </div>
+        <nav class="nav flex-column mt-3">
+          <a class="nav-link active" data-tab="payments" href="#">
+            <i class="bi bi-credit-card"></i> Inspection Payments
+          </a>
+          <a class="nav-link" data-tab="listings" href="#">
+            <i class="bi bi-car-front"></i> Car Listings
+          </a>
+          <a class="nav-link" data-tab="reports" href="#">
+            <i class="bi bi-file-earmark-pdf"></i> Inspection Reports
+          </a>
+          <a class="nav-link text-danger mt-4" href="#" id="logoutBtn">
+            <i class="bi bi-box-arrow-left"></i> Logout
+          </a>
+        </nav>
+      </div>
+
+      <!-- Main Content -->
+      <div class="col main-content">
+        <!-- Mobile Toggle -->
+        <button class="btn btn-primary mobile-toggle mb-3" id="mobileToggle">
+          <i class="bi bi-list"></i> Menu
+        </button>
+
+        <!-- Payments Tab -->
+        <div class="tab-content active" id="tab-payments">
+          <div class="page-header d-flex justify-content-between align-items-center">
+            <div>
+              <h4 class="mb-1">Inspection Payments</h4>
+              <p class="text-muted mb-0">Manage booking payments and status</p>
+            </div>
+            <button class="btn btn-outline-primary refresh-btn" onclick="loadPayments()">
+              <i class="bi bi-arrow-clockwise"></i> Refresh
+            </button>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-md-4 mb-3">
+              <div class="stats-card">
+                <div class="number" id="totalPayments">-</div>
+                <div class="text-muted">Total Bookings</div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="stats-card">
+                <div class="number text-success" id="paidPayments">-</div>
+                <div class="text-muted">Paid</div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="stats-card">
+                <div class="number text-warning" id="pendingPayments">-</div>
+                <div class="text-muted">Pending/Pay Later</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <span>All Bookings</span>
+              <input type="text" class="form-control w-auto" placeholder="Search..." id="paymentsSearch">
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead>
+                  <tr>
+                    <th>Booking ID</th>
+                    <th>Customer</th>
+                    <th>Mobile</th>
+                    <th>Type</th>
+                    <th>Vehicle</th>
+                    <th>Payment</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="paymentsTableBody">
+                  <tr><td colspan="9" class="text-center py-4">Loading...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Listings Tab -->
+        <div class="tab-content" id="tab-listings">
+          <div class="page-header d-flex justify-content-between align-items-center">
+            <div>
+              <h4 class="mb-1">Car Listings</h4>
+              <p class="text-muted mb-0">Manage marketplace car listings</p>
+            </div>
+            <button class="btn btn-outline-primary refresh-btn" onclick="loadListings()">
+              <i class="bi bi-arrow-clockwise"></i> Refresh
+            </button>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+              <div class="stats-card">
+                <div class="number" id="totalListings">-</div>
+                <div class="text-muted">Total Listings</div>
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="stats-card">
+                <div class="number text-success" id="approvedListings">-</div>
+                <div class="text-muted">Approved</div>
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="stats-card">
+                <div class="number text-warning" id="pendingListings">-</div>
+                <div class="text-muted">Pending</div>
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="stats-card">
+                <div class="number text-secondary" id="soldListings">-</div>
+                <div class="text-muted">Sold</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <span>All Listings</span>
+              <input type="text" class="form-control w-auto" placeholder="Search..." id="listingsSearch">
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Car</th>
+                    <th>Seller</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="listingsTableBody">
+                  <tr><td colspan="7" class="text-center py-4">Loading...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reports Tab -->
+        <div class="tab-content" id="tab-reports">
+          <div class="page-header d-flex justify-content-between align-items-center">
+            <div>
+              <h4 class="mb-1">Inspection Reports</h4>
+              <p class="text-muted mb-0">Manage inspection reports and PDFs</p>
+            </div>
+            <button class="btn btn-outline-primary refresh-btn" onclick="loadReports()">
+              <i class="bi bi-arrow-clockwise"></i> Refresh
+            </button>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+              <div class="stats-card">
+                <div class="number" id="totalReports">-</div>
+                <div class="text-muted">Total Reports</div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="stats-card">
+                <div class="number text-success" id="reportsWithPdf">-</div>
+                <div class="text-muted">With PDF</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <span>All Reports</span>
+              <input type="text" class="form-control w-auto" placeholder="Search..." id="reportsSearch">
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead>
+                  <tr>
+                    <th>Report ID</th>
+                    <th>Registration</th>
+                    <th>Inspector</th>
+                    <th>Date</th>
+                    <th>PDF</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="reportsTableBody">
+                  <tr><td colspan="6" class="text-center py-4">Loading...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Payment Modal -->
+  <div class="modal fade" id="editPaymentModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-pencil me-2"></i>Edit Payment</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="editPaymentForm">
+          <div class="modal-body">
+            <input type="hidden" id="editPaymentId">
+            <div class="mb-3">
+              <label class="form-label">Customer Name</label>
+              <input type="text" class="form-control" id="editPaymentName">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Mobile</label>
+              <input type="text" class="form-control" id="editPaymentMobile">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-control" id="editPaymentEmail">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Vehicle Number</label>
+              <input type="text" class="form-control" id="editPaymentVehicle">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Payment Status</label>
+              <select class="form-select" id="editPaymentStatus">
+                <option value="pending">Pending</option>
+                <option value="paid">Paid</option>
+                <option value="failed">Failed</option>
+                <option value="refunded">Refunded</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Booking Status</label>
+              <select class="form-select" id="editBookingStatus">
+                <option value="pending">Pending</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Listing Modal -->
+  <div class="modal fade" id="editListingModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-pencil me-2"></i>Edit Listing</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="editListingForm">
+          <div class="modal-body">
+            <input type="hidden" id="editListingId">
+            <div class="mb-3">
+              <label class="form-label">Car Name</label>
+              <input type="text" class="form-control" id="editListingName">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Year</label>
+              <input type="number" class="form-control" id="editListingYear">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Price (₹)</label>
+              <input type="number" class="form-control" id="editListingPrice">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Kilometers</label>
+              <input type="number" class="form-control" id="editListingKm">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Status</label>
+              <select class="form-select" id="editListingStatus">
+                <option value="pending">Pending Review</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+                <option value="sold">Sold</option>
+                <option value="reserved">Reserved</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Seller Name</label>
+              <input type="text" class="form-control" id="editListingSellerName">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Seller Mobile</label>
+              <input type="text" class="form-control" id="editListingSellerMobile">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Report Modal -->
+  <div class="modal fade" id="editReportModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-pencil me-2"></i>Edit Report</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="editReportForm">
+          <div class="modal-body">
+            <input type="hidden" id="editReportId">
+            <input type="hidden" id="editReportTimestamp">
+            <div class="mb-3">
+              <label class="form-label">Report ID</label>
+              <input type="text" class="form-control" id="editReportIdDisplay" readonly>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Registration Number</label>
+              <input type="text" class="form-control" id="editReportRegNo">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Inspector Name</label>
+              <input type="text" class="form-control" id="editReportInspector">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Report URL</label>
+              <input type="text" class="form-control" id="editReportUrl">
+            </div>
+            <div class="alert alert-info">
+              <i class="bi bi-info-circle me-2"></i>
+              To regenerate PDF, the full inspection data needs to be submitted through the inspector form.
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Configuration
+    const ADMIN_API_BASE = 'https://zk2hccij2dpngoory5dc3dre5e0hgixh.lambda-url.us-east-1.on.aws';
+    // Simple password - in production use proper auth
+    const ADMIN_PASSWORD = 'inspectionwale2024';
+    
+    // State
+    let isLoggedIn = false;
+    let paymentsData = [];
+    let listingsData = [];
+    let reportsData = [];
+
+    // DOM Elements
+    const loginContainer = document.getElementById('loginContainer');
+    const dashboardContainer = document.getElementById('dashboardContainer');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+
+    // Check session
+    function checkSession() {
+      const session = localStorage.getItem('adminSession');
+      if (session === 'active') {
+        showDashboard();
+      }
+    }
+
+    // Login
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const password = document.getElementById('adminPassword').value;
+      if (password === ADMIN_PASSWORD) {
+        localStorage.setItem('adminSession', 'active');
+        showDashboard();
+      } else {
+        document.getElementById('loginError').classList.remove('d-none');
+      }
+    });
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.removeItem('adminSession');
+      location.reload();
+    });
+
+    // Show Dashboard
+    function showDashboard() {
+      isLoggedIn = true;
+      loginContainer.style.display = 'none';
+      dashboardContainer.style.display = 'block';
+      loadPayments();
+    }
+
+    // Tab Navigation
+    document.querySelectorAll('.nav-link[data-tab]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const tab = link.dataset.tab;
+        
+        // Update nav
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        
+        // Update content
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.getElementById(`tab-${tab}`).classList.add('active');
+        
+        // Load data
+        if (tab === 'payments') loadPayments();
+        if (tab === 'listings') loadListings();
+        if (tab === 'reports') loadReports();
+
+        // Close mobile sidebar
+        document.getElementById('sidebar').classList.remove('show');
+      });
+    });
+
+    // Mobile toggle
+    document.getElementById('mobileToggle').addEventListener('click', () => {
+      document.getElementById('sidebar').classList.toggle('show');
+    });
+
+    // Show/hide loading
+    function showLoading() {
+      loadingOverlay.classList.remove('hidden');
+    }
+    function hideLoading() {
+      loadingOverlay.classList.add('hidden');
+    }
+
+    // Format date
+    function formatDate(dateStr) {
+      if (!dateStr) return '-';
+      const d = new Date(dateStr);
+      return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    // Format currency
+    function formatCurrency(amount) {
+      if (!amount) return '-';
+      return '₹' + Number(amount).toLocaleString('en-IN');
+    }
+
+    // Get status badge class
+    function getStatusBadge(status) {
+      status = (status || '').toLowerCase();
+      if (['paid', 'approved', 'completed', 'confirmed'].includes(status)) return 'badge-paid';
+      if (['pending', 'pay-later'].includes(status)) return 'badge-pending';
+      if (['sold', 'reserved'].includes(status)) return 'badge-sold';
+      return 'badge-unpaid';
+    }
+
+    // ===================== PAYMENTS =====================
+    async function loadPayments() {
+      showLoading();
+      try {
+        const response = await fetch(`${ADMIN_API_BASE}/admin/payments`);
+        const data = await response.json();
+        paymentsData = data.items || [];
+        renderPaymentsTable();
+        updatePaymentStats();
+      } catch (error) {
+        console.error('Failed to load payments:', error);
+        document.getElementById('paymentsTableBody').innerHTML = 
+          '<tr><td colspan="9" class="text-center py-4 text-danger">Failed to load data</td></tr>';
+      }
+      hideLoading();
+    }
+
+    function renderPaymentsTable(filter = '') {
+      const tbody = document.getElementById('paymentsTableBody');
+      let items = paymentsData;
+      
+      if (filter) {
+        filter = filter.toLowerCase();
+        items = items.filter(p => 
+          (p.customerName || '').toLowerCase().includes(filter) ||
+          (p.mobile || '').toLowerCase().includes(filter) ||
+          (p.bookingId || '').toLowerCase().includes(filter) ||
+          (p.vehicleNumber || '').toLowerCase().includes(filter)
+        );
+      }
+
+      if (items.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" class="text-center py-4">No bookings found</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = items.map(p => `
+        <tr>
+          <td><small>${p.bookingId || '-'}</small></td>
+          <td>${p.customerName || '-'}</td>
+          <td>${p.mobile || '-'}</td>
+          <td>${p.inspectionType || '-'}</td>
+          <td>${p.vehicleNumber || '-'}</td>
+          <td><span class="badge ${getStatusBadge(p.paymentStatus)}">${p.paymentStatus || 'pending'}</span></td>
+          <td><span class="badge ${getStatusBadge(p.status)}">${p.status || 'pending'}</span></td>
+          <td><small>${formatDate(p.createdAt)}</small></td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary action-btn" onclick="editPayment('${p.bookingId}')">
+              <i class="bi bi-pencil"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function updatePaymentStats() {
+      document.getElementById('totalPayments').textContent = paymentsData.length;
+      document.getElementById('paidPayments').textContent = paymentsData.filter(p => p.paymentStatus === 'paid').length;
+      document.getElementById('pendingPayments').textContent = paymentsData.filter(p => p.paymentStatus !== 'paid').length;
+    }
+
+    document.getElementById('paymentsSearch').addEventListener('input', (e) => {
+      renderPaymentsTable(e.target.value);
+    });
+
+    function editPayment(bookingId) {
+      const payment = paymentsData.find(p => p.bookingId === bookingId);
+      if (!payment) return;
+
+      document.getElementById('editPaymentId').value = payment.bookingId;
+      document.getElementById('editPaymentName').value = payment.customerName || '';
+      document.getElementById('editPaymentMobile').value = payment.mobile || '';
+      document.getElementById('editPaymentEmail').value = payment.email || '';
+      document.getElementById('editPaymentVehicle').value = payment.vehicleNumber || '';
+      document.getElementById('editPaymentStatus').value = payment.paymentStatus || 'pending';
+      document.getElementById('editBookingStatus').value = payment.status || 'pending';
+
+      new bootstrap.Modal(document.getElementById('editPaymentModal')).show();
+    }
+
+    document.getElementById('editPaymentForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      showLoading();
+
+      const bookingId = document.getElementById('editPaymentId').value;
+      const updates = {
+        customerName: document.getElementById('editPaymentName').value,
+        mobile: document.getElementById('editPaymentMobile').value,
+        email: document.getElementById('editPaymentEmail').value,
+        vehicleNumber: document.getElementById('editPaymentVehicle').value,
+        paymentStatus: document.getElementById('editPaymentStatus').value,
+        status: document.getElementById('editBookingStatus').value
+      };
+
+      try {
+        await fetch(`${ADMIN_API_BASE}/admin/payments/${bookingId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updates)
+        });
+        bootstrap.Modal.getInstance(document.getElementById('editPaymentModal')).hide();
+        await loadPayments();
+        alert('Payment updated successfully!');
+      } catch (error) {
+        console.error('Failed to update payment:', error);
+        alert('Failed to update payment');
+      }
+      hideLoading();
+    });
+
+    // ===================== LISTINGS =====================
+    async function loadListings() {
+      showLoading();
+      try {
+        const response = await fetch(`${ADMIN_API_BASE}/admin/listings`);
+        const data = await response.json();
+        listingsData = data.items || [];
+        renderListingsTable();
+        updateListingStats();
+      } catch (error) {
+        console.error('Failed to load listings:', error);
+        document.getElementById('listingsTableBody').innerHTML = 
+          '<tr><td colspan="7" class="text-center py-4 text-danger">Failed to load data</td></tr>';
+      }
+      hideLoading();
+    }
+
+    function renderListingsTable(filter = '') {
+      const tbody = document.getElementById('listingsTableBody');
+      let items = listingsData;
+      
+      if (filter) {
+        filter = filter.toLowerCase();
+        items = items.filter(l => 
+          (l.carName || '').toLowerCase().includes(filter) ||
+          (l.listingId || '').toLowerCase().includes(filter) ||
+          (l.seller?.name || '').toLowerCase().includes(filter)
+        );
+      }
+
+      if (items.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4">No listings found</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = items.map(l => `
+        <tr>
+          <td><small>${(l.listingId || '').slice(0, 8)}...</small></td>
+          <td>${l.carName || l.brand || '-'} ${l.model || ''}</td>
+          <td>${l.seller?.name || l.sellerName || '-'}</td>
+          <td>${formatCurrency(l.askingPrice || l.price)}</td>
+          <td><span class="badge ${getStatusBadge(l.status)}">${l.status || 'pending'}</span></td>
+          <td><small>${formatDate(l.createdAt)}</small></td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary action-btn" onclick="editListing('${l.listingId}')">
+              <i class="bi bi-pencil"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function updateListingStats() {
+      document.getElementById('totalListings').textContent = listingsData.length;
+      document.getElementById('approvedListings').textContent = listingsData.filter(l => l.status === 'approved').length;
+      document.getElementById('pendingListings').textContent = listingsData.filter(l => l.status === 'pending').length;
+      document.getElementById('soldListings').textContent = listingsData.filter(l => ['sold', 'reserved'].includes(l.status)).length;
+    }
+
+    document.getElementById('listingsSearch').addEventListener('input', (e) => {
+      renderListingsTable(e.target.value);
+    });
+
+    function editListing(listingId) {
+      const listing = listingsData.find(l => l.listingId === listingId);
+      if (!listing) return;
+
+      document.getElementById('editListingId').value = listing.listingId;
+      document.getElementById('editListingName').value = listing.carName || `${listing.brand || ''} ${listing.model || ''}`.trim();
+      document.getElementById('editListingYear').value = listing.year || '';
+      document.getElementById('editListingPrice').value = listing.askingPrice || listing.price || '';
+      document.getElementById('editListingKm').value = listing.kilometers || listing.km || '';
+      document.getElementById('editListingStatus').value = listing.status || 'pending';
+      document.getElementById('editListingSellerName').value = listing.seller?.name || listing.sellerName || '';
+      document.getElementById('editListingSellerMobile').value = listing.seller?.mobile || listing.sellerMobile || '';
+
+      new bootstrap.Modal(document.getElementById('editListingModal')).show();
+    }
+
+    document.getElementById('editListingForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      showLoading();
+
+      const listingId = document.getElementById('editListingId').value;
+      const updates = {
+        carName: document.getElementById('editListingName').value,
+        year: document.getElementById('editListingYear').value,
+        askingPrice: document.getElementById('editListingPrice').value,
+        kilometers: document.getElementById('editListingKm').value,
+        status: document.getElementById('editListingStatus').value,
+        sellerName: document.getElementById('editListingSellerName').value,
+        sellerMobile: document.getElementById('editListingSellerMobile').value
+      };
+
+      try {
+        await fetch(`${ADMIN_API_BASE}/admin/listings/${listingId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updates)
+        });
+        bootstrap.Modal.getInstance(document.getElementById('editListingModal')).hide();
+        await loadListings();
+        alert('Listing updated successfully!');
+      } catch (error) {
+        console.error('Failed to update listing:', error);
+        alert('Failed to update listing');
+      }
+      hideLoading();
+    });
+
+    // ===================== REPORTS =====================
+    async function loadReports() {
+      showLoading();
+      try {
+        const response = await fetch(`${ADMIN_API_BASE}/admin/reports`);
+        const data = await response.json();
+        reportsData = data.items || [];
+        renderReportsTable();
+        updateReportStats();
+      } catch (error) {
+        console.error('Failed to load reports:', error);
+        document.getElementById('reportsTableBody').innerHTML = 
+          '<tr><td colspan="6" class="text-center py-4 text-danger">Failed to load data</td></tr>';
+      }
+      hideLoading();
+    }
+
+    function renderReportsTable(filter = '') {
+      const tbody = document.getElementById('reportsTableBody');
+      let items = reportsData;
+      
+      if (filter) {
+        filter = filter.toLowerCase();
+        items = items.filter(r => 
+          (r.reportId || '').toLowerCase().includes(filter) ||
+          (r.registrationNumber || '').toLowerCase().includes(filter) ||
+          (r.inspectorName || '').toLowerCase().includes(filter)
+        );
+      }
+
+      if (items.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4">No reports found</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = items.map(r => `
+        <tr>
+          <td><small>${r.reportId || '-'}</small></td>
+          <td>${r.registrationNumber || '-'}</td>
+          <td>${r.inspectorName || '-'}</td>
+          <td><small>${formatDate(r.timestamp)}</small></td>
+          <td>
+            ${r.reportUrl ? `<a href="${r.reportUrl}" target="_blank" class="btn btn-sm btn-outline-success"><i class="bi bi-file-pdf"></i></a>` : '<span class="text-muted">-</span>'}
+          </td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary action-btn" onclick="editReport('${r.reportId}', '${r.timestamp || ''}')">
+              <i class="bi bi-pencil"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function updateReportStats() {
+      document.getElementById('totalReports').textContent = reportsData.length;
+      document.getElementById('reportsWithPdf').textContent = reportsData.filter(r => r.reportUrl).length;
+    }
+
+    document.getElementById('reportsSearch').addEventListener('input', (e) => {
+      renderReportsTable(e.target.value);
+    });
+
+    function editReport(reportId, timestamp) {
+      const report = reportsData.find(r => r.reportId === reportId);
+      if (!report) return;
+
+      document.getElementById('editReportId').value = report.reportId;
+      document.getElementById('editReportTimestamp').value = report.timestamp || '';
+      document.getElementById('editReportIdDisplay').value = report.reportId;
+      document.getElementById('editReportRegNo').value = report.registrationNumber || '';
+      document.getElementById('editReportInspector').value = report.inspectorName || '';
+      document.getElementById('editReportUrl').value = report.reportUrl || '';
+
+      new bootstrap.Modal(document.getElementById('editReportModal')).show();
+    }
+
+    document.getElementById('editReportForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      showLoading();
+
+      const reportId = document.getElementById('editReportId').value;
+      const timestamp = document.getElementById('editReportTimestamp').value;
+      const updates = {
+        registrationNumber: document.getElementById('editReportRegNo').value,
+        inspectorName: document.getElementById('editReportInspector').value,
+        reportUrl: document.getElementById('editReportUrl').value,
+        timestamp: timestamp
+      };
+
+      try {
+        await fetch(`${ADMIN_API_BASE}/admin/reports/${encodeURIComponent(reportId)}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updates)
+        });
+        bootstrap.Modal.getInstance(document.getElementById('editReportModal')).hide();
+        await loadReports();
+        alert('Report updated successfully!');
+      } catch (error) {
+        console.error('Failed to update report:', error);
+        alert('Failed to update report');
+      }
+      hideLoading();
+    });
+
+    // Initialize
+    checkSession();
+  </script>
+</body>
+</html>
