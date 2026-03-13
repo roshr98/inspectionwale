@@ -18,7 +18,7 @@ const ddbClient = new DynamoDBClient({ region: 'us-east-1' });
 const docClient = DynamoDBDocumentClient.from(ddbClient);
 
 const TABLE_NAME = 'InspectionPayments';
-const RAZORPAY_PAYMENT_PAGE = 'https://rzp.io/l/0vTqRioj9';
+const RAZORPAY_PAYMENT_PAGE = 'https://pages.razorpay.com/pl_JQIsmLQzQS4YJf/view';
 const INSPECTION_AMOUNT = 1399;
 
 // CORS headers
