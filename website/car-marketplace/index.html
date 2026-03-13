@@ -1338,8 +1338,11 @@
                             <label for="bk_kms" class="form-label">KMs Driven *</label>
                             <input type="text" id="bk_kms" name="kmsDriven" class="form-control form-control-lg" placeholder="e.g., 45000" readonly style="border-radius: 8px; border: none; background: #e9ecef;">
                         </div>
-                        <button type="submit" class="btn w-100 py-3" id="marketplaceBookingSubmit" style="background: #D81324; color: #fff; border-radius: 30px; font-size: 1rem; font-weight: 600; text-transform: uppercase;">Book Inspection @ ₹1,399</button>
-                        <p class="text-muted text-center mt-2 mb-0" style="font-size: 12px;"><i class="fas fa-shield-alt me-1"></i> Secure payment via Razorpay</p>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn flex-grow-1 py-3" id="marketplaceBookingSubmit" style="background: #D81324; color: #fff; border-radius: 30px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase;">Pay Now @ ₹1,399</button>
+                            <button type="button" class="btn flex-grow-1 py-3" id="marketplacePayLaterBtn" style="background: #6c757d; color: #fff; border-radius: 30px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase;">Pay Later</button>
+                        </div>
+                        <p class="text-muted text-center mt-2 mb-0" style="font-size: 11px;"><i class="fas fa-shield-alt me-1"></i> Pay Now: Secure Razorpay | Pay Later: We'll call to confirm</p>
                         <div class="alert mt-3" id="bookingAlert" style="display:none;" role="alert"></div>
                     </form>
                 </div>
@@ -3327,7 +3330,107 @@
                     alertBox.style.display = 'block';
                 } finally {
                     submitBtn.disabled = false;
-                    submitBtn.innerHTML = 'Book Inspection @ ₹1,399';
+                    submitBtn.innerHTML = 'Pay Now @ ₹1,399';
+                }
+            });
+        }
+
+        // Pay Later button handler for marketplace
+        const payLaterBtn = document.getElementById('marketplacePayLaterBtn');
+        if (payLaterBtn && marketplaceBookingForm) {
+            const payLaterDefaultLabel = payLaterBtn.innerHTML;
+            const submitBtn = document.getElementById('marketplaceBookingSubmit');
+            const alertBox = document.getElementById('bookingAlert');
+            
+            payLaterBtn.addEventListener('click', async function(e) {
+                e.preventDefault();
+                
+                if (!marketplaceBookingForm.checkValidity()) {
+                    marketplaceBookingForm.classList.add('was-validated');
+                    return;
+                }
+                
+                const formData = new FormData(marketplaceBookingForm);
+                const data = {};
+                formData.forEach((value, key) => { data[key] = value; });
+                
+                // Build payload for inspection bookings API (pay later)
+                const payload = {
+                    name: data.name || '',
+                    mobile: data.mobile || '',
+                    email: data.email || '',
+                    address: data.address || '',
+                    inspectionType: 'used-car',
+                    makeModel: data.makeModel || '',
+                    regYear: data.regYear || '',
+                    kmsDriven: data.kmsDriven || '',
+                    listingId: data.listingId || '',
+                    formType: 'marketplace-booking-pay-later',
+                    source: 'marketplace',
+                    paymentMode: 'pay-later'
+                };
+                
+                try {
+                    payLaterBtn.disabled = true;
+                    submitBtn.disabled = true;
+                    payLaterBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
+                    
+                    // Create booking record
+                    const apiUrl = 'https://423cmvhw3g.execute-api.us-east-1.amazonaws.com/prod/inspection-bookings';
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    const respJson = await response.json();
+
+                    if (response.ok && respJson.ok) {
+                        // Also send email via old quote API
+                        const quotePayload = {
+                            firstName: data.name || '',
+                            name: data.name || '',
+                            mobile: data.mobile || '',
+                            email: data.email || '',
+                            address: data.address || '',
+                            carType: 'Used Car',
+                            make: data.makeModel || '',
+                            registrationYear: data.regYear || '',
+                            kmsDriven: data.kmsDriven || '',
+                            formType: 'marketplace-inspection-pay-later',
+                            paymentMode: 'pay-later'
+                        };
+                        
+                        await fetch('/api/quote', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(quotePayload)
+                        }).catch(err => console.warn('Quote email send failed:', err));
+                        
+                        alertBox.className = 'alert alert-success mt-3';
+                        alertBox.innerHTML = '<i class="fas fa-check-circle me-2"></i>Booking received! We will call you to confirm.';
+                        alertBox.style.display = 'block';
+                        
+                        // Reset form
+                        setTimeout(() => {
+                            marketplaceBookingForm.reset();
+                            marketplaceBookingForm.classList.remove('was-validated');
+                            const modal = bootstrap.Modal.getInstance(document.getElementById('bookingModal'));
+                            if (modal) modal.hide();
+                            alertBox.style.display = 'none';
+                        }, 2500);
+                    } else {
+                        throw new Error(respJson.error || 'Booking failed');
+                    }
+                } catch (error) {
+                    console.error('Pay Later submission error:', error);
+                    alertBox.className = 'alert alert-danger mt-3';
+                    alertBox.textContent = (error && error.message) ? error.message : 'Failed to submit. Please call us at 9167558998';
+                    alertBox.style.display = 'block';
+                } finally {
+                    payLaterBtn.disabled = false;
+                    submitBtn.disabled = false;
+                    payLaterBtn.innerHTML = payLaterDefaultLabel;
                 }
             });
         }

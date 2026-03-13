@@ -2648,8 +2648,11 @@
                                 <option value="4th Owner or more">4th Owner or more</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn w-100 py-3" style="background: #D81324; color: #fff; border-radius: 30px; font-size: 1rem; font-weight: 600; text-transform: uppercase;">Book Inspection @ ₹1,399</button>
-                        <p class="text-muted text-center mt-2 mb-0" style="font-size: 12px;"><i class="fas fa-shield-alt me-1"></i> Secure payment via Razorpay</p>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn flex-grow-1 py-3" style="background: #D81324; color: #fff; border-radius: 30px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase;">Pay Now @ ₹1,399</button>
+                            <button type="button" class="btn pay-later-btn flex-grow-1 py-3" style="background: #6c757d; color: #fff; border-radius: 30px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase;">Pay Later</button>
+                        </div>
+                        <p class="text-muted text-center mt-2 mb-0" style="font-size: 11px;"><i class="fas fa-shield-alt me-1"></i> Pay Now: Secure Razorpay | Pay Later: We'll call to confirm</p>
                     </form>
                 </div>
             </div>
@@ -2703,8 +2706,11 @@
                                 <option value="4th Owner or more">4th Owner or more</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn w-100 py-3" style="background: #D81324; color: #fff; border-radius: 30px; font-size: 1rem; font-weight: 600; text-transform: uppercase;">Book Inspection @ ₹1,399</button>
-                        <p class="text-muted text-center mt-2 mb-0" style="font-size: 12px;"><i class="fas fa-shield-alt me-1"></i> Secure payment via Razorpay</p>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn flex-grow-1 py-3" style="background: #D81324; color: #fff; border-radius: 30px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase;">Pay Now @ ₹1,399</button>
+                            <button type="button" class="btn pay-later-btn flex-grow-1 py-3" style="background: #6c757d; color: #fff; border-radius: 30px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase;">Pay Later</button>
+                        </div>
+                        <p class="text-muted text-center mt-2 mb-0" style="font-size: 11px;"><i class="fas fa-shield-alt me-1"></i> Pay Now: Secure Razorpay | Pay Later: We'll call to confirm</p>
                     </form>
                 </div>
             </div>
@@ -3140,6 +3146,103 @@
                         submitBtn.style.background = '#D81324';
                     }, 3000);
                 }
+            }
+
+            // Pay Later button handler
+            const payLaterBtn = form.querySelector('.pay-later-btn');
+            if (payLaterBtn) {
+                const payLaterDefaultLabel = payLaterBtn.innerHTML;
+                
+                payLaterBtn.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    
+                    // Validate form
+                    const isValid = form.checkValidity();
+                    if (!isValid) {
+                        form.classList.add('was-validated');
+                        return;
+                    }
+
+                    form.classList.remove('was-validated');
+
+                    const fd = new FormData(form);
+                    const payload = {
+                        firstName: fd.get('name') || '',
+                        name: fd.get('name') || '',
+                        mobile: fd.get('mobile') || '',
+                        email: fd.get('email') || '',
+                        carType: config.carType,
+                        make: fd.get('makeModel') || '',
+                        registrationYear: fd.get('regYear') || '',
+                        kmsDriven: fd.get('kmsDriven') || '',
+                        ownership: fd.get('ownership') || '',
+                        formType: config.formType + '-pay-later',
+                        paymentMode: 'pay-later'
+                    };
+
+                    // Show loading state
+                    payLaterBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                    payLaterBtn.disabled = true;
+                    submitBtn.disabled = true;
+
+                    try {
+                        // Also save to DynamoDB with pay-later status
+                        const bookingPayload = {
+                            name: fd.get('name') || '',
+                            mobile: fd.get('mobile') || '',
+                            email: fd.get('email') || '',
+                            inspectionType: config.carType === 'New Car' ? 'new-car' : 'used-car',
+                            makeModel: fd.get('makeModel') || '',
+                            regYear: fd.get('regYear') || '',
+                            kmsDriven: fd.get('kmsDriven') || '',
+                            ownership: fd.get('ownership') || '',
+                            formType: config.formType + '-pay-later',
+                            source: 'homepage',
+                            paymentMode: 'pay-later'
+                        };
+                        
+                        // Create booking record (without redirecting to payment)
+                        const apiUrl = 'https://423cmvhw3g.execute-api.us-east-1.amazonaws.com/prod/inspection-bookings';
+                        const bookingRes = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(bookingPayload)
+                        });
+                        const bookingData = await bookingRes.json();
+                        
+                        // Also send email via old quote API
+                        await submitQuote(payload);
+                        
+                        console.log('[IW] Pay Later booking created:', bookingData.bookingId);
+                        
+                        // Show success
+                        payLaterBtn.innerHTML = '<i class="fas fa-check"></i> Booking Received!';
+                        payLaterBtn.style.background = '#26a69a';
+                        form.reset();
+
+                        setTimeout(() => {
+                            if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                                const modal = bootstrap.Modal.getInstance(modalEl);
+                                if (modal) modal.hide();
+                            }
+                            payLaterBtn.innerHTML = payLaterDefaultLabel;
+                            payLaterBtn.style.background = '#6c757d';
+                            payLaterBtn.disabled = false;
+                            submitBtn.disabled = false;
+                        }, 2000);
+
+                    } catch (error) {
+                        console.error('[IW] Pay Later booking failed', error);
+                        payLaterBtn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error';
+                        payLaterBtn.style.background = '#dc3545';
+                        payLaterBtn.disabled = false;
+                        submitBtn.disabled = false;
+                        setTimeout(() => {
+                            payLaterBtn.innerHTML = payLaterDefaultLabel;
+                            payLaterBtn.style.background = '#6c757d';
+                        }, 3000);
+                    }
+                });
             }
 
             // Bind to form submit event

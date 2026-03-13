@@ -98,11 +98,15 @@ async function createBooking(data) {
     const bookingId = generateBookingId();
     const now = new Date().toISOString();
     
+    // Check if this is a pay-later booking
+    const isPayLater = data.paymentMode === 'pay-later';
+    
     const booking = {
         bookingId,
         customerName: data.name || data.customerName || '',
         email: data.email || '',
         mobile: data.mobile || '',
+        address: data.address || '',
         inspectionType: data.inspectionType || data.carType || 'used-car',
         carMake: data.make || data.carMake || '',
         carModel: data.model || data.carModel || '',
@@ -111,9 +115,11 @@ async function createBooking(data) {
         kmsDriven: data.kmsDriven || '',
         ownership: data.ownership || '',
         location: data.location || '',
+        listingId: data.listingId || null,
         amount: INSPECTION_AMOUNT,
-        status: 'pending',
-        paymentStatus: 'pending',
+        status: isPayLater ? 'pay-later' : 'pending',
+        paymentStatus: isPayLater ? 'pay-later' : 'pending',
+        paymentMode: isPayLater ? 'pay-later' : 'online',
         razorpayPaymentId: null,
         razorpayOrderId: null,
         createdAt: now,
