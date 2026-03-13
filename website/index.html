@@ -3079,8 +3079,10 @@
 
                 // Validate form
                 const isValid = form.checkValidity();
+                console.log('[IW] Form valid:', isValid);
                 if (!isValid) {
                     form.classList.add('was-validated');
+                    console.log('[IW] Form validation failed');
                     return;
                 }
 
@@ -3099,6 +3101,7 @@
                     formType: config.formType,
                     source: 'homepage'
                 };
+                console.log('[IW] Payload:', payload);
 
                 // Show loading state
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
@@ -3107,13 +3110,16 @@
                 try {
                     // Call the inspection bookings API
                     const apiUrl = 'https://423cmvhw3g.execute-api.us-east-1.amazonaws.com/prod/inspection-bookings';
+                    console.log('[IW] Calling API:', apiUrl);
                     const res = await fetch(apiUrl, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     });
 
+                    console.log('[IW] API response status:', res.status);
                     const data = await res.json();
+                    console.log('[IW] API response data:', data);
                     
                     if (!res.ok || !data.ok) {
                         throw new Error(data.error || 'Booking failed');
@@ -3127,6 +3133,7 @@
                     form.reset();
 
                     // Close modal and redirect to Razorpay payment page
+                    console.log('[IW] Redirecting to:', data.paymentUrl);
                     setTimeout(() => {
                         if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
                             const modal = bootstrap.Modal.getInstance(modalEl);
@@ -3143,7 +3150,7 @@
                     submitBtn.disabled = false;
                     setTimeout(() => {
                         submitBtn.innerHTML = defaultLabel;
-                        submitBtn.style.background = '#D81324';
+                        submitBtn.style.background = '#528FF0';
                     }, 3000);
                 }
             }
