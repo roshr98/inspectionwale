@@ -1419,6 +1419,17 @@
                                 </select>
                             </div>
                             <div class="col-md-4">
+                                <label for="numberOfOwners" class="form-label">Number of Owners<span class="text-danger">*</span></label>
+                                <select class="form-select" id="numberOfOwners" name="numberOfOwners" required>
+                                    <option value="">Select</option>
+                                    <option value="1">1st Owner</option>
+                                    <option value="2">2nd Owner</option>
+                                    <option value="3">3rd Owner</option>
+                                    <option value="4">4th Owner</option>
+                                    <option value="5+">5+ Owners</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
                                 <label for="carVariant" class="form-label">Variant<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="carVariant" name="variant" placeholder="e.g., VXi, ZXi+" required>
                             </div>
@@ -1487,9 +1498,9 @@
                         </div>
 
                         <h6 class="text-uppercase text-muted mb-3 mt-4">Required Car Photos <span class="text-danger">*</span></h6>
-                        <div class="alert alert-warning mb-3" role="alert" style="font-size: 0.9rem;">
-                            <i class="fas fa-exclamation-triangle me-2"></i>
-                            Please upload all required photos. Make sure images are clear and well-lit.
+                        <div class="alert alert-info mb-3" role="alert" style="font-size: 0.9rem;">
+                            <i class="fas fa-camera me-2"></i>
+                            Please upload 7 clear photos. Make sure images are well-lit.
                         </div>
 
                         <div class="row g-3" id="listingPhotoInputs">
@@ -1550,198 +1561,44 @@
                             </div>
 
                             <div class="col-md-4 col-sm-6">
-                                <label class="form-label fw-semibold">Engine Bay <span class="text-danger">*</span></label>
-                                <input type="file" class="d-none list-car-photo-camera" id="photoEngineCamera" data-slot="engine" accept="image/*" capture="environment" required>
-                                <input type="file" class="d-none list-car-photo-gallery" id="photoEngineGallery" data-slot="engine" accept="image/*" required>
+                                <label class="form-label fw-semibold">Interior Driver Cabin <span class="text-danger">*</span></label>
+                                <input type="file" class="d-none list-car-photo-camera" id="photoDriverCabinCamera" data-slot="driverCabin" accept="image/*" capture="environment" required>
+                                <input type="file" class="d-none list-car-photo-gallery" id="photoDriverCabinGallery" data-slot="driverCabin" accept="image/*" required>
                                 <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
-                                    <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoEngineCamera').click()"><i class="fas fa-camera"></i> Take Photo</button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoEngineGallery').click()"><i class="fas fa-images"></i> Choose from Device</button>
+                                    <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoDriverCabinCamera').click()"><i class="fas fa-camera"></i> Take Photo</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoDriverCabinGallery').click()"><i class="fas fa-images"></i> Choose from Device</button>
                                 </div>
                                 <div class="mt-2 position-relative mb-3">
-                                    <img class="img-fluid rounded d-none" data-preview="engine" alt="Engine preview">
-                                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="engine" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo"><i class="fas fa-times"></i></button>
+                                    <img class="img-fluid rounded d-none" data-preview="driverCabin" alt="Driver cabin preview">
+                                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="driverCabin" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo"><i class="fas fa-times"></i></button>
                                 </div>
                             </div>
 
                             <div class="col-md-4 col-sm-6">
-                                <label class="form-label fw-semibold">Battery Area <span class="text-danger">*</span></label>
-                                <input type="file" class="d-none list-car-photo-camera" id="photoBatteryCamera" data-slot="battery" accept="image/*" capture="environment" required>
-                                <input type="file" class="d-none list-car-photo-gallery" id="photoBatteryGallery" data-slot="battery" accept="image/*" required>
+                                <label class="form-label fw-semibold">Interior Rear Cabin <span class="text-danger">*</span></label>
+                                <input type="file" class="d-none list-car-photo-camera" id="photoRearCabinCamera" data-slot="rearCabin" accept="image/*" capture="environment" required>
+                                <input type="file" class="d-none list-car-photo-gallery" id="photoRearCabinGallery" data-slot="rearCabin" accept="image/*" required>
                                 <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
-                                    <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoBatteryCamera').click()"><i class="fas fa-camera"></i> Take Photo</button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoBatteryGallery').click()"><i class="fas fa-images"></i> Choose from Device</button>
+                                    <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoRearCabinCamera').click()"><i class="fas fa-camera"></i> Take Photo</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoRearCabinGallery').click()"><i class="fas fa-images"></i> Choose from Device</button>
                                 </div>
                                 <div class="mt-2 position-relative mb-3">
-                                    <img class="img-fluid rounded d-none" data-preview="battery" alt="Battery preview">
-                                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="battery" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo"><i class="fas fa-times"></i></button>
+                                    <img class="img-fluid rounded d-none" data-preview="rearCabin" alt="Rear cabin preview">
+                                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="rearCabin" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo"><i class="fas fa-times"></i></button>
                                 </div>
                             </div>
 
                             <div class="col-md-4 col-sm-6">
-                                <label class="form-label fw-semibold">Firewall <span class="text-danger">*</span></label>
-                                <input type="file" class="d-none list-car-photo-camera" id="photoFirewallCamera" data-slot="firewall" accept="image/*" capture="environment" required>
-                                <input type="file" class="d-none list-car-photo-gallery" id="photoFirewallGallery" data-slot="firewall" accept="image/*" required>
+                                <label class="form-label fw-semibold">Boot Space <span class="text-danger">*</span></label>
+                                <input type="file" class="d-none list-car-photo-camera" id="photoBootSpaceCamera" data-slot="bootSpace" accept="image/*" capture="environment" required>
+                                <input type="file" class="d-none list-car-photo-gallery" id="photoBootSpaceGallery" data-slot="bootSpace" accept="image/*" required>
                                 <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
-                                    <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoFirewallCamera').click()"><i class="fas fa-camera"></i> Take Photo</button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoFirewallGallery').click()"><i class="fas fa-images"></i> Choose from Device</button>
+                                    <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoBootSpaceCamera').click()"><i class="fas fa-camera"></i> Take Photo</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoBootSpaceGallery').click()"><i class="fas fa-images"></i> Choose from Device</button>
                                 </div>
                                 <div class="mt-2 position-relative mb-3">
-                                    <img class="img-fluid rounded d-none" data-preview="firewall" alt="Firewall preview">
-                                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="firewall" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo"><i class="fas fa-times"></i></button>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 col-sm-6">
-                                <label class="form-label fw-semibold">RHS Apron <span class="text-danger">*</span></label>
-                                <input type="file" class="d-none list-car-photo-camera" id="photoRhsApronCamera" data-slot="rhsApron" accept="image/*" capture="environment" required>
-                                <input type="file" class="d-none list-car-photo-gallery" id="photoRhsApronGallery" data-slot="rhsApron" accept="image/*" required>
-                                <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
-                                    <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoRhsApronCamera').click()"><i class="fas fa-camera"></i> Take Photo</button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoRhsApronGallery').click()"><i class="fas fa-images"></i> Choose from Device</button>
-                                </div>
-                                <div class="mt-2 position-relative mb-3">
-                                    <img class="img-fluid rounded d-none" data-preview="rhsApron" alt="RHS Apron preview">
-                                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="rhsApron" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo"><i class="fas fa-times"></i></button>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 col-sm-6">
-                                <label class="form-label fw-semibold">LHS Apron <span class="text-danger">*</span></label>
-                                <input type="file" class="d-none list-car-photo-camera" id="photoLhsApronCamera" data-slot="lhsApron" accept="image/*" capture="environment" required>
-                                <input type="file" class="d-none list-car-photo-gallery" id="photoLhsApronGallery" data-slot="lhsApron" accept="image/*" required>
-                                <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
-                                    <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoLhsApronCamera').click()"><i class="fas fa-camera"></i> Take Photo</button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoLhsApronGallery').click()"><i class="fas fa-images"></i> Choose from Device</button>
-                                </div>
-                                <div class="mt-2 position-relative mb-3">
-                                    <img class="img-fluid rounded d-none" data-preview="lhsApron" alt="LHS Apron preview">
-                                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="lhsApron" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo"><i class="fas fa-times"></i></button>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 col-sm-6">
-                                <label class="form-label fw-semibold">Tyre - LHS Front <span class="text-danger">*</span></label>
-                                <input type="file" class="d-none list-car-photo-camera" id="photoTyreLhsFrontCamera" data-slot="tyreLhsFront" accept="image/*" capture="environment" required>
-                                <input type="file" class="d-none list-car-photo-gallery" id="photoTyreLhsFrontGallery" data-slot="tyreLhsFront" accept="image/*" required>
-                                <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
-                                    <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoTyreLhsFrontCamera').click()"><i class="fas fa-camera"></i> Take Photo</button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoTyreLhsFrontGallery').click()"><i class="fas fa-images"></i> Choose from Device</button>
-                                </div>
-                                <div class="mt-2 position-relative mb-3">
-                                    <img class="img-fluid rounded d-none" data-preview="tyreLhsFront" alt="Tyre LHS front preview">
-                                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="tyreLhsFront" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo"><i class="fas fa-times"></i></button>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 col-sm-6">
-                                <label class="form-label fw-semibold">Tyre - LHS Back <span class="text-danger">*</span></label>
-                                <input type="file" class="d-none list-car-photo-camera" id="photoTyreLhsBackCamera" data-slot="tyreLhsBack" accept="image/*" capture="environment" required>
-                                <input type="file" class="d-none list-car-photo-gallery" id="photoTyreLhsBackGallery" data-slot="tyreLhsBack" accept="image/*" required>
-                                <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
-                                    <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoTyreLhsBackCamera').click()"><i class="fas fa-camera"></i> Take Photo</button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoTyreLhsBackGallery').click()"><i class="fas fa-images"></i> Choose from Device</button>
-                                </div>
-                                <div class="mt-2 position-relative mb-3">
-                                    <img class="img-fluid rounded d-none" data-preview="tyreLhsBack" alt="Tyre LHS back preview">
-                                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="tyreLhsBack" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo"><i class="fas fa-times"></i></button>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 col-sm-6">
-                                <label class="form-label fw-semibold">Tyre - RHS Front <span class="text-danger">*</span></label>
-                                <input type="file" class="d-none list-car-photo-camera" id="photoTyreRhsFrontCamera" data-slot="tyreRhsFront" accept="image/*" capture="environment" required>
-                                <input type="file" class="d-none list-car-photo-gallery" id="photoTyreRhsFrontGallery" data-slot="tyreRhsFront" accept="image/*" required>
-                                <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
-                                    <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoTyreRhsFrontCamera').click()"><i class="fas fa-camera"></i> Take Photo</button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoTyreRhsFrontGallery').click()"><i class="fas fa-images"></i> Choose from Device</button>
-                                </div>
-                                <div class="mt-2 position-relative mb-3">
-                                    <img class="img-fluid rounded d-none" data-preview="tyreRhsFront" alt="Tyre RHS front preview">
-                                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="tyreRhsFront" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo"><i class="fas fa-times"></i></button>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 col-sm-6">
-                                <label class="form-label fw-semibold">Tyre - RHS Back <span class="text-danger">*</span></label>
-                                <input type="file" class="d-none list-car-photo-camera" id="photoTyreRhsBackCamera" data-slot="tyreRhsBack" accept="image/*" capture="environment" required>
-                                <input type="file" class="d-none list-car-photo-gallery" id="photoTyreRhsBackGallery" data-slot="tyreRhsBack" accept="image/*" required>
-                                <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
-                                    <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoTyreRhsBackCamera').click()"><i class="fas fa-camera"></i> Take Photo</button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoTyreRhsBackGallery').click()"><i class="fas fa-images"></i> Choose from Device</button>
-                                </div>
-                                <div class="mt-2 position-relative mb-3">
-                                    <img class="img-fluid rounded d-none" data-preview="tyreRhsBack" alt="Tyre RHS back preview">
-                                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="tyreRhsBack" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo"><i class="fas fa-times"></i></button>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 col-sm-6">
-                                <label class="form-label fw-semibold">Spare Tyre <span class="text-danger">*</span></label>
-                                <input type="file" class="d-none list-car-photo-camera" id="photoTyreSpareCamera" data-slot="tyreSpare" accept="image/*" capture="environment" required>
-                                <input type="file" class="d-none list-car-photo-gallery" id="photoTyreSpareGallery" data-slot="tyreSpare" accept="image/*" required>
-                                <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
-                                    <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoTyreSpareCamera').click()"><i class="fas fa-camera"></i> Take Photo</button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoTyreSpareGallery').click()"><i class="fas fa-images"></i> Choose from Device</button>
-                                </div>
-                                <div class="mt-2 position-relative mb-3">
-                                    <img class="img-fluid rounded d-none" data-preview="tyreSpare" alt="Spare tyre preview">
-                                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="tyreSpare" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo"><i class="fas fa-times"></i></button>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 col-sm-6">
-                                <label class="form-label fw-semibold">Seats - Front View <span class="text-danger">*</span></label>
-                                <input type="file" class="d-none list-car-photo-camera" id="photoSeatFrontViewCamera" data-slot="seatFrontView" accept="image/*" capture="environment" required>
-                                <input type="file" class="d-none list-car-photo-gallery" id="photoSeatFrontViewGallery" data-slot="seatFrontView" accept="image/*" required>
-                                <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
-                                    <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoSeatFrontViewCamera').click()"><i class="fas fa-camera"></i> Take Photo</button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoSeatFrontViewGallery').click()"><i class="fas fa-images"></i> Choose from Device</button>
-                                </div>
-                                <div class="mt-2 position-relative mb-3">
-                                    <img class="img-fluid rounded d-none" data-preview="seatFrontView" alt="Front seats preview">
-                                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="seatFrontView" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo"><i class="fas fa-times"></i></button>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 col-sm-6">
-                                <label class="form-label fw-semibold">Seats - Rear View <span class="text-danger">*</span></label>
-                                <input type="file" class="d-none list-car-photo-camera" id="photoSeatRearViewCamera" data-slot="seatRearView" accept="image/*" capture="environment" required>
-                                <input type="file" class="d-none list-car-photo-gallery" id="photoSeatRearViewGallery" data-slot="seatRearView" accept="image/*" required>
-                                <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
-                                    <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoSeatRearViewCamera').click()"><i class="fas fa-camera"></i> Take Photo</button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoSeatRearViewGallery').click()"><i class="fas fa-images"></i> Choose from Device</button>
-                                </div>
-                                <div class="mt-2 position-relative mb-3">
-                                    <img class="img-fluid rounded d-none" data-preview="seatRearView" alt="Rear seats preview">
-                                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="seatRearView" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo"><i class="fas fa-times"></i></button>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 col-sm-6">
-                                <label class="form-label fw-semibold">Dashboard <span class="text-danger">*</span></label>
-                                <input type="file" class="d-none list-car-photo-camera" id="photoDashboardCamera" data-slot="dashboard" accept="image/*" capture="environment" required>
-                                <input type="file" class="d-none list-car-photo-gallery" id="photoDashboardGallery" data-slot="dashboard" accept="image/*" required>
-                                <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
-                                    <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoDashboardCamera').click()"><i class="fas fa-camera"></i> Take Photo</button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoDashboardGallery').click()"><i class="fas fa-images"></i> Choose from Device</button>
-                                </div>
-                                <div class="mt-2 position-relative mb-3">
-                                    <img class="img-fluid rounded d-none" data-preview="dashboard" alt="Dashboard preview">
-                                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="dashboard" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo"><i class="fas fa-times"></i></button>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 col-sm-6">
-                                <label class="form-label fw-semibold">Cluster / Instrument Panel <span class="text-danger">*</span></label>
-                                <input type="file" class="d-none list-car-photo-camera" id="photoInteriorClusterCamera" data-slot="interiorCluster" accept="image/*" capture="environment" required>
-                                <input type="file" class="d-none list-car-photo-gallery" id="photoInteriorClusterGallery" data-slot="interiorCluster" accept="image/*" required>
-                                <div class="d-flex flex-column flex-sm-row gap-2 mb-2">
-                                    <button type="button" class="btn btn-outline-primary btn-sm flex-fill" onclick="document.getElementById('photoInteriorClusterCamera').click()"><i class="fas fa-camera"></i> Take Photo</button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm flex-fill" onclick="document.getElementById('photoInteriorClusterGallery').click()"><i class="fas fa-images"></i> Choose from Device</button>
-                                </div>
-                                <div class="mt-2 position-relative mb-3">
-                                    <img class="img-fluid rounded d-none" data-preview="interiorCluster" alt="Cluster preview">
-                                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="interiorCluster" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo"><i class="fas fa-times"></i></button>
+                                    <img class="img-fluid rounded d-none" data-preview="bootSpace" alt="Boot space preview">
+                                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 d-none" data-clear="bootSpace" style="width: 28px; height: 28px; padding: 0; border-radius: 50%;" title="Remove photo"><i class="fas fa-times"></i></button>
                                 </div>
                             </div>
 
@@ -2525,13 +2382,10 @@
             const photos = [];
             if (!listing) return photos;
             
-            // Define all 18 required photo slots in display order
+            // Define all 7 required photo slots in display order
             const photoSlots = [
                 'exteriorFront', 'exteriorBack', 'exteriorLeft', 'exteriorRight',
-                'engine', 'battery', 'firewall', 'rhsApron', 'lhsApron',
-                'tyreFrontLeft', 'tyreFrontRight', 'tyreRearLeft', 'tyreRearRight', 'tyreSpare',
-                'seatFrontView', 'seatRearView', 'dashboard', 'interiorCluster',
-                'cngPlate' // Optional but include if available
+                'driverCabin', 'rearCabin', 'bootSpace'
             ];
             
             const photoEntries = listing.photos ? listing.photos : {};

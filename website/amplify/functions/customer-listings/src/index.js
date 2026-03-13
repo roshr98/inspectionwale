@@ -32,9 +32,7 @@ const REVIEW_RECIPIENTS = Array.from(new Set([
 
 const REQUIRED_PHOTO_SLOTS = [
   'exteriorFront', 'exteriorBack', 'exteriorLeft', 'exteriorRight',
-  'engine', 'battery', 'firewall', 'rhsApron', 'lhsApron',
-  'tyreLhsFront', 'tyreLhsBack', 'tyreRhsFront', 'tyreRhsBack', 'tyreSpare',
-  'seatFrontView', 'seatRearView', 'dashboard', 'interiorCluster'
+  'driverCabin', 'rearCabin', 'bootSpace'
 ]
 const DOCUMENT_SLOTS = ['rcDocument', 'cngPlate']
 const ALL_ALLOWED_SLOTS = [...REQUIRED_PHOTO_SLOTS, ...DOCUMENT_SLOTS]
@@ -256,6 +254,7 @@ async function handleSubmitListing(body) {
   const expectedPrice = normaliseString(car.expectedPrice)
   const carLocation = normaliseString(car.location)
   const carFuelType = normaliseString(car.fuelType)
+  const numberOfOwners = normaliseString(car.numberOfOwners)
   const sellerType = normaliseString(seller.type) || 'Individual'
 
   // New fields from expanded form
@@ -321,6 +320,7 @@ async function handleSubmitListing(body) {
       location: carLocation,
       city: carLocation,
       fuelType: carFuelType,
+      numberOfOwners,
       variant,
       insuranceValidity,
       accidentalHistory,

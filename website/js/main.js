@@ -107,9 +107,7 @@
     const API_ENDPOINT = 'https://423cmvhw3g.execute-api.us-east-1.amazonaws.com/prod/customer-listings'
     const REQUIRED_PHOTO_SLOTS = [
         'exteriorFront', 'exteriorBack', 'exteriorLeft', 'exteriorRight',
-        'engine', 'battery', 'firewall', 'rhsApron', 'lhsApron',
-        'tyreLhsFront', 'tyreLhsBack', 'tyreRhsFront', 'tyreRhsBack', 'tyreSpare',
-        'seatFrontView', 'seatRearView', 'dashboard', 'interiorCluster'
+        'driverCabin', 'rearCabin', 'bootSpace'
     ]
     const DOCUMENT_SLOT = 'rcDocument'
     const FALLBACK_IMAGES = ['/Images/Car-1.jpg', '/Images/Car-2.jpg', '/Images/Car-3.jpg', '/Images/Car-4.jpg']
@@ -910,6 +908,7 @@
             expectedPrice: formData.get('expectedPrice') || '',
             location: formData.get('location') || '',
             fuelType: formData.get('fuelType') || '',
+            numberOfOwners: formData.get('numberOfOwners') || '',
             variant: formData.get('variant') || '',
             insuranceValidity: formData.get('insuranceValidity') || '',
             accidentalHistory: formData.get('accidentalHistory') === 'Yes',
