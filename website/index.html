@@ -1133,6 +1133,36 @@
             line-height: 1.6;
         }
 
+        .home-story-card ul {
+            margin-top: 20px;
+            margin-bottom: 0;
+            padding-left: 0;
+            list-style: none;
+            display: grid;
+            gap: 0;
+        }
+
+        .home-story-card ul li {
+            position: relative;
+            padding: 10px 0 10px 18px;
+            border-bottom: 1px solid rgba(20, 33, 61, 0.08);
+        }
+
+        .home-story-card ul li:last-child {
+            border-bottom: none;
+        }
+
+        .home-story-card ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 20px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--home-icon);
+        }
+
         .home-steps-grid {
             grid-template-columns: repeat(4, minmax(0, 1fr));
         }
