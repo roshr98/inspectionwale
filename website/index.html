@@ -786,7 +786,9 @@
         }
 
         .hero-contact-card {
-            padding: 28px;
+            max-width: 430px;
+            margin-left: auto;
+            padding: 30px;
             border-radius: 28px;
             background: rgba(255, 250, 244, 0.96);
             border: 1px solid rgba(255, 255, 255, 0.28);
@@ -795,18 +797,20 @@
 
         .hero-contact-card h5,
         .hero-mobile-form-card h5 {
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             color: var(--home-ink);
-            font-size: 1.25rem;
+            font-size: 1.32rem;
             font-weight: 800;
         }
 
-        .hero-contact-card p,
-        .hero-mobile-form-card p {
-            margin-bottom: 18px;
-            color: var(--home-ink-soft);
-            font-size: 0.92rem;
-            line-height: 1.6;
+        .hero-contact-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .hero-contact-grid .hero-field-full {
+            grid-column: 1 / -1;
         }
 
         .hero-contact-card .form-label {
@@ -820,17 +824,25 @@
         .hero-contact-card .form-control,
         .hero-mobile-form-card input,
         .hero-mobile-form-card textarea {
-            min-height: 54px;
+            min-height: 56px;
             border-radius: 16px;
             border: 1px solid rgba(20, 33, 61, 0.12);
             background: rgba(255, 255, 255, 0.92);
             color: var(--home-ink);
-            box-shadow: none;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.55);
+            padding: 14px 16px;
+        }
+
+        .hero-contact-card .form-control:focus,
+        .hero-mobile-form-card input:focus,
+        .hero-mobile-form-card textarea:focus {
+            border-color: rgba(22, 124, 116, 0.45);
+            box-shadow: 0 0 0 4px rgba(22, 124, 116, 0.12);
         }
 
         .hero-contact-card textarea,
         .hero-mobile-form-card textarea {
-            min-height: 110px;
+            min-height: 96px;
             resize: vertical;
         }
 
@@ -870,7 +882,7 @@
         }
 
         .hero-mobile-form-card {
-            padding: 24px;
+            padding: 26px;
             border-radius: 28px;
             background: rgba(255, 250, 244, 0.96);
             box-shadow: var(--home-shadow);
@@ -946,11 +958,32 @@
 
         .home-strip-card {
             padding: 22px;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+
+        .home-strip-icon {
+            flex: 0 0 52px;
+            width: 52px;
+            height: 52px;
+            border-radius: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(216, 111, 69, 0.14), rgba(22, 124, 116, 0.14));
+            color: var(--home-accent-dark);
+            font-size: 1.2rem;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.75);
+        }
+
+        .home-strip-copy {
+            min-width: 0;
         }
 
         .home-strip-card strong {
             display: block;
-            font-size: 1.7rem;
+            font-size: 1.08rem;
             color: var(--home-ink);
             font-weight: 800;
         }
@@ -960,6 +993,7 @@
             margin-top: 6px;
             color: var(--home-ink-soft);
             font-size: 0.92rem;
+            line-height: 1.65;
         }
 
         .home-services-grid,
@@ -1123,6 +1157,10 @@
                 padding: 34px 24px;
             }
 
+            .hero-contact-card {
+                max-width: none;
+            }
+
             .home-hero-metrics,
             .home-strip-grid,
             .home-services-grid,
@@ -1166,6 +1204,10 @@
             .home-hero-card {
                 border-radius: 28px;
                 padding: 28px 20px;
+            }
+
+            .hero-contact-grid {
+                grid-template-columns: 1fr;
             }
 
             .home-hero-copy p {
@@ -1269,24 +1311,25 @@
                     <div class="col-lg-5 d-none d-lg-block">
                         <div class="hero-contact-card">
                             <h5>Check Your Car Value</h5>
-                            <p>Share your details and vehicle context. The existing live lead flow remains attached here.</p>
                             <form class="hero-contact-form" id="heroContactForm" novalidate data-car-value-form="desktop" data-toast-id="heroFormToastDesktop">
                                 <input type="hidden" name="formSource" value="hero-desktop">
-                                <div class="mb-3">
-                                    <label class="form-label" for="heroName">Name</label>
-                                    <input type="text" id="heroName" name="name" class="form-control" placeholder="Enter your name" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label" for="heroEmail">Email</label>
-                                    <input type="email" id="heroEmail" name="email" class="form-control" placeholder="name@example.com" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label" for="heroMobile">Mobile</label>
-                                    <input type="tel" id="heroMobile" name="mobile" class="form-control" placeholder="Mobile number" inputmode="tel" required pattern="[0-9+\-() ]{8,15}">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label" for="heroMessage">Vehicle details</label>
-                                    <textarea id="heroMessage" name="message" class="form-control" rows="3" placeholder="Make, model, year, variant, asking price..." required></textarea>
+                                <div class="hero-contact-grid">
+                                    <div>
+                                        <label class="form-label" for="heroName">Name</label>
+                                        <input type="text" id="heroName" name="name" class="form-control" placeholder="Enter your name" required>
+                                    </div>
+                                    <div>
+                                        <label class="form-label" for="heroEmail">Email</label>
+                                        <input type="email" id="heroEmail" name="email" class="form-control" placeholder="name@example.com" required>
+                                    </div>
+                                    <div class="hero-field-full">
+                                        <label class="form-label" for="heroMobile">Mobile</label>
+                                        <input type="tel" id="heroMobile" name="mobile" class="form-control" placeholder="Mobile number" inputmode="tel" required pattern="[0-9+\-() ]{8,15}">
+                                    </div>
+                                    <div class="hero-field-full">
+                                        <label class="form-label" for="heroMessage">Vehicle details</label>
+                                        <textarea id="heroMessage" name="message" class="form-control" rows="3" placeholder="Make, model, year, variant, asking price..." required></textarea>
+                                    </div>
                                 </div>
                                 <button type="submit" class="btn w-100 hero-submit-btn">Get Value Estimate</button>
                                 <div id="heroFormToastDesktop" class="hero-form-toast" role="status" aria-live="polite">
@@ -1302,7 +1345,6 @@
             <div class="hero-mobile-panel d-lg-none">
                 <div class="hero-mobile-form-card">
                     <h5>Check Your Car Value</h5>
-                    <p>Quick mobile lead form for pricing assistance.</p>
                     <form id="mobileHeroForm" novalidate data-car-value-form="mobile" data-toast-id="heroFormToastMobile">
                         <input type="hidden" name="formSource" value="hero-mobile">
                         <input type="text" name="name" placeholder="Name" required>
@@ -1322,143 +1364,32 @@
         <section class="home-strip" aria-label="Key stats">
             <div class="home-strip-grid">
                 <article class="home-strip-card">
-                    <strong>Pre-purchase</strong>
-                    <span>Inspection reports built to expose hidden repair risk before you pay.</span>
-                </article>
-                <article class="home-strip-card">
-                    <strong>New car PDI</strong>
-                    <span>Catch transit damage, paint defects, missing features, and delivery misses.</span>
-                </article>
-                <article class="home-strip-card">
-                    <strong>Verified listings</strong>
-                    <span>Customer-to-customer marketplace with usable photos and real condition context.</span>
-                </article>
-                <article class="home-strip-card">
-                    <strong>Pricing help</strong>
-                    <span>Use inspection findings to negotiate based on condition instead of guesswork.</span>
-                </article>
-            </div>
-        </section>
-
-        <section class="home-section" id="services">
-            <div class="home-section-header">
-                <div>
-                    <span>Services</span>
-                    <h2>Inspection-first services for buyers, sellers, and cautious deliveries.</h2>
-                </div>
-                <p>The redesign simplifies the journey, but the live conversion paths still flow into the existing booking, listing, and lead APIs behind the page.</p>
-            </div>
-
-            <div class="home-services-grid">
-                <article class="home-service-card">
-                    <i class="fas fa-car-crash"></i>
-                    <h3>Used Car Inspection</h3>
-                    <p>On-ground inspection with photos, repair estimates, condition reporting, and pricing support before purchase.</p>
-                    <ul>
-                        <li>Body, paint and accident checks</li>
-                        <li>Engine, suspension and road test review</li>
-                        <li>Same-day summary for negotiation</li>
-                    </ul>
-                </article>
-
-                <article class="home-service-card">
-                    <i class="fas fa-shield-alt"></i>
-                    <h3>New Car Delivery Check</h3>
-                    <p>Independent pre-delivery inspection so your new car handover is documented before it leaves the showroom.</p>
-                    <ul>
-                        <li>Transit damage and repaint detection</li>
-                        <li>Feature verification and software checks</li>
-                        <li>Dealer handover confidence</li>
-                    </ul>
-                </article>
-
-                <article class="home-service-card">
-                    <i class="fas fa-store"></i>
-                    <h3>Verified Used Car Access</h3>
-                    <p>Browse featured marketplace cars, reserve the ones you like, or submit your own listing with structured photos.</p>
-                    <ul>
-                        <li>Customer listing submission flow</li>
-                        <li>Reserve and test-drive requests</li>
-                        <li>Condition-led discovery</li>
-                    </ul>
-                </article>
-            </div>
-        </section>
-
-        <section class="home-section">
-            <div class="home-story-grid">
-                <article class="home-story-card">
-                    <i class="fas fa-clipboard-check"></i>
-                    <h3>What gets reported</h3>
-                    <p>Every inspection is built to answer the real buyer questions: what is damaged, what will cost money, what can be negotiated, and what should stop the deal entirely.</p>
-                    <div class="home-story-list">
-                        <div>
-                            <i class="fas fa-check-circle"></i>
-                            <div>
-                                <strong>Condition clarity</strong>
-                                <span>Panels, paint, structure, interior, electronics, tyres, underbody and road behavior.</span>
-                            </div>
-                        </div>
-                        <div>
-                            <i class="fas fa-tools"></i>
-                            <div>
-                                <strong>Repair exposure</strong>
-                                <span>Immediate issues, estimated expense, and visible signs of past fixes or hidden work.</span>
-                            </div>
-                        </div>
-                        <div>
-                            <i class="fas fa-rupee-sign"></i>
-                            <div>
-                                <strong>Negotiation support</strong>
-                                <span>Use the findings to challenge inflated asking prices with documented observations.</span>
-                            </div>
-                        </div>
+                    <div class="home-strip-icon"><i class="fas fa-clipboard-check"></i></div>
+                    <div class="home-strip-copy">
+                        <strong>Pre-purchase</strong>
+                        <span>Inspection reports built to expose hidden repair risk before you pay.</span>
                     </div>
                 </article>
-
-                <article class="home-story-card">
-                    <i class="fas fa-bolt"></i>
-                    <h3>Why buyers use inspectionWale</h3>
-                    <p>Because seller enthusiasm and dealer assurance are not inspection evidence. Buyers need independent eyes and a record they can act on.</p>
-                    <ul>
-                        <li>Spot transit or showroom damage on new cars before delivery acceptance</li>
-                        <li>Catch repaint, accident history, flood/fire signs and missing features</li>
-                        <li>Reduce the risk of buying a car with expensive hidden problems</li>
-                        <li>Move faster when a good car appears, because the report is usable immediately</li>
-                    </ul>
+                <article class="home-strip-card">
+                    <div class="home-strip-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div class="home-strip-copy">
+                        <strong>New car PDI</strong>
+                        <span>Catch transit damage, paint defects, missing features, and delivery misses.</span>
+                    </div>
                 </article>
-            </div>
-        </section>
-
-        <section class="home-section" id="process">
-            <div class="home-section-header">
-                <div>
-                    <span>How It Works</span>
-                    <h2>A short path from inquiry to report.</h2>
-                </div>
-                <p>This keeps the user journey simple: book, inspect, receive findings, then decide whether to buy, renegotiate, reserve, or walk away.</p>
-            </div>
-
-            <div class="home-steps-grid">
-                <article class="home-step">
-                    <span class="home-step-number">01</span>
-                    <h3>Share car details</h3>
-                    <p>Tell us the make, model, registration year, seller context, and whether it is a used-car purchase or new-car delivery check.</p>
+                <article class="home-strip-card">
+                    <div class="home-strip-icon"><i class="fas fa-car-side"></i></div>
+                    <div class="home-strip-copy">
+                        <strong>Verified listings</strong>
+                        <span>Customer-to-customer marketplace with usable photos and real condition context.</span>
+                    </div>
                 </article>
-                <article class="home-step">
-                    <span class="home-step-number">02</span>
-                    <h3>Schedule the inspection</h3>
-                    <p>Pick the inspection type and submit through the live booking flow already wired into the page.</p>
-                </article>
-                <article class="home-step">
-                    <span class="home-step-number">03</span>
-                    <h3>Receive findings fast</h3>
-                    <p>Get photos, issue notes, and actionable insight quickly enough to support a live negotiation or delivery decision.</p>
-                </article>
-                <article class="home-step">
-                    <span class="home-step-number">04</span>
-                    <h3>Act with confidence</h3>
-                    <p>Proceed, negotiate, reserve, or reject the deal based on condition instead of pressure or guesswork.</p>
+                <article class="home-strip-card">
+                    <div class="home-strip-icon"><i class="fas fa-rupee-sign"></i></div>
+                    <div class="home-strip-copy">
+                        <strong>Pricing help</strong>
+                        <span>Use inspection findings to negotiate based on condition instead of guesswork.</span>
+                    </div>
                 </article>
             </div>
         </section>
@@ -1481,6 +1412,7 @@
                 </div>
             </div>
         </section>
+
     </main>
 
     <!-- Buy Used Cars Section -->
@@ -1562,7 +1494,130 @@
             </div>
         </div>
     </section>
-    
+
+    <section class="home-section" id="process">
+        <div class="home-section-header">
+            <div>
+                <span>How It Works</span>
+                <h2>A short path from inquiry to report.</h2>
+            </div>
+            <p>This keeps the user journey simple: book, inspect, receive findings, then decide whether to buy, renegotiate, reserve, or walk away.</p>
+        </div>
+
+        <div class="home-steps-grid">
+            <article class="home-step">
+                <span class="home-step-number">01</span>
+                <h3>Share car details</h3>
+                <p>Tell us the make, model, registration year, seller context, and whether it is a used-car purchase or new-car delivery check.</p>
+            </article>
+            <article class="home-step">
+                <span class="home-step-number">02</span>
+                <h3>Schedule the inspection</h3>
+                <p>Pick the inspection type and submit through the live booking flow already wired into the page.</p>
+            </article>
+            <article class="home-step">
+                <span class="home-step-number">03</span>
+                <h3>Receive findings fast</h3>
+                <p>Get photos, issue notes, and actionable insight quickly enough to support a live negotiation or delivery decision.</p>
+            </article>
+            <article class="home-step">
+                <span class="home-step-number">04</span>
+                <h3>Act with confidence</h3>
+                <p>Proceed, negotiate, reserve, or reject the deal based on condition instead of pressure or guesswork.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="home-section" id="services">
+        <div class="home-section-header">
+            <div>
+                <span>Services</span>
+                <h2>Inspection-first services for buyers, sellers, and cautious deliveries.</h2>
+            </div>
+            <p>The redesign simplifies the journey, but the live conversion paths still flow into the existing booking, listing, and lead APIs behind the page.</p>
+        </div>
+
+        <div class="home-services-grid">
+            <article class="home-service-card">
+                <i class="fas fa-car-crash"></i>
+                <h3>Used Car Inspection</h3>
+                <p>On-ground inspection with photos, repair estimates, condition reporting, and pricing support before purchase.</p>
+                <ul>
+                    <li>Body, paint and accident checks</li>
+                    <li>Engine, suspension and road test review</li>
+                    <li>Same-day summary for negotiation</li>
+                </ul>
+            </article>
+
+            <article class="home-service-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>New Car Delivery Check</h3>
+                <p>Independent pre-delivery inspection so your new car handover is documented before it leaves the showroom.</p>
+                <ul>
+                    <li>Transit damage and repaint detection</li>
+                    <li>Feature verification and software checks</li>
+                    <li>Dealer handover confidence</li>
+                </ul>
+            </article>
+
+            <article class="home-service-card">
+                <i class="fas fa-store"></i>
+                <h3>Verified Used Car Access</h3>
+                <p>Browse featured marketplace cars, reserve the ones you like, or submit your own listing with structured photos.</p>
+                <ul>
+                    <li>Customer listing submission flow</li>
+                    <li>Reserve and test-drive requests</li>
+                    <li>Condition-led discovery</li>
+                </ul>
+            </article>
+        </div>
+    </section>
+
+    <section class="home-section">
+        <div class="home-story-grid">
+            <article class="home-story-card">
+                <i class="fas fa-clipboard-check"></i>
+                <h3>What gets reported</h3>
+                <p>Every inspection is built to answer the real buyer questions: what is damaged, what will cost money, what can be negotiated, and what should stop the deal entirely.</p>
+                <div class="home-story-list">
+                    <div>
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Condition clarity</strong>
+                            <span>Panels, paint, structure, interior, electronics, tyres, underbody and road behavior.</span>
+                        </div>
+                    </div>
+                    <div>
+                        <i class="fas fa-tools"></i>
+                        <div>
+                            <strong>Repair exposure</strong>
+                            <span>Immediate issues, estimated expense, and visible signs of past fixes or hidden work.</span>
+                        </div>
+                    </div>
+                    <div>
+                        <i class="fas fa-rupee-sign"></i>
+                        <div>
+                            <strong>Negotiation support</strong>
+                            <span>Use the findings to challenge inflated asking prices with documented observations.</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="home-story-card">
+                <i class="fas fa-bolt"></i>
+                <h3>Why buyers use inspectionWale</h3>
+                <p>Because seller enthusiasm and dealer assurance are not inspection evidence. Buyers need independent eyes and a record they can act on.</p>
+                <ul>
+                    <li>Spot transit or showroom damage on new cars before delivery acceptance</li>
+                    <li>Catch repaint, accident history, flood/fire signs and missing features</li>
+                    <li>Reduce the risk of buying a car with expensive hidden problems</li>
+                    <li>Move faster when a good car appears, because the report is usable immediately</li>
+                </ul>
+            </article>
+        </div>
+    </section>
+
     <style>
         /* Price Filter Tabs */
         .price-filter-tabs {
@@ -1626,33 +1681,33 @@
             display: none;
         }
         .popular-car-card {
-            flex: 0 0 280px;
-            background: #fff;
-            border-radius: 12px;
+            flex: 0 0 332px;
+            background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+            border-radius: 18px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border: 1px solid #eee;
+            box-shadow: 0 12px 30px rgba(17, 27, 49, 0.1);
+            border: 1px solid rgba(20, 33, 61, 0.08);
             transition: box-shadow 0.2s, transform 0.2s;
         }
         .popular-car-card.loading-card {
             border-style: dashed;
-            min-height: 210px;
+            min-height: 320px;
         }
         .popular-car-card:hover {
-            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-            transform: translateY(-2px);
+            box-shadow: 0 18px 36px rgba(17, 27, 49, 0.14);
+            transform: translateY(-4px);
         }
         .car-image-wrapper {
-            height: 180px;
+            height: 212px;
             position: relative;
             overflow: hidden;
-            border-radius: 12px 12px 0 0;
-            background: #111a2e;
+            border-radius: 18px 18px 0 0;
+            background: #d7e0ee;
         }
         .shimmer-block {
             width: 100%;
             height: 100%;
-            border-radius: 12px;
+            border-radius: 18px;
             background: linear-gradient(90deg, #f0f0f0 25%, #f7f7f7 50%, #f0f0f0 75%);
             background-size: 200% 100%;
             animation: shimmer 1.2s linear infinite;
@@ -1664,7 +1719,7 @@
             display: block;
         }
         .car-info {
-            padding: 15px 20px 20px;
+            padding: 16px 16px 18px;
         }
         .skeleton-line {
             height: 12px;
@@ -1681,34 +1736,61 @@
         .skeleton-line.w-50 { width: 50%; }
         .car-name {
             font-family: 'Montserrat', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #222;
-            margin-bottom: 5px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #14213d;
+            margin-bottom: 6px;
+        }
+        .car-meta {
+            font-size: 0.83rem;
+            color: #6b778c;
+            margin-bottom: 14px;
         }
         .car-price {
-            font-size: 0.95rem;
-            color: #333;
-            margin-bottom: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+            padding: 0 14px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #ff8b2b, #f46b1f);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0;
+            box-shadow: 0 10px 22px rgba(244, 107, 31, 0.22);
         }
         .car-price .car-kms {
-            color: #777;
-            font-size: 0.8rem;
-            margin-left: 6px;
+            display: none;
         }
         .car-price .onwards {
-            color: #888;
-            font-size: 0.85rem;
+            display: none;
+        }
+        .car-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
         }
         .check-price-link {
-            color: #0066cc;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+            padding: 0 18px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #1d61d1, #0f4fb7);
+            color: #fff;
             text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
+            font-size: 0.88rem;
+            font-weight: 700;
+            white-space: nowrap;
+            box-shadow: 0 10px 22px rgba(15, 79, 183, 0.2);
         }
         .check-price-link:hover {
-            text-decoration: underline;
-            color: #004499;
+            text-decoration: none;
+            color: #fff;
+            background: linear-gradient(135deg, #1657c1, #0c46a5);
         }
         .popular-cars-nav {
             position: absolute;
@@ -1783,7 +1865,7 @@
         }
         @media (max-width: 767px) {
             .popular-car-card {
-                flex: 0 0 240px;
+                flex: 0 0 286px;
             }
             .popular-cars-nav-next {
                 right: 5px;
@@ -2166,10 +2248,12 @@
             const title = buildPopularListingTitle(listing);
             const price = formatListingPrice(listing?.car?.expectedPrice ?? listing.expectedPrice);
             const kms = formatListingKms(listing?.car?.kmsDriven ?? listing.kmsDriven);
+            const year = listing?.car?.registrationYear || listing?.registrationYear || listing?.year || '';
             const photo = resolveListingPhoto(listing);
             const listingId = listing?.listingId;
             const ctaUrl = listingId ? `${MARKETPLACE_ENTRY}?listingId=${encodeURIComponent(listingId)}` : MARKETPLACE_ENTRY;
             const eager = index < 2;
+            const metaParts = [year, kms].filter(Boolean);
             return `
                 <div class="popular-car-card">
                     <div class="car-image-wrapper">
@@ -2177,8 +2261,11 @@
                     </div>
                     <div class="car-info">
                         <h5 class="car-name">${title}</h5>
-                        <p class="car-price">${price} <span class="onwards">onwards</span>${kms ? `<span class="car-kms">• ${kms}</span>` : ''}</p>
-                        <a href="${ctaUrl}" class="check-price-link">View Details</a>
+                        <p class="car-meta">${metaParts.length ? metaParts.join('  •  ') : 'Verified listing'}</p>
+                        <div class="car-card-footer">
+                            <p class="car-price">${price}</p>
+                            <a href="${ctaUrl}" class="check-price-link">View Car</a>
+                        </div>
                     </div>
                 </div>`;
         }
