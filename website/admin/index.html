@@ -653,6 +653,54 @@
               <i class="bi bi-info-circle me-2"></i>
               This is the full saved inspection payload. Update the JSON carefully, save it, then regenerate the PDF when needed.
             </div>
+            <div class="table-card mb-3 border">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <span>Quick Edit Fields</span>
+                <button type="button" class="btn btn-sm btn-outline-primary" id="applyQuickFieldsBtn">
+                  <i class="bi bi-arrow-repeat me-1"></i>Apply To JSON
+                </button>
+              </div>
+              <div class="card-body p-3">
+                <div class="row g-3">
+                  <div class="col-md-4">
+                    <label class="form-label">Inspector Name</label>
+                    <input type="text" class="form-control" id="quickInspectorName">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">Inspection Date</label>
+                    <input type="date" class="form-control" id="quickInspectionDate">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">Location</label>
+                    <input type="text" class="form-control" id="quickInspectionLocation">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">Registration Number</label>
+                    <input type="text" class="form-control" id="quickRegistrationNumber">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">Make + Model</label>
+                    <input type="text" class="form-control" id="quickMakeModel">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">Variant</label>
+                    <input type="text" class="form-control" id="quickVariant">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">Owner Name</label>
+                    <input type="text" class="form-control" id="quickOwnerName">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">Fuel Type</label>
+                    <input type="text" class="form-control" id="quickFuelType">
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">Owner Count</label>
+                    <input type="text" class="form-control" id="quickOwnerCount">
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="mb-3">
               <label class="form-label">Inspection Payload JSON</label>
               <textarea class="form-control font-monospace" id="editInspectionPayload" rows="20" spellcheck="false"></textarea>
@@ -848,6 +896,55 @@
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
+    }
+
+    function parseInspectionPayloadText() {
+      return JSON.parse(document.getElementById('editInspectionPayload').value || '{}');
+    }
+
+    function writeInspectionPayloadText(payload) {
+      document.getElementById('editInspectionPayload').value = JSON.stringify(payload || {}, null, 2);
+    }
+
+    function ensureInspectionPayloadShape(payload) {
+      const nextPayload = payload && typeof payload === 'object' ? payload : {};
+      if (!nextPayload.inspection || typeof nextPayload.inspection !== 'object') {
+        nextPayload.inspection = {};
+      }
+      if (!nextPayload.vehicle || typeof nextPayload.vehicle !== 'object') {
+        nextPayload.vehicle = {};
+      }
+      return nextPayload;
+    }
+
+    function populateQuickFieldsFromPayload(payload) {
+      const nextPayload = ensureInspectionPayloadShape(payload);
+      const inspection = nextPayload.inspection;
+      const vehicle = nextPayload.vehicle;
+
+      document.getElementById('quickInspectorName').value = inspection.inspector_name || '';
+      document.getElementById('quickInspectionDate').value = inspection.date || '';
+      document.getElementById('quickInspectionLocation').value = inspection.location || '';
+      document.getElementById('quickRegistrationNumber').value = vehicle.registration_number || '';
+      document.getElementById('quickMakeModel').value = vehicle.make_model || '';
+      document.getElementById('quickVariant').value = vehicle.variant || '';
+      document.getElementById('quickOwnerName').value = vehicle.owner_name || '';
+      document.getElementById('quickFuelType').value = vehicle.fuel_type || '';
+      document.getElementById('quickOwnerCount').value = vehicle.owner_count || '';
+    }
+
+    function applyQuickFieldsToPayload(payload) {
+      const nextPayload = ensureInspectionPayloadShape(payload);
+      nextPayload.inspection.inspector_name = document.getElementById('quickInspectorName').value.trim();
+      nextPayload.inspection.date = document.getElementById('quickInspectionDate').value;
+      nextPayload.inspection.location = document.getElementById('quickInspectionLocation').value.trim();
+      nextPayload.vehicle.registration_number = document.getElementById('quickRegistrationNumber').value.trim();
+      nextPayload.vehicle.make_model = document.getElementById('quickMakeModel').value.trim();
+      nextPayload.vehicle.variant = document.getElementById('quickVariant').value.trim();
+      nextPayload.vehicle.owner_name = document.getElementById('quickOwnerName').value.trim();
+      nextPayload.vehicle.fuel_type = document.getElementById('quickFuelType').value.trim();
+      nextPayload.vehicle.owner_count = document.getElementById('quickOwnerCount').value.trim();
+      return nextPayload;
     }
 
     // ===================== PAYMENTS =====================
@@ -1154,7 +1251,8 @@
         document.getElementById('editInspectionIdDisplay').value = inspectionId;
         document.getElementById('editInspectionRegistration').value = summary.registrationNumber || '';
         document.getElementById('editInspectionInspector').value = summary.inspectorName || '';
-        document.getElementById('editInspectionPayload').value = JSON.stringify(item.data || {}, null, 2);
+        writeInspectionPayloadText(item.data || {});
+        populateQuickFieldsFromPayload(item.data || {});
         document.getElementById('inspectionModalMeta').textContent = `Created: ${formatDate(item.createdAt)} | Updated: ${formatDate(item.updatedAt)}`;
 
         new bootstrap.Modal(document.getElementById('editInspectionModal')).show();
@@ -1167,19 +1265,17 @@
 
     async function saveInspectionPayload() {
       const inspectionId = document.getElementById('editInspectionId').value;
-      const payloadText = document.getElementById('editInspectionPayload').value;
       let parsedPayload;
 
       try {
-        parsedPayload = JSON.parse(payloadText);
+        parsedPayload = parseInspectionPayloadText();
       } catch (error) {
         throw new Error('Inspection payload must be valid JSON');
       }
 
-      if (!parsedPayload.inspection || typeof parsedPayload.inspection !== 'object') {
-        parsedPayload.inspection = {};
-      }
+      parsedPayload = applyQuickFieldsToPayload(parsedPayload);
       parsedPayload.inspection.id = inspectionId;
+      writeInspectionPayloadText(parsedPayload);
 
       const response = await apiFetch(`/admin/inspections/${encodeURIComponent(inspectionId)}`, {
         method: 'PUT',
@@ -1263,6 +1359,15 @@
         alert(error.message || 'Failed to regenerate report');
       }
       hideLoading();
+    });
+
+    document.getElementById('applyQuickFieldsBtn').addEventListener('click', () => {
+      try {
+        const payload = applyQuickFieldsToPayload(parseInspectionPayloadText());
+        writeInspectionPayloadText(payload);
+      } catch (error) {
+        alert('Inspection payload must be valid JSON before quick edits can be applied.');
+      }
     });
 
     // ===================== REPORTS =====================
