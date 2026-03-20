@@ -521,6 +521,7 @@
             --home-accent: #d86f45;
             --home-accent-dark: #b95730;
             --home-highlight: #167c74;
+            --home-icon: #4e8a84;
             --home-line: rgba(20, 33, 61, 0.12);
             --home-shadow: 0 24px 60px rgba(27, 39, 59, 0.14);
         }
@@ -654,7 +655,7 @@
         .home-hero-card {
             position: relative;
             overflow: hidden;
-            border-radius: 0;
+            border-radius: 30px;
             padding: 44px;
             background:
                 linear-gradient(135deg, rgba(20, 33, 61, 0.95), rgba(17, 27, 49, 0.86)),
@@ -971,7 +972,7 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            color: var(--home-accent-dark);
+            color: var(--home-icon);
             font-size: 1.05rem;
             background: transparent;
             box-shadow: none;
@@ -1019,7 +1020,7 @@
             justify-content: center;
             width: auto;
             height: auto;
-            color: var(--home-accent-dark);
+            color: var(--home-icon);
             font-size: 1rem;
             background: transparent;
         }
@@ -1211,7 +1212,7 @@
             }
 
             .home-hero-card {
-                border-radius: 0;
+                border-radius: 24px;
                 padding: 28px 20px;
             }
 
@@ -1325,11 +1326,11 @@
                                 <div class="hero-contact-grid">
                                     <div>
                                         <label class="form-label" for="heroName">Name</label>
-                                        <input type="text" id="heroName" name="name" class="form-control" placeholder="Enter your name" required>
+                                        <input type="text" id="heroName" name="name" class="form-control" required>
                                     </div>
                                     <div>
                                         <label class="form-label" for="heroEmail">Email</label>
-                                        <input type="email" id="heroEmail" name="email" class="form-control" placeholder="name@example.com" required>
+                                        <input type="email" id="heroEmail" name="email" class="form-control" required>
                                     </div>
                                     <div class="hero-field-full">
                                         <label class="form-label" for="heroMobile">Mobile</label>
@@ -1356,8 +1357,8 @@
                     <h5>Check Your Car Value</h5>
                     <form id="mobileHeroForm" novalidate data-car-value-form="mobile" data-toast-id="heroFormToastMobile">
                         <input type="hidden" name="formSource" value="hero-mobile">
-                        <input type="text" name="name" placeholder="Name" required>
-                        <input type="email" name="email" placeholder="Email address" required>
+                        <input type="text" name="name" required>
+                        <input type="email" name="email" required>
                         <input type="tel" name="mobile" placeholder="Mobile number" inputmode="tel" required pattern="[0-9+\-() ]{8,15}">
                         <textarea name="message" placeholder="Make, model, year, asking price" required></textarea>
                         <button type="submit">Get Value Estimate</button>
