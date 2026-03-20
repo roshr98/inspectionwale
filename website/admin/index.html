@@ -184,6 +184,10 @@
       <h2 class="text-center"><i class="bi bi-shield-lock me-2"></i>Admin Login</h2>
       <form id="loginForm">
         <div class="mb-3">
+          <label class="form-label">Username</label>
+          <input type="text" class="form-control" id="adminUsername" placeholder="Enter admin username" value="admin" required>
+        </div>
+        <div class="mb-3">
           <label class="form-label">Password</label>
           <input type="password" class="form-control" id="adminPassword" placeholder="Enter admin password" required>
         </div>
@@ -209,6 +213,9 @@
           </a>
           <a class="nav-link" data-tab="listings" href="#">
             <i class="bi bi-car-front"></i> Car Listings
+          </a>
+          <a class="nav-link" data-tab="inspections" href="#">
+            <i class="bi bi-clipboard2-data"></i> Inspection Editor
           </a>
           <a class="nav-link" data-tab="reports" href="#">
             <i class="bi bi-file-earmark-pdf"></i> Inspection Reports
@@ -346,6 +353,64 @@
                 </thead>
                 <tbody id="listingsTableBody">
                   <tr><td colspan="7" class="text-center py-4">Loading...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inspections Tab -->
+        <div class="tab-content" id="tab-inspections">
+          <div class="page-header d-flex justify-content-between align-items-center">
+            <div>
+              <h4 class="mb-1">Inspection Editor</h4>
+              <p class="text-muted mb-0">Review full inspection payloads, correct mistakes, and regenerate PDFs manually</p>
+            </div>
+            <button class="btn btn-outline-primary refresh-btn" onclick="loadInspections()">
+              <i class="bi bi-arrow-clockwise"></i> Refresh
+            </button>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-md-4 mb-3">
+              <div class="stats-card">
+                <div class="number" id="totalInspections">-</div>
+                <div class="text-muted">Inspection Drafts</div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="stats-card">
+                <div class="number text-success" id="recentInspections">-</div>
+                <div class="text-muted">Updated In 7 Days</div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="stats-card">
+                <div class="number text-secondary" id="inspectionWithVehicle">-</div>
+                <div class="text-muted">With Registration</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-card">
+            <div class="card-header d-flex justify-content-between align-items-center gap-3 flex-wrap">
+              <span>Saved Inspections</span>
+              <input type="text" class="form-control w-auto" placeholder="Search by ID, registration, inspector..." id="inspectionsSearch">
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead>
+                  <tr>
+                    <th>Inspection ID</th>
+                    <th>Registration</th>
+                    <th>Vehicle</th>
+                    <th>Inspector</th>
+                    <th>Updated</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="inspectionsTableBody">
+                  <tr><td colspan="6" class="text-center py-4">Loading...</td></tr>
                 </tbody>
               </table>
             </div>
@@ -559,17 +624,65 @@
     </div>
   </div>
 
+  <!-- Edit Inspection Modal -->
+  <div class="modal fade" id="editInspectionModal" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Edit Inspection Payload</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="editInspectionForm">
+          <div class="modal-body">
+            <input type="hidden" id="editInspectionId">
+            <div class="row g-3 mb-3">
+              <div class="col-md-4">
+                <label class="form-label">Inspection ID</label>
+                <input type="text" class="form-control" id="editInspectionIdDisplay" readonly>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Registration</label>
+                <input type="text" class="form-control" id="editInspectionRegistration" readonly>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Inspector</label>
+                <input type="text" class="form-control" id="editInspectionInspector" readonly>
+              </div>
+            </div>
+            <div class="alert alert-info mb-3">
+              <i class="bi bi-info-circle me-2"></i>
+              This is the full saved inspection payload. Update the JSON carefully, save it, then regenerate the PDF when needed.
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Inspection Payload JSON</label>
+              <textarea class="form-control font-monospace" id="editInspectionPayload" rows="20" spellcheck="false"></textarea>
+            </div>
+            <div class="small text-muted" id="inspectionModalMeta"></div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-outline-secondary" id="regenerateInspectionBtn">
+              <i class="bi bi-file-earmark-arrow-down me-2"></i>Regenerate PDF
+            </button>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary">Save Inspection</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     // Configuration
     const ADMIN_API_BASE = 'https://zk2hccij2dpngoory5dc3dre5e0hgixh.lambda-url.us-east-1.on.aws';
-    // Simple password - in production use proper auth
-    const ADMIN_PASSWORD = 'inspectionwale2024';
     
     // State
     let isLoggedIn = false;
     let paymentsData = [];
     let listingsData = [];
+    let inspectionsData = [];
     let reportsData = [];
 
     // DOM Elements
@@ -577,30 +690,86 @@
     const dashboardContainer = document.getElementById('dashboardContainer');
     const loadingOverlay = document.getElementById('loadingOverlay');
 
+    function getAdminToken() {
+      return sessionStorage.getItem('adminAuthToken') || localStorage.getItem('adminAuthToken') || '';
+    }
+
+    function persistAdminSession(token, user) {
+      sessionStorage.setItem('adminAuthToken', token);
+      localStorage.setItem('adminAuthToken', token);
+      localStorage.setItem('adminSession', JSON.stringify(user || { role: 'admin' }));
+    }
+
+    function clearAdminSession() {
+      sessionStorage.removeItem('adminAuthToken');
+      localStorage.removeItem('adminAuthToken');
+      localStorage.removeItem('adminSession');
+    }
+
+    async function apiFetch(path, options = {}) {
+      const headers = new Headers(options.headers || {});
+      const token = getAdminToken();
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+
+      const response = await fetch(`${ADMIN_API_BASE}${path}`, {
+        ...options,
+        headers
+      });
+
+      if (response.status === 401 || response.status === 403) {
+        clearAdminSession();
+        loginContainer.style.display = 'flex';
+        dashboardContainer.style.display = 'none';
+        document.getElementById('loginError').textContent = 'Session expired. Please login again.';
+        document.getElementById('loginError').classList.remove('d-none');
+        throw new Error('Unauthorized');
+      }
+
+      return response;
+    }
+
     // Check session
     function checkSession() {
-      const session = localStorage.getItem('adminSession');
-      if (session === 'active') {
+      const token = getAdminToken();
+      if (token) {
         showDashboard();
       }
     }
 
     // Login
-    document.getElementById('loginForm').addEventListener('submit', (e) => {
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+      const username = document.getElementById('adminUsername').value.trim();
       const password = document.getElementById('adminPassword').value;
-      if (password === ADMIN_PASSWORD) {
-        localStorage.setItem('adminSession', 'active');
+      const errorNode = document.getElementById('loginError');
+
+      try {
+        const response = await fetch(`${ADMIN_API_BASE}/admin/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+        if (!response.ok || !data.ok || !data.token) {
+          throw new Error(data.error || 'Invalid username or password');
+        }
+
+        persistAdminSession(data.token, data.user);
+        errorNode.classList.add('d-none');
         showDashboard();
-      } else {
-        document.getElementById('loginError').classList.remove('d-none');
+      } catch (error) {
+        errorNode.textContent = error.message || 'Login failed';
+        errorNode.classList.remove('d-none');
       }
     });
 
     // Logout
     document.getElementById('logoutBtn').addEventListener('click', (e) => {
       e.preventDefault();
-      localStorage.removeItem('adminSession');
+      clearAdminSession();
       location.reload();
     });
 
@@ -629,6 +798,7 @@
         // Load data
         if (tab === 'payments') loadPayments();
         if (tab === 'listings') loadListings();
+        if (tab === 'inspections') loadInspections();
         if (tab === 'reports') loadReports();
 
         // Close mobile sidebar
@@ -671,11 +841,20 @@
       return 'badge-unpaid';
     }
 
+    function escapeHtml(value) {
+      return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
     // ===================== PAYMENTS =====================
     async function loadPayments() {
       showLoading();
       try {
-        const response = await fetch(`${ADMIN_API_BASE}/admin/payments`);
+        const response = await apiFetch('/admin/payments');
         const data = await response.json();
         paymentsData = data.items || [];
         renderPaymentsTable();
@@ -766,7 +945,7 @@
       };
 
       try {
-        await fetch(`${ADMIN_API_BASE}/admin/payments/${bookingId}`, {
+        await apiFetch(`/admin/payments/${bookingId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(updates)
@@ -785,7 +964,7 @@
     async function loadListings() {
       showLoading();
       try {
-        const response = await fetch(`${ADMIN_API_BASE}/admin/listings`);
+        const response = await apiFetch('/admin/listings');
         const data = await response.json();
         listingsData = data.items || [];
         renderListingsTable();
@@ -876,7 +1055,7 @@
       };
 
       try {
-        await fetch(`${ADMIN_API_BASE}/admin/listings/${listingId}`, {
+        await apiFetch(`/admin/listings/${listingId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(updates)
@@ -891,11 +1070,206 @@
       hideLoading();
     });
 
+    // ===================== INSPECTIONS =====================
+    async function loadInspections() {
+      showLoading();
+      try {
+        const response = await apiFetch('/admin/inspections?limit=50');
+        const data = await response.json();
+        inspectionsData = data.items || [];
+        renderInspectionsTable();
+        updateInspectionStats();
+      } catch (error) {
+        console.error('Failed to load inspections:', error);
+        document.getElementById('inspectionsTableBody').innerHTML = '<tr><td colspan="6" class="text-center py-4 text-danger">Failed to load data</td></tr>';
+      }
+      hideLoading();
+    }
+
+    function renderInspectionsTable(filter = '') {
+      const tbody = document.getElementById('inspectionsTableBody');
+      let items = inspectionsData;
+
+      if (filter) {
+        const normalized = filter.toLowerCase();
+        items = items.filter((inspection) =>
+          (inspection.inspectionId || '').toLowerCase().includes(normalized) ||
+          (inspection.registrationNumber || '').toLowerCase().includes(normalized) ||
+          (inspection.inspectorName || '').toLowerCase().includes(normalized) ||
+          (inspection.makeModel || '').toLowerCase().includes(normalized)
+        );
+      }
+
+      if (items.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4">No inspections found</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = items.map((inspection) => `
+        <tr>
+          <td><small>${escapeHtml(inspection.inspectionId || '-')}</small></td>
+          <td>${escapeHtml(inspection.registrationNumber || '-')}</td>
+          <td>${escapeHtml(inspection.makeModel || '-')}</td>
+          <td>${escapeHtml(inspection.inspectorName || '-')}</td>
+          <td><small>${formatDate(inspection.updatedAt || inspection.createdAt)}</small></td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary action-btn" onclick="editInspection('${encodeURIComponent(inspection.inspectionId || '')}')">
+              <i class="bi bi-pencil"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function updateInspectionStats() {
+      const now = Date.now();
+      const sevenDaysAgo = now - (7 * 24 * 60 * 60 * 1000);
+      document.getElementById('totalInspections').textContent = inspectionsData.length;
+      document.getElementById('recentInspections').textContent = inspectionsData.filter((inspection) => {
+        const updatedTime = new Date(inspection.updatedAt || inspection.createdAt || 0).getTime();
+        return Number.isFinite(updatedTime) && updatedTime >= sevenDaysAgo;
+      }).length;
+      document.getElementById('inspectionWithVehicle').textContent = inspectionsData.filter((inspection) => inspection.registrationNumber).length;
+    }
+
+    document.getElementById('inspectionsSearch').addEventListener('input', (e) => {
+      renderInspectionsTable(e.target.value);
+    });
+
+    async function editInspection(encodedInspectionId) {
+      const inspectionId = decodeURIComponent(encodedInspectionId || '');
+      if (!inspectionId) return;
+
+      showLoading();
+      try {
+        const response = await apiFetch(`/admin/inspections/${encodeURIComponent(inspectionId)}`);
+        const data = await response.json();
+        if (!response.ok || !data.ok || !data.item) {
+          throw new Error(data.error || 'Failed to load inspection');
+        }
+
+        const item = data.item;
+        const summary = item.summary || {};
+        document.getElementById('editInspectionId').value = inspectionId;
+        document.getElementById('editInspectionIdDisplay').value = inspectionId;
+        document.getElementById('editInspectionRegistration').value = summary.registrationNumber || '';
+        document.getElementById('editInspectionInspector').value = summary.inspectorName || '';
+        document.getElementById('editInspectionPayload').value = JSON.stringify(item.data || {}, null, 2);
+        document.getElementById('inspectionModalMeta').textContent = `Created: ${formatDate(item.createdAt)} | Updated: ${formatDate(item.updatedAt)}`;
+
+        new bootstrap.Modal(document.getElementById('editInspectionModal')).show();
+      } catch (error) {
+        console.error('Failed to load inspection:', error);
+        alert(error.message || 'Failed to load inspection');
+      }
+      hideLoading();
+    }
+
+    async function saveInspectionPayload() {
+      const inspectionId = document.getElementById('editInspectionId').value;
+      const payloadText = document.getElementById('editInspectionPayload').value;
+      let parsedPayload;
+
+      try {
+        parsedPayload = JSON.parse(payloadText);
+      } catch (error) {
+        throw new Error('Inspection payload must be valid JSON');
+      }
+
+      if (!parsedPayload.inspection || typeof parsedPayload.inspection !== 'object') {
+        parsedPayload.inspection = {};
+      }
+      parsedPayload.inspection.id = inspectionId;
+
+      const response = await apiFetch(`/admin/inspections/${encodeURIComponent(inspectionId)}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: parsedPayload })
+      });
+      const data = await response.json();
+      if (!response.ok || !data.ok) {
+        throw new Error(data.error || 'Failed to save inspection');
+      }
+
+      return parsedPayload;
+    }
+
+    function downloadRegeneratedReport(result, inspectionId) {
+      const filename = result.filename || `Inspection_Report_${inspectionId}.pdf`;
+      if (result.pdfData) {
+        const byteCharacters = atob(result.pdfData);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i += 1) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const blob = new Blob([new Uint8Array(byteNumbers)], { type: 'application/pdf' });
+        const blobUrl = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
+        return;
+      }
+
+      if (result.reportUrl) {
+        const link = document.createElement('a');
+        link.href = result.reportUrl;
+        link.target = '_blank';
+        link.rel = 'noopener';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    }
+
+    document.getElementById('editInspectionForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      showLoading();
+      try {
+        await saveInspectionPayload();
+        await loadInspections();
+        alert('Inspection payload updated successfully!');
+      } catch (error) {
+        console.error('Failed to save inspection:', error);
+        alert(error.message || 'Failed to save inspection');
+      }
+      hideLoading();
+    });
+
+    document.getElementById('regenerateInspectionBtn').addEventListener('click', async () => {
+      showLoading();
+      try {
+        const inspectionId = document.getElementById('editInspectionId').value;
+        const payload = await saveInspectionPayload();
+        const response = await apiFetch(`/admin/inspection-regenerate/${encodeURIComponent(inspectionId)}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ data: payload })
+        });
+        const data = await response.json();
+        if (!response.ok || !data.ok || !data.report) {
+          throw new Error(data.error || 'Failed to regenerate report');
+        }
+
+        downloadRegeneratedReport(data.report, inspectionId);
+        await loadReports();
+        await loadInspections();
+        alert('Report regenerated successfully. Download should start automatically.');
+      } catch (error) {
+        console.error('Failed to regenerate report:', error);
+        alert(error.message || 'Failed to regenerate report');
+      }
+      hideLoading();
+    });
+
     // ===================== REPORTS =====================
     async function loadReports() {
       showLoading();
       try {
-        const response = await fetch(`${ADMIN_API_BASE}/admin/reports`);
+        const response = await apiFetch('/admin/reports');
         const data = await response.json();
         reportsData = data.items || [];
         renderReportsTable();
@@ -981,7 +1355,7 @@
       };
 
       try {
-        await fetch(`${ADMIN_API_BASE}/admin/reports/${encodeURIComponent(reportId)}`, {
+        await apiFetch(`/admin/reports/${encodeURIComponent(reportId)}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(updates)

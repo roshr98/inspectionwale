@@ -29,6 +29,12 @@ customHeaders:
       - key: 'Cache-Control'
         value: 'public, max-age=3600, must-revalidate'
 customRules:
+  - source: /admin
+    target: /admin/index.html
+    status: '200'
+  - source: /admin/
+    target: /admin/index.html
+    status: '200'
   - source: /Home
     target: /index.html
     status: '200'

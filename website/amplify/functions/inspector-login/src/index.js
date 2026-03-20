@@ -1,26 +1,57 @@
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
-const { DynamoDBDocumentClient, GetCommand } = require('@aws-sdk/lib-dynamodb');
+const { DynamoDBDocumentClient, ScanCommand } = require('@aws-sdk/lib-dynamodb');
 const crypto = require('crypto');
 
 const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
 
-// Simple token generation (in production, use JWT)
-function generateToken(username) {
-  return crypto.createHash('sha256')
-    .update(username + Date.now() + Math.random())
-    .digest('hex');
+const TOKEN_SECRET = process.env.AUTH_TOKEN_SECRET || 'inspectionwale-auth-secret-2026';
+const TOKEN_TTL_SECONDS = Number(process.env.AUTH_TOKEN_TTL_SECONDS || 60 * 60 * 12);
+
+function base64UrlEncode(value) {
+  return Buffer.from(value)
+    .toString('base64')
+    .replace(/=/g, '')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_');
 }
 
-// Hash password for comparison
+function signToken(payload) {
+  const header = { alg: 'HS256', typ: 'JWT' };
+  const encodedHeader = base64UrlEncode(JSON.stringify(header));
+  const encodedPayload = base64UrlEncode(JSON.stringify(payload));
+  const signature = crypto
+    .createHmac('sha256', TOKEN_SECRET)
+    .update(`${encodedHeader}.${encodedPayload}`)
+    .digest('base64')
+    .replace(/=/g, '')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_');
+
+  return `${encodedHeader}.${encodedPayload}.${signature}`;
+}
+
 function hashPassword(password) {
   return crypto.createHash('sha256').update(password).digest('hex');
+}
+
+function issueInspectorToken(inspector) {
+  const now = Math.floor(Date.now() / 1000);
+
+  return signToken({
+    sub: String(inspector.id || inspector.username),
+    username: inspector.username,
+    name: inspector.name,
+    role: 'inspector',
+    iat: now,
+    exp: now + TOKEN_TTL_SECONDS,
+  });
 }
 
 exports.handler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Headers': 'Content-Type,Authorization',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Content-Type': 'application/json'
   };
@@ -48,10 +79,6 @@ exports.handler = async (event) => {
     // Get inspector from DynamoDB
     const tableName = process.env.INSPECTORS_TABLE || 'inspectionwale-inspectors';
 
-    // Since table uses 'id' as partition key, we need to scan for username
-    const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
-    const { ScanCommand } = require('@aws-sdk/lib-dynamodb');
-    
     const scanCommand = new ScanCommand({
       TableName: tableName,
       FilterExpression: 'username = :username',
@@ -104,7 +131,7 @@ exports.handler = async (event) => {
     }
 
     // Generate token
-    const token = generateToken(username);
+    const token = issueInspectorToken(inspector);
     
     console.log('Login successful for inspector:', username);
     
@@ -116,6 +143,7 @@ exports.handler = async (event) => {
         token,
         name: inspector.name,
         username: inspector.username,
+        role: 'inspector',
         message: 'Login successful'
       })
     };

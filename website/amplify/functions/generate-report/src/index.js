@@ -17,10 +17,12 @@ try {
 }
 
 const { renderPdfFromPayload } = require('./templateRenderer');
+const crypto = require('crypto');
 
 const s3Client = new S3Client({});
 const ddbClient = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(ddbClient);
+const TOKEN_SECRET = process.env.AUTH_TOKEN_SECRET || 'inspectionwale-auth-secret-2026';
 
 function corsHeaders() {
   return {
@@ -43,6 +45,57 @@ function getHeader(event, name) {
     if (String(k).toLowerCase() === lowerName) return v;
   }
   return undefined;
+}
+
+function base64UrlDecode(value) {
+  const normalized = String(value)
+    .replace(/-/g, '+')
+    .replace(/_/g, '/');
+  const padded = normalized + '='.repeat((4 - (normalized.length % 4)) % 4);
+  return Buffer.from(padded, 'base64').toString('utf8');
+}
+
+function verifyBearerToken(authHeader, allowedRoles) {
+  if (!authHeader || !String(authHeader).startsWith('Bearer ')) {
+    return { ok: false, statusCode: 401, message: 'Missing bearer token' };
+  }
+
+  const token = String(authHeader).slice(7).trim();
+  const parts = token.split('.');
+  if (parts.length !== 3) {
+    return { ok: false, statusCode: 401, message: 'Invalid token format' };
+  }
+
+  const [encodedHeader, encodedPayload, signature] = parts;
+  const expectedSignature = crypto
+    .createHmac('sha256', TOKEN_SECRET)
+    .update(`${encodedHeader}.${encodedPayload}`)
+    .digest('base64')
+    .replace(/=/g, '')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_');
+
+  if (signature !== expectedSignature) {
+    return { ok: false, statusCode: 401, message: 'Invalid token signature' };
+  }
+
+  let payload;
+  try {
+    payload = JSON.parse(base64UrlDecode(encodedPayload));
+  } catch (_error) {
+    return { ok: false, statusCode: 401, message: 'Invalid token payload' };
+  }
+
+  const now = Math.floor(Date.now() / 1000);
+  if (!payload.exp || payload.exp <= now) {
+    return { ok: false, statusCode: 401, message: 'Token expired' };
+  }
+
+  if (allowedRoles.length > 0 && !allowedRoles.includes(payload.role)) {
+    return { ok: false, statusCode: 403, message: 'Forbidden' };
+  }
+
+  return { ok: true, payload };
 }
 
 function parseJsonBody(event) {
@@ -353,6 +406,12 @@ exports.handler = async (event) => {
   const method = getMethod(event);
   if (method === 'OPTIONS') {
     return { statusCode: 200, headers: corsHeaders(), body: JSON.stringify({ ok: true }) };
+  }
+
+  const authHeader = getHeader(event, 'authorization');
+  const authCheck = verifyBearerToken(authHeader, ['inspector', 'admin']);
+  if (!authCheck.ok) {
+    return json(authCheck.statusCode, { success: false, message: authCheck.message });
   }
 
   // Route inspection CRUD/image APIs on the SAME Lambda Function URL.
