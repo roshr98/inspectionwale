@@ -1005,10 +1005,11 @@
 
         .home-services-grid {
             grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
         }
 
         .home-service-card {
-            padding: 26px;
+            padding: 20px;
         }
 
         .home-service-card i,
@@ -1016,19 +1017,19 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 52px;
-            height: 52px;
-            border-radius: 18px;
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
             background: rgba(216, 111, 69, 0.12);
             color: var(--home-accent-dark);
-            font-size: 1.2rem;
+            font-size: 1.05rem;
         }
 
         .home-service-card h3,
         .home-story-card h3 {
-            margin: 18px 0 10px;
+            margin: 14px 0 8px;
             color: var(--home-ink);
-            font-size: 1.25rem;
+            font-size: 1.08rem;
             font-weight: 800;
         }
 
@@ -1036,15 +1037,17 @@
         .home-story-card p {
             margin: 0;
             color: var(--home-ink-soft);
-            line-height: 1.7;
+            line-height: 1.55;
+            font-size: 0.9rem;
         }
 
         .home-service-card ul,
         .home-story-card ul {
-            margin: 18px 0 0;
+            margin: 12px 0 0;
             padding-left: 18px;
             color: var(--home-ink-soft);
-            line-height: 1.8;
+            line-height: 1.6;
+            font-size: 0.9rem;
         }
 
         .home-story-grid {
@@ -1427,8 +1430,6 @@
                     Sell Your Car <span class="sell-car-dot">•</span>
                 </button>
             </div>
-            <p class="mb-4" style="max-width: 760px; color: #5b667a; line-height: 1.7;">Browse live marketplace listings, filter by budget, reserve the ones you like, or open the listing flow to submit your own car with structured photos and details.</p>
-
             <!-- Price Filter Tabs -->
             <div class="price-filter-tabs mb-4">
                 <button class="price-filter-tab active" data-price-filter="all" onclick="filterPopularCarsByPrice('all')">
@@ -1534,14 +1535,13 @@
                 <span>Services</span>
                 <h2>Inspection-first services for buyers, sellers, and cautious deliveries.</h2>
             </div>
-            <p>The redesign simplifies the journey, but the live conversion paths still flow into the existing booking, listing, and lead APIs behind the page.</p>
         </div>
 
         <div class="home-services-grid">
             <article class="home-service-card">
                 <i class="fas fa-car-crash"></i>
                 <h3>Used Car Inspection</h3>
-                <p>On-ground inspection with photos, repair estimates, condition reporting, and pricing support before purchase.</p>
+                <p>Independent inspection before purchase with usable findings for negotiation.</p>
                 <ul>
                     <li>Body, paint and accident checks</li>
                     <li>Engine, suspension and road test review</li>
@@ -1552,7 +1552,7 @@
             <article class="home-service-card">
                 <i class="fas fa-shield-alt"></i>
                 <h3>New Car Delivery Check</h3>
-                <p>Independent pre-delivery inspection so your new car handover is documented before it leaves the showroom.</p>
+                <p>Pre-delivery validation before you accept a showroom handover.</p>
                 <ul>
                     <li>Transit damage and repaint detection</li>
                     <li>Feature verification and software checks</li>
@@ -1563,7 +1563,7 @@
             <article class="home-service-card">
                 <i class="fas fa-store"></i>
                 <h3>Verified Used Car Access</h3>
-                <p>Browse featured marketplace cars, reserve the ones you like, or submit your own listing with structured photos.</p>
+                <p>Browse, reserve, or list cars through the verified marketplace flow.</p>
                 <ul>
                     <li>Customer listing submission flow</li>
                     <li>Reserve and test-drive requests</li>
