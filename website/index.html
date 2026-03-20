@@ -631,15 +631,15 @@
         }
 
         .home-hero {
-            width: min(1320px, calc(100% - 24px));
-            margin: 0 auto;
+            width: 100%;
+            margin: 0;
             padding: 18px 0 14px;
         }
 
         .home-hero-card {
             position: relative;
             overflow: hidden;
-            border-radius: 56px;
+            border-radius: 0 0 56px 56px;
             padding: 48px 52px;
             background:
                 linear-gradient(135deg, rgba(20, 33, 61, 0.95), rgba(17, 27, 49, 0.86)),
@@ -1208,7 +1208,6 @@
 
         @media (max-width: 991.98px) {
             .banner-container,
-            .home-hero,
             .home-strip,
             .home-section {
                 width: min(100% - 20px, 1000px);
@@ -1267,7 +1266,7 @@
             }
 
             .home-hero-card {
-                border-radius: 36px;
+                border-radius: 0 0 36px 36px;
                 padding: 28px 20px;
             }
 
