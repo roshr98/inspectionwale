@@ -1088,27 +1088,14 @@
             display: flex;
             align-items: flex-start;
             gap: 12px;
-            padding: 10px 0;
+            padding: 10px 12px;
             border-radius: 0;
-            background: transparent;
+            background: rgba(255, 255, 255, 0.9);
             border-bottom: 1px solid rgba(20, 33, 61, 0.08);
         }
 
         .home-story-list div:last-child {
             border-bottom: none;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .home-story-list div:last-child::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            height: 16px;
-            background: linear-gradient(180deg, rgba(245, 231, 219, 0) 0%, rgba(245, 231, 219, 0.72) 100%);
-            pointer-events: none;
         }
 
         .home-story-list strong {
@@ -3018,18 +3005,18 @@
     </div>
 
     <!-- Google Reviews Section -->
-    <section class="py-5" id="reviews" style="background: linear-gradient(180deg, #1a2a3a 0%, #2d4a5e 30%, #4a6a7a 60%, #6a8a9a 100%);">
+    <section class="py-4" id="reviews" style="background: linear-gradient(180deg, #1a2a3a 0%, #2d4a5e 30%, #4a6a7a 60%, #6a8a9a 100%);">
         <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="text-white mb-3" style="font-family: 'Montserrat', sans-serif; font-weight: 600;">
+            <div class="text-center mb-4">
+                <h2 class="text-white mb-2" style="font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: clamp(1.7rem, 2.8vw, 2.4rem);">
                     What Our <span style="color: #D81324;">Customers</span> Say
                 </h2>
-                <div class="d-flex align-items-center justify-content-center gap-3 mb-2">
-                    <div id="overallStars" style="color: #ffc107; font-size: 1.5rem;">★★★★★</div>
-                    <span class="text-white fw-bold" style="font-size: 1.5rem;" id="overallRating">5.0</span>
+                <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
+                    <div id="overallStars" style="color: #ffc107; font-size: 1.25rem;">★★★★★</div>
+                    <span class="text-white fw-bold" style="font-size: 1.25rem;" id="overallRating">5.0</span>
                 </div>
                 <p class="text-white-50 mb-0" id="totalReviews">Based on Google Reviews</p>
-                <a href="https://g.page/r/YOUR_GOOGLE_REVIEW_LINK/review" target="_blank" class="btn btn-outline-light btn-sm mt-3">
+                <a href="https://g.page/r/YOUR_GOOGLE_REVIEW_LINK/review" target="_blank" class="btn btn-outline-light btn-sm mt-2">
                     <i class="fab fa-google me-2"></i>Write a Review
                 </a>
             </div>
@@ -3037,9 +3024,9 @@
             <div class="google-reviews-carousel owl-carousel owl-theme" id="googleReviewsContainer">
                 <!-- Reviews will be loaded dynamically via JavaScript -->
                 <div class="google-review-item text-center">
-                    <div class="p-4 rounded mx-2" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); min-height: 280px;">
-                        <div class="d-flex align-items-center justify-content-center mb-3">
-                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:60px;height:60px;font-size:24px;font-weight:bold;">
+                    <div class="p-3 rounded mx-2" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); min-height: 230px;">
+                        <div class="d-flex align-items-center justify-content-center mb-2">
+                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:52px;height:52px;font-size:20px;font-weight:bold;">
                                 <i class="fas fa-spinner fa-spin"></i>
                             </div>
                         </div>
@@ -3062,18 +3049,18 @@
         }
         .google-reviews-carousel .owl-nav button {
             pointer-events: all;
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50% !important;
             background: rgba(255,255,255,0.2) !important;
             color: #fff !important;
-            font-size: 1.2rem !important;
+            font-size: 1rem !important;
         }
         .google-reviews-carousel .owl-nav button:hover {
             background: rgba(255,255,255,0.4) !important;
         }
         .google-reviews-carousel .owl-dots {
-            margin-top: 20px;
+            margin-top: 14px;
         }
         .google-reviews-carousel .owl-dots .owl-dot span {
             background: rgba(255,255,255,0.3);
@@ -3088,9 +3075,12 @@
         }
         .google-review-item h5 {
             color: #fff;
+            font-size: 1rem;
         }
         .google-review-item p {
             color: rgba(255,255,255,0.8);
+            font-size: 0.92rem;
+            line-height: 1.6;
         }
         .google-review-item .text-muted {
             color: rgba(255,255,255,0.6) !important;
@@ -3629,19 +3619,19 @@
 
                         container.innerHTML = data.reviews.map(review => `
                             <div class="google-review-item text-center">
-                                <div class="bg-light p-4 rounded mx-2" style="min-height: 300px;">
-                                    <div class="d-flex align-items-center justify-content-center mb-3">
+                                <div class="bg-light p-3 rounded mx-2" style="min-height: 240px;">
+                                    <div class="d-flex align-items-center justify-content-center mb-2">
                                         ${review.profile_photo ?
-                                            `<img src="${review.profile_photo}" class="rounded-circle" style="width:60px;height:60px;object-fit:cover;" alt="${review.author}" loading="lazy" decoding="async">` :
-                                            `<div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:60px;height:60px;font-size:24px;font-weight:bold;">${review.author.charAt(0)}</div>`
+                                            `<img src="${review.profile_photo}" class="rounded-circle" style="width:52px;height:52px;object-fit:cover;" alt="${review.author}" loading="lazy" decoding="async">` :
+                                            `<div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:52px;height:52px;font-size:20px;font-weight:bold;">${review.author.charAt(0)}</div>`
                                         }
                                     </div>
                                     <h5 class="mb-1">${review.author}</h5>
                                     <small class="text-muted d-block mb-2">${review.time || ''}</small>
-                                    <div class="mb-3" style="color:#ffc107;font-size:1.3em;">
+                                    <div class="mb-2" style="color:#ffc107;font-size:1.1em;">
                                         ${getStars(review.rating)}
                                     </div>
-                                    <p class="mb-3" style="min-height: 80px;">${review.text.length > 150 ? review.text.substring(0, 150) + '...' : review.text}</p>
+                                    <p class="mb-2" style="min-height: 56px;">${review.text.length > 120 ? review.text.substring(0, 120) + '...' : review.text}</p>
                                     <div class="pt-2 border-top">
                                         <small class="text-muted">
                                             <i class="fab fa-google me-1"></i> Posted on Google
