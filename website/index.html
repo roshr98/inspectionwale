@@ -1076,6 +1076,27 @@
 
         .home-story-card {
             padding: 12px 4px;
+            display: grid;
+            grid-template-columns: 18px minmax(0, 1fr);
+            column-gap: 12px;
+            align-items: flex-start;
+        }
+
+        .home-story-card > i {
+            grid-column: 1;
+            grid-row: 1 / span 3;
+            margin-top: 3px;
+        }
+
+        .home-story-card > h3,
+        .home-story-card > p,
+        .home-story-card > ul,
+        .home-story-card > .home-story-list {
+            grid-column: 2;
+        }
+
+        .home-story-card > h3 {
+            margin-top: 0;
         }
 
         .home-story-list {
@@ -1088,9 +1109,9 @@
             display: flex;
             align-items: flex-start;
             gap: 12px;
-            padding: 10px 12px;
+            padding: 10px 0;
             border-radius: 0;
-            background: rgba(255, 255, 255, 0.9);
+            background: transparent;
             border-bottom: 1px solid rgba(20, 33, 61, 0.08);
         }
 
