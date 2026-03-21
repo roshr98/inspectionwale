@@ -21,7 +21,7 @@
     <meta name="twitter:description" content="Browse verified used cars inspected by inspectionWale professionals before you buy.">
     <meta name="twitter:image" content="https://www.inspectionwale.com/Images/brand_logo_new_1.png">
 
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://www.gstatic.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://translate.googleapis.com https://www.gstatic.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://423cmvhw3g.execute-api.us-east-1.amazonaws.com https://inspectionWale-car-listings.s3.amazonaws.com https://inspectionWale-car-listings.s3.us-east-1.amazonaws.com https://inspectionWale-car-listings.s3-us-east-1.amazonaws.com https://e5c4zwzl3vvb5t6fq3djkuhvjm0omhdm.lambda-url.us-east-1.on.aws https://www.google-analytics.com https://cdn.jsdelivr.net https://translate.googleapis.com https://translate-pa.googleapis.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com; frame-src 'self' https://www.google.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://pagead2.googlesyndication.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://www.gstatic.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://translate.googleapis.com https://www.gstatic.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://423cmvhw3g.execute-api.us-east-1.amazonaws.com https://inspectionWale-car-listings.s3.amazonaws.com https://inspectionWale-car-listings.s3.us-east-1.amazonaws.com https://inspectionWale-car-listings.s3-us-east-1.amazonaws.com https://e5c4zwzl3vvb5t6fq3djkuhvjm0omhdm.lambda-url.us-east-1.on.aws https://www.google-analytics.com https://cdn.jsdelivr.net https://translate.googleapis.com https://translate-pa.googleapis.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://*.adtrafficquality.google; frame-src 'self' https://www.google.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://pagead2.googlesyndication.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
 
     <!-- Favicon -->
     <link href="/Images/brand_logo_new_1.png" rel="icon">
@@ -3172,7 +3172,7 @@
     <script defer src="../lib/owlcarousel/owl.carousel.min.js"></script>
     <script defer src="../js/main.js"></script>
 
-    <script src="../js/monetization.js"></script>
+    <script src="../js/monetization.js?v=20260321"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function () {
     const API_ENDPOINT = 'https://423cmvhw3g.execute-api.us-east-1.amazonaws.com/prod/customer-listings';
@@ -3430,8 +3430,16 @@
         };
     }
 
+    function isAffiliateMonetizationReady() {
+        if (!window.IWMonetization) return false;
+        if (typeof window.IWMonetization.isAffiliateReady === 'function') {
+            return window.IWMonetization.isAffiliateReady();
+        }
+        return false;
+    }
+
     function initMarketplaceMonetization() {
-        if (!window.IWMonetization || !window.IWMonetization.isAffiliateReady()) {
+        if (!isAffiliateMonetizationReady()) {
             document.getElementById('marketplaceTopAdSlot')?.classList.add('d-none');
             document.getElementById('marketplaceMonetizationZone')?.classList.add('d-none');
             document.getElementById('carDetailMonetizationSlot')?.classList.add('d-none');
@@ -3455,7 +3463,7 @@
     }
 
     function renderMarketplaceMonetizationShell(listings) {
-        if (!window.IWMonetization || !window.IWMonetization.isAffiliateReady()) return;
+        if (!isAffiliateMonetizationReady()) return;
         const sampleListing = Array.isArray(listings) && listings.length ? listings[0] : null;
         const context = getMonetizationContext(sampleListing);
         const topSlot = document.getElementById('marketplaceTopAdSlot');
@@ -3489,7 +3497,7 @@
     }
 
     function renderInventoryWithNativeAds(listings) {
-        if (!window.IWMonetization || !window.IWMonetization.isAffiliateReady()) {
+        if (!isAffiliateMonetizationReady()) {
             return listings.map(buildInventoryCard).join('');
         }
         const markup = [];
@@ -4636,7 +4644,7 @@
         if (modalTitleEl) modalTitleEl.textContent = fullTitle;
 
         const detailMonetizationSlot = document.getElementById('carDetailMonetizationSlot');
-        if (detailMonetizationSlot && window.IWMonetization && window.IWMonetization.isAffiliateReady()) {
+        if (detailMonetizationSlot && isAffiliateMonetizationReady()) {
             const detailContext = { page: 'marketplace', price, budget: filterState.budget, segment: price >= 1000000 ? 'premium' : 'standard' };
             detailMonetizationSlot.innerHTML = window.IWMonetization.createAdBanner({
                 placement: 'detail-price-slot',
@@ -5108,7 +5116,7 @@
                         alertBox.className = 'alert alert-success mt-3';
                         alertBox.innerHTML = `
                             <div><i class="fas fa-check-circle me-2"></i>Booking created! Redirecting to payment...</div>
-                            ${window.IWMonetization && window.IWMonetization.isAffiliateReady() ? window.IWMonetization.createInlineRecommendation({
+                            ${isAffiliateMonetizationReady() ? window.IWMonetization.createInlineRecommendation({
                                 placement: 'marketplace-booking-confirmation',
                                 title: 'Useful add-ons before you complete payment',
                                 copy: 'Keep insurance and warranty offers visible right after booking intent, while the user is still in purchase mode.',
@@ -5117,7 +5125,7 @@
                             }) : ''}
                         `;
                         alertBox.style.display = 'block';
-                        if (window.IWMonetization && window.IWMonetization.isAffiliateReady()) {
+                        if (isAffiliateMonetizationReady()) {
                             window.IWMonetization.hydrate(alertBox);
                         }
                         
@@ -5220,7 +5228,7 @@
                         alertBox.className = 'alert alert-success mt-3';
                         alertBox.innerHTML = `
                             <div><i class="fas fa-check-circle me-2"></i>Booking received! We will call you to confirm.</div>
-                            ${window.IWMonetization && window.IWMonetization.isAffiliateReady() ? window.IWMonetization.createInlineRecommendation({
+                            ${isAffiliateMonetizationReady() ? window.IWMonetization.createInlineRecommendation({
                                 placement: 'marketplace-pay-later-confirmation',
                                 title: 'Recommended while our team follows up',
                                 copy: 'Pay-later journeys are a strong moment for financing and insurance suggestions that feel useful instead of intrusive.',
@@ -5229,7 +5237,7 @@
                             }) : ''}
                         `;
                         alertBox.style.display = 'block';
-                        if (window.IWMonetization && window.IWMonetization.isAffiliateReady()) {
+                        if (isAffiliateMonetizationReady()) {
                             window.IWMonetization.hydrate(alertBox);
                             window.IWMonetization.trackConversion({ placement: 'marketplace-pay-later-confirmation', page: 'marketplace', formType: 'marketplace-booking-pay-later' });
                         }
