@@ -3456,7 +3456,14 @@
         }
 
         function initHomepageMonetization() {
-            if (!window.IWMonetization) return;
+            if (!window.IWMonetization || !window.IWMonetization.isAffiliateReady()) {
+                const zone = document.getElementById('homeMonetizationZone');
+                if (zone) {
+                    zone.innerHTML = '';
+                    zone.style.display = 'none';
+                }
+                return;
+            }
 
             const zone = document.getElementById('homeMonetizationZone');
             if (zone) {
@@ -3486,7 +3493,12 @@
         }
 
         function applyPostSubmitMonetization(target, options) {
-            if (!target || !window.IWMonetization) return;
+            if (!target || !window.IWMonetization || !window.IWMonetization.isAffiliateReady()) {
+                if (target) {
+                    target.textContent = options.message;
+                }
+                return;
+            }
             target.classList.add('iw-post-submit-host');
             target.innerHTML = `
                 <span>${options.message}</span>
@@ -3645,7 +3657,7 @@
                         recommendationHost.className = 'iw-inline-recommendation-host mt-3';
                         form.appendChild(recommendationHost);
                     }
-                    recommendationHost.innerHTML = window.IWMonetization
+                    recommendationHost.innerHTML = window.IWMonetization && window.IWMonetization.isAffiliateReady()
                         ? window.IWMonetization.createInlineRecommendation({
                             placement: `${config.formType}-redirect`,
                             title: 'Before payment completes, consider protection add-ons',
@@ -3654,7 +3666,7 @@
                             offer: window.IWMonetization.pickOffer({ page: 'home', price: payload.inspectionType === 'new-car' ? 1200000 : 450000 })
                         })
                         : '';
-                    if (window.IWMonetization) {
+                    if (window.IWMonetization && window.IWMonetization.isAffiliateReady()) {
                         window.IWMonetization.hydrate(recommendationHost);
                     }
                     form.reset();
@@ -3757,7 +3769,7 @@
                             recommendationHost.className = 'iw-inline-recommendation-host mt-3';
                             form.appendChild(recommendationHost);
                         }
-                        recommendationHost.innerHTML = window.IWMonetization
+                        recommendationHost.innerHTML = window.IWMonetization && window.IWMonetization.isAffiliateReady()
                             ? window.IWMonetization.createInlineRecommendation({
                                 placement: `${config.formType}-pay-later`,
                                 title: 'Recommended while we confirm your booking',
@@ -3766,7 +3778,7 @@
                                 offer: window.IWMonetization.offers.insurance
                             })
                             : '';
-                        if (window.IWMonetization) {
+                        if (window.IWMonetization && window.IWMonetization.isAffiliateReady()) {
                             window.IWMonetization.hydrate(recommendationHost);
                             window.IWMonetization.trackConversion({ placement: `${config.formType}-pay-later`, page: 'home', formType: config.formType });
                         }

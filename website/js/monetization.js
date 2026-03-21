@@ -1,4 +1,5 @@
 (function () {
+    const PLACEHOLDER_AFFILIATE_HOST = 'example.com';
     const CONFIG = {
         adClient: 'ca-pub-XXXXXXXXXXXXXXXX',
         adSlots: {
@@ -126,6 +127,20 @@
             .replace(/'/g, '&#39;');
     }
 
+    function isRealAffiliateHref(href) {
+        if (!href) return false;
+        try {
+            const url = new URL(href, window.location.origin);
+            return url.hostname !== PLACEHOLDER_AFFILIATE_HOST;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    function isAffiliateReady() {
+        return Object.values(OFFERS).every((offer) => isRealAffiliateHref(offer.href));
+    }
+
     function adSenseMarkup(slotKey, format) {
         const slot = CONFIG.adSlots[slotKey] || slotKey || CONFIG.adSlots.inline;
         return `
@@ -140,6 +155,7 @@
     }
 
     function createAdBanner(options) {
+        if (!isAffiliateReady()) return '';
         const opts = options || {};
         const context = opts.context || {};
         return `
@@ -159,6 +175,7 @@
     }
 
     function createNativeAdCard(options) {
+        if (!isAffiliateReady()) return '';
         const opts = options || {};
         const offer = opts.offer || pickOffer(opts.context || {});
         return `
@@ -190,6 +207,7 @@
     }
 
     function createRecommendationWidget(options) {
+        if (!isAffiliateReady()) return '';
         const opts = options || {};
         const context = opts.context || {};
         const offers = opts.offers || pickOffers(context, 3);
@@ -220,6 +238,7 @@
     }
 
     function createPreFooterRevenueSection(options) {
+        if (!isAffiliateReady()) return '';
         const opts = options || {};
         const context = opts.context || {};
         return `
@@ -258,6 +277,7 @@
     }
 
     function createInlineRecommendation(options) {
+        if (!isAffiliateReady()) return '';
         const opts = options || {};
         const offer = opts.offer || pickOffer(opts.context || {});
         const secondary = (opts.context && getIntent(opts.context) === 'premium') ? OFFERS.warranty : OFFERS.loan;
@@ -275,6 +295,7 @@
     }
 
     function createStickyBottomAd(options) {
+        if (!isAffiliateReady()) return '';
         const opts = options || {};
         const offer = opts.offer || pickOffer(opts.context || {});
         return `
@@ -360,6 +381,7 @@
     }
 
     function mountStickyBottomAd(options) {
+        if (!isAffiliateReady()) return;
         if (window.innerWidth > 767) return;
         if (sessionStorage.getItem('iw:sticky-dismissed') === '1') return;
         const existing = document.querySelector('[data-iw-sticky]');
@@ -379,6 +401,7 @@
     window.IWMonetization = {
         config: CONFIG,
         offers: OFFERS,
+        isAffiliateReady,
         trackClick,
         trackConversion,
         pickOffer,

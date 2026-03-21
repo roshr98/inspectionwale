@@ -3431,7 +3431,12 @@
     }
 
     function initMarketplaceMonetization() {
-        if (!window.IWMonetization) return;
+        if (!window.IWMonetization || !window.IWMonetization.isAffiliateReady()) {
+            document.getElementById('marketplaceTopAdSlot')?.classList.add('d-none');
+            document.getElementById('marketplaceMonetizationZone')?.classList.add('d-none');
+            document.getElementById('carDetailMonetizationSlot')?.classList.add('d-none');
+            return;
+        }
         renderMarketplaceMonetizationShell([]);
         window.IWMonetization.mountStickyBottomAd({
             context: { page: 'marketplace', budget: filterState.budget || 'lt5' },
@@ -3450,7 +3455,7 @@
     }
 
     function renderMarketplaceMonetizationShell(listings) {
-        if (!window.IWMonetization) return;
+        if (!window.IWMonetization || !window.IWMonetization.isAffiliateReady()) return;
         const sampleListing = Array.isArray(listings) && listings.length ? listings[0] : null;
         const context = getMonetizationContext(sampleListing);
         const topSlot = document.getElementById('marketplaceTopAdSlot');
@@ -3484,6 +3489,9 @@
     }
 
     function renderInventoryWithNativeAds(listings) {
+        if (!window.IWMonetization || !window.IWMonetization.isAffiliateReady()) {
+            return listings.map(buildInventoryCard).join('');
+        }
         const markup = [];
         listings.forEach((listing, index) => {
             markup.push(buildInventoryCard(listing));
@@ -4628,7 +4636,7 @@
         if (modalTitleEl) modalTitleEl.textContent = fullTitle;
 
         const detailMonetizationSlot = document.getElementById('carDetailMonetizationSlot');
-        if (detailMonetizationSlot && window.IWMonetization) {
+        if (detailMonetizationSlot && window.IWMonetization && window.IWMonetization.isAffiliateReady()) {
             const detailContext = { page: 'marketplace', price, budget: filterState.budget, segment: price >= 1000000 ? 'premium' : 'standard' };
             detailMonetizationSlot.innerHTML = window.IWMonetization.createAdBanner({
                 placement: 'detail-price-slot',
@@ -4646,6 +4654,9 @@
                 context: detailContext
             });
             window.IWMonetization.hydrate(detailMonetizationSlot);
+        } else if (detailMonetizationSlot) {
+            detailMonetizationSlot.innerHTML = '';
+            detailMonetizationSlot.classList.add('d-none');
         }
         
         // Generate dynamic badges based on car features
@@ -5097,7 +5108,7 @@
                         alertBox.className = 'alert alert-success mt-3';
                         alertBox.innerHTML = `
                             <div><i class="fas fa-check-circle me-2"></i>Booking created! Redirecting to payment...</div>
-                            ${window.IWMonetization ? window.IWMonetization.createInlineRecommendation({
+                            ${window.IWMonetization && window.IWMonetization.isAffiliateReady() ? window.IWMonetization.createInlineRecommendation({
                                 placement: 'marketplace-booking-confirmation',
                                 title: 'Useful add-ons before you complete payment',
                                 copy: 'Keep insurance and warranty offers visible right after booking intent, while the user is still in purchase mode.',
@@ -5106,7 +5117,7 @@
                             }) : ''}
                         `;
                         alertBox.style.display = 'block';
-                        if (window.IWMonetization) {
+                        if (window.IWMonetization && window.IWMonetization.isAffiliateReady()) {
                             window.IWMonetization.hydrate(alertBox);
                         }
                         
@@ -5209,7 +5220,7 @@
                         alertBox.className = 'alert alert-success mt-3';
                         alertBox.innerHTML = `
                             <div><i class="fas fa-check-circle me-2"></i>Booking received! We will call you to confirm.</div>
-                            ${window.IWMonetization ? window.IWMonetization.createInlineRecommendation({
+                            ${window.IWMonetization && window.IWMonetization.isAffiliateReady() ? window.IWMonetization.createInlineRecommendation({
                                 placement: 'marketplace-pay-later-confirmation',
                                 title: 'Recommended while our team follows up',
                                 copy: 'Pay-later journeys are a strong moment for financing and insurance suggestions that feel useful instead of intrusive.',
@@ -5218,7 +5229,7 @@
                             }) : ''}
                         `;
                         alertBox.style.display = 'block';
-                        if (window.IWMonetization) {
+                        if (window.IWMonetization && window.IWMonetization.isAffiliateReady()) {
                             window.IWMonetization.hydrate(alertBox);
                             window.IWMonetization.trackConversion({ placement: 'marketplace-pay-later-confirmation', page: 'marketplace', formType: 'marketplace-booking-pay-later' });
                         }
