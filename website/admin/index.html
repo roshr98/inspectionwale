@@ -130,6 +130,39 @@
       overflow-y: auto;
       overscroll-behavior: contain;
     }
+    #editListingModal .modal-content,
+    #editInspectionModal .modal-content,
+    #editReportModal .modal-content {
+      max-height: calc(100vh - 2rem);
+      overflow: hidden;
+    }
+    #editListingModal form,
+    #editInspectionModal form,
+    #editReportModal form {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      flex: 1 1 auto;
+    }
+    #editListingModal .modal-body,
+    #editInspectionModal .modal-body,
+    #editReportModal .modal-body {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 1rem;
+    }
+    #editListingModal .modal-footer,
+    #editInspectionModal .modal-footer,
+    #editReportModal .modal-footer {
+      flex-shrink: 0;
+      background: #fff;
+      border-top: 1px solid #dee2e6;
+      position: sticky;
+      bottom: 0;
+      z-index: 2;
+    }
     .loading-overlay {
       position: fixed;
       top: 0;
