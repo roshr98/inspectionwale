@@ -305,9 +305,14 @@
               <h4 class="mb-1">Car Listings</h4>
               <p class="text-muted mb-0">Manage marketplace car listings</p>
             </div>
-            <button class="btn btn-outline-primary refresh-btn" onclick="loadListings()">
-              <i class="bi bi-arrow-clockwise"></i> Refresh
-            </button>
+            <div class="d-flex gap-2">
+              <button class="btn btn-primary" onclick="openCreateListing()">
+                <i class="bi bi-plus-circle"></i> Add Listing
+              </button>
+              <button class="btn btn-outline-primary refresh-btn" onclick="loadListings()">
+                <i class="bi bi-arrow-clockwise"></i> Refresh
+              </button>
+            </div>
           </div>
 
           <div class="row mb-4">
@@ -338,14 +343,23 @@
           </div>
 
           <div class="table-card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-              <span>All Listings</span>
+            <div class="card-header d-flex justify-content-between align-items-center gap-3 flex-wrap">
+              <div class="d-flex align-items-center gap-2 flex-wrap">
+                <span>All Listings</span>
+                <button class="btn btn-sm btn-outline-secondary" id="bulkSelectAllListingsBtn">Select All</button>
+                <button class="btn btn-sm btn-outline-success" id="bulkMarkSoldBtn">Mark Sold</button>
+                <button class="btn btn-sm btn-outline-primary" id="bulkMarkUnsoldBtn">Mark Unsold</button>
+                <button class="btn btn-sm btn-outline-warning" id="bulkArchiveBtn">Archive</button>
+                <button class="btn btn-sm btn-outline-info" id="bulkDuplicateBtn">Duplicate</button>
+                <button class="btn btn-sm btn-outline-danger" id="bulkDeleteBtn">Delete</button>
+              </div>
               <input type="text" class="form-control w-auto" placeholder="Search..." id="listingsSearch">
             </div>
             <div class="table-responsive">
               <table class="table table-hover mb-0">
                 <thead>
                   <tr>
+                    <th style="width: 36px;"><input type="checkbox" id="listingsSelectAllCheckbox"></th>
                     <th>ID</th>
                     <th>Car</th>
                     <th>Seller</th>
@@ -598,51 +612,182 @@
 
   <!-- Edit Listing Modal -->
   <div class="modal fade" id="editListingModal" tabindex="-1">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title"><i class="bi bi-pencil me-2"></i>Edit Listing</h5>
+          <h5 class="modal-title"><i class="bi bi-pencil me-2"></i><span id="editListingModalTitleText">Edit Listing</span></h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <form id="editListingForm">
           <div class="modal-body">
             <input type="hidden" id="editListingId">
-            <div class="mb-3">
-              <label class="form-label">Car Name</label>
-              <input type="text" class="form-control" id="editListingName">
+            <div class="alert alert-info">
+              <i class="bi bi-info-circle me-2"></i>
+              Manage listing content, seller details, status, and gallery images here. This replaces basic metadata-only edits with a dashboard-first listing workflow.
             </div>
-            <div class="mb-3">
-              <label class="form-label">Year</label>
-              <input type="number" class="form-control" id="editListingYear">
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-3">
+                <label class="form-label">Make</label>
+                <input type="text" class="form-control" id="editListingMake" required>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Model</label>
+                <input type="text" class="form-control" id="editListingModel" required>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Edition</label>
+                <input type="text" class="form-control" id="editListingEdition">
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Variant</label>
+                <input type="text" class="form-control" id="editListingVariant">
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Registration Year</label>
+                <input type="number" class="form-control" id="editListingYear" required>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Price (₹)</label>
+                <input type="number" class="form-control" id="editListingPrice" required>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Kilometers</label>
+                <input type="number" class="form-control" id="editListingKm" required>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Status</label>
+                <select class="form-select" id="editListingStatus">
+                  <option value="pending">Pending Review</option>
+                  <option value="approved">Approved</option>
+                  <option value="rejected">Rejected</option>
+                  <option value="sold">Sold</option>
+                  <option value="reserved">Reserved</option>
+                  <option value="archived">Archived</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Location</label>
+                <input type="text" class="form-control" id="editListingLocation" required>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Fuel Type</label>
+                <input type="text" class="form-control" id="editListingFuelType">
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Transmission</label>
+                <input type="text" class="form-control" id="editListingTransmissionType">
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Owners</label>
+                <input type="text" class="form-control" id="editListingOwners">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Headline</label>
+                <input type="text" class="form-control" id="editListingHeadline">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Summary</label>
+                <input type="text" class="form-control" id="editListingSummary">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Insurance Validity</label>
+                <input type="text" class="form-control" id="editListingInsuranceValidity">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Airbags</label>
+                <input type="text" class="form-control" id="editListingAirbags">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Seller Type</label>
+                <select class="form-select" id="editListingSellerType">
+                  <option value="Individual">Individual</option>
+                  <option value="Dealer">Dealer</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Internal Notes</label>
+                <textarea class="form-control" id="editListingNotes" rows="3"></textarea>
+              </div>
             </div>
-            <div class="mb-3">
-              <label class="form-label">Price (₹)</label>
-              <input type="number" class="form-control" id="editListingPrice">
+
+            <div class="border rounded p-3 mb-3">
+              <h6 class="mb-3">Seller Details</h6>
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <label class="form-label">Seller Name</label>
+                  <input type="text" class="form-control" id="editListingSellerName" required>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Seller Mobile</label>
+                  <input type="text" class="form-control" id="editListingSellerMobile" required>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Seller Email</label>
+                  <input type="email" class="form-control" id="editListingSellerEmail">
+                </div>
+              </div>
             </div>
-            <div class="mb-3">
-              <label class="form-label">Kilometers</label>
-              <input type="number" class="form-control" id="editListingKm">
+
+            <div class="border rounded p-3 mb-3">
+              <h6 class="mb-3">Vehicle Features</h6>
+              <div class="row g-3">
+                <div class="col-md-4 form-check ms-2">
+                  <input class="form-check-input" type="checkbox" id="editListingAccidentalHistory">
+                  <label class="form-check-label" for="editListingAccidentalHistory">Accidental History</label>
+                </div>
+                <div class="col-md-4 form-check ms-2">
+                  <input class="form-check-input" type="checkbox" id="editListingWarrantyAvailable">
+                  <label class="form-check-label" for="editListingWarrantyAvailable">Warranty Available</label>
+                </div>
+                <div class="col-md-4 form-check ms-2">
+                  <input class="form-check-input" type="checkbox" id="editListingSpareKeyAvailable">
+                  <label class="form-check-label" for="editListingSpareKeyAvailable">Spare Key Available</label>
+                </div>
+                <div class="col-md-4 form-check ms-2">
+                  <input class="form-check-input" type="checkbox" id="editListingCruiseControl">
+                  <label class="form-check-label" for="editListingCruiseControl">Cruise Control</label>
+                </div>
+                <div class="col-md-4 form-check ms-2">
+                  <input class="form-check-input" type="checkbox" id="editListingParkingAssistant">
+                  <label class="form-check-label" for="editListingParkingAssistant">Parking Assistant</label>
+                </div>
+                <div class="col-md-4 form-check ms-2">
+                  <input class="form-check-input" type="checkbox" id="editListingAudioSystemWorking">
+                  <label class="form-check-label" for="editListingAudioSystemWorking">Audio System Working</label>
+                </div>
+                <div class="col-md-4 form-check ms-2">
+                  <input class="form-check-input" type="checkbox" id="editListingAbs">
+                  <label class="form-check-label" for="editListingAbs">ABS</label>
+                </div>
+                <div class="col-md-4 form-check ms-2">
+                  <input class="form-check-input" type="checkbox" id="editListingSunroof">
+                  <label class="form-check-label" for="editListingSunroof">Sunroof</label>
+                </div>
+                <div class="col-md-4 form-check ms-2">
+                  <input class="form-check-input" type="checkbox" id="editListingServiceRecords">
+                  <label class="form-check-label" for="editListingServiceRecords">Service Records</label>
+                </div>
+              </div>
             </div>
-            <div class="mb-3">
-              <label class="form-label">Status</label>
-              <select class="form-select" id="editListingStatus">
-                <option value="pending">Pending Review</option>
-                <option value="approved">Approved</option>
-                <option value="rejected">Rejected</option>
-                <option value="sold">Sold</option>
-                <option value="reserved">Reserved</option>
-              </select>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Seller Name</label>
-              <input type="text" class="form-control" id="editListingSellerName">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Seller Mobile</label>
-              <input type="text" class="form-control" id="editListingSellerMobile">
+
+            <div class="border rounded p-3">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                  <h6 class="mb-1">Listing Gallery</h6>
+                  <p class="text-muted mb-0 small">Upload or replace each required image slot directly from the dashboard.</p>
+                </div>
+                <div class="d-flex gap-2 flex-wrap">
+                  <button type="button" class="btn btn-sm btn-outline-secondary" id="openAllListingPhotosBtn">Open All</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" id="copyListingPhotoUrlsBtn">Copy URLs</button>
+                  <button type="button" class="btn btn-sm btn-outline-danger" id="clearAllListingPhotosBtn">Clear All</button>
+                </div>
+              </div>
+              <div id="listingPhotoManager" class="row g-3"></div>
             </div>
           </div>
           <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger me-auto d-none" id="deleteListingBtn">Delete Listing</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
             <button type="submit" class="btn btn-primary">Save Changes</button>
           </div>
@@ -681,10 +826,11 @@
             </div>
             <div class="alert alert-info">
               <i class="bi bi-info-circle me-2"></i>
-              To regenerate PDF, the full inspection data needs to be submitted through the inspector form.
+              Metadata can be updated here. For full report content changes, open the full editor, update the saved inspection payload, and regenerate the PDF from there.
             </div>
           </div>
           <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary me-auto" id="openFullReportEditorBtn">Open Full Editor</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
             <button type="submit" class="btn btn-primary">Save Changes</button>
           </div>
@@ -720,7 +866,7 @@
             </div>
             <div class="alert alert-info mb-3">
               <i class="bi bi-info-circle me-2"></i>
-              This is the full saved inspection payload. Update the JSON carefully, save it, then regenerate the PDF when needed.
+              Use the structured sections below for normal report editing. The raw JSON editor remains available as an advanced override when you need exact payload control.
             </div>
             <div class="table-card mb-3 border">
               <div class="card-header d-flex justify-content-between align-items-center">
@@ -770,6 +916,22 @@
                 </div>
               </div>
             </div>
+            <div class="table-card mb-3 border">
+              <div class="card-header d-flex justify-content-between align-items-center gap-2 flex-wrap">
+                <span>Structured Report Editor</span>
+                <div class="d-flex gap-2 flex-wrap">
+                  <button type="button" class="btn btn-sm btn-outline-primary" id="syncStructuredFieldsBtn">
+                    <i class="bi bi-arrow-repeat me-1"></i>Apply Form To JSON
+                  </button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" id="reloadStructuredFieldsBtn">
+                    <i class="bi bi-layout-text-window-reverse me-1"></i>Reload Form From JSON
+                  </button>
+                </div>
+              </div>
+              <div class="card-body p-3">
+                <div class="accordion" id="structuredInspectionAccordion"></div>
+              </div>
+            </div>
             <div class="mb-3">
               <label class="form-label">Inspection Payload JSON</label>
               <textarea class="form-control font-monospace" id="editInspectionPayload" rows="20" spellcheck="false"></textarea>
@@ -802,6 +964,172 @@
     let inspectionsData = [];
     let leadsData = [];
     let reportsData = [];
+    const listingPhotoSlots = [
+      { key: 'exteriorFront', label: 'Exterior Front', required: true },
+      { key: 'exteriorBack', label: 'Exterior Back', required: true },
+      { key: 'exteriorLeft', label: 'Exterior Left', required: true },
+      { key: 'exteriorRight', label: 'Exterior Right', required: true },
+      { key: 'driverCabin', label: 'Driver Cabin', required: true },
+      { key: 'rearCabin', label: 'Rear Cabin', required: true },
+      { key: 'bootSpace', label: 'Boot Space', required: true },
+      { key: 'rcDocument', label: 'RC Document', required: false },
+      { key: 'cngPlate', label: 'CNG Plate', required: false }
+    ];
+    let activeListingPhotos = {};
+    let listingDraftUploadId = '';
+    let listingEditorMode = 'edit';
+    let selectedListingIds = new Set();
+    const structuredInspectionSections = [
+      {
+        id: 'inspectionBasics',
+        title: 'Inspection Basics',
+        fields: [
+          { path: 'inspection.id', label: 'Inspection ID' },
+          { path: 'inspection.date', label: 'Inspection Date', type: 'date' },
+          { path: 'inspection.location', label: 'Inspection Location' },
+          { path: 'inspection.inspector_name', label: 'Inspector Name' }
+        ]
+      },
+      {
+        id: 'reportMeta',
+        title: 'Report Meta',
+        fields: [
+          { path: 'report.title', label: 'Report Title' },
+          { path: 'report.tagline', label: 'Tagline' },
+          { path: 'report.subtagline', label: 'Subtagline' }
+        ]
+      },
+      {
+        id: 'vehicleDetails',
+        title: 'Vehicle Details',
+        fields: [
+          { path: 'vehicle.registration_number', label: 'Registration Number' },
+          { path: 'vehicle.manufacturing_date', label: 'Manufacturing Date', type: 'date' },
+          { path: 'vehicle.registration_date', label: 'Registration Date', type: 'date' },
+          { path: 'vehicle.insurance_validity', label: 'Insurance Validity', type: 'date' },
+          { path: 'vehicle.chassis_number', label: 'Chassis Number' },
+          { path: 'vehicle.engine_number', label: 'Engine Number' },
+          { path: 'vehicle.owner_name', label: 'Owner Name' },
+          { path: 'vehicle.make_model', label: 'Make + Model' },
+          { path: 'vehicle.variant', label: 'Variant' },
+          { path: 'vehicle.fuel_type', label: 'Fuel Type' },
+          { path: 'vehicle.owner_count', label: 'Owner Count' },
+          { path: 'vehicle.rc_type', label: 'RC Type' },
+          { path: 'vehicle.hypothecation', label: 'Hypothecation' },
+          { path: 'vehicle.cng.present', label: 'CNG Present' },
+          { path: 'vehicle.cng.fitment_type', label: 'CNG Fitment Type' },
+          { path: 'vehicle.cng.approval', label: 'CNG Approval' },
+          { path: 'vehicle.cng.leak', label: 'CNG Leak Status' }
+        ]
+      },
+      {
+        id: 'ratingsFlags',
+        title: 'Ratings, Flags, Comments',
+        fields: [
+          { path: 'ratings.overall', label: 'Overall Rating', type: 'number', min: 1, max: 5 },
+          { path: 'ratings.exterior', label: 'Exterior Rating', type: 'number', min: 1, max: 5 },
+          { path: 'ratings.interior', label: 'Interior Rating', type: 'number', min: 1, max: 5 },
+          { path: 'ratings.mechanical', label: 'Mechanical Rating', type: 'number', min: 1, max: 5 },
+          { path: 'ratings.tyres', label: 'Tyres Rating', type: 'number', min: 1, max: 5 },
+          { path: 'flags.major_accident', label: 'Major Accident' },
+          { path: 'flags.minor_accident', label: 'Minor Accident' },
+          { path: 'flags.flood_affected', label: 'Flood Affected' },
+          { path: 'flags.insurance_claimed', label: 'Insurance Claimed' },
+          { path: 'flags.mileage_tampered', label: 'Mileage Tampered' },
+          { path: 'flags.buyer_beware', label: 'Buyer Beware' },
+          { path: 'flags.chassis_damaged', label: 'Chassis Damaged' },
+          { path: 'flags.engine_issue', label: 'Engine Issue' },
+          { path: 'comments.major_comment', label: 'Major Comment', type: 'textarea' },
+          { path: 'comments.minor_comment', label: 'Minor Comment', type: 'textarea' },
+          { path: 'comments.flood_comment', label: 'Flood Comment', type: 'textarea' },
+          { path: 'comments.overall_comment', label: 'Overall Comment', type: 'textarea' }
+        ]
+      },
+      {
+        id: 'exteriorChecks',
+        title: 'Exterior Checks',
+        fields: [
+          { path: 'front.bonnet_condition', label: 'Bonnet Condition' },
+          { path: 'front.front_bumper_condition', label: 'Front Bumper Condition' },
+          { path: 'front.windshield_condition', label: 'Windshield Condition' },
+          { path: 'front.headlights_working', label: 'Headlights Working' },
+          { path: 'rhs.front_door_condition', label: 'RHS Front Door Condition' },
+          { path: 'rhs.rear_door_condition', label: 'RHS Rear Door Condition' },
+          { path: 'rhs.side_mirror_condition', label: 'RHS Mirror Condition' },
+          { path: 'lhs.front_door_condition', label: 'LHS Front Door Condition' },
+          { path: 'lhs.rear_door_condition', label: 'LHS Rear Door Condition' },
+          { path: 'rear.rear_bumper_condition', label: 'Rear Bumper Condition' },
+          { path: 'rear.tailgate_condition', label: 'Tailgate Condition' },
+          { path: 'roof.roof_condition', label: 'Roof Condition' },
+          { path: 'roof.sunroof_present', label: 'Sunroof Present' },
+          { path: 'roof.sunroof_condition', label: 'Sunroof Condition' }
+        ]
+      },
+      {
+        id: 'interiorChecks',
+        title: 'Interior & Boot',
+        fields: [
+          { path: 'interior_dashboard.dashboard_condition', label: 'Dashboard Condition' },
+          { path: 'interior_dashboard.ac_working', label: 'AC Working' },
+          { path: 'interior_dashboard.music_system_working', label: 'Music System Working' },
+          { path: 'interior_dashboard.odometer_reading', label: 'Odometer Reading' },
+          { path: 'interior_dashboard.odometer_genuine', label: 'Odometer Genuine' },
+          { path: 'interior_dashboard.warning_lights', label: 'Warning Lights' },
+          { path: 'seats.front_seats_condition', label: 'Front Seats Condition' },
+          { path: 'seats.rear_seats_condition', label: 'Rear Seats Condition' },
+          { path: 'seats.seat_belt_working', label: 'Seat Belt Working' },
+          { path: 'boot.boot_space_condition', label: 'Boot Space Condition' },
+          { path: 'boot.spare_wheel_present', label: 'Spare Wheel Present' },
+          { path: 'boot.toolkit_present', label: 'Toolkit Present' },
+          { path: 'boot.jack_present', label: 'Jack Present' }
+        ]
+      },
+      {
+        id: 'enginePerformance',
+        title: 'Engine & Performance',
+        fields: [
+          { path: 'engine.engine_condition', label: 'Engine Condition' },
+          { path: 'engine.oil_leak', label: 'Oil Leak' },
+          { path: 'engine.coolant_leak', label: 'Coolant Leak' },
+          { path: 'engine.engine_mounting', label: 'Engine Mounting' },
+          { path: 'engine.battery_condition', label: 'Battery Condition' },
+          { path: 'engine.radiator_condition', label: 'Radiator Condition' },
+          { path: 'engine.alternator_working', label: 'Alternator Working' },
+          { path: 'engine.starter_working', label: 'Starter Working' },
+          { path: 'performance.acceleration', label: 'Acceleration' },
+          { path: 'performance.braking', label: 'Braking' },
+          { path: 'performance.steering_response', label: 'Steering Response' },
+          { path: 'performance.suspension', label: 'Suspension' },
+          { path: 'performance.gear_shifting', label: 'Gear Shifting' },
+          { path: 'performance.clutch_operation', label: 'Clutch Operation' },
+          { path: 'performance.test_drive_km', label: 'Test Drive Distance' }
+        ]
+      },
+      {
+        id: 'structureTyresImages',
+        title: 'Structure, Tyres, Key Images',
+        fields: [
+          { path: 'structure.rhs_apron_condition', label: 'RHS Apron Condition' },
+          { path: 'structure.lhs_apron_condition', label: 'LHS Apron Condition' },
+          { path: 'structure.cowl_top_condition', label: 'Cowl Top Condition' },
+          { path: 'structure.firewall_condition', label: 'Firewall Condition' },
+          { path: 'structure.chassis_condition', label: 'Chassis Condition' },
+          { path: 'tyres.rhs_front.condition', label: 'RHS Front Tyre Condition' },
+          { path: 'tyres.rhs_front.tread_depth', label: 'RHS Front Tread Depth' },
+          { path: 'tyres.lhs_front.condition', label: 'LHS Front Tyre Condition' },
+          { path: 'tyres.lhs_front.tread_depth', label: 'LHS Front Tread Depth' },
+          { path: 'tyres.rhs_rear.condition', label: 'RHS Rear Tyre Condition' },
+          { path: 'tyres.lhs_rear.condition', label: 'LHS Rear Tyre Condition' },
+          { path: 'tyres.spare.condition', label: 'Spare Tyre Condition' },
+          { path: 'images.vehicle_front', label: 'Vehicle Front Image URL' },
+          { path: 'images.vehicle_rhs', label: 'Vehicle RHS Image URL' },
+          { path: 'images.vehicle_lhs', label: 'Vehicle LHS Image URL' },
+          { path: 'images.vehicle_rear', label: 'Vehicle Rear Image URL' },
+          { path: 'images.dashboard', label: 'Dashboard Image URL' },
+          { path: 'images.engine_compartment', label: 'Engine Bay Image URL' }
+        ]
+      }
+    ];
 
     // DOM Elements
     const loginContainer = document.getElementById('loginContainer');
@@ -985,6 +1313,100 @@
       if (!nextPayload.vehicle || typeof nextPayload.vehicle !== 'object') {
         nextPayload.vehicle = {};
       }
+      if (!nextPayload.report || typeof nextPayload.report !== 'object') {
+        nextPayload.report = {};
+      }
+      return nextPayload;
+    }
+
+    function getNestedValue(source, path) {
+      return String(path || '').split('.').reduce((acc, segment) => {
+        if (acc && typeof acc === 'object' && segment in acc) {
+          return acc[segment];
+        }
+        return undefined;
+      }, source);
+    }
+
+    function setNestedValue(target, path, value) {
+      const segments = String(path || '').split('.').filter(Boolean);
+      if (!segments.length) return;
+      let cursor = target;
+      segments.forEach((segment, index) => {
+        if (index === segments.length - 1) {
+          cursor[segment] = value;
+          return;
+        }
+        if (!cursor[segment] || typeof cursor[segment] !== 'object') {
+          cursor[segment] = {};
+        }
+        cursor = cursor[segment];
+      });
+    }
+
+    function structuredFieldId(path) {
+      return `structuredField_${String(path).replace(/[^a-zA-Z0-9]+/g, '__')}`;
+    }
+
+    function renderStructuredInspectionEditor() {
+      const container = document.getElementById('structuredInspectionAccordion');
+      if (!container) return;
+
+      container.innerHTML = structuredInspectionSections.map((section, index) => `
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading-${section.id}">
+            <button class="accordion-button ${index === 0 ? '' : 'collapsed'}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${section.id}" aria-expanded="${index === 0 ? 'true' : 'false'}" aria-controls="collapse-${section.id}">
+              ${escapeHtml(section.title)}
+            </button>
+          </h2>
+          <div id="collapse-${section.id}" class="accordion-collapse collapse ${index === 0 ? 'show' : ''}" aria-labelledby="heading-${section.id}" data-bs-parent="#structuredInspectionAccordion">
+            <div class="accordion-body">
+              <div class="row g-3">
+                ${section.fields.map((field) => {
+                  const inputId = structuredFieldId(field.path);
+                  const isTextarea = field.type === 'textarea';
+                  const inputType = field.type === 'number' ? 'number' : field.type === 'date' ? 'date' : 'text';
+                  return `
+                    <div class="${isTextarea ? 'col-12' : 'col-md-4'}">
+                      <label class="form-label" for="${inputId}">${escapeHtml(field.label)}</label>
+                      ${isTextarea
+                        ? `<textarea class="form-control" id="${inputId}" rows="3"></textarea>`
+                        : `<input type="${inputType}" class="form-control" id="${inputId}" ${field.min !== undefined ? `min="${field.min}"` : ''} ${field.max !== undefined ? `max="${field.max}"` : ''}>`}
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function populateStructuredFieldsFromPayload(payload) {
+      const nextPayload = ensureInspectionPayloadShape(payload);
+      structuredInspectionSections.forEach((section) => {
+        section.fields.forEach((field) => {
+          const input = document.getElementById(structuredFieldId(field.path));
+          if (!input) return;
+          const value = getNestedValue(nextPayload, field.path);
+          input.value = value === undefined || value === null ? '' : value;
+        });
+      });
+    }
+
+    function applyStructuredFieldsToPayload(payload) {
+      const nextPayload = ensureInspectionPayloadShape(payload);
+      structuredInspectionSections.forEach((section) => {
+        section.fields.forEach((field) => {
+          const input = document.getElementById(structuredFieldId(field.path));
+          if (!input) return;
+          let value = input.value;
+          if (field.type === 'number') {
+            value = value === '' ? '' : Number(value);
+          }
+          setNestedValue(nextPayload, field.path, value);
+        });
+      });
       return nextPayload;
     }
 
@@ -1145,6 +1567,259 @@
       hideLoading();
     }
 
+    function getListingPhotoUrl(photo) {
+      if (!photo) return '';
+      if (typeof photo === 'string') return photo;
+      return photo.publicUrl || photo.url || (photo.key ? `https://inspectionwale-car-listings.s3.amazonaws.com/${photo.key}` : '');
+    }
+
+    function renderListingPhotoManager() {
+      const container = document.getElementById('listingPhotoManager');
+      if (!container) return;
+
+      container.innerHTML = listingPhotoSlots.map((slotConfig) => {
+        const photo = activeListingPhotos[slotConfig.key];
+        const photoUrl = getListingPhotoUrl(photo);
+        return `
+          <div class="col-md-4">
+            <div class="border rounded p-3 h-100 bg-light">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <div>
+                  <strong>${escapeHtml(slotConfig.label)}</strong>
+                  ${slotConfig.required ? '<span class="badge bg-primary ms-2">Required</span>' : '<span class="badge bg-light text-muted border ms-2">Optional</span>'}
+                </div>
+                ${photoUrl ? `<button type="button" class="btn btn-sm btn-outline-danger" onclick="removeListingPhotoSlot('${slotConfig.key}')"><i class="bi bi-trash"></i></button>` : ''}
+              </div>
+              <div class="border rounded bg-white d-flex align-items-center justify-content-center overflow-hidden mb-3" style="height: 160px;">
+                ${photoUrl
+                  ? `<img src="${escapeHtml(photoUrl)}" alt="${escapeHtml(slotConfig.label)}" style="max-width: 100%; max-height: 100%; object-fit: cover;">`
+                  : '<span class="text-muted small">No image uploaded</span>'}
+              </div>
+              <div class="small text-muted mb-2">${photo?.originalName ? escapeHtml(photo.originalName) : 'Upload a JPG, PNG, WEBP or PDF for this slot.'}</div>
+              <input class="form-control form-control-sm" type="file" accept="image/*,.pdf" onchange="handleListingPhotoSelection('${slotConfig.key}', this)">
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function resetListingFormState() {
+      activeListingPhotos = {};
+      listingDraftUploadId = `admin_${Date.now()}`;
+      document.getElementById('editListingForm').reset();
+      document.getElementById('editListingForm').classList.remove('was-validated');
+      document.getElementById('editListingId').value = '';
+      document.getElementById('editListingModalTitleText').textContent = 'Add Listing';
+      document.getElementById('deleteListingBtn').classList.add('d-none');
+      renderListingPhotoManager();
+    }
+
+    function populateListingForm(listing) {
+      const car = listing.car || {};
+      const seller = listing.seller || {};
+      const display = listing.display || {};
+      activeListingPhotos = Object.assign({}, listing.photos || {});
+      listingDraftUploadId = listing.listingId || `admin_${Date.now()}`;
+
+      document.getElementById('editListingId').value = listing.listingId || '';
+      document.getElementById('editListingModalTitleText').textContent = 'Edit Listing';
+      document.getElementById('deleteListingBtn').classList.remove('d-none');
+      document.getElementById('editListingMake').value = car.make || listing.brand || '';
+      document.getElementById('editListingModel').value = car.model || listing.model || '';
+      document.getElementById('editListingEdition').value = car.edition || '';
+      document.getElementById('editListingVariant').value = car.variant || '';
+      document.getElementById('editListingYear').value = car.registrationYear || listing.year || '';
+      document.getElementById('editListingPrice').value = car.expectedPrice || listing.askingPrice || listing.price || '';
+      document.getElementById('editListingKm').value = car.kmsDriven || listing.kilometers || listing.km || '';
+      document.getElementById('editListingStatus').value = listing.status || 'pending';
+      document.getElementById('editListingLocation').value = car.location || car.city || display.location || listing.location || '';
+      document.getElementById('editListingFuelType').value = car.fuelType || '';
+      document.getElementById('editListingTransmissionType').value = car.transmissionType || '';
+      document.getElementById('editListingOwners').value = car.numberOfOwners || '';
+      document.getElementById('editListingHeadline').value = listing.headline || `${car.make || ''} ${car.model || ''}`.trim();
+      document.getElementById('editListingSummary').value = display.summary || '';
+      document.getElementById('editListingInsuranceValidity').value = car.insuranceValidity || '';
+      document.getElementById('editListingAirbags').value = car.airbags || '';
+      document.getElementById('editListingSellerType').value = seller.type || listing.sellerType || 'Individual';
+      document.getElementById('editListingNotes').value = listing.notes || '';
+      document.getElementById('editListingSellerName').value = seller.name || listing.sellerName || '';
+      document.getElementById('editListingSellerMobile').value = seller.mobile || listing.sellerMobile || '';
+      document.getElementById('editListingSellerEmail').value = seller.email || listing.sellerEmail || '';
+      document.getElementById('editListingAccidentalHistory').checked = !!car.accidentalHistory;
+      document.getElementById('editListingWarrantyAvailable').checked = !!car.warrantyAvailable;
+      document.getElementById('editListingSpareKeyAvailable').checked = !!car.spareKeyAvailable;
+      document.getElementById('editListingCruiseControl').checked = !!car.cruiseControl;
+      document.getElementById('editListingParkingAssistant').checked = !!car.parkingAssistant;
+      document.getElementById('editListingAudioSystemWorking').checked = !!car.audioSystemWorking;
+      document.getElementById('editListingAbs').checked = !!car.abs;
+      document.getElementById('editListingSunroof').checked = !!car.sunroof;
+      document.getElementById('editListingServiceRecords').checked = !!car.serviceRecords;
+      renderListingPhotoManager();
+    }
+
+    function openCreateListing() {
+      listingEditorMode = 'create';
+      resetListingFormState();
+      new bootstrap.Modal(document.getElementById('editListingModal')).show();
+    }
+
+    async function handleListingPhotoSelection(slot, input) {
+      const file = input && input.files && input.files[0];
+      if (!file) return;
+
+      showLoading();
+      try {
+        const response = await apiFetch('/admin/listings/uploads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            listingId: document.getElementById('editListingId').value || listingDraftUploadId,
+            files: [{ slot, contentType: file.type, originalName: file.name }]
+          })
+        });
+        const data = await response.json();
+        if (!response.ok || !data.ok || !data.uploads || !data.uploads.length) {
+          throw new Error(data.error || 'Failed to request upload');
+        }
+
+        const upload = data.uploads[0];
+        listingDraftUploadId = data.listingId || listingDraftUploadId;
+
+        const uploadResult = await fetch(upload.uploadUrl, {
+          method: 'PUT',
+          headers: { 'Content-Type': upload.contentType || file.type || 'application/octet-stream' },
+          body: file
+        });
+        if (!uploadResult.ok) {
+          throw new Error('Failed to upload file');
+        }
+
+        activeListingPhotos[slot] = {
+          key: upload.key,
+          contentType: upload.contentType || file.type,
+          originalName: file.name,
+          publicUrl: upload.publicUrl,
+          url: upload.publicUrl,
+          uploadedAt: new Date().toISOString()
+        };
+        renderListingPhotoManager();
+      } catch (error) {
+        console.error('Failed to upload listing photo:', error);
+        alert(error.message || 'Failed to upload image');
+      }
+      hideLoading();
+      if (input) input.value = '';
+    }
+
+    function removeListingPhotoSlot(slot) {
+      delete activeListingPhotos[slot];
+      renderListingPhotoManager();
+    }
+
+    function openAllListingPhotos() {
+      const urls = Object.values(activeListingPhotos).map(getListingPhotoUrl).filter(Boolean);
+      if (!urls.length) {
+        alert('No uploaded gallery images found.');
+        return;
+      }
+      urls.forEach((url) => window.open(url, '_blank', 'noopener'));
+    }
+
+    async function copyListingPhotoUrls() {
+      const urls = Object.entries(activeListingPhotos)
+        .map(([slot, photo]) => `${slot}: ${getListingPhotoUrl(photo)}`)
+        .filter((entry) => !entry.endsWith(': '));
+
+      if (!urls.length) {
+        alert('No uploaded gallery images found.');
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(urls.join('\n'));
+        alert('Gallery URLs copied to clipboard.');
+      } catch (error) {
+        console.error('Failed to copy gallery URLs:', error);
+        alert('Unable to copy gallery URLs.');
+      }
+    }
+
+    function clearAllListingPhotos() {
+      if (!Object.keys(activeListingPhotos).length) {
+        alert('No gallery images to clear.');
+        return;
+      }
+      if (!confirm('Clear all gallery slots for this listing?')) {
+        return;
+      }
+      activeListingPhotos = {};
+      renderListingPhotoManager();
+    }
+
+    function collectListingPayload() {
+      const car = {
+        make: document.getElementById('editListingMake').value.trim(),
+        model: document.getElementById('editListingModel').value.trim(),
+        edition: document.getElementById('editListingEdition').value.trim(),
+        variant: document.getElementById('editListingVariant').value.trim(),
+        registrationYear: document.getElementById('editListingYear').value.trim(),
+        kmsDriven: document.getElementById('editListingKm').value.trim(),
+        expectedPrice: document.getElementById('editListingPrice').value.trim(),
+        location: document.getElementById('editListingLocation').value.trim(),
+        city: document.getElementById('editListingLocation').value.trim(),
+        fuelType: document.getElementById('editListingFuelType').value.trim(),
+        numberOfOwners: document.getElementById('editListingOwners').value.trim(),
+        insuranceValidity: document.getElementById('editListingInsuranceValidity').value.trim(),
+        transmissionType: document.getElementById('editListingTransmissionType').value.trim(),
+        airbags: document.getElementById('editListingAirbags').value.trim(),
+        accidentalHistory: document.getElementById('editListingAccidentalHistory').checked,
+        warrantyAvailable: document.getElementById('editListingWarrantyAvailable').checked,
+        spareKeyAvailable: document.getElementById('editListingSpareKeyAvailable').checked,
+        cruiseControl: document.getElementById('editListingCruiseControl').checked,
+        parkingAssistant: document.getElementById('editListingParkingAssistant').checked,
+        audioSystemWorking: document.getElementById('editListingAudioSystemWorking').checked,
+        abs: document.getElementById('editListingAbs').checked,
+        sunroof: document.getElementById('editListingSunroof').checked,
+        serviceRecords: document.getElementById('editListingServiceRecords').checked
+      };
+
+      const seller = {
+        name: document.getElementById('editListingSellerName').value.trim(),
+        mobile: document.getElementById('editListingSellerMobile').value.trim(),
+        email: document.getElementById('editListingSellerEmail').value.trim(),
+        type: document.getElementById('editListingSellerType').value
+      };
+
+      const headline = document.getElementById('editListingHeadline').value.trim() || `${car.make} ${car.model} ${car.edition}`.trim();
+      const summary = document.getElementById('editListingSummary').value.trim() || [car.fuelType, car.transmissionType, car.numberOfOwners ? `${car.numberOfOwners} owner` : '', car.location].filter(Boolean).join(' • ');
+
+      return {
+        listingId: document.getElementById('editListingId').value || listingDraftUploadId,
+        status: document.getElementById('editListingStatus').value,
+        seller,
+        sellerName: seller.name,
+        sellerMobile: seller.mobile,
+        sellerEmail: seller.email,
+        sellerType: seller.type,
+        car,
+        brand: car.make,
+        model: car.model,
+        year: car.registrationYear,
+        askingPrice: car.expectedPrice,
+        kilometers: car.kmsDriven,
+        location: car.location,
+        carName: `${car.make} ${car.model} ${car.edition}`.trim(),
+        headline,
+        display: {
+          location: car.location,
+          summary
+        },
+        summary,
+        notes: document.getElementById('editListingNotes').value.trim(),
+        photos: activeListingPhotos
+      };
+    }
+
     function renderListingsTable(filter = '') {
       const tbody = document.getElementById('listingsTableBody');
       let items = listingsData;
@@ -1154,7 +1829,9 @@
         items = items.filter(l => 
           (l.carName || '').toLowerCase().includes(filter) ||
           (l.listingId || '').toLowerCase().includes(filter) ||
-          (l.seller?.name || '').toLowerCase().includes(filter)
+          (l.seller?.name || '').toLowerCase().includes(filter) ||
+          (l.location || l.display?.location || '').toLowerCase().includes(filter) ||
+          (l.status || '').toLowerCase().includes(filter)
         );
       }
 
@@ -1165,6 +1842,7 @@
 
       tbody.innerHTML = items.map(l => `
         <tr>
+          <td><input type="checkbox" class="form-check-input" ${selectedListingIds.has(l.listingId) ? 'checked' : ''} onchange="toggleListingSelection('${l.listingId}', this.checked)"></td>
           <td><small>${(l.listingId || '').slice(0, 8)}...</small></td>
           <td>${l.carName || l.brand || '-'} ${l.model || ''}</td>
           <td>${l.seller?.name || l.sellerName || '-'}</td>
@@ -1175,9 +1853,190 @@
             <button class="btn btn-sm btn-outline-primary action-btn" onclick="editListing('${l.listingId}')">
               <i class="bi bi-pencil"></i>
             </button>
+            <button class="btn btn-sm btn-outline-info action-btn" onclick="duplicateListing('${l.listingId}')">
+              <i class="bi bi-copy"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger action-btn" onclick="deleteListing('${l.listingId}')">
+              <i class="bi bi-trash"></i>
+            </button>
           </td>
         </tr>
       `).join('');
+
+      updateListingBulkControls();
+    }
+
+    function updateListingBulkControls() {
+      const filteredVisibleIds = Array.from(document.querySelectorAll('#listingsTableBody input.form-check-input')).map((input) => {
+        const row = input.closest('tr');
+        if (!row) return '';
+        const editButton = row.querySelector('button[onclick^="editListing("]');
+        if (!editButton) return '';
+        const match = editButton.getAttribute('onclick').match(/editListing\('(.+)'\)/);
+        return match ? match[1] : '';
+      }).filter(Boolean);
+      const selectedCount = filteredVisibleIds.filter((id) => selectedListingIds.has(id)).length;
+      const selectAll = document.getElementById('listingsSelectAllCheckbox');
+      if (selectAll) {
+        selectAll.checked = filteredVisibleIds.length > 0 && selectedCount === filteredVisibleIds.length;
+        selectAll.indeterminate = selectedCount > 0 && selectedCount < filteredVisibleIds.length;
+      }
+    }
+
+    function toggleListingSelection(listingId, checked) {
+      if (checked) {
+        selectedListingIds.add(listingId);
+      } else {
+        selectedListingIds.delete(listingId);
+      }
+      updateListingBulkControls();
+    }
+
+    function setVisibleListingSelection(checked) {
+      Array.from(document.querySelectorAll('#listingsTableBody input.form-check-input')).forEach((input) => {
+        const row = input.closest('tr');
+        const editButton = row ? row.querySelector('button[onclick^="editListing("]') : null;
+        const match = editButton ? editButton.getAttribute('onclick').match(/editListing\('(.+)'\)/) : null;
+        const listingId = match ? match[1] : '';
+        if (!listingId) return;
+        input.checked = checked;
+        if (checked) {
+          selectedListingIds.add(listingId);
+        } else {
+          selectedListingIds.delete(listingId);
+        }
+      });
+      updateListingBulkControls();
+    }
+
+    function getSelectedListings() {
+      return listingsData.filter((listing) => selectedListingIds.has(listing.listingId));
+    }
+
+    async function bulkUpdateListingStatus(status) {
+      const selected = getSelectedListings();
+      if (!selected.length) {
+        alert('Select at least one listing first.');
+        return;
+      }
+
+      showLoading();
+      try {
+        await Promise.all(selected.map((listing) => apiFetch(`/admin/listings/${listing.listingId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status })
+        }).then(async (response) => {
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok || !data.ok) {
+            throw new Error(data.error || `Failed to update ${listing.listingId}`);
+          }
+        })));
+        selectedListingIds.clear();
+        await loadListings();
+        alert(`Updated ${selected.length} listing(s).`);
+      } catch (error) {
+        console.error('Failed bulk update:', error);
+        alert(error.message || 'Failed to update selected listings');
+      }
+      hideLoading();
+    }
+
+    async function duplicateListing(listingId) {
+      const listing = listingsData.find((item) => item.listingId === listingId);
+      if (!listing) return;
+
+      showLoading();
+      try {
+        const copyPayload = {
+          ...listing,
+          listingId: '',
+          submissionId: '',
+          status: 'pending',
+          headline: `${listing.headline || listing.carName || 'Listing'} Copy`
+        };
+        const response = await apiFetch('/admin/listings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(copyPayload)
+        });
+        const data = await response.json();
+        if (!response.ok || !data.ok) {
+          throw new Error(data.error || 'Failed to duplicate listing');
+        }
+        await loadListings();
+        alert('Listing duplicated successfully.');
+      } catch (error) {
+        console.error('Failed to duplicate listing:', error);
+        alert(error.message || 'Failed to duplicate listing');
+      }
+      hideLoading();
+    }
+
+    async function bulkDuplicateListings() {
+      const selected = getSelectedListings();
+      if (!selected.length) {
+        alert('Select at least one listing first.');
+        return;
+      }
+
+      showLoading();
+      try {
+        for (const listing of selected) {
+          const response = await apiFetch('/admin/listings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              ...listing,
+              listingId: '',
+              submissionId: '',
+              status: 'pending',
+              headline: `${listing.headline || listing.carName || 'Listing'} Copy`
+            })
+          });
+          const data = await response.json();
+          if (!response.ok || !data.ok) {
+            throw new Error(data.error || `Failed to duplicate ${listing.listingId}`);
+          }
+        }
+        selectedListingIds.clear();
+        await loadListings();
+        alert(`Duplicated ${selected.length} listing(s).`);
+      } catch (error) {
+        console.error('Failed bulk duplicate:', error);
+        alert(error.message || 'Failed to duplicate selected listings');
+      }
+      hideLoading();
+    }
+
+    async function bulkDeleteListings() {
+      const selected = getSelectedListings();
+      if (!selected.length) {
+        alert('Select at least one listing first.');
+        return;
+      }
+
+      if (!confirm(`Delete ${selected.length} selected listing(s)? This will remove them from the marketplace.`)) {
+        return;
+      }
+
+      showLoading();
+      try {
+        for (const listing of selected) {
+          const response = await apiFetch(`/admin/listings/${listing.listingId}`, { method: 'DELETE' });
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok || !data.ok) {
+            throw new Error(data.error || `Failed to delete ${listing.listingId}`);
+          }
+        }
+        selectedListingIds.clear();
+        await loadListings();
+        alert(`Deleted ${selected.length} listing(s).`);
+      } catch (error) {
+        console.error('Failed bulk delete:', error);
+        alert(error.message || 'Failed to delete selected listings');
+      }
+      hideLoading();
     }
 
     function updateListingStats() {
@@ -1194,49 +2053,99 @@
     function editListing(listingId) {
       const listing = listingsData.find(l => l.listingId === listingId);
       if (!listing) return;
-
-      document.getElementById('editListingId').value = listing.listingId;
-      document.getElementById('editListingName').value = listing.carName || `${listing.brand || ''} ${listing.model || ''}`.trim();
-      document.getElementById('editListingYear').value = listing.year || '';
-      document.getElementById('editListingPrice').value = listing.askingPrice || listing.price || '';
-      document.getElementById('editListingKm').value = listing.kilometers || listing.km || '';
-      document.getElementById('editListingStatus').value = listing.status || 'pending';
-      document.getElementById('editListingSellerName').value = listing.seller?.name || listing.sellerName || '';
-      document.getElementById('editListingSellerMobile').value = listing.seller?.mobile || listing.sellerMobile || '';
-
+      listingEditorMode = 'edit';
+      document.getElementById('editListingForm').classList.remove('was-validated');
+      populateListingForm(listing);
       new bootstrap.Modal(document.getElementById('editListingModal')).show();
+    }
+
+    async function deleteListing(listingId) {
+      if (!confirm('Delete this listing? This will remove the car from the marketplace and delete its stored gallery assets.')) {
+        return;
+      }
+
+      showLoading();
+      try {
+        const response = await apiFetch(`/admin/listings/${listingId}`, { method: 'DELETE' });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data.ok) {
+          throw new Error(data.error || 'Failed to delete listing');
+        }
+
+        const modalEl = document.getElementById('editListingModal');
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        if (modal && document.getElementById('editListingId').value === listingId) {
+          modal.hide();
+        }
+        await loadListings();
+        alert('Listing deleted successfully!');
+      } catch (error) {
+        console.error('Failed to delete listing:', error);
+        alert(error.message || 'Failed to delete listing');
+      }
+      hideLoading();
     }
 
     document.getElementById('editListingForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+      const form = document.getElementById('editListingForm');
+      if (!form.checkValidity()) {
+        form.classList.add('was-validated');
+        return;
+      }
+
       showLoading();
 
-      const listingId = document.getElementById('editListingId').value;
-      const updates = {
-        carName: document.getElementById('editListingName').value,
-        year: document.getElementById('editListingYear').value,
-        askingPrice: document.getElementById('editListingPrice').value,
-        kilometers: document.getElementById('editListingKm').value,
-        status: document.getElementById('editListingStatus').value,
-        sellerName: document.getElementById('editListingSellerName').value,
-        sellerMobile: document.getElementById('editListingSellerMobile').value
-      };
-
       try {
-        await apiFetch(`/admin/listings/${listingId}`, {
-          method: 'PUT',
+        const listingId = document.getElementById('editListingId').value;
+        const payload = collectListingPayload();
+        const isCreate = !listingId;
+        const response = await apiFetch(isCreate ? '/admin/listings' : `/admin/listings/${listingId}`, {
+          method: isCreate ? 'POST' : 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(updates)
+          body: JSON.stringify(payload)
         });
+        const data = await response.json();
+        if (!response.ok || !data.ok) {
+          throw new Error(data.error || `Failed to ${isCreate ? 'create' : 'update'} listing`);
+        }
+
         bootstrap.Modal.getInstance(document.getElementById('editListingModal')).hide();
         await loadListings();
-        alert('Listing updated successfully!');
+        alert(`Listing ${isCreate ? 'created' : 'updated'} successfully!`);
       } catch (error) {
-        console.error('Failed to update listing:', error);
-        alert('Failed to update listing');
+        console.error('Failed to save listing:', error);
+        alert(error.message || 'Failed to save listing');
       }
       hideLoading();
     });
+
+    document.getElementById('deleteListingBtn').addEventListener('click', () => {
+      const listingId = document.getElementById('editListingId').value;
+      if (listingId) {
+        deleteListing(listingId);
+      }
+    });
+
+    document.getElementById('openAllListingPhotosBtn').addEventListener('click', openAllListingPhotos);
+    document.getElementById('copyListingPhotoUrlsBtn').addEventListener('click', copyListingPhotoUrls);
+    document.getElementById('clearAllListingPhotosBtn').addEventListener('click', clearAllListingPhotos);
+
+    document.getElementById('listingsSelectAllCheckbox').addEventListener('change', (e) => {
+      setVisibleListingSelection(e.target.checked);
+    });
+
+    document.getElementById('bulkSelectAllListingsBtn').addEventListener('click', () => {
+      const selectAll = document.getElementById('listingsSelectAllCheckbox');
+      const shouldSelect = !(selectAll && selectAll.checked);
+      setVisibleListingSelection(shouldSelect);
+    });
+
+    document.getElementById('bulkMarkSoldBtn').addEventListener('click', () => bulkUpdateListingStatus('sold'));
+    document.getElementById('bulkMarkUnsoldBtn').addEventListener('click', () => bulkUpdateListingStatus('approved'));
+    document.getElementById('bulkArchiveBtn').addEventListener('click', () => bulkUpdateListingStatus('archived'));
+    document.getElementById('bulkDuplicateBtn').addEventListener('click', bulkDuplicateListings);
+    document.getElementById('bulkDeleteBtn').addEventListener('click', bulkDeleteListings);
 
     // ===================== INSPECTIONS =====================
     async function loadInspections() {
@@ -1324,6 +2233,7 @@
         document.getElementById('editInspectionInspector').value = summary.inspectorName || '';
         writeInspectionPayloadText(item.data || {});
         populateQuickFieldsFromPayload(item.data || {});
+        populateStructuredFieldsFromPayload(item.data || {});
         document.getElementById('inspectionModalMeta').textContent = `Created: ${formatDate(item.createdAt)} | Updated: ${formatDate(item.updatedAt)}`;
 
         new bootstrap.Modal(document.getElementById('editInspectionModal')).show();
@@ -1345,6 +2255,7 @@
       }
 
       parsedPayload = applyQuickFieldsToPayload(parsedPayload);
+  parsedPayload = applyStructuredFieldsToPayload(parsedPayload);
       parsedPayload.inspection.id = inspectionId;
       writeInspectionPayloadText(parsedPayload);
 
@@ -1438,6 +2349,25 @@
         writeInspectionPayloadText(payload);
       } catch (error) {
         alert('Inspection payload must be valid JSON before quick edits can be applied.');
+      }
+    });
+
+    document.getElementById('syncStructuredFieldsBtn').addEventListener('click', () => {
+      try {
+        const payload = applyStructuredFieldsToPayload(applyQuickFieldsToPayload(parseInspectionPayloadText()));
+        writeInspectionPayloadText(payload);
+      } catch (error) {
+        alert('Inspection payload must be valid JSON before structured edits can be applied.');
+      }
+    });
+
+    document.getElementById('reloadStructuredFieldsBtn').addEventListener('click', () => {
+      try {
+        const payload = parseInspectionPayloadText();
+        populateQuickFieldsFromPayload(payload);
+        populateStructuredFieldsFromPayload(payload);
+      } catch (error) {
+        alert('Inspection payload must be valid JSON before the form can be reloaded.');
       }
     });
 
@@ -1554,6 +2484,9 @@
             ${r.reportUrl ? `<a href="${r.reportUrl}" target="_blank" class="btn btn-sm btn-outline-success"><i class="bi bi-file-pdf"></i></a>` : '<span class="text-muted">-</span>'}
           </td>
           <td>
+            <button class="btn btn-sm btn-outline-secondary action-btn" onclick="openFullReportEditor('${encodeURIComponent(r.reportId || '')}')" title="Open full editor">
+              <i class="bi bi-pencil-square"></i>
+            </button>
             <button class="btn btn-sm btn-outline-primary action-btn" onclick="editReport('${r.reportId}', '${r.timestamp || ''}')">
               <i class="bi bi-pencil"></i>
             </button>
@@ -1585,6 +2518,23 @@
       new bootstrap.Modal(document.getElementById('editReportModal')).show();
     }
 
+    function openFullReportEditor(encodedReportId) {
+      const reportId = decodeURIComponent(encodedReportId || '');
+      if (!reportId) return;
+
+      const reportModal = bootstrap.Modal.getInstance(document.getElementById('editReportModal'));
+      if (reportModal) {
+        reportModal.hide();
+      }
+
+      const tabLink = document.querySelector('.nav-link[data-tab="inspections"]');
+      if (tabLink) {
+        tabLink.click();
+      }
+
+      editInspection(encodeURIComponent(reportId));
+    }
+
     document.getElementById('editReportForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       showLoading();
@@ -1613,6 +2563,15 @@
       }
       hideLoading();
     });
+
+    document.getElementById('openFullReportEditorBtn').addEventListener('click', () => {
+      const reportId = document.getElementById('editReportId').value;
+      if (reportId) {
+        openFullReportEditor(encodeURIComponent(reportId));
+      }
+    });
+
+    renderStructuredInspectionEditor();
 
     // Initialize
     checkSession();

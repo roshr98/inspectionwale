@@ -3,8 +3,12 @@ const {
   DynamoDBDocumentClient, 
   ScanCommand, 
   GetCommand, 
-  UpdateCommand 
+  UpdateCommand,
+  PutCommand,
+  DeleteCommand
 } = require('@aws-sdk/lib-dynamodb');
+const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const crypto = require('crypto');
 
 const REGION = process.env.AWS_REGION || 'ap-south-1';
@@ -17,6 +21,7 @@ const ddbClient = new DynamoDBClient({ region: REGION });
 const docClient = DynamoDBDocumentClient.from(ddbClient, { 
   marshallOptions: { convertEmptyValues: true, removeUndefinedValues: true } 
 });
+const s3Client = new S3Client({ region: REGION });
 
 // Table names from environment
 const PAYMENTS_TABLE = process.env.PAYMENTS_TABLE || 'InspectionPayments';
@@ -24,9 +29,22 @@ const LISTINGS_TABLE = process.env.LISTINGS_TABLE || 'CarListings';
 const REPORTS_TABLE = process.env.REPORTS_TABLE || 'inspectionwale-inspections';
 const INSPECTIONS_TABLE = process.env.INSPECTIONS_TABLE || REPORTS_TABLE;
 const LEADS_TABLE = process.env.LEADS_TABLE || process.env.QUOTES_TABLE || process.env.STORAGE_QUOTES_NAME;
+const LISTINGS_BUCKET = process.env.CAR_LISTINGS_BUCKET || process.env.LISTINGS_BUCKET || 'inspectionwale-car-listings';
+const LISTINGS_CDN_BASE = trimTrailingSlash(process.env.CAR_LISTINGS_CDN || process.env.LISTINGS_CDN_URL || '');
 const REPORT_GENERATOR_URL = process.env.REPORT_GENERATOR_URL || 'https://mfy5ajp4e5lggmqypfbco34dd40ugreq.lambda-url.us-east-1.on.aws/';
 const LATEST_TS = 'LATEST';
 const INSPECTION_INDEX_PK = 'INSPECTION_INDEX';
+const LISTING_PHOTO_SLOTS = [
+  'exteriorFront',
+  'exteriorBack',
+  'exteriorLeft',
+  'exteriorRight',
+  'driverCabin',
+  'rearCabin',
+  'bootSpace',
+  'rcDocument',
+  'cngPlate'
+];
 
 function response(statusCode, body) {
   return {
@@ -73,6 +91,222 @@ function safeJsonParse(input, fallback = null) {
   } catch (_error) {
     return fallback;
   }
+}
+
+function trimTrailingSlash(value) {
+  if (!value) return '';
+  return value.endsWith('/') ? value.slice(0, -1) : value;
+}
+
+function normaliseString(value) {
+  return (value === undefined || value === null ? '' : String(value)).trim();
+}
+
+function toBoolean(value) {
+  return value === true || value === 'true' || value === '1' || value === 1;
+}
+
+function guessExtension(contentType = '') {
+  const map = {
+    'image/jpeg': 'jpg',
+    'image/png': 'png',
+    'image/webp': 'webp',
+    'image/heic': 'heic',
+    'image/heif': 'heif',
+    'image/avif': 'avif',
+    'application/pdf': 'pdf'
+  };
+  return map[String(contentType).toLowerCase()] || 'jpg';
+}
+
+function buildListingPhotoPublicUrl(photo) {
+  if (!photo) return '';
+  if (typeof photo === 'string') return photo;
+  if (photo.publicUrl) return photo.publicUrl;
+  if (photo.url) return photo.url;
+  if (photo.key && LISTINGS_CDN_BASE) return `${LISTINGS_CDN_BASE}/${photo.key}`;
+  if (photo.key && LISTINGS_BUCKET) return `https://${LISTINGS_BUCKET}.s3.amazonaws.com/${photo.key}`;
+  return '';
+}
+
+function normalizeListingPhotos(photos) {
+  const source = photos && typeof photos === 'object' ? photos : {};
+  return Object.entries(source).reduce((acc, [slot, photo]) => {
+    if (!slot || !photo) return acc;
+    if (typeof photo === 'string') {
+      acc[slot] = {
+        key: photo,
+        publicUrl: photo,
+        url: photo
+      };
+      return acc;
+    }
+
+    const normalized = {
+      key: normaliseString(photo.key),
+      contentType: normaliseString(photo.contentType),
+      originalName: normaliseString(photo.originalName),
+      uploadedAt: normaliseString(photo.uploadedAt)
+    };
+    const publicUrl = buildListingPhotoPublicUrl(photo);
+    if (publicUrl) {
+      normalized.publicUrl = publicUrl;
+      normalized.url = publicUrl;
+    }
+    acc[slot] = normalized;
+    return acc;
+  }, {});
+}
+
+function enrichListingForAdmin(item) {
+  const photos = normalizeListingPhotos(item.photos || {});
+  return {
+    ...item,
+    photos,
+    display: item.display || {},
+    car: item.car || {},
+    seller: item.seller || {},
+    carName: item.carName || [item.car?.make, item.car?.model, item.car?.edition].filter(Boolean).join(' '),
+    year: item.year || item.car?.registrationYear || '',
+    askingPrice: item.askingPrice || item.car?.expectedPrice || '',
+    kilometers: item.kilometers || item.car?.kmsDriven || '',
+    location: item.location || item.display?.location || item.car?.location || item.car?.city || ''
+  };
+}
+
+function validateListingRecord(item) {
+  if (!normaliseString(item.seller?.name) || !normaliseString(item.seller?.mobile)) {
+    return 'seller_details_required';
+  }
+
+  if (!normaliseString(item.car?.make) || !normaliseString(item.car?.model) || !normaliseString(item.car?.registrationYear) || !normaliseString(item.car?.kmsDriven) || !normaliseString(item.car?.expectedPrice) || !normaliseString(item.car?.location)) {
+    return 'car_details_incomplete';
+  }
+
+  return '';
+}
+
+function buildListingRecord(input, existingItem = {}) {
+  const now = new Date().toISOString();
+  const currentCar = existingItem.car || {};
+  const currentSeller = existingItem.seller || {};
+  const currentDisplay = existingItem.display || {};
+  const currentPhotos = normalizeListingPhotos(existingItem.photos || {});
+  const incomingCar = input.car || {};
+  const incomingSeller = input.seller || {};
+  const incomingDisplay = input.display || {};
+  const incomingPhotos = normalizeListingPhotos(input.photos || {});
+
+  const seller = {
+    name: normaliseString(incomingSeller.name || input.sellerName || currentSeller.name || existingItem.sellerName),
+    mobile: normaliseString(incomingSeller.mobile || input.sellerMobile || currentSeller.mobile || existingItem.sellerMobile),
+    email: normaliseString(incomingSeller.email || input.sellerEmail || currentSeller.email || existingItem.sellerEmail),
+    type: normaliseString(incomingSeller.type || input.sellerType || currentSeller.type || existingItem.sellerType) || 'Individual'
+  };
+
+  const car = {
+    make: normaliseString(incomingCar.make || input.brand || currentCar.make || existingItem.brand),
+    model: normaliseString(incomingCar.model || input.model || currentCar.model || existingItem.model),
+    edition: normaliseString(incomingCar.edition || input.edition || currentCar.edition),
+    variant: normaliseString(incomingCar.variant || input.variant || currentCar.variant),
+    registrationYear: normaliseString(incomingCar.registrationYear || input.year || currentCar.registrationYear || existingItem.year),
+    kmsDriven: normaliseString(incomingCar.kmsDriven || input.kilometers || input.km || currentCar.kmsDriven || existingItem.kilometers),
+    expectedPrice: normaliseString(incomingCar.expectedPrice || input.askingPrice || input.price || currentCar.expectedPrice || existingItem.askingPrice),
+    location: normaliseString(incomingCar.location || input.location || currentCar.location || existingItem.location),
+    city: normaliseString(incomingCar.city || input.city || currentCar.city || existingItem.location || currentCar.location),
+    fuelType: normaliseString(incomingCar.fuelType || input.fuelType || currentCar.fuelType),
+    numberOfOwners: normaliseString(incomingCar.numberOfOwners || input.numberOfOwners || currentCar.numberOfOwners),
+    insuranceValidity: normaliseString(incomingCar.insuranceValidity || input.insuranceValidity || currentCar.insuranceValidity),
+    transmissionType: normaliseString(incomingCar.transmissionType || input.transmissionType || currentCar.transmissionType),
+    airbags: normaliseString(incomingCar.airbags || input.airbags || currentCar.airbags),
+    accidentalHistory: input.car ? toBoolean(incomingCar.accidentalHistory) : toBoolean(currentCar.accidentalHistory),
+    warrantyAvailable: input.car ? toBoolean(incomingCar.warrantyAvailable) : toBoolean(currentCar.warrantyAvailable),
+    spareKeyAvailable: input.car ? toBoolean(incomingCar.spareKeyAvailable) : toBoolean(currentCar.spareKeyAvailable),
+    cruiseControl: input.car ? toBoolean(incomingCar.cruiseControl) : toBoolean(currentCar.cruiseControl),
+    parkingAssistant: input.car ? toBoolean(incomingCar.parkingAssistant) : toBoolean(currentCar.parkingAssistant),
+    audioSystemWorking: input.car ? toBoolean(incomingCar.audioSystemWorking) : toBoolean(currentCar.audioSystemWorking),
+    abs: input.car ? toBoolean(incomingCar.abs) : toBoolean(currentCar.abs),
+    sunroof: input.car ? toBoolean(incomingCar.sunroof) : toBoolean(currentCar.sunroof),
+    serviceRecords: input.car ? toBoolean(incomingCar.serviceRecords) : toBoolean(currentCar.serviceRecords)
+  };
+
+  const display = {
+    location: normaliseString(incomingDisplay.location || input.displayLocation || currentDisplay.location || car.location || car.city),
+    summary: normaliseString(incomingDisplay.summary || input.summary || currentDisplay.summary)
+  };
+
+  const listingId = normaliseString(input.listingId || existingItem.listingId || `admin_${crypto.randomUUID()}`);
+  const headline = normaliseString(input.headline || existingItem.headline || [car.make, car.model, car.edition].filter(Boolean).join(' '));
+  const location = normaliseString(input.location || display.location || car.location || car.city);
+  const photos = Object.keys(incomingPhotos).length ? incomingPhotos : currentPhotos;
+
+  return {
+    ...existingItem,
+    listingId,
+    submissionId: normaliseString(input.submissionId || existingItem.submissionId || listingId),
+    status: normaliseString(input.status || existingItem.status) || 'approved',
+    createdAt: existingItem.createdAt || now,
+    updatedAt: now,
+    sellerName: seller.name,
+    sellerEmail: seller.email,
+    sellerMobile: seller.mobile,
+    sellerType: seller.type,
+    location,
+    seller,
+    car,
+    carName: [car.make, car.model, car.edition].filter(Boolean).join(' '),
+    brand: car.make,
+    model: car.model,
+    year: car.registrationYear,
+    askingPrice: car.expectedPrice,
+    kilometers: car.kmsDriven,
+    headline,
+    display,
+    photos,
+    notes: normaliseString(input.notes || existingItem.notes)
+  };
+}
+
+async function buildListingUploadRequest(body) {
+  const files = Array.isArray(body.files) ? body.files : [];
+  if (!files.length) {
+    return response(400, { ok: false, error: 'files_required' });
+  }
+
+  if (!LISTINGS_BUCKET) {
+    return response(500, { ok: false, error: 'bucket_not_configured' });
+  }
+
+  const invalid = files.find((file) => !file || !LISTING_PHOTO_SLOTS.includes(file.slot));
+  if (invalid) {
+    return response(400, { ok: false, error: `invalid_slot_${invalid.slot}` });
+  }
+
+  const listingId = normaliseString(body.listingId || body.submissionId || `admin_${crypto.randomUUID()}`);
+  const uploads = await Promise.all(files.map(async (file) => {
+    const contentType = normaliseString(file.contentType) || 'image/jpeg';
+    const extension = guessExtension(contentType);
+    const key = `submissions/${listingId}/${file.slot}.${extension}`;
+    const uploadUrl = await getSignedUrl(s3Client, new PutObjectCommand({
+      Bucket: LISTINGS_BUCKET,
+      Key: key,
+      ContentType: contentType
+    }), { expiresIn: 900 });
+    const publicUrl = LISTINGS_CDN_BASE
+      ? `${LISTINGS_CDN_BASE}/${key}`
+      : `https://${LISTINGS_BUCKET}.s3.amazonaws.com/${key}`;
+
+    return {
+      slot: file.slot,
+      key,
+      contentType,
+      uploadUrl,
+      publicUrl,
+      originalName: normaliseString(file.originalName)
+    };
+  }));
+
+  return response(200, { ok: true, listingId, uploads });
 }
 
 function encodeOffsetCursor(offset) {
@@ -486,7 +720,7 @@ async function listListings() {
     // Sort by createdAt descending
     const items = (result.Items || []).sort((a, b) => {
       return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
-    });
+    }).map(enrichListingForAdmin);
     
     return response(200, { ok: true, items });
   } catch (error) {
@@ -495,67 +729,84 @@ async function listListings() {
   }
 }
 
+async function createListing(body) {
+  try {
+    const item = buildListingRecord(body, {});
+    const validationError = validateListingRecord(item);
+    if (validationError) {
+      return response(400, { ok: false, error: validationError });
+    }
+
+    await docClient.send(new PutCommand({
+      TableName: LISTINGS_TABLE,
+      Item: item
+    }));
+
+    return response(200, { ok: true, item: enrichListingForAdmin(item), message: 'Listing created' });
+  } catch (error) {
+    console.error('Error creating listing:', error);
+    return response(500, { ok: false, error: 'Failed to create listing' });
+  }
+}
+
 async function updateListing(listingId, updates) {
   try {
-    const updateExpressions = [];
-    const expressionAttributeNames = {};
-    const expressionAttributeValues = {};
-    
-    // Handle nested seller object if seller name/mobile are provided
-    if (updates.sellerName || updates.sellerMobile) {
-      // First get the current item to merge seller data
-      const getResult = await docClient.send(new GetCommand({
-        TableName: LISTINGS_TABLE,
-        Key: { listingId }
-      }));
-      
-      const currentSeller = getResult.Item?.seller || {};
-      const newSeller = {
-        ...currentSeller,
-        name: updates.sellerName || currentSeller.name,
-        mobile: updates.sellerMobile || currentSeller.mobile
-      };
-      
-      updateExpressions.push('#seller = :seller');
-      expressionAttributeNames['#seller'] = 'seller';
-      expressionAttributeValues[':seller'] = newSeller;
-      
-      // Remove from updates to avoid duplication
-      delete updates.sellerName;
-      delete updates.sellerMobile;
-    }
-    
-    Object.entries(updates).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && key !== 'listingId') {
-        const attrName = `#${key}`;
-        const attrValue = `:${key}`;
-        updateExpressions.push(`${attrName} = ${attrValue}`);
-        expressionAttributeNames[attrName] = key;
-        expressionAttributeValues[attrValue] = value;
-      }
-    });
-    
-    // Add updatedAt
-    updateExpressions.push('#updatedAt = :updatedAt');
-    expressionAttributeNames['#updatedAt'] = 'updatedAt';
-    expressionAttributeValues[':updatedAt'] = new Date().toISOString();
-    
-    if (updateExpressions.length === 0) {
-      return response(400, { ok: false, error: 'No updates provided' });
-    }
-    
-    await docClient.send(new UpdateCommand({
+    const getResult = await docClient.send(new GetCommand({
       TableName: LISTINGS_TABLE,
-      Key: { listingId },
-      UpdateExpression: `SET ${updateExpressions.join(', ')}`,
-      ExpressionAttributeNames: expressionAttributeNames,
-      ExpressionAttributeValues: expressionAttributeValues
+      Key: { listingId }
     }));
-    
-    return response(200, { ok: true, message: 'Listing updated' });
+
+    if (!getResult.Item) {
+      return response(404, { ok: false, error: 'Listing not found' });
+    }
+
+    const item = buildListingRecord({ ...updates, listingId }, getResult.Item);
+    const validationError = validateListingRecord(item);
+    if (validationError) {
+      return response(400, { ok: false, error: validationError });
+    }
+
+    await docClient.send(new PutCommand({
+      TableName: LISTINGS_TABLE,
+      Item: item
+    }));
+
+    return response(200, { ok: true, item: enrichListingForAdmin(item), message: 'Listing updated' });
   } catch (error) {
     console.error('Error updating listing:', error);
     return response(500, { ok: false, error: 'Failed to update listing' });
+  }
+}
+
+async function deleteListing(listingId) {
+  try {
+    const existing = await docClient.send(new GetCommand({
+      TableName: LISTINGS_TABLE,
+      Key: { listingId }
+    }));
+
+    if (!existing.Item) {
+      return response(404, { ok: false, error: 'Listing not found' });
+    }
+
+    const photos = Object.values(existing.Item.photos || {}).filter(Boolean);
+    if (LISTINGS_BUCKET && photos.length) {
+      await Promise.allSettled(photos.map((photo) => {
+        const key = typeof photo === 'string' ? '' : normaliseString(photo.key);
+        if (!key) return Promise.resolve();
+        return s3Client.send(new DeleteObjectCommand({ Bucket: LISTINGS_BUCKET, Key: key }));
+      }));
+    }
+
+    await docClient.send(new DeleteCommand({
+      TableName: LISTINGS_TABLE,
+      Key: { listingId }
+    }));
+
+    return response(200, { ok: true, message: 'Listing deleted' });
+  } catch (error) {
+    console.error('Error deleting listing:', error);
+    return response(500, { ok: false, error: 'Failed to delete listing' });
   }
 }
 
@@ -690,6 +941,16 @@ exports.handler = async (event) => {
     if (path === '/admin/listings' && method === 'GET') {
       return await listListings();
     }
+
+    if (path === '/admin/listings' && method === 'POST') {
+      const body = parseBody(event);
+      return await createListing(body);
+    }
+
+    if (path === '/admin/listings/uploads' && method === 'POST') {
+      const body = parseBody(event);
+      return await buildListingUploadRequest(body);
+    }
     
     if (path.startsWith('/admin/listings/') && method === 'PUT') {
       const listingId = extractIdFromPath(path, '/admin/listings');
@@ -698,6 +959,14 @@ exports.handler = async (event) => {
       }
       const body = parseBody(event);
       return await updateListing(listingId, body);
+    }
+
+    if (path.startsWith('/admin/listings/') && method === 'DELETE') {
+      const listingId = extractIdFromPath(path, '/admin/listings');
+      if (!listingId) {
+        return response(400, { ok: false, error: 'Missing listingId' });
+      }
+      return await deleteListing(listingId);
     }
     
     // Reports endpoints
