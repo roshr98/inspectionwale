@@ -555,10 +555,10 @@
             position: sticky;
             top: 0;
             z-index: 1030;
-            padding: 8px 0 2px;
-            background: linear-gradient(180deg, rgba(245, 237, 226, 0.94), rgba(245, 237, 226, 0.72) 70%, rgba(245, 237, 226, 0));
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            padding: 4px 0 0;
+            background: transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
         }
 
         .banner-container {
@@ -567,8 +567,8 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 18px;
-            padding: 6px 4px;
+            gap: 14px;
+            padding: 2px 4px;
             border: none;
             border-radius: 0;
             background: transparent;
@@ -583,7 +583,7 @@
         }
 
         .banner-logo img {
-            height: 42px;
+            height: 34px;
             width: auto;
             object-fit: contain;
             display: block;
@@ -596,18 +596,19 @@
         .home-nav {
             display: flex;
             align-items: center;
-            gap: 18px;
+            gap: 14px;
         }
 
         .home-nav a {
-            color: var(--home-ink-soft);
-            font-size: 0.95rem;
+            color: var(--home-accent-dark);
+            font-size: 0.9rem;
             font-weight: 600;
             text-decoration: none;
         }
 
         .home-nav a:hover {
             color: var(--home-accent-dark);
+            opacity: 0.86;
         }
 
         .banner-icons {
@@ -622,20 +623,21 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            min-height: 42px;
-            padding: 0 16px;
+            min-height: 36px;
+            padding: 0 12px;
             border-radius: 999px;
-            border: 1px solid rgba(20, 33, 61, 0.1);
-            background: rgba(255, 255, 255, 0.72);
-            color: var(--home-ink);
+            border: 1px solid rgba(185, 87, 48, 0.14);
+            background: transparent;
+            color: var(--home-accent-dark);
             text-decoration: none;
-            box-shadow: 0 10px 24px rgba(20, 33, 61, 0.08);
+            box-shadow: none;
         }
 
         .banner-icon:hover,
         .banner-contact:hover {
             color: var(--home-accent-dark);
-            border-color: rgba(216, 111, 69, 0.24);
+            border-color: rgba(185, 87, 48, 0.22);
+            background: rgba(185, 87, 48, 0.04);
         }
 
         .banner-contact {
@@ -1367,12 +1369,12 @@
             }
 
             .top-banner {
-                padding-top: 6px;
+                padding-top: 2px;
             }
 
             .banner-container {
                 width: min(100% - 16px, 720px);
-                padding: 8px 0;
+                padding: 4px 0;
                 border-radius: 0;
                 align-items: center;
                 flex-wrap: nowrap;
@@ -1380,7 +1382,7 @@
             }
 
             .banner-logo img {
-                height: 48px;
+                height: 38px;
             }
 
             .brand-wordmark {
@@ -1399,11 +1401,11 @@
 
             .banner-icon,
             .banner-contact {
-                flex: 0 0 42px;
-                width: 42px;
-                min-width: 42px;
+                flex: 0 0 36px;
+                width: 36px;
+                min-width: 36px;
                 justify-content: center;
-                min-height: 46px;
+                min-height: 36px;
                 padding: 0;
                 font-size: 0;
             }
@@ -2063,34 +2065,79 @@
         .popular-cars-track::-webkit-scrollbar {
             display: none;
         }
+        .popular-cars-slider {
+            --popular-card-gap: 18px;
+        }
+        .popular-cars-track {
+            gap: var(--popular-card-gap) !important;
+        }
         .popular-car-card {
-            flex: 0 0 332px;
+            position: relative;
+            display: block;
+            flex: 0 0 calc((100% - (var(--popular-card-gap) * 3)) / 4);
+            min-width: 0;
+            aspect-ratio: 1 / 1;
             background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
-            border-radius: 18px;
+            border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 12px 30px rgba(17, 27, 49, 0.1);
+            box-shadow: 0 12px 28px rgba(17, 27, 49, 0.08);
             border: 1px solid rgba(20, 33, 61, 0.08);
             transition: box-shadow 0.2s, transform 0.2s;
+            text-decoration: none;
         }
         .popular-car-card.loading-card {
             border-style: dashed;
-            min-height: 320px;
+            min-height: 0;
         }
         .popular-car-card:hover {
-            box-shadow: 0 18px 36px rgba(17, 27, 49, 0.14);
+            box-shadow: 0 16px 30px rgba(17, 27, 49, 0.12);
             transform: translateY(-4px);
         }
         .car-image-wrapper {
-            height: 212px;
+            position: absolute;
+            inset: 0;
+            height: auto;
             position: relative;
             overflow: hidden;
-            border-radius: 18px 18px 0 0;
+            border-radius: 24px;
             background: #d7e0ee;
+        }
+        .car-image-wrapper::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(7, 14, 30, 0) 42%, rgba(7, 14, 30, 0.14) 68%, rgba(7, 14, 30, 0.8) 100%);
+            pointer-events: none;
+        }
+        .popular-car-seller-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 24px;
+            padding: 0 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.92);
+            color: #0e7b71;
+            border: 1px solid rgba(18, 144, 131, 0.24);
+            font-size: 0.58rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+        }
+        .popular-car-seller-badge.dealer {
+            color: #8b5a20;
+            border-color: rgba(190, 128, 58, 0.24);
+            background: rgba(255, 247, 237, 0.94);
         }
         .shimmer-block {
             width: 100%;
             height: 100%;
-            border-radius: 18px;
+            border-radius: 24px;
             background: linear-gradient(90deg, #f0f0f0 25%, #f7f7f7 50%, #f0f0f0 75%);
             background-size: 200% 100%;
             animation: shimmer 1.2s linear infinite;
@@ -2099,10 +2146,19 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: center center;
             display: block;
+            background: linear-gradient(180deg, #f7f9fc 0%, #ebf1f7 100%);
+            padding: 0;
         }
         .car-info {
-            padding: 16px 16px 18px;
+            position: absolute;
+            inset: auto 0 0;
+            z-index: 1;
+            padding: 10px 11px 11px;
+            display: grid;
+            gap: 1px;
+            pointer-events: none;
         }
         .skeleton-line {
             height: 12px;
@@ -2117,31 +2173,48 @@
         .skeleton-line.w-75 { width: 75%; }
         .skeleton-line.w-60 { width: 60%; }
         .skeleton-line.w-50 { width: 50%; }
+        .car-title-row {
+            display: block;
+        }
         .car-name {
             font-family: 'Montserrat', sans-serif;
-            font-size: 1rem;
+            font-size: 0.92rem;
             font-weight: 700;
-            color: #14213d;
-            margin-bottom: 6px;
+            color: #fff5e8;
+            margin: 0;
+            display: -webkit-box;
+            line-clamp: 2;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 2.15em;
+            line-height: 1.18;
+            text-shadow: 0 10px 24px rgba(0, 0, 0, 0.32);
+        }
+        .car-year-badge {
+            display: none;
         }
         .car-meta {
-            font-size: 0.83rem;
-            color: #6b778c;
-            margin-bottom: 14px;
+            display: none;
+        }
+        .car-meta-dot {
+            display: none;
         }
         .car-price {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            min-height: 42px;
-            padding: 0 14px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #ff8b2b, #f46b1f);
-            color: #fff;
-            font-size: 1rem;
+            justify-content: flex-start;
+            min-height: auto;
+            padding: 0;
+            border-radius: 0;
+            background: transparent;
+            color: #ffcf86;
+            font-size: 0.79rem;
             font-weight: 700;
             margin: 0;
-            box-shadow: 0 10px 22px rgba(244, 107, 31, 0.22);
+            box-shadow: none;
+            line-height: 1.05;
+            text-shadow: 0 10px 24px rgba(0, 0, 0, 0.34);
         }
         .car-price .car-kms {
             display: none;
@@ -2150,30 +2223,13 @@
             display: none;
         }
         .car-card-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
+            display: block;
         }
         .check-price-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 42px;
-            padding: 0 18px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #1d61d1, #0f4fb7);
-            color: #fff;
-            text-decoration: none;
-            font-size: 0.88rem;
-            font-weight: 700;
-            white-space: nowrap;
-            box-shadow: 0 10px 22px rgba(15, 79, 183, 0.2);
+            display: none;
         }
         .check-price-link:hover {
-            text-decoration: none;
-            color: #fff;
-            background: linear-gradient(135deg, #1657c1, #0c46a5);
+            display: none;
         }
         .popular-cars-nav {
             position: absolute;
@@ -2256,7 +2312,20 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(38, 166, 154, 0.3);
         }
+        @media (max-width: 1199.98px) {
+            .popular-car-card {
+                flex: 0 0 calc((100% - (var(--popular-card-gap) * 2)) / 3);
+            }
+        }
+        @media (max-width: 991.98px) {
+            .popular-car-card {
+                flex: 0 0 calc((100% - (var(--popular-card-gap) * 2)) / 3);
+            }
+        }
         @media (max-width: 767px) {
+            .popular-cars-slider {
+                --popular-card-gap: 10px;
+            }
             .home-marketplace-header {
                 align-items: stretch !important;
             }
@@ -2270,13 +2339,70 @@
             }
 
             .popular-car-card {
-                flex: 0 0 286px;
+                flex: 0 0 calc((100% - var(--popular-card-gap)) / 2);
+                border-radius: 18px;
+            }
+            .popular-car-card.loading-card {
+                min-height: 0;
+            }
+            .car-image-wrapper {
+                border-radius: 18px;
+            }
+            .popular-car-seller-badge {
+                top: 8px;
+                right: 8px;
+                min-height: 18px;
+                padding: 0 6px;
+                font-size: 0.43rem;
+            }
+            .car-image-wrapper img {
+                object-fit: cover;
+                padding: 0;
+            }
+            .car-info {
+                padding: 8px 8px 9px;
+                gap: 0;
+            }
+            .car-title-row {
+                gap: 0;
+            }
+            .car-name {
+                font-size: 0.65rem;
+                min-height: 2.05em;
+            }
+            .car-year-badge,
+            .car-meta {
+                display: none;
+            }
+            .car-price {
+                font-size: 0.57rem;
             }
             .popular-cars-nav-next {
                 right: 5px;
             }
             .popular-cars-nav-prev {
                 left: 5px;
+            }
+        }
+        @media (max-width: 575.98px) {
+            .popular-car-card {
+                flex: 0 0 calc((100% - var(--popular-card-gap)) / 2);
+            }
+
+            .car-image-wrapper {
+                height: auto;
+            }
+
+            .car-info {
+                padding: 7px 8px 8px;
+            }
+
+            .car-name {
+                font-size: 0.62rem;
+            }
+
+            .car-price {
+                font-size: 0.55rem;
             }
         }
     </style>
@@ -2652,27 +2778,27 @@
         function buildPopularCarCard(listing, index = 0) {
             const title = buildPopularListingTitle(listing);
             const price = formatListingPrice(listing?.car?.expectedPrice ?? listing.expectedPrice);
-            const kms = formatListingKms(listing?.car?.kmsDriven ?? listing.kmsDriven);
-            const year = listing?.car?.registrationYear || listing?.registrationYear || listing?.year || '';
             const photo = resolveListingPhoto(listing);
             const listingId = listing?.listingId;
             const ctaUrl = listingId ? `${MARKETPLACE_ENTRY}?listingId=${encodeURIComponent(listingId)}` : MARKETPLACE_ENTRY;
             const eager = index < 2;
-            const metaParts = [year, kms].filter(Boolean);
+            const sellerType = buildPopularSellerTypeLabel(listing);
+            const sellerClass = sellerType === 'Dealer' ? 'dealer' : '';
             return `
-                <div class="popular-car-card">
+                <a href="${ctaUrl}" class="popular-car-card" aria-label="View details for ${title}">
                     <div class="car-image-wrapper">
+                        <span class="popular-car-seller-badge ${sellerClass}">${sellerType}</span>
                         <img src="${photo}" alt="${title}" loading="${eager ? 'eager' : 'lazy'}" fetchpriority="${eager ? 'high' : 'low'}" decoding="async" onerror="this.onerror=null;this.src='${POPULAR_FALLBACK_IMAGE}'">
                     </div>
                     <div class="car-info">
-                        <h5 class="car-name">${title}</h5>
-                        <p class="car-meta">${metaParts.length ? metaParts.join('  •  ') : 'Verified listing'}</p>
+                        <div class="car-title-row">
+                            <h5 class="car-name">${title}</h5>
+                        </div>
                         <div class="car-card-footer">
                             <p class="car-price">${price}</p>
-                            <a href="${ctaUrl}" class="check-price-link">View Car</a>
                         </div>
                     </div>
-                </div>`;
+                </a>`;
         }
 
         function buildPopularListingTitle(listing) {
@@ -2685,6 +2811,20 @@
             const parts = [car.make, car.model, car.edition].filter(Boolean);
             const label = parts.join(' ').replace(/\s+/g, ' ').trim();
             return label || 'Verified Used Car';
+        }
+
+        function buildPopularSellerTypeLabel(listing) {
+            const seller = listing?.seller || {};
+            const candidates = [
+                seller.type,
+                seller.sellerType,
+                listing?.sellerType,
+                listing?.seller_category,
+                listing?.sellerCategory
+            ].filter(Boolean);
+            const value = String(candidates[0] || '').toLowerCase();
+            if (value.includes('dealer')) return 'Dealer';
+            return 'Individual';
         }
 
         function formatListingPrice(value) {
@@ -2778,15 +2918,289 @@
         }
     </script>
 
+        <style>
+            .iw-sleek-modal-shell {
+                border: 1px solid rgba(15, 23, 42, 0.08);
+                border-radius: 26px !important;
+                background: #ffffff !important;
+                box-shadow: 0 28px 70px rgba(15, 23, 42, 0.16);
+                overflow: hidden;
+            }
+
+            .iw-sleek-modal-shell .modal-header {
+                padding: 24px 28px 18px;
+                background: #ffffff !important;
+                border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+                align-items: flex-start;
+            }
+
+            .iw-sleek-modal-shell .modal-title {
+                color: #13213a !important;
+                font-size: 1.28rem;
+                font-weight: 700;
+                letter-spacing: -0.02em;
+            }
+
+            .iw-sleek-modal-shell .text-white {
+                color: #13213a !important;
+            }
+
+            .iw-sleek-modal-shell .modal-body {
+                padding: 24px 28px !important;
+                background: #ffffff !important;
+            }
+
+            .iw-sleek-modal-shell .modal-footer {
+                padding: 18px 28px 24px;
+                background: #ffffff !important;
+                border-top: 1px solid rgba(15, 23, 42, 0.08) !important;
+            }
+
+            .iw-sleek-modal-shell .btn-close {
+                opacity: 0.72;
+            }
+
+            .iw-sleek-modal-shell .btn-close:hover {
+                opacity: 1;
+            }
+
+            .iw-sleek-modal-shell .btn-close-white,
+            .partner-service-modal .btn-close-white {
+                filter: none !important;
+                opacity: 0.72;
+            }
+
+            .iw-sleek-modal-shell .btn-close-white:hover,
+            .partner-service-modal .btn-close-white:hover {
+                opacity: 1;
+            }
+
+            .iw-sleek-form {
+                --iw-form-border: rgba(15, 23, 42, 0.12);
+                --iw-form-border-strong: rgba(36, 68, 141, 0.28);
+                --iw-form-text: #15233c;
+                --iw-form-muted: #6b778c;
+                --iw-form-bg: #ffffff;
+                --iw-form-readonly: #f5f7fb;
+            }
+
+            .iw-sleek-form .form-label,
+            .iw-sleek-form label {
+                margin-bottom: 8px;
+                color: #5d6880;
+                font-size: 0.82rem;
+                font-weight: 600;
+                letter-spacing: 0.01em;
+            }
+
+            .iw-sleek-form .form-control,
+            .iw-sleek-form .form-select {
+                min-height: 52px;
+                padding: 14px 16px;
+                border: 1px solid var(--iw-form-border) !important;
+                border-radius: 14px !important;
+                background: var(--iw-form-bg) !important;
+                box-shadow: none !important;
+                color: var(--iw-form-text);
+                font-size: 0.95rem;
+                line-height: 1.4;
+                transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            }
+
+            .iw-sleek-form textarea.form-control {
+                min-height: 108px;
+                padding-top: 14px;
+                padding-bottom: 14px;
+            }
+
+            .iw-sleek-form .form-control.form-control-lg,
+            .iw-sleek-form .form-select.form-select-lg {
+                font-size: 0.95rem;
+            }
+
+            .iw-sleek-form .form-control::placeholder,
+            .iw-sleek-form textarea::placeholder {
+                color: #98a2b3;
+            }
+
+            .iw-sleek-form .form-control:focus,
+            .iw-sleek-form .form-select:focus {
+                border-color: var(--iw-form-border-strong) !important;
+                box-shadow: 0 0 0 4px rgba(36, 68, 141, 0.08) !important;
+            }
+
+            .iw-sleek-form .form-control[readonly] {
+                background: var(--iw-form-readonly) !important;
+                color: #718096;
+            }
+
+            .iw-sleek-form .form-text,
+            .iw-sleek-form .small,
+            .iw-sleek-form .text-muted,
+            .iw-sleek-form p.small {
+                color: var(--iw-form-muted) !important;
+            }
+
+            .iw-sleek-form .alert {
+                border-radius: 16px;
+                border: 1px solid rgba(15, 23, 42, 0.08);
+                padding: 14px 16px;
+            }
+
+            .iw-sleek-form .form-check {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                min-height: 52px;
+                margin: 0;
+                padding: 0 16px;
+                border: 1px solid var(--iw-form-border);
+                border-radius: 14px;
+                background: #ffffff;
+            }
+
+            .iw-sleek-form .form-check-input {
+                width: 18px;
+                height: 18px;
+                margin: 0;
+                border-color: rgba(15, 23, 42, 0.18);
+                box-shadow: none;
+            }
+
+            .iw-sleek-form .form-check-input:checked {
+                background-color: #24448d;
+                border-color: #24448d;
+            }
+
+            .iw-sleek-form .form-check-label {
+                margin: 0;
+                color: #1f2d44;
+                font-size: 0.9rem;
+                font-weight: 500;
+            }
+
+            .iw-sleek-form .btn {
+                min-height: 48px;
+                border-radius: 14px;
+                font-weight: 600;
+                box-shadow: none;
+            }
+
+            .iw-sleek-form .btn-primary {
+                background: #24448d;
+                border-color: #24448d;
+            }
+
+            .iw-sleek-form .btn-primary:hover,
+            .iw-sleek-form .btn-primary:focus {
+                background: #1f3974;
+                border-color: #1f3974;
+            }
+
+            .iw-sleek-form .btn-success {
+                background: #167c74;
+                border-color: #167c74;
+            }
+
+            .iw-sleek-form .btn-success:hover,
+            .iw-sleek-form .btn-success:focus {
+                background: #11665f;
+                border-color: #11665f;
+            }
+
+            .iw-sleek-form .btn-outline-secondary,
+            .iw-sleek-form .pay-later-btn {
+                color: #314158 !important;
+                background: #f6f8fb !important;
+                border: 1px solid rgba(15, 23, 42, 0.12) !important;
+            }
+
+            .iw-sleek-form .btn-outline-secondary:hover,
+            .iw-sleek-form .pay-later-btn:hover {
+                background: #eef2f7 !important;
+                color: #15233c !important;
+                border-color: rgba(15, 23, 42, 0.18) !important;
+            }
+
+            .iw-sleek-modal-shell h6.text-uppercase.text-muted {
+                margin-bottom: 14px !important;
+                color: #7b8698 !important;
+                font-size: 0.74rem;
+                font-weight: 700;
+                letter-spacing: 0.14em;
+            }
+
+            .partner-service-modal .modal-content {
+                border: 1px solid rgba(15, 23, 42, 0.08);
+                border-radius: 26px;
+                box-shadow: 0 28px 70px rgba(15, 23, 42, 0.16);
+                overflow: hidden;
+            }
+
+            .partner-service-modal .partner-service-modal__hero {
+                padding: 24px 28px 18px;
+                background: #ffffff;
+                border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+            }
+
+            .partner-service-modal .partner-service-modal__hero h5 {
+                color: #13213a;
+                margin-bottom: 6px;
+            }
+
+            .partner-service-modal .partner-service-modal__hero p {
+                color: #6b778c;
+                margin-bottom: 0;
+            }
+
+            .partner-service-modal .partner-service-modal__selected {
+                margin-bottom: 20px;
+                border: 1px solid rgba(15, 23, 42, 0.08);
+                border-radius: 16px;
+                background: #f7f9fc;
+                padding: 14px 16px;
+            }
+
+            .partner-service-modal .partner-service-modal__selected-icon {
+                background: #ffffff;
+            }
+
+            @media (max-width: 767.98px) {
+                .iw-sleek-modal-shell .modal-header,
+                .iw-sleek-modal-shell .modal-body,
+                .iw-sleek-modal-shell .modal-footer,
+                .partner-service-modal .partner-service-modal__hero,
+                .partner-service-modal .modal-body {
+                    padding-left: 18px !important;
+                    padding-right: 18px !important;
+                }
+
+                .iw-sleek-form .btn {
+                    min-height: 46px;
+                }
+
+                .iw-sleek-form .form-control,
+                .iw-sleek-form .form-select {
+                    min-height: 48px;
+                    padding: 13px 14px;
+                }
+
+                .iw-sleek-form .form-check {
+                    min-height: 48px;
+                    padding: 0 14px;
+                }
+            }
+        </style>
+
         <!-- Customer Listing Modals -->
         <div class="modal fade" id="listCarModal" tabindex="-1" aria-labelledby="listCarModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-scrollable">
-                <div class="modal-content">
+                <div class="modal-content iw-sleek-modal-shell">
                     <div class="modal-header">
                         <h5 class="modal-title" id="listCarModalLabel">Submit Your Car for Customer-to-Customer Listing</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form id="listCarForm" class="needs-validation" novalidate>
+                    <form id="listCarForm" class="needs-validation iw-sleek-form" novalidate>
                         <div class="modal-body">
                             <div id="listCarFormAlert" class="alert d-none" role="alert"></div>
                             <h6 class="text-uppercase text-muted mb-3">Seller Details</h6>
@@ -3106,12 +3520,12 @@
 
         <div class="modal fade" id="reserveListingModal" tabindex="-1" aria-labelledby="reserveListingModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
+                <div class="modal-content iw-sleek-modal-shell">
                     <div class="modal-header">
                         <h5 class="modal-title" id="reserveListingModalLabel">Reserve This Car</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form id="reserveListingForm" class="needs-validation" novalidate>
+                    <form id="reserveListingForm" class="needs-validation iw-sleek-form" novalidate>
                         <div class="modal-body">
                             <div id="reserveFormAlert" class="alert d-none" role="alert"></div>
                             <input type="hidden" id="reserveListingId" name="listingId">
@@ -3187,12 +3601,12 @@
 
         <div class="modal fade" id="testDriveModal" tabindex="-1" aria-labelledby="testDriveModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
+                <div class="modal-content iw-sleek-modal-shell">
                     <div class="modal-header">
                         <h5 class="modal-title" id="testDriveModalLabel">Book a Test Drive</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form id="testDriveForm" class="needs-validation" novalidate>
+                    <form id="testDriveForm" class="needs-validation iw-sleek-form" novalidate>
                         <div class="modal-body">
                             <div id="testDriveFormAlert" class="alert d-none" role="alert"></div>
                             <input type="hidden" id="testDriveListingId" name="listingId">
@@ -3269,13 +3683,13 @@
     <!-- USED CAR INSPECTION MODAL -->
     <div class="modal fade" id="usedCarInspectionModal" tabindex="-1" aria-labelledby="usedCarInspectionLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content" style="border-radius: 16px; overflow: hidden;">
+            <div class="modal-content iw-sleek-modal-shell" style="border-radius: 16px; overflow: hidden;">
                 <div class="modal-header" style="background: #528FF0; border: none; padding: 20px 24px;">
                     <h5 class="modal-title text-white" id="usedCarInspectionLabel" style="font-family: 'Montserrat', sans-serif; font-size: 1.5rem; font-weight: 700;">Book an Inspection</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4" style="background: linear-gradient(180deg, #f5f5f5 0%, #e8e8e8 100%);">
-                    <form id="usedCarInspectionForm" novalidate>
+                    <form id="usedCarInspectionForm" class="iw-sleek-form" novalidate>
                         <input type="hidden" name="carType" value="Used Car">
                         <div class="mb-3">
                             <input type="text" name="name" class="form-control form-control-lg" placeholder="Name" required style="border-radius: 8px; border: none; background: #fff;">
@@ -3327,13 +3741,13 @@
     <!-- NEW CAR INSPECTION MODAL -->
     <div class="modal fade" id="newCarInspectionModal" tabindex="-1" aria-labelledby="newCarInspectionLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content" style="border-radius: 16px; overflow: hidden;">
+            <div class="modal-content iw-sleek-modal-shell" style="border-radius: 16px; overflow: hidden;">
                 <div class="modal-header" style="background: #528FF0; border: none; padding: 20px 24px;">
                     <h5 class="modal-title text-white" id="newCarInspectionLabel" style="font-family: 'Montserrat', sans-serif; font-size: 1.5rem; font-weight: 700;">Book an Inspection</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4" style="background: linear-gradient(180deg, #f5f5f5 0%, #e8e8e8 100%);">
-                    <form id="newCarInspectionForm" novalidate>
+                    <form id="newCarInspectionForm" class="iw-sleek-form" novalidate>
                         <input type="hidden" name="carType" value="New Car">
                         <div class="mb-3">
                             <input type="text" name="name" class="form-control form-control-lg" placeholder="Name" required style="border-radius: 8px; border: none; background: #fff;">
@@ -3540,7 +3954,7 @@
                         </div>
                     </div>
 
-                    <form id="partnerServiceRequestForm" novalidate>
+                    <form id="partnerServiceRequestForm" class="iw-sleek-form" novalidate>
                         <input type="hidden" name="serviceCategory" id="partnerServiceCategory" value="">
                         <input type="hidden" name="serviceSource" id="partnerServiceSource" value="homepage">
                         <input type="hidden" name="serviceContext" id="partnerServiceContext" value="">

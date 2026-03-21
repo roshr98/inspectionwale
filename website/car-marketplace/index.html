@@ -1405,6 +1405,8 @@
 
         .car-card {
             width: 100%;
+            position: relative;
+            aspect-ratio: 1 / 1;
             border-radius: 26px;
             background: rgba(255, 255, 255, 0.94);
             box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
@@ -1418,6 +1420,10 @@
             transform: translate3d(0, -4px, 0);
         }
 
+        .car-card.js-view-details {
+            cursor: pointer;
+        }
+
         .car-card-featured,
         .car-card-standard {
             display: flex;
@@ -1426,42 +1432,86 @@
         }
 
         .car-card-img-wrapper {
-            min-height: 188px;
+            position: absolute;
+            inset: 0;
+            min-height: 0;
+            height: 100%;
             padding: 0;
             background: linear-gradient(180deg, #ffffff 0%, #fbfaf7 100%);
             overflow: hidden;
+            border-radius: inherit;
+        }
+
+        .car-card-img-wrapper::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(7, 14, 30, 0) 42%, rgba(7, 14, 30, 0.14) 68%, rgba(7, 14, 30, 0.82) 100%);
+            pointer-events: none;
+            z-index: 1;
         }
 
         .car-card-img {
             width: 100%;
-            height: 188px;
+            height: 100%;
             object-fit: cover;
             object-position: center;
+            padding: 0;
+            background: linear-gradient(180deg, #ffffff 0%, #eef3fa 100%);
         }
 
         .car-card-featured .car-card-img-wrapper,
         .car-card-standard .car-card-img-wrapper {
-            min-height: 188px;
+            min-height: 0;
         }
 
         .car-card-featured .car-card-img,
         .car-card-standard .car-card-img {
-            height: 188px;
+            height: 100%;
         }
 
         .car-card-featured .car-card-img-wrapper::after {
             display: none;
         }
 
-        .featured-badge {
-            top: 16px;
-            left: 16px;
-            padding: 5px 11px;
-            background: rgba(239, 252, 249, 0.96);
-            border: 1px solid rgba(18, 144, 131, 0.28);
-            color: #0d7c71;
-            box-shadow: 0 12px 24px rgba(18, 144, 131, 0.14);
-            z-index: 3;
+        .featured-badge,
+        .location-badge,
+        .sold-out-banner,
+        .car-specs-row,
+        .car-card-actions,
+        .car-summary,
+        .car-card-tags,
+        .view-more-btn,
+        .make-offer-link,
+        .car-card-status {
+            display: none !important;
+        }
+
+        .seller-type-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 2;
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            min-height: 24px;
+            padding: 0 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.92);
+            color: #0e7b71;
+            border: 1px solid rgba(18, 144, 131, 0.24);
+            font-size: 0.58rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+        }
+
+        .seller-type-badge.dealer {
+            color: #8b5a20;
+            border-color: rgba(190, 128, 58, 0.24);
+            background: rgba(255, 247, 237, 0.94);
         }
 
         .sold-out-banner {
@@ -1471,50 +1521,10 @@
             will-change: transform;
         }
 
-        .seller-type-badge,
-        .location-badge {
-            padding: 5px 10px;
-            border: 1px solid transparent;
-            backdrop-filter: none;
-            -webkit-backdrop-filter: none;
-            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
-            z-index: 3;
-            font-weight: 700;
-        }
-
-        .seller-type-badge {
-            right: 16px;
-            top: 16px;
-            background: rgba(237, 251, 248, 0.98);
-            color: #0e7b71;
-            border-color: rgba(18, 144, 131, 0.28);
-        }
-
-        .seller-type-badge.dealer {
-            background: rgba(255, 247, 237, 0.98);
-            color: #8b5a20;
-            border-color: rgba(190, 128, 58, 0.28);
-        }
-
-        .location-badge {
-            left: 16px;
-            bottom: 12px;
-            background: rgba(239, 244, 255, 0.98);
-            color: #18376f;
-            border-color: rgba(11, 33, 84, 0.22);
-        }
-
-        .location-badge i,
-        .seller-type-badge i,
-        .featured-badge i,
         .car-spec-item i,
         .marketplace-filter-icon i,
         .marketplace-category-card i {
             font-family: inherit;
-        }
-
-        .location-badge i {
-            color: #129083;
         }
 
         .car-card.sold-out {
@@ -1531,85 +1541,49 @@
         }
 
         .car-card-body {
-            padding: 10px 16px 14px;
+            position: absolute;
+            inset: auto 0 0;
+            z-index: 2;
+            padding: 10px 11px 11px;
+            display: grid;
+            gap: 1px;
+            min-height: 0;
+            pointer-events: none;
         }
 
         .car-title {
-            font-size: 1.05rem;
-            font-weight: 600;
+            margin: 0;
+            font-size: 0.92rem;
+            font-weight: 700;
             letter-spacing: -0.02em;
+            line-height: 1.18;
+            min-height: 2.15em;
+            display: -webkit-box;
+            line-clamp: 2;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            color: #fff5e8;
+            text-shadow: 0 10px 24px rgba(0, 0, 0, 0.32);
         }
 
         .car-card-featured .car-title,
         .car-card-standard .car-title {
-            font-size: 1.05rem;
+            font-size: 0.92rem;
         }
 
         .car-price {
-            margin-top: 4px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: #2f3a4c;
+            margin: 0;
+            font-size: 0.79rem;
+            font-weight: 700;
+            color: #ffcf86;
+            line-height: 1.05;
+            text-shadow: 0 10px 24px rgba(0, 0, 0, 0.34);
         }
 
         .car-card-featured .car-price,
         .car-card-standard .car-price {
-            font-size: 0.95rem;
-        }
-
-        .car-summary {
-            margin-top: 8px;
-            font-size: 0.84rem;
-            line-height: 1.4;
-            color: #7b5b29;
-        }
-
-        .car-specs-row {
-            gap: 8px;
-            margin: 8px 0 0;
-        }
-
-        .car-spec-item {
-            min-height: 28px;
-            padding: 0 9px;
-            font-size: 0.72rem;
-        }
-
-        .car-card-actions {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .view-more-btn,
-        .make-offer-link {
-            min-height: auto;
-            padding: 0 !important;
-            border: none;
-            border-radius: 0;
-            background: transparent;
-            box-shadow: none;
-            font-weight: 600;
-        }
-
-        .view-more-btn {
-            color: #1477d3;
-        }
-
-        .view-more-btn:hover {
-            background: transparent;
-            color: #0b5cad;
-        }
-
-        .make-offer-link {
             font-size: 0.8rem;
-            color: var(--mp-ink-soft);
-        }
-
-        .car-card-tags {
-            display: none;
         }
 
         #featuredCarsSection.d-none,
@@ -1630,8 +1604,42 @@
             border-bottom: 1px solid rgba(17, 24, 39, 0.08) !important;
         }
 
+        #carDetailModal .detail-modal-header {
+            padding: 18px 30px !important;
+        }
+
+        #carDetailModal .detail-back-btn {
+            width: 46px;
+            height: 46px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            border: 1px solid rgba(17, 24, 39, 0.1);
+            background: rgba(255, 255, 255, 0.72);
+            color: #14213d !important;
+            font-size: 1rem !important;
+        }
+
+        #carDetailModal .detail-modal-title {
+            font-weight: 800;
+            color: #14213d;
+            font-size: clamp(1.4rem, 2vw, 2rem);
+            letter-spacing: -0.03em;
+        }
+
         #carDetailModal .modal-body {
             background: transparent !important;
+        }
+
+        #carDetailModal .detail-modal-body {
+            overflow-y: auto;
+            max-height: calc(100vh - 82px);
+            background: transparent;
+        }
+
+        #carDetailModal .detail-shell {
+            padding: 0 24px 32px;
         }
 
         #carDetailModal .detail-media-column {
@@ -1640,11 +1648,105 @@
         }
 
         #carDetailModal .detail-aside-column {
-            padding: 28px 30px !important;
+            padding: 0 0 24px 0 !important;
             background: rgba(255, 255, 255, 0.54) !important;
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
-            border-left: 1px solid rgba(17, 24, 39, 0.08);
+            border-left: none;
+        }
+
+        #carDetailModal .detail-side-stack {
+            display: grid;
+            gap: 18px;
+            padding-left: 22px;
+        }
+
+        #carDetailModal .detail-summary-card,
+        #carDetailModal .detail-contact-card,
+        #carDetailModal .detail-cta-card,
+        #carDetailModal .detail-subsection-card,
+        #carDetailModal .detail-reviews-card {
+            padding: 24px;
+            border-radius: 24px;
+            border: 1px solid rgba(17, 24, 39, 0.08);
+            background: rgba(255, 255, 255, 0.64);
+            box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);
+        }
+
+        #carDetailModal .detail-summary-card {
+            background: linear-gradient(180deg, rgba(255,255,255,0.78), rgba(255,255,255,0.56));
+        }
+
+        #carDetailModal .detail-card-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: #7b5b29;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        #carDetailModal .detail-price-display {
+            margin: 0 0 8px;
+            font-weight: 800;
+            color: #14213d;
+            font-size: clamp(2rem, 3vw, 2.7rem);
+            letter-spacing: -0.04em;
+        }
+
+        #carDetailModal .detail-vehicle-title {
+            margin: 0;
+            font-weight: 700;
+            color: #14213d;
+            font-size: 1.18rem;
+            line-height: 1.35;
+        }
+
+        #carDetailModal .detail-ratings-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 14px;
+            color: #24448d;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        #carDetailModal .detail-ratings-link:hover {
+            text-decoration: underline;
+        }
+
+        #carDetailModal .detail-stat-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        #carDetailModal .detail-stat-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 38px;
+            padding: 0 14px;
+            border-radius: 999px;
+            background: rgba(239, 244, 255, 0.88);
+            color: #31415f;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        #carDetailModal .detail-stat-pill i {
+            color: #167c74;
+        }
+
+        #carDetailModal .detail-stat-pill--badges {
+            background: rgba(255, 247, 237, 0.96);
+            color: #8b5a20;
         }
 
         #carDetailModal .detail-gallery-shell {
@@ -1689,6 +1791,17 @@
             object-fit: cover !important;
         }
 
+        #carDetailModal .detail-photo-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 14px;
+            padding: 12px 16px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.44);
+            border: 1px solid rgba(17, 24, 39, 0.06);
+        }
+
         #carDetailModal #photoCountText {
             color: #24448d !important;
             font-weight: 700;
@@ -1712,6 +1825,10 @@
             font-size: 0.94rem !important;
             line-height: 1.8 !important;
             color: rgba(20, 33, 61, 0.76) !important;
+        }
+
+        #carDetailModal .detail-overview-card {
+            margin: 18px 0 0 !important;
         }
 
         #carDetailModal .detail-theme-card {
@@ -1773,6 +1890,15 @@
             border-radius: 999px !important;
         }
 
+        #carDetailModal .detail-contact-card .form-control,
+        #carDetailModal .detail-contact-card .form-select {
+            border: 1px solid rgba(17, 24, 39, 0.12) !important;
+            padding: 12px 14px !important;
+            font-size: 0.9rem !important;
+            border-radius: 16px !important;
+            background: rgba(255,255,255,0.88) !important;
+        }
+
         #carDetailModal #carDetailRequestInfoBtn {
             background: linear-gradient(135deg, var(--mp-blue-start), var(--mp-blue-end)) !important;
             box-shadow: 0 18px 34px var(--mp-blue-glow);
@@ -1803,11 +1929,16 @@
 
         #carDetailModal .detail-services-column,
         #carDetailModal .detail-features-column {
-            padding: 26px 32px !important;
+            padding: 24px 0 0 !important;
         }
 
         #carDetailModal .detail-services-column {
-            border-left: 1px solid rgba(17, 24, 39, 0.08) !important;
+            border-left: none !important;
+        }
+
+        #carDetailModal .detail-services-column .detail-subsection-card,
+        #carDetailModal .detail-features-column .detail-subsection-card {
+            height: 100%;
         }
 
         #carDetailModal #carDetailFeaturesSection {
@@ -1829,6 +1960,28 @@
 
         #carDetailModal .detail-footer-row > .col-12 {
             background: #10213f !important;
+        }
+
+        #carDetailModal .detail-highlights-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 10px;
+        }
+
+        #carDetailModal .detail-highlights-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            color: rgba(20, 33, 61, 0.82);
+            line-height: 1.5;
+            font-size: 0.92rem;
+        }
+
+        #carDetailModal .detail-highlights-list i {
+            color: #167c74;
+            margin-top: 3px;
         }
 
         @media (max-width: 991.98px) {
@@ -1862,6 +2015,11 @@
             .marketplace-section-head {
                 flex-direction: column;
                 align-items: flex-start;
+            }
+
+            #carDetailModal .detail-side-stack {
+                padding-left: 0;
+                padding-top: 20px;
             }
 
             #carDetailModal .detail-media-column,
@@ -2108,7 +2266,7 @@
         @media (min-width: 576px) and (max-width: 767.98px) {
             .marketplace-featured-grid > div,
             #carListingsGrid > div {
-                width: 33.333333%;
+                width: 50%;
                 flex: 0 0 auto;
             }
 
@@ -2116,31 +2274,34 @@
             .car-card-standard .car-card-img-wrapper,
             .car-card-featured .car-card-img,
             .car-card-standard .car-card-img {
-                min-height: 162px;
-                height: 162px;
+                min-height: 0;
+                height: 100%;
             }
 
             .car-card-body {
-                padding: 13px;
+                padding: 8px 8px 9px;
+                gap: 0;
+            }
+
+            .seller-type-badge {
+                top: 8px;
+                right: 8px;
+                min-height: 18px;
+                padding: 0 6px;
+                font-size: 0.43rem;
             }
 
             .car-title {
-                font-size: 0.98rem;
-                min-height: 2.6em;
+                font-size: 0.65rem;
+                min-height: 2.05em;
             }
 
             .car-price {
-                font-size: 0.94rem;
+                font-size: 0.57rem;
             }
 
-            .car-spec-item {
-                font-size: 0.69rem;
-                padding: 0 8px;
-            }
-
-            .view-more-btn,
-            .make-offer-link {
-                font-size: 0.76rem;
+            .car-card-img {
+                padding: 0;
             }
         }
 
@@ -2173,45 +2334,49 @@
                 --bs-gutter-x: 10px;
             }
 
+            .marketplace-featured-grid > div,
+            #carListingsGrid > div {
+                width: 33.333333%;
+                flex: 0 0 auto;
+            }
+
             .car-card-featured .car-card-img-wrapper,
             .car-card-standard .car-card-img-wrapper,
             .car-card-featured .car-card-img,
             .car-card-standard .car-card-img {
-                min-height: 150px;
-                height: 150px;
+                min-height: 0;
+                height: 100%;
             }
 
             .car-card-body {
-                padding: 12px;
+                padding: 7px 8px 8px;
+                gap: 0;
             }
 
             .car-title {
-                font-size: 0.94rem;
-                line-height: 1.35;
-                min-height: 2.6em;
+                font-size: 0.62rem;
+                line-height: 1.32;
+                min-height: 2.12em;
             }
 
             .car-price {
-                font-size: 0.92rem;
+                font-size: 0.55rem;
             }
 
-            .car-spec-item {
-                min-height: 26px;
-                padding: 0 8px;
-                font-size: 0.68rem;
-            }
-
-            .car-summary {
-                font-size: 0.78rem;
-            }
-
-            .view-more-btn,
-            .make-offer-link {
-                font-size: 0.75rem;
+            .car-card-img {
+                padding: 0;
             }
 
             #carDetailModal .modal-header {
                 padding: 16px 20px !important;
+            }
+
+            #carDetailModal .detail-shell {
+                padding: 0 14px 24px;
+            }
+
+            #carDetailModal .detail-modal-title {
+                font-size: 1.15rem;
             }
 
             #carDetailModal #carDetailCarouselMain img {
@@ -2561,17 +2726,297 @@
     </div>
     <!-- Footer End -->
 
+    <style>
+        .iw-sleek-modal-shell {
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            border-radius: 26px !important;
+            background: #ffffff !important;
+            box-shadow: 0 28px 70px rgba(15, 23, 42, 0.16);
+            overflow: hidden;
+        }
+
+        .iw-sleek-modal-shell .modal-header {
+            padding: 24px 28px 18px;
+            background: #ffffff !important;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+            align-items: flex-start;
+        }
+
+        .iw-sleek-modal-shell .modal-title {
+            color: #13213a !important;
+            font-size: 1.28rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .iw-sleek-modal-shell .text-white {
+            color: #13213a !important;
+        }
+
+        .iw-sleek-modal-shell .modal-body {
+            padding: 24px 28px !important;
+            background: #ffffff !important;
+        }
+
+        .iw-sleek-modal-shell .modal-footer {
+            padding: 18px 28px 24px;
+            background: #ffffff !important;
+            border-top: 1px solid rgba(15, 23, 42, 0.08) !important;
+        }
+
+        .iw-sleek-modal-shell .btn-close-white,
+        .partner-service-modal .btn-close-white {
+            filter: none !important;
+            opacity: 0.72;
+        }
+
+        .iw-sleek-modal-shell .btn-close-white:hover,
+        .partner-service-modal .btn-close-white:hover {
+            opacity: 1;
+        }
+
+        .iw-sleek-form {
+            --iw-form-border: rgba(15, 23, 42, 0.12);
+            --iw-form-border-strong: rgba(36, 68, 141, 0.28);
+            --iw-form-text: #15233c;
+            --iw-form-muted: #6b778c;
+            --iw-form-bg: #ffffff;
+            --iw-form-readonly: #f5f7fb;
+        }
+
+        .iw-sleek-form .form-label,
+        .iw-sleek-form label {
+            margin-bottom: 8px;
+            color: #5d6880;
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+        }
+
+        .iw-sleek-form .form-control,
+        .iw-sleek-form .form-select,
+        .filter-section .form-select,
+        .filter-section .form-control,
+        .marketplace-filter-pill .form-select,
+        .marketplace-filter-pill .form-control {
+            min-height: 52px;
+            padding: 14px 16px;
+            border: 1px solid var(--iw-form-border) !important;
+            border-radius: 14px !important;
+            background: var(--iw-form-bg) !important;
+            box-shadow: none !important;
+            color: var(--iw-form-text);
+            font-size: 0.95rem;
+            line-height: 1.4;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        }
+
+        .iw-sleek-form textarea.form-control,
+        #carDetailModal .detail-contact-card textarea.form-control {
+            min-height: 108px;
+            padding-top: 14px !important;
+            padding-bottom: 14px !important;
+        }
+
+        .iw-sleek-form .form-control.form-control-lg,
+        .iw-sleek-form .form-select.form-select-lg {
+            font-size: 0.95rem;
+        }
+
+        .iw-sleek-form .form-control::placeholder,
+        .iw-sleek-form textarea::placeholder,
+        #carDetailModal .detail-contact-card .form-control::placeholder,
+        #carDetailModal .detail-contact-card textarea::placeholder {
+            color: #98a2b3;
+        }
+
+        .iw-sleek-form .form-control:focus,
+        .iw-sleek-form .form-select:focus,
+        .filter-section .form-select:focus,
+        .filter-section .form-control:focus,
+        .marketplace-filter-pill .form-select:focus,
+        .marketplace-filter-pill .form-control:focus,
+        #carDetailModal .detail-contact-card .form-control:focus,
+        #carDetailModal .detail-contact-card .form-select:focus {
+            border-color: var(--iw-form-border-strong) !important;
+            box-shadow: 0 0 0 4px rgba(36, 68, 141, 0.08) !important;
+        }
+
+        .iw-sleek-form .form-control[readonly] {
+            background: var(--iw-form-readonly) !important;
+            color: #718096;
+        }
+
+        .iw-sleek-form .form-text,
+        .iw-sleek-form .small,
+        .iw-sleek-form .text-muted,
+        .iw-sleek-form p.small,
+        #carDetailModal .detail-contact-card p.text-muted {
+            color: var(--iw-form-muted) !important;
+        }
+
+        .iw-sleek-form .alert,
+        #carDetailModal #carDetailContactAlert {
+            border-radius: 16px;
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            padding: 14px 16px;
+        }
+
+        .iw-sleek-form .btn {
+            min-height: 48px;
+            border-radius: 14px;
+            font-weight: 600;
+            box-shadow: none;
+        }
+
+        .iw-sleek-form .btn-primary,
+        #carDetailModal #carDetailRequestInfoBtn {
+            background: #24448d !important;
+            border-color: #24448d !important;
+            box-shadow: none !important;
+        }
+
+        .iw-sleek-form .btn-primary:hover,
+        .iw-sleek-form .btn-primary:focus,
+        #carDetailModal #carDetailRequestInfoBtn:hover,
+        #carDetailModal #carDetailRequestInfoBtn:focus {
+            background: #1f3974 !important;
+            border-color: #1f3974 !important;
+        }
+
+        .iw-sleek-form .btn-outline-secondary,
+        .iw-sleek-form .pay-later-btn,
+        #marketplacePayLaterBtn {
+            color: #314158 !important;
+            background: #f6f8fb !important;
+            border: 1px solid rgba(15, 23, 42, 0.12) !important;
+        }
+
+        .iw-sleek-form .btn-outline-secondary:hover,
+        .iw-sleek-form .pay-later-btn:hover,
+        #marketplacePayLaterBtn:hover {
+            background: #eef2f7 !important;
+            color: #15233c !important;
+            border-color: rgba(15, 23, 42, 0.18) !important;
+        }
+
+        .iw-sleek-modal-shell h6.text-uppercase.text-muted {
+            margin-bottom: 14px !important;
+            color: #7b8698 !important;
+            font-size: 0.74rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+        }
+
+        .partner-service-modal .modal-content {
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            border-radius: 26px;
+            box-shadow: 0 28px 70px rgba(15, 23, 42, 0.16);
+            overflow: hidden;
+        }
+
+        .partner-service-modal .partner-service-modal__hero {
+            padding: 24px 28px 18px;
+            background: #ffffff;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .partner-service-modal .partner-service-modal__hero h5 {
+            color: #13213a;
+            margin-bottom: 6px;
+        }
+
+        .partner-service-modal .partner-service-modal__hero p {
+            color: #6b778c;
+            margin-bottom: 0;
+        }
+
+        .partner-service-modal .partner-service-modal__selected {
+            margin-bottom: 20px;
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            border-radius: 16px;
+            background: #f7f9fc;
+            padding: 14px 16px;
+        }
+
+        .partner-service-modal .partner-service-modal__selected-icon {
+            background: #ffffff;
+        }
+
+        #carDetailModal .detail-contact-card {
+            background: #ffffff;
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            border-radius: 22px;
+            box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);
+        }
+
+        #carDetailModal .detail-contact-card .form-control,
+        #carDetailModal .detail-contact-card .form-select {
+            min-height: 52px;
+            padding: 14px 16px !important;
+            border: 1px solid rgba(15, 23, 42, 0.12) !important;
+            border-radius: 14px !important;
+            background: #ffffff !important;
+            box-shadow: none !important;
+            font-size: 0.95rem !important;
+        }
+
+        #carDetailModal #carDetailBookInspectionBtn {
+            min-height: 48px;
+            border-radius: 14px !important;
+            background: #ffffff !important;
+            color: #167c74 !important;
+            border: 1px solid rgba(15, 23, 42, 0.08) !important;
+            box-shadow: none !important;
+        }
+
+        @media (max-width: 575.98px) {
+            .marketplace-featured-grid > div,
+            #carListingsGrid > div {
+                width: 50%;
+                flex: 0 0 auto;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .iw-sleek-modal-shell .modal-header,
+            .iw-sleek-modal-shell .modal-body,
+            .iw-sleek-modal-shell .modal-footer,
+            .partner-service-modal .partner-service-modal__hero,
+            .partner-service-modal .modal-body {
+                padding-left: 18px !important;
+                padding-right: 18px !important;
+            }
+
+            .iw-sleek-form .btn {
+                min-height: 46px;
+            }
+
+            .iw-sleek-form .form-control,
+            .iw-sleek-form .form-select,
+            .filter-section .form-select,
+            .filter-section .form-control,
+            .marketplace-filter-pill .form-select,
+            .marketplace-filter-pill .form-control,
+            #carDetailModal .detail-contact-card .form-control,
+            #carDetailModal .detail-contact-card .form-select {
+                min-height: 48px;
+                padding: 13px 14px !important;
+            }
+        }
+    </style>
+
     <!-- Inquiry Modal -->
     <div class="modal fade inquiry-modal" id="inquiryModal" tabindex="-1" aria-labelledby="inquiryModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
+            <div class="modal-content iw-sleek-modal-shell">
                 <div class="modal-header bg-primary text-white">
                     <h5 class="modal-title" id="inquiryModalLabel">
                         <i class="fa fa-search me-2"></i>Tell Us What You're Looking For
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="inquiryForm" class="needs-validation" novalidate>
+                <form id="inquiryForm" class="needs-validation iw-sleek-form" novalidate>
                     <div class="modal-body p-4">
                         <div id="inquiryFormAlert" class="alert d-none" role="alert"></div>
                         
@@ -2695,19 +3140,17 @@
     <!-- Car Detail Modal - Compact Design -->
     <div class="modal fade" id="carDetailModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen">
-            <div class="modal-content" style="background: transparent; font-family: 'Montserrat', sans-serif;">
-                <!-- Header with Back Button -->
-                <div class="modal-header" style="padding: 20px 30px; background: transparent; border-bottom: none;">
-                    <button type="button" class="btn btn-link p-0" data-bs-dismiss="modal" style="color: #14213d; text-decoration: none; font-size: 24px; margin-right: 15px;">
+            <div class="modal-content detail-modal-content" style="background: transparent; font-family: 'Montserrat', sans-serif;">
+                <div class="modal-header detail-modal-header" style="background: transparent; border-bottom: none;">
+                    <button type="button" class="btn btn-link p-0 detail-back-btn" data-bs-dismiss="modal">
                         <i class="fas fa-arrow-left"></i>
                     </button>
-                    <h3 class="modal-title mb-0" id="carDetailTitle" style="font-weight: 700; color: #14213d; font-size: 28px; font-family: 'Montserrat', sans-serif;">Hyundai i10 Sportz</h3>
+                    <h3 class="modal-title mb-0 detail-modal-title" id="carDetailTitle">Hyundai i10 Sportz</h3>
                     <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <!-- Full Screen Body -->
-                <div class="modal-body p-0" style="overflow-y: auto; max-height: calc(100vh - 50px); background: transparent;">
-                    <div class="container-fluid p-0">
+                <div class="modal-body p-0 detail-modal-body">
+                    <div class="container-fluid detail-shell">
                         <div class="row g-0">
                             <!-- Left Column: Large Image Gallery + Specs Table -->
                             <div class="col-lg-7 detail-media-column" style="background: transparent;">
@@ -2748,11 +3191,14 @@
                                     </div>
                                 </div>
 
-                                <!-- Car Details Section - Right Below Images -->
-                                <div class="detail-theme-card" style="margin: 18px 20px 0;">
+                                <div class="detail-theme-card detail-overview-card">
+                                    <div class="detail-card-kicker">Vehicle Overview</div>
                                     <h5 class="detail-section-title">
                                         <i class="fas fa-car"></i> Car Details
                                     </h5>
+                                    <div class="mb-4" id="carDetailDescription" style="font-size: 14px; line-height: 1.8; color: rgba(20, 33, 61, 0.76); font-family: 'Montserrat', sans-serif;">
+                                        <p>Vehicle description and inspection recommendation will appear here.</p>
+                                    </div>
                                     <table class="table table-bordered mb-0" style="font-family: 'Montserrat', sans-serif; font-size: 14px;">
                                         <tbody id="carDetailSpecsTable">
                                             <tr>
@@ -2789,93 +3235,86 @@
                                             </tr>
                                         </tbody>
                                     </table>
-
-                                    <div class="mt-4" id="carDetailDescription" style="font-size: 14px; line-height: 1.8; color: rgba(20, 33, 61, 0.76); font-family: 'Montserrat', sans-serif;">
-                                        <p>Vehicle description and inspection recommendation will appear here.</p>
-                                    </div>
                                 </div>
                             </div>
 
-                            <!-- Right Column: Pricing & Contact -->
                             <div class="col-lg-5 detail-aside-column" style="background: transparent; padding: 20px;">
-                                <!-- Price -->
-                                <h2 class="mb-2" id="carDetailExpPrice" style="font-weight: 700; color: #14213d; font-size: 36px; font-family: 'Montserrat', sans-serif;">₹1,30,000</h2>
-                                
-                                <!-- Vehicle Title -->
-                                <h5 class="mb-3" id="carDetailModalTitle" style="font-weight: 600; color: #14213d; font-size: 20px; font-family: 'Montserrat', sans-serif;">Used 2022 Nissan Altima 2.5 SV</h5>
-                                
-                                <!-- Rating -->
-                                <div class="mb-3">
-                                    <a href="#" id="carDetailRatingsLink" style="color: #24448d; text-decoration: underline; cursor: pointer; font-weight: 700;">Get car ratings by InspectionWale</a>
-                                </div>
-
-                                <div id="carDetailMonetizationSlot" class="mb-4" aria-label="Sponsored recommendations"></div>
-
-                                <!-- Key Stats Row -->
-                                <div class="d-flex align-items-center gap-3 mb-4 pb-3" style="border-bottom: 1px solid rgba(17, 24, 39, 0.08); flex-wrap: wrap;">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <i class="fas fa-tachometer-alt" style="color: #666;"></i>
-                                        <span id="carDetailKmsDisplay" style="font-size: 14px; font-weight: 600;">22,825 mi</span>
+                                <div class="detail-side-stack">
+                                    <div class="detail-summary-card">
+                                        <div class="detail-card-kicker">Verified Listing</div>
+                                        <h2 class="detail-price-display" id="carDetailExpPrice">₹1,30,000</h2>
+                                        <h5 class="detail-vehicle-title" id="carDetailModalTitle">Used 2022 Nissan Altima 2.5 SV</h5>
+                                        <a href="#" id="carDetailRatingsLink" class="detail-ratings-link">
+                                            <i class="fas fa-star"></i> Get car ratings by InspectionWale
+                                        </a>
+                                        <div id="carDetailMonetizationSlot" class="mt-4" aria-label="Sponsored recommendations"></div>
+                                        <div class="detail-stat-pills">
+                                            <div class="detail-stat-pill">
+                                                <i class="fas fa-tachometer-alt"></i>
+                                                <span id="carDetailKmsDisplay">22,825 mi</span>
+                                            </div>
+                                            <div id="carDetailBadges" class="detail-stat-pill detail-stat-pill--badges">
+                                                <i class="fas fa-gem"></i>
+                                                <span id="carDetailBadgesText"></span>
+                                            </div>
+                                            <div class="detail-stat-pill">
+                                                <i class="fas fa-palette"></i>
+                                                <span id="carDetailExteriorColor">Super Black Exterior</span>
+                                            </div>
+                                            <div class="detail-stat-pill">
+                                                <i class="fas fa-couch"></i>
+                                                <span id="carDetailInteriorColor">Charcoal Interior</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div id="carDetailBadges" class="d-flex align-items-center gap-2" style="display: none !important;">
-                                        <i class="fas fa-gem" style="color: #666;"></i>
-                                        <span id="carDetailBadgesText" style="font-size: 14px; font-weight: 600;"></span>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-2">
-                                        <i class="fas fa-circle" style="font-size: 10px; color: #1a1a1a;"></i>
-                                        <span id="carDetailExteriorColor" style="font-size: 14px; font-weight: 600;">Super Black Exterior</span>
-                                    </div>
-                                    <div class="d-flex align-items-center gap-2">
-                                        <i class="fas fa-circle" style="font-size: 10px; color: #666;"></i>
-                                        <span id="carDetailInteriorColor" style="font-size: 14px; font-weight: 600;">Charcoal Interior</span>
-                                    </div>
-                                </div>
 
-                                <!-- Contact Form -->
-                                <h6 class="mb-3" style="font-weight: 700; font-size: 16px; color: #14213d;">Got Questions? Contact the Dealer</h6>
-                                
-                                <select id="carDetailInquiryType" class="form-select mb-3" style="border: 1px solid rgba(17, 24, 39, 0.12); padding: 12px; font-size: 14px; border-radius: 16px;">
-                                    <option selected>This Vehicle's Availability</option>
-                                    <option>Request Test Drive</option>
-                                    <option>Pricing Question</option>
-                                    <option>Book Pre-Purchase Inspection</option>
-                                    <option>Other</option>
-                                </select>
+                                    <div class="detail-contact-card">
+                                        <div class="detail-card-kicker">Seller Contact</div>
+                                        <h6 class="mb-3" style="font-weight: 700; font-size: 16px; color: #14213d;">Ask about availability, pricing or inspection support</h6>
 
-                                <div class="row g-2 mb-2">
-                                    <div class="col-6">
-                                        <input type="text" id="carDetailFirstName" class="form-control" placeholder="First Name" required style="border: 1px solid rgba(17, 24, 39, 0.12); padding: 12px; font-size: 14px; border-radius: 16px;">
+                                        <select id="carDetailInquiryType" class="form-select mb-3" style="border: 1px solid rgba(17, 24, 39, 0.12); padding: 12px; font-size: 14px; border-radius: 16px;">
+                                            <option selected>This Vehicle's Availability</option>
+                                            <option>Request Test Drive</option>
+                                            <option>Pricing Question</option>
+                                            <option>Book Pre-Purchase Inspection</option>
+                                            <option>Other</option>
+                                        </select>
+
+                                        <div class="row g-2 mb-2">
+                                            <div class="col-6">
+                                                <input type="text" id="carDetailFirstName" class="form-control" placeholder="First Name" required style="border: 1px solid rgba(17, 24, 39, 0.12); padding: 12px; font-size: 14px; border-radius: 16px;">
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="text" id="carDetailLastName" class="form-control" placeholder="Last Name" required style="border: 1px solid rgba(17, 24, 39, 0.12); padding: 12px; font-size: 14px; border-radius: 16px;">
+                                            </div>
+                                        </div>
+
+                                        <div class="row g-2 mb-2">
+                                            <div class="col-6">
+                                                <input type="email" id="carDetailEmail" class="form-control" placeholder="Email" required style="border: 1px solid rgba(17, 24, 39, 0.12); padding: 12px; font-size: 14px; border-radius: 16px;">
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="tel" id="carDetailPhone" class="form-control" placeholder="Phone" pattern="[0-9]{10,11}" required style="border: 1px solid rgba(17, 24, 39, 0.12); padding: 12px; font-size: 14px; border-radius: 16px;">
+                                            </div>
+                                        </div>
+
+                                        <div id="carDetailContactAlert" class="alert d-none" role="alert"></div>
+
+                                        <textarea class="form-control mb-3" rows="4" id="carDetailContactMessage" placeholder="Is your Used 2022 Nissan Altima 2.5 SV listed for ₹1,30,000 still available?" style="border: 1px solid rgba(17, 24, 39, 0.12); padding: 12px; font-size: 14px; border-radius: 16px;"></textarea>
+
+                                        <button id="carDetailRequestInfoBtn" class="btn btn-primary w-100 mb-3" style="padding: 14px; font-weight: 700; font-size: 15px; border-radius: 999px; background: #24448d; border: none;">Request Info</button>
+
+                                        <p class="text-muted mb-0" style="font-size: 11px; line-height: 1.4;">By clicking "Request Info", you accept the terms of our <a href="#" class="text-primary">Visitor Agreement</a></p>
                                     </div>
-                                    <div class="col-6">
-                                        <input type="text" id="carDetailLastName" class="form-control" placeholder="Last Name" required style="border: 1px solid rgba(17, 24, 39, 0.12); padding: 12px; font-size: 14px; border-radius: 16px;">
+
+                                    <div class="detail-cta-card" style="background: linear-gradient(135deg, #167c74 0%, #24448d 100%); text-align: center;">
+                                        <i class="fas fa-shield-alt" style="font-size: 28px; color: white; margin-bottom: 8px;"></i>
+                                        <h6 class="text-white mb-2" style="font-weight: 700; font-size: 14px;">Get Peace of Mind</h6>
+                                        <p class="text-white mb-3" style="font-size: 12px; line-height: 1.4; opacity: 0.95;">Book a professional pre-purchase inspection from InspectionWale before buying</p>
+                                        <button id="carDetailBookInspectionBtn" class="btn btn-light w-100" style="font-weight: 700; padding: 12px; border-radius: 999px; font-size: 13px; color: #167c74;">
+                                            <i class="fas fa-calendar-check me-1"></i> Book Inspection @ ₹1,399
+                                        </button>
                                     </div>
-                                </div>
-
-                                <div class="row g-2 mb-2">
-                                    <div class="col-6">
-                                        <input type="email" id="carDetailEmail" class="form-control" placeholder="Email" required style="border: 1px solid rgba(17, 24, 39, 0.12); padding: 12px; font-size: 14px; border-radius: 16px;">
-                                    </div>
-                                    <div class="col-6">
-                                        <input type="tel" id="carDetailPhone" class="form-control" placeholder="Phone" pattern="[0-9]{10,11}" required style="border: 1px solid rgba(17, 24, 39, 0.12); padding: 12px; font-size: 14px; border-radius: 16px;">
-                                    </div>
-                                </div>
-                                
-                                <div id="carDetailContactAlert" class="alert d-none" role="alert"></div>
-
-                                <textarea class="form-control mb-3" rows="4" id="carDetailContactMessage" placeholder="Is your Used 2022 Nissan Altima 2.5 SV listed for ₹1,30,000 still available?" style="border: 1px solid rgba(17, 24, 39, 0.12); padding: 12px; font-size: 14px; border-radius: 16px;"></textarea>
-
-                                <button id="carDetailRequestInfoBtn" class="btn btn-primary w-100 mb-3" style="padding: 14px; font-weight: 700; font-size: 15px; border-radius: 999px; background: #24448d; border: none;">Request Info</button>
-                                
-                                <p class="text-muted mb-0" style="font-size: 11px; line-height: 1.4;">By clicking "Request Info", you accept the terms of our <a href="#" class="text-primary">Visitor Agreement</a></p>
-
-                                <!-- Inspection CTA -->
-                                <div class="mt-4 p-4" style="background: linear-gradient(135deg, #167c74 0%, #24448d 100%); border-radius: 24px; text-align: center;">
-                                    <i class="fas fa-shield-alt" style="font-size: 28px; color: white; margin-bottom: 8px;"></i>
-                                    <h6 class="text-white mb-2" style="font-weight: 700; font-size: 14px;">Get Peace of Mind</h6>
-                                    <p class="text-white mb-3" style="font-size: 12px; line-height: 1.4; opacity: 0.95;">Book a professional pre-purchase inspection from InspectionWale before buying</p>
-                                    <button id="carDetailBookInspectionBtn" class="btn btn-light w-100" style="font-weight: 700; padding: 12px; border-radius: 999px; font-size: 13px; color: #167c74;">
-                                        <i class="fas fa-calendar-check me-1"></i> Book Inspection @ ₹1,399
-                                    </button>
                                 </div>
 
                             </div>
@@ -2883,6 +3322,12 @@
 
                         <div class="row g-0">
                             <div class="col-12 detail-partner-services-row">
+                                <div class="d-flex align-items-start justify-content-between flex-wrap gap-3 mb-3">
+                                    <div>
+                                        <div class="detail-card-kicker mb-2">Support Services</div>
+                                        <h5 class="mb-0" style="font-weight: 700; color: #14213d;">Everything around the purchase in one place</h5>
+                                    </div>
+                                </div>
                                 <div class="partner-leads-grid partner-leads-grid--detail">
                                     <button type="button" class="partner-lead-card" data-partner-service="loan" data-partner-service-source="marketplace-detail" data-partner-service-context-target="#carDetailModalTitle" data-partner-service-copy="Compare EMI-fit finance options once the car and budget look right.">
                                         <span class="partner-lead-card__icon partner-lead-card__icon--loan"><i class="fas fa-hand-holding-usd"></i></span>
@@ -2920,91 +3365,97 @@
                         <div class="row g-0">
                             <!-- Left Column: Vehicle Features (50%) -->
                             <div class="col-lg-6 detail-features-column" style="background: white; padding: 25px 40px; border-top: 1px solid #e0e0e0;">
-                                <!-- Why Book an Inspection Section (moved here) -->
-                                <div class="detail-note-card" style="margin-bottom: 20px;">
-                                    <h6 class="mb-2" style="font-weight: 700; color: #14213d; font-size: 16px;">
-                                        <i class="fas fa-clipboard-check" style="color: #d86f45;"></i> Why Book an Inspection?
-                                    </h6>
-                                    <p style="margin-bottom: 0; color: rgba(20, 33, 61, 0.78); font-size: 14px; line-height: 1.7;">
-                                        Book a professional pre-purchase inspection to verify condition, expose hidden repair risk, and understand fair value before you commit.
-                                    </p>
-                                </div>
+                                <div class="detail-subsection-card h-100">
+                                    <div class="detail-note-card" style="margin-bottom: 20px;">
+                                        <h6 class="mb-2" style="font-weight: 700; color: #14213d; font-size: 16px;">
+                                            <i class="fas fa-clipboard-check" style="color: #d86f45;"></i> Why Book an Inspection?
+                                        </h6>
+                                        <p style="margin-bottom: 0; color: rgba(20, 33, 61, 0.78); font-size: 14px; line-height: 1.7;">
+                                            Book a professional pre-purchase inspection to verify condition, expose hidden repair risk, and understand fair value before you commit.
+                                        </p>
+                                    </div>
 
-                                <h5 class="detail-section-title mb-3" style="font-weight: 700; color: #14213d; font-size: 18px;">
-                                    <i class="fas fa-cogs" style="color: #167c74;"></i> Vehicle Features
-                                </h5>
-                                <div class="row g-3" id="carDetailFeaturesSection" style="padding: 20px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
-                                    <!-- Features will be populated by JavaScript - 3 columns layout -->
-                                    <div class="col-md-4 col-6">
-                                        <div class="p-3" style="background: white; border-radius: 8px; text-align: center; border: 1px solid #dee2e6;">
-                                            <i class="fas fa-cog" style="font-size: 24px; color: #26a69a; margin-bottom: 8px;"></i>
-                                            <div style="font-size: 11px; color: #888; margin-bottom: 4px;">Transmission</div>
-                                            <div style="font-weight: 600; font-size: 13px; color: #1a1a1a;">Manual</div>
+                                    <h5 class="detail-section-title mb-3" style="font-weight: 700; color: #14213d; font-size: 18px;">
+                                        <i class="fas fa-cogs" style="color: #167c74;"></i> Vehicle Features
+                                    </h5>
+                                    <div class="row g-3" id="carDetailFeaturesSection" style="padding: 20px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+                                        <div class="col-md-4 col-6">
+                                            <div class="p-3" style="background: white; border-radius: 8px; text-align: center; border: 1px solid #dee2e6;">
+                                                <i class="fas fa-cog" style="font-size: 24px; color: #26a69a; margin-bottom: 8px;"></i>
+                                                <div style="font-size: 11px; color: #888; margin-bottom: 4px;">Transmission</div>
+                                                <div style="font-weight: 600; font-size: 13px; color: #1a1a1a;">Manual</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-4 col-6">
-                                        <div class="p-3" style="background: white; border-radius: 8px; text-align: center; border: 1px solid #dee2e6;">
-                                            <i class="fas fa-shield-alt" style="font-size: 24px; color: #26a69a; margin-bottom: 8px;"></i>
-                                            <div style="font-size: 11px; color: #888; margin-bottom: 4px;">Airbags</div>
-                                            <div style="font-weight: 600; font-size: 13px; color: #1a1a1a;">2</div>
+                                        <div class="col-md-4 col-6">
+                                            <div class="p-3" style="background: white; border-radius: 8px; text-align: center; border: 1px solid #dee2e6;">
+                                                <i class="fas fa-shield-alt" style="font-size: 24px; color: #26a69a; margin-bottom: 8px;"></i>
+                                                <div style="font-size: 11px; color: #888; margin-bottom: 4px;">Airbags</div>
+                                                <div style="font-weight: 600; font-size: 13px; color: #1a1a1a;">2</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-4 col-6">
-                                        <div class="p-3" style="background: white; border-radius: 8px; text-align: center; border: 1px solid #dee2e6;">
-                                            <i class="fas fa-stop-circle" style="font-size: 24px; color: #26a69a; margin-bottom: 8px;"></i>
-                                            <div style="font-size: 11px; color: #888; margin-bottom: 4px;">ABS</div>
-                                            <div style="font-weight: 600; font-size: 13px; color: #1a1a1a;">Not Available</div>
+                                        <div class="col-md-4 col-6">
+                                            <div class="p-3" style="background: white; border-radius: 8px; text-align: center; border: 1px solid #dee2e6;">
+                                                <i class="fas fa-stop-circle" style="font-size: 24px; color: #26a69a; margin-bottom: 8px;"></i>
+                                                <div style="font-size: 11px; color: #888; margin-bottom: 4px;">ABS</div>
+                                                <div style="font-weight: 600; font-size: 13px; color: #1a1a1a;">Not Available</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-4 col-6">
-                                        <div class="p-3" style="background: white; border-radius: 8px; text-align: center; border: 1px solid #dee2e6;">
-                                            <i class="fas fa-car" style="font-size: 24px; color: #26a69a; margin-bottom: 8px;"></i>
-                                            <div style="font-size: 11px; color: #888; margin-bottom: 4px;">Cruise Control</div>
-                                            <div style="font-weight: 600; font-size: 13px; color: #1a1a1a;">Not Available</div>
+                                        <div class="col-md-4 col-6">
+                                            <div class="p-3" style="background: white; border-radius: 8px; text-align: center; border: 1px solid #dee2e6;">
+                                                <i class="fas fa-car" style="font-size: 24px; color: #26a69a; margin-bottom: 8px;"></i>
+                                                <div style="font-size: 11px; color: #888; margin-bottom: 4px;">Cruise Control</div>
+                                                <div style="font-weight: 600; font-size: 13px; color: #1a1a1a;">Not Available</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-4 col-6">
-                                        <div class="p-3" style="background: white; border-radius: 8px; text-align: center; border: 1px solid #dee2e6;">
-                                            <i class="fas fa-parking" style="font-size: 24px; color: #26a69a; margin-bottom: 8px;"></i>
-                                            <div style="font-size: 11px; color: #888; margin-bottom: 4px;">Parking Assist</div>
-                                            <div style="font-weight: 600; font-size: 13px; color: #1a1a1a;">Not Available</div>
+                                        <div class="col-md-4 col-6">
+                                            <div class="p-3" style="background: white; border-radius: 8px; text-align: center; border: 1px solid #dee2e6;">
+                                                <i class="fas fa-parking" style="font-size: 24px; color: #26a69a; margin-bottom: 8px;"></i>
+                                                <div style="font-size: 11px; color: #888; margin-bottom: 4px;">Parking Assist</div>
+                                                <div style="font-weight: 600; font-size: 13px; color: #1a1a1a;">Not Available</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-4 col-6">
-                                        <div class="p-3" style="background: white; border-radius: 8px; text-align: center; border: 1px solid #dee2e6;">
-                                            <i class="fas fa-music" style="font-size: 24px; color: #26a69a; margin-bottom: 8px;"></i>
-                                            <div style="font-size: 11px; color: #888; margin-bottom: 4px;">Audio System</div>
-                                            <div style="font-weight: 600; font-size: 13px; color: #1a1a1a;">Working</div>
+                                        <div class="col-md-4 col-6">
+                                            <div class="p-3" style="background: white; border-radius: 8px; text-align: center; border: 1px solid #dee2e6;">
+                                                <i class="fas fa-music" style="font-size: 24px; color: #26a69a; margin-bottom: 8px;"></i>
+                                                <div style="font-size: 11px; color: #888; margin-bottom: 4px;">Audio System</div>
+                                                <div style="font-weight: 600; font-size: 13px; color: #1a1a1a;">Working</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Right Column: Advertisement and Services (50%) -->
                             <div class="col-lg-6 detail-services-column" style="background: white; padding: 25px 40px; border-top: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0;">
-                                <!-- Smaller Advertisement -->
-                                <div style="width: 100%; max-width: 100%; margin-bottom: 20px;">
-                                    <div id="iwPostAdTrigger" class="w-100" role="button" tabindex="0" style="display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 8px; border: 1px solid #dee2e6; background: #f8f9fa; min-height: 200px; cursor: pointer;">
-                                        <div class="text-muted" style="font-weight: 700; font-size: 14px;">Post an ad</div>
-                                        <div class="text-muted" style="font-size: 12px;">Click to send inquiry</div>
+                                <div class="detail-subsection-card h-100">
+                                    <div class="detail-card-kicker">Buying Support</div>
+                                    <h5 class="detail-section-title mb-3" style="font-weight: 700; color: #14213d; font-size: 18px;">
+                                        <i class="fas fa-compass" style="color: #167c74;"></i> Next steps before you decide
+                                    </h5>
+                                    <ul class="detail-highlights-list mb-4" id="carDetailHighlights">
+                                        <li><i class="fas fa-check-circle"></i><span>Verified listing</span></li>
+                                        <li><i class="fas fa-check-circle"></i><span>Inspection support available</span></li>
+                                    </ul>
+                                    <div style="width: 100%; max-width: 100%; margin-bottom: 0;">
+                                        <div id="iwPostAdTrigger" class="w-100" role="button" tabindex="0" style="display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 18px; border: 1px solid #dee2e6; background: #f8f9fa; min-height: 220px; cursor: pointer;">
+                                            <div class="text-muted" style="font-weight: 700; font-size: 14px;">Post an ad</div>
+                                            <div class="text-muted" style="font-size: 12px;">Click to send inquiry</div>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <!-- Services moved below vehicle details table -->
                             </div>
                         </div>
 
-                        <!-- Customer Reviews Section (Google Reviews) -->
                         <div class="row g-0 detail-reviews-row">
-                            <div class="col-12" style="background: #f8f9fa; padding: 20px 40px; border-top: 1px solid #e0e0e0;">
-                                <h5 class="mb-3" style="font-weight: 600; color: #1a1a1a; font-size: 16px;">
-                                    <i class="fab fa-google"></i> Google Reviews
-                                </h5>
-                                <div id="marketplaceGoogleReviewsContainer" class="row g-3">
-                                    <!-- Reviews will load here dynamically -->
-                                    <div class="col-12 text-center">
-                                        <div class="spinner-border text-primary" role="status">
-                                            <span class="visually-hidden">Loading reviews...</span>
+                            <div class="col-12" style="background: transparent; padding: 24px 0 0; border-top: 1px solid transparent;">
+                                <div class="detail-reviews-card">
+                                    <h5 class="mb-3" style="font-weight: 600; color: #1a1a1a; font-size: 16px;">
+                                        <i class="fab fa-google"></i> Google Reviews
+                                    </h5>
+                                    <div id="marketplaceGoogleReviewsContainer" class="row g-3">
+                                        <div class="col-12 text-center">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Loading reviews...</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -3066,12 +3517,12 @@
     <!-- Post an Ad Inquiry Modal (minimal fields) -->
     <div class="modal fade" id="postAdInquiryModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
+            <div class="modal-content iw-sleek-modal-shell">
                 <div class="modal-header">
                     <h5 class="modal-title" style="font-weight: 700;">Post an ad</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="postAdInquiryForm">
+                <form id="postAdInquiryForm" class="iw-sleek-form">
                     <div class="modal-body">
                         <div id="postAdInquiryStatus" class="small" style="display:none;"></div>
 
@@ -3109,13 +3560,13 @@
     <!-- MARKETPLACE BOOKING INSPECTION MODAL -->
     <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content" style="border-radius: 16px; overflow: hidden;">
+            <div class="modal-content iw-sleek-modal-shell" style="border-radius: 16px; overflow: hidden;">
                 <div class="modal-header" style="background: #528FF0; border: none; padding: 20px 24px;">
                     <h5 class="modal-title text-white" id="bookingModalLabel" style="font-family: 'Montserrat', sans-serif; font-size: 1.5rem; font-weight: 700;">Book an Inspection</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4" style="background: linear-gradient(180deg, #f5f5f5 0%, #e8e8e8 100%);">
-                    <form id="marketplaceBookingForm" novalidate>
+                    <form id="marketplaceBookingForm" class="iw-sleek-form" novalidate>
                         <input type="hidden" id="bk_listingId" name="listingId">
                         <input type="hidden" id="bk_cartype" name="carType" value="used">
                         <div class="alert alert-info mb-3" id="bookingCarInfo" style="display:none;">
@@ -3202,12 +3653,12 @@
     <!-- Customer Listing Modal (reused from homepage) -->
     <div class="modal fade" id="listCarModal" tabindex="-1" aria-labelledby="listCarModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
-            <div class="modal-content">
+            <div class="modal-content iw-sleek-modal-shell">
                 <div class="modal-header">
                     <h5 class="modal-title" id="listCarModalLabel">Submit Your Car for Customer-to-Customer Listing</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="listCarForm" class="needs-validation" novalidate>
+                <form id="listCarForm" class="needs-validation iw-sleek-form" novalidate>
                     <div class="modal-body">
                         <div id="listCarFormAlert" class="alert d-none" role="alert"></div>
 
@@ -4274,22 +4725,22 @@
         function bindListingEvents() {
             if (listingEventsBound) return;
             document.addEventListener('click', function (event) {
+                const offerTrigger = event.target.closest('.js-make-offer');
+                if (offerTrigger) {
+                    event.preventDefault();
+                    const listingId = offerTrigger.getAttribute('data-listing-id');
+                    if (listingId) {
+                        openC2CReserveModal(listingId);
+                    }
+                    return;
+                }
+
                 const detailTrigger = event.target.closest('.js-view-details');
                 if (detailTrigger) {
                     event.preventDefault();
                     const listingId = detailTrigger.getAttribute('data-listing-id');
                     if (listingId) {
                         showCarDetails(listingId);
-                    }
-                    return;
-                }
-                const offerTrigger = event.target.closest('.js-make-offer');
-                if (offerTrigger) {
-                    event.preventDefault();
-                    const listingId = offerTrigger.getAttribute('data-listing-id');
-                    
-                    if (listingId) {
-                        openC2CReserveModal(listingId);
                     }
                 }
             });
@@ -4393,63 +4844,22 @@
         function buildFeaturedCard(listing) {
             const car = listing?.car || {};
             const title = buildListingTitle(listing) || 'Customer Listing';
-            const kmsFormatted = formatKms(car.kmsDriven);
             const priceFormatted = formatPrice(car.expectedPrice);
             const primaryPhoto = resolvePrimaryPhoto(listing);
             const isSoldOut = isListingSold(listing);
             const cardClass = `car-card car-card-featured${isSoldOut ? ' sold-out' : ''}`;
-            const specLine = buildListingSpecLine(listing, kmsFormatted);
-            const fuelLabel = getListingFuel(listing);
-            const fuelDisplay = fuelLabel ? titleCase(fuelLabel) : 'Fuel NA';
-            const city = getListingCity(listing);
-            const cityDisplay = city ? city.split(',').map(part => titleCase(part.trim())).join(', ') : 'Location NA';
-            const highlights = getListingHighlights(listing);
             const listingIdAttr = listing?.listingId ? `data-listing-id="${listing.listingId}"` : '';
-            const kmsDisplay = kmsFormatted || 'KMs NA';
-            const summaryLine = highlights[0] || listing.summary || '';
-            const offerAction = isSoldOut
-                ? '<span class="text-muted fw-semibold">Sold Out</span>'
-                : `<button class="btn btn-link make-offer-link p-0 js-make-offer" type="button" ${listingIdAttr}>Make Offer</button>`;
-            
-            const sellerType = getListingSellerTypeLabel(listing);
-            const sellerClass = sellerType === 'Dealer' ? 'dealer' : '';
-            
-            // Get location for badge - only show if location exists
-            const locationForBadge = city && city.toLowerCase() !== 'location na' ? city : '';
-            const locationBadgeHtml = locationForBadge ? `<span class="location-badge"><i class="fa fa-map-marker-alt"></i> ${locationForBadge}</span>` : '';
 
             return `
-                <div class="col-6 col-md-4 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="${cardClass}">
+                <div class="col-4 col-lg-3 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="${cardClass} ${isSoldOut ? '' : 'js-view-details'}" ${listingIdAttr}>
                         <div class="car-card-img-wrapper ${isSoldOut ? '' : 'js-view-details'}" ${listingIdAttr}>
                             <img src="${primaryPhoto}" alt="${title}" class="car-card-img" width="400" height="240" loading="lazy" decoding="async" onerror="this.src='${FALLBACK_IMAGE}'">
-                            <span class="featured-badge">Featured</span>
-                            ${isSoldOut ? '<div class="sold-out-banner">Sold Out</div>' : ''}
-                            ${locationBadgeHtml}
                             <span class="seller-type-badge ${sellerClass}">${sellerType}</span>
                         </div>
                         <div class="car-card-body">
-                            <h5 class="car-title mb-0">${title}</h5>
+                            <h5 class="car-title">${title}</h5>
                             <div class="car-price">${priceFormatted}</div>
-                            <div class="car-specs-row">
-                                <div class="car-spec-item">
-                                    <i class="fa fa-road text-primary"></i>
-                                    <span>${kmsDisplay}</span>
-                                </div>
-                                <div class="car-spec-item">
-                                    <i class="fa fa-gas-pump text-primary"></i>
-                                    <span>${fuelDisplay}</span>
-                                </div>
-                                <div class="car-spec-item">
-                                    <i class="fa fa-map-marker-alt text-primary"></i>
-                                    <span>${cityDisplay}</span>
-                                </div>
-                            </div>
-                            ${summaryLine ? `<div class="car-summary">${summaryLine}</div>` : ''}
-                            <div class="car-card-actions">
-                                <button class="btn view-more-btn js-view-details" type="button" ${listingIdAttr} ${isSoldOut ? 'disabled aria-disabled="true"' : ''}>${isSoldOut ? 'Unavailable' : 'View Details'}</button>
-                                ${offerAction}
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -4459,59 +4869,23 @@
         function buildInventoryCard(listing) {
             const car = listing?.car || {};
             const title = buildListingTitle(listing) || 'Customer Listing';
-            const kmsFormatted = formatKms(car.kmsDriven);
             const priceFormatted = formatPrice(car.expectedPrice);
             const primaryPhoto = resolvePrimaryPhoto(listing);
             const isSoldOut = isListingSold(listing);
-            const specLine = buildListingSpecLine(listing, kmsFormatted);
-            const fuelLabel = getListingFuel(listing);
-            const fuelDisplay = fuelLabel ? titleCase(fuelLabel) : 'Fuel NA';
-            const city = getListingCity(listing);
-            const cityDisplay = city ? city.split(',').map(part => titleCase(part.trim())).join(', ') : 'Location NA';
-            const highlights = getListingHighlights(listing);
             const listingIdAttr = listing?.listingId ? `data-listing-id="${listing.listingId}"` : '';
-            const kmsDisplay = kmsFormatted || 'KMs NA';
-            const summaryLine = highlights[0] || listing.summary || '';
             const sellerType = getListingSellerTypeLabel(listing);
             const sellerClass = sellerType === 'Dealer' ? 'dealer' : '';
-            const offerAction = isSoldOut
-                ? '<span class="text-muted fw-semibold">Sold Out</span>'
-                : `<button class="btn btn-link make-offer-link p-0 js-make-offer" type="button" ${listingIdAttr}>Make Offer</button>`;
-            const locationForBadge = city && city.toLowerCase() !== 'location na' ? city : '';
-            const locationBadgeHtml = locationForBadge ? `<span class="location-badge"><i class="fa fa-map-marker-alt"></i> ${locationForBadge}</span>` : '';
 
             return `
-                <div class="col-6 col-md-4 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="car-card car-card-standard${isSoldOut ? ' sold-out' : ''}">
+                <div class="col-4 col-lg-3 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="car-card car-card-standard${isSoldOut ? ' sold-out' : ''} ${isSoldOut ? '' : 'js-view-details'}" ${listingIdAttr}>
                         <div class="car-card-img-wrapper ${isSoldOut ? '' : 'js-view-details'}" ${listingIdAttr}>
                             <img src="${primaryPhoto}" alt="${title}" class="car-card-img" width="400" height="240" loading="lazy" decoding="async" onerror="this.src='${FALLBACK_IMAGE}'">
-                            ${isListingFeatured(listing) ? '<span class="featured-badge">Featured</span>' : ''}
-                            ${isSoldOut ? '<div class="sold-out-banner">Sold Out</div>' : ''}
-                            ${locationBadgeHtml}
                             <span class="seller-type-badge ${sellerClass}">${sellerType}</span>
                         </div>
                         <div class="car-card-body">
-                            <h5 class="car-title mb-0">${title}</h5>
+                            <h5 class="car-title">${title}</h5>
                             <div class="car-price">${priceFormatted}</div>
-                            <div class="car-specs-row">
-                                <div class="car-spec-item">
-                                    <i class="fa fa-road text-primary"></i>
-                                    <span>${kmsDisplay}</span>
-                                </div>
-                                <div class="car-spec-item">
-                                    <i class="fa fa-gas-pump text-primary"></i>
-                                    <span>${fuelDisplay}</span>
-                                </div>
-                                <div class="car-spec-item">
-                                    <i class="fa fa-map-marker-alt text-primary"></i>
-                                    <span>${cityDisplay}</span>
-                                </div>
-                            </div>
-                            ${summaryLine ? `<div class="car-summary">${summaryLine}</div>` : ''}
-                            <div class="car-card-actions">
-                                <button class="btn view-more-btn js-view-details" type="button" ${listingIdAttr} ${isSoldOut ? 'disabled aria-disabled="true"' : ''}>${isSoldOut ? 'Unavailable' : 'View Details'}</button>
-                                ${offerAction}
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -5965,7 +6339,7 @@
                         </div>
                     </div>
 
-                    <form id="partnerServiceRequestForm" novalidate>
+                    <form id="partnerServiceRequestForm" class="iw-sleek-form" novalidate>
                         <input type="hidden" name="serviceCategory" id="partnerServiceCategory" value="">
                         <input type="hidden" name="serviceSource" id="partnerServiceSource" value="marketplace">
                         <input type="hidden" name="serviceContext" id="partnerServiceContext" value="">
