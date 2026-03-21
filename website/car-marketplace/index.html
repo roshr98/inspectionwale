@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>Buy Used Cars - inspectionWale</title>
-    <meta content="width=1280" name="viewport">
+    <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport">
     <meta content="Buy verified used cars directly from owners. Inspected by inspectionWale professionals." name="description">
     <meta content="used cars, car marketplace, buy cars, sell cars, inspectionWale" name="keywords">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -1789,6 +1789,18 @@
             border-color: rgba(17, 24, 39, 0.08) !important;
         }
 
+        #carDetailModal .detail-partner-services-row {
+            padding: 24px 30px 28px;
+            background: rgba(255, 255, 255, 0.44);
+            border-top: 1px solid rgba(17, 24, 39, 0.08);
+            border-bottom: 1px solid rgba(17, 24, 39, 0.08);
+        }
+
+        #carDetailModal .partner-leads-grid--detail {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            margin-top: 0;
+        }
+
         #carDetailModal .detail-services-column,
         #carDetailModal .detail-features-column {
             padding: 26px 32px !important;
@@ -1825,8 +1837,21 @@
                 margin-top: -72px;
             }
 
+            .marketplace-banner .container,
+            .marketplace-page .container,
+            .marketplace-page .container-xxl {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
             .marketplace-banner-shell {
                 grid-template-columns: 1fr;
+            }
+
+            .marketplace-featured-grid,
+            #carListingsGrid {
+                --bs-gutter-x: 14px;
+                --bs-gutter-y: 16px;
             }
 
             .marketplace-banner-panel {
@@ -1854,14 +1879,31 @@
         }
 
         @media (max-width: 767.98px) {
+            .marketplace-page {
+                font-size: 16px;
+            }
+
+            .marketplace-featured-grid,
+            #carListingsGrid {
+                --bs-gutter-x: 12px;
+                --bs-gutter-y: 16px;
+            }
+
             .marketplace-page .top-banner {
                 padding-top: 10px;
             }
 
             .marketplace-page .banner-container {
-                width: min(100% - 20px, 1280px);
+                width: min(100% - 40px, 1280px);
                 gap: 12px;
                 padding: 6px 0;
+            }
+
+            .marketplace-banner .container,
+            .marketplace-page .container,
+            .marketplace-page .container-xxl {
+                padding-left: 20px !important;
+                padding-right: 20px !important;
             }
 
             .marketplace-page .banner-logo img {
@@ -1885,13 +1927,47 @@
                 border-radius: 0 0 34px 34px;
             }
 
+            .marketplace-banner h1 {
+                font-size: clamp(2.25rem, 10vw, 3.4rem);
+            }
+
+            .marketplace-banner p {
+                font-size: 1rem !important;
+                line-height: 1.7;
+            }
+
             .marketplace-page-shell {
+                width: min(100% - 40px, 1120px);
                 margin-top: -62px;
             }
 
             .marketplace-control-shell {
-                padding: 22px;
+                padding: 22px 20px;
                 border-radius: 24px;
+            }
+
+            .marketplace-control-copy,
+            .marketplace-section-head p,
+            .marketplace-results-meta {
+                font-size: 0.98rem;
+                line-height: 1.7;
+            }
+
+            .marketplace-section {
+                margin-top: 34px;
+            }
+
+            .marketplace-section-head h2 {
+                font-size: clamp(1.8rem, 8vw, 2.4rem);
+            }
+
+            .marketplace-categories {
+                grid-template-columns: 1fr;
+            }
+
+            .marketplace-category-card {
+                padding: 16px 18px;
+                border-radius: 18px;
             }
 
             .marketplace-filter-bar {
@@ -1920,8 +1996,32 @@
                 height: 176px;
             }
 
+            .car-card-body {
+                padding: 14px 16px 16px;
+            }
+
+            .car-title {
+                font-size: 1.08rem;
+            }
+
+            .car-price {
+                font-size: 1rem;
+            }
+
+            .car-card-actions {
+                gap: 12px;
+            }
+
             #carDetailModal .modal-header {
-                padding: 18px 18px !important;
+                padding: 18px 20px !important;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            #carDetailModal .modal-title,
+            #carDetailModal #carDetailTitle {
+                font-size: 1.35rem !important;
+                line-height: 1.25;
             }
 
             #carDetailModal #carDetailCarouselMain img {
@@ -1933,6 +2033,170 @@
                 height: auto !important;
                 grid-template-rows: none;
                 grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            #carDetailModal .detail-media-column,
+            #carDetailModal .detail-aside-column,
+            #carDetailModal .detail-features-column,
+            #carDetailModal .detail-services-column {
+                padding: 20px !important;
+            }
+
+            #carDetailModal .detail-theme-card {
+                margin: 16px 0 0 !important;
+            }
+
+            #carDetailModal .detail-gallery-shell {
+                flex-direction: column;
+            }
+
+            #carDetailModal #carDetailExpPrice {
+                font-size: 2rem !important;
+                line-height: 1.1;
+            }
+
+            #carDetailModal #carDetailModalTitle {
+                font-size: 1.15rem !important;
+                line-height: 1.4;
+            }
+
+            #carDetailModal #carDetailDescription,
+            #carDetailModal #carDetailDescription p,
+            #carDetailModal #carDetailKmsDisplay,
+            #carDetailModal #carDetailExteriorColor,
+            #carDetailModal #carDetailInteriorColor,
+            #carDetailModal #carDetailSpecsTable td {
+                font-size: 0.96rem !important;
+                line-height: 1.7 !important;
+            }
+
+            #carDetailModal .partner-leads-grid--detail {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+            }
+
+            #carDetailModal .detail-partner-services-row {
+                padding: 20px !important;
+            }
+        }
+
+        @media (min-width: 576px) and (max-width: 767.98px) {
+            .marketplace-featured-grid > div,
+            #carListingsGrid > div {
+                width: 33.333333%;
+                flex: 0 0 auto;
+            }
+
+            .car-card-featured .car-card-img-wrapper,
+            .car-card-standard .car-card-img-wrapper,
+            .car-card-featured .car-card-img,
+            .car-card-standard .car-card-img {
+                min-height: 162px;
+                height: 162px;
+            }
+
+            .car-card-body {
+                padding: 13px;
+            }
+
+            .car-title {
+                font-size: 0.98rem;
+            }
+
+            .car-price {
+                font-size: 0.94rem;
+            }
+
+            .car-spec-item {
+                font-size: 0.69rem;
+                padding: 0 8px;
+            }
+
+            .view-more-btn,
+            .make-offer-link {
+                font-size: 0.76rem;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .marketplace-page .banner-container,
+            .marketplace-page-shell {
+                width: min(100% - 40px, 1120px);
+            }
+
+            .marketplace-control-shell {
+                padding: 20px;
+            }
+
+            .marketplace-banner {
+                min-height: 340px;
+                padding: 88px 0 112px;
+            }
+
+            .marketplace-banner-metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .marketplace-section-head,
+            .marketplace-results-meta {
+                gap: 10px;
+            }
+
+            .marketplace-featured-grid,
+            #carListingsGrid {
+                --bs-gutter-x: 10px;
+            }
+
+            .car-card-featured .car-card-img-wrapper,
+            .car-card-standard .car-card-img-wrapper,
+            .car-card-featured .car-card-img,
+            .car-card-standard .car-card-img {
+                min-height: 150px;
+                height: 150px;
+            }
+
+            .car-card-body {
+                padding: 12px;
+            }
+
+            .car-title {
+                font-size: 0.94rem;
+                line-height: 1.35;
+            }
+
+            .car-price {
+                font-size: 0.92rem;
+            }
+
+            .car-spec-item {
+                min-height: 26px;
+                padding: 0 8px;
+                font-size: 0.68rem;
+            }
+
+            .car-summary {
+                font-size: 0.78rem;
+            }
+
+            .view-more-btn,
+            .make-offer-link {
+                font-size: 0.75rem;
+            }
+
+            #carDetailModal .modal-header {
+                padding: 16px 20px !important;
+            }
+
+            #carDetailModal #carDetailCarouselMain img {
+                height: 240px !important;
+            }
+
+            #carDetailModal #carDetailThumbnails {
+                gap: 8px !important;
+            }
+
+            #carDetailModal .partner-leads-grid--detail {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -2499,38 +2763,6 @@
                                         </tbody>
                                     </table>
 
-                                    <!-- Vehicle Description -->
-                                    <div class="partner-leads-grid partner-leads-grid--detail">
-                                        <button type="button" class="partner-lead-card" data-partner-service="loan" data-partner-service-source="marketplace-detail" data-partner-service-context-target="#carDetailModalTitle" data-partner-service-copy="Compare EMI-fit finance options once the car and budget look right.">
-                                            <span class="partner-lead-card__icon partner-lead-card__icon--loan"><i class="fas fa-hand-holding-usd"></i></span>
-                                            <span class="partner-lead-card__body">
-                                                <strong>Car Loan</strong>
-                                                <span>Compare EMI-fit finance options once the car and budget look right.</span>
-                                            </span>
-                                        </button>
-                                        <button type="button" class="partner-lead-card" data-partner-service="insurance" data-partner-service-source="marketplace-detail" data-partner-service-context-target="#carDetailModalTitle" data-partner-service-copy="Renew expiring policies or request quotes that match the inspected vehicle.">
-                                            <span class="partner-lead-card__icon partner-lead-card__icon--insurance"><i class="fas fa-shield-alt"></i></span>
-                                            <span class="partner-lead-card__body">
-                                                <strong>Insurance</strong>
-                                                <span>Renew expiring policies or request quotes that match the inspected vehicle.</span>
-                                            </span>
-                                        </button>
-                                        <button type="button" class="partner-lead-card" data-partner-service="warranty" data-partner-service-source="marketplace-detail" data-partner-service-context-target="#carDetailModalTitle" data-partner-service-copy="Keep major repair risk covered for used cars with longer ownership plans.">
-                                            <span class="partner-lead-card__icon partner-lead-card__icon--warranty"><i class="fas fa-certificate"></i></span>
-                                            <span class="partner-lead-card__body">
-                                                <strong>Extended Warranty</strong>
-                                                <span>Keep major repair risk covered for used cars with longer ownership plans.</span>
-                                            </span>
-                                        </button>
-                                        <button type="button" class="partner-lead-card" data-partner-service="rto-transfer" data-partner-service-source="marketplace-detail" data-partner-service-context-target="#carDetailModalTitle" data-partner-service-copy="Track ownership paperwork, RC transfer and compliance tasks after the deal closes.">
-                                            <span class="partner-lead-card__icon partner-lead-card__icon--rto-transfer"><i class="fas fa-exchange-alt"></i></span>
-                                            <span class="partner-lead-card__body">
-                                                <strong>RTO Transfer</strong>
-                                                <span>Track ownership paperwork, RC transfer and compliance tasks after the deal closes.</span>
-                                            </span>
-                                        </button>
-                                    </div>
-
                                     <div class="mt-4" id="carDetailDescription" style="font-size: 14px; line-height: 1.8; color: rgba(20, 33, 61, 0.76); font-family: 'Montserrat', sans-serif;">
                                         <p>Vehicle description and inspection recommendation will appear here.</p>
                                     </div>
@@ -2619,6 +2851,41 @@
                                     </button>
                                 </div>
 
+                            </div>
+                        </div>
+
+                        <div class="row g-0">
+                            <div class="col-12 detail-partner-services-row">
+                                <div class="partner-leads-grid partner-leads-grid--detail">
+                                    <button type="button" class="partner-lead-card" data-partner-service="loan" data-partner-service-source="marketplace-detail" data-partner-service-context-target="#carDetailModalTitle" data-partner-service-copy="Compare EMI-fit finance options once the car and budget look right.">
+                                        <span class="partner-lead-card__icon partner-lead-card__icon--loan"><i class="fas fa-hand-holding-usd"></i></span>
+                                        <span class="partner-lead-card__body">
+                                            <strong>Car Loan</strong>
+                                            <span>Compare EMI-fit finance options once the car and budget look right.</span>
+                                        </span>
+                                    </button>
+                                    <button type="button" class="partner-lead-card" data-partner-service="insurance" data-partner-service-source="marketplace-detail" data-partner-service-context-target="#carDetailModalTitle" data-partner-service-copy="Renew expiring policies or request quotes that match the inspected vehicle.">
+                                        <span class="partner-lead-card__icon partner-lead-card__icon--insurance"><i class="fas fa-shield-alt"></i></span>
+                                        <span class="partner-lead-card__body">
+                                            <strong>Insurance</strong>
+                                            <span>Renew expiring policies or request quotes that match the inspected vehicle.</span>
+                                        </span>
+                                    </button>
+                                    <button type="button" class="partner-lead-card" data-partner-service="warranty" data-partner-service-source="marketplace-detail" data-partner-service-context-target="#carDetailModalTitle" data-partner-service-copy="Keep major repair risk covered for used cars with longer ownership plans.">
+                                        <span class="partner-lead-card__icon partner-lead-card__icon--warranty"><i class="fas fa-certificate"></i></span>
+                                        <span class="partner-lead-card__body">
+                                            <strong>Extended Warranty</strong>
+                                            <span>Keep major repair risk covered for used cars with longer ownership plans.</span>
+                                        </span>
+                                    </button>
+                                    <button type="button" class="partner-lead-card" data-partner-service="rto-transfer" data-partner-service-source="marketplace-detail" data-partner-service-context-target="#carDetailModalTitle" data-partner-service-copy="Track ownership paperwork, RC transfer and compliance tasks after the deal closes.">
+                                        <span class="partner-lead-card__icon partner-lead-card__icon--rto-transfer"><i class="fas fa-exchange-alt"></i></span>
+                                        <span class="partner-lead-card__body">
+                                            <strong>RTO Transfer</strong>
+                                            <span>Track ownership paperwork, RC transfer and compliance tasks after the deal closes.</span>
+                                        </span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -4125,7 +4392,7 @@
             const locationBadgeHtml = locationForBadge ? `<span class="location-badge"><i class="fa fa-map-marker-alt"></i> ${locationForBadge}</span>` : '';
 
             return `
-                <div class="col-12 col-sm-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="col-6 col-md-4 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="${cardClass}">
                         <div class="car-card-img-wrapper ${isSoldOut ? '' : 'js-view-details'}" ${listingIdAttr}>
                             <img src="${primaryPhoto}" alt="${title}" class="car-card-img" width="400" height="240" loading="lazy" decoding="async" onerror="this.src='${FALLBACK_IMAGE}'">
@@ -4187,7 +4454,7 @@
             const locationBadgeHtml = locationForBadge ? `<span class="location-badge"><i class="fa fa-map-marker-alt"></i> ${locationForBadge}</span>` : '';
 
             return `
-                <div class="col-12 col-sm-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="col-6 col-md-4 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="car-card car-card-standard${isSoldOut ? ' sold-out' : ''}">
                         <div class="car-card-img-wrapper ${isSoldOut ? '' : 'js-view-details'}" ${listingIdAttr}>
                             <img src="${primaryPhoto}" alt="${title}" class="car-card-img" width="400" height="240" loading="lazy" decoding="async" onerror="this.src='${FALLBACK_IMAGE}'">

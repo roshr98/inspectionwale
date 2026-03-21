@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>Car Inspection Services in Mumbai, Navi Mumbai, Thane, Kalyan & Dombivli | inspectionWale - 160+ Point Check</title>
-    <meta content="width=1280" name="viewport">
+    <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport">
     <meta name="description" content="Professional car inspection services in Mumbai, Navi Mumbai, Thane, Kalyan, Dombivli & Pune. 160+ point pre-purchase inspection, same-day reports, certified inspectors. Book used car inspection online today! Serving Mumbai Metropolitan Region.">
     <meta name="keywords" content="car inspection Mumbai, car inspection Navi Mumbai, car inspection Thane, car inspection Kalyan, car inspection Dombivli, pre purchase car inspection Mumbai, used car inspection near me, vehicle inspection Maharashtra, car evaluation Mumbai, auto inspection services Mumbai, pre-purchase inspection Thane, used car check Navi Mumbai, 160 point inspection, certified car inspector Mumbai, car buyer inspection Kalyan, automobile inspection Dombivli">
     <meta name="author" content="inspectionWale">
@@ -376,69 +376,84 @@
         
         /* Mobile-specific styling for hero banner and modal fixes */
         @media (max-width: 991px) {
-            /* Modal fullscreen on mobile */
             .modal-dialog {
-                margin: 0 !important;
-                max-width: 100% !important;
-                width: 100% !important;
-                height: 100% !important;
+                margin: 0.75rem auto !important;
+                max-width: calc(100vw - 1rem) !important;
+                width: calc(100vw - 1rem) !important;
+                height: auto !important;
             }
             
             .modal-content {
-                border-radius: 0 !important;
-                min-height: 100vh !important;
+                border-radius: 22px !important;
+                min-height: auto !important;
                 width: 100% !important;
+                max-height: calc(100vh - 1rem) !important;
+                overflow: hidden !important;
+            }
+
+            #listCarModal form,
+            #reserveListingModal form,
+            #testDriveModal form {
+                display: flex;
+                flex-direction: column;
+                min-height: 0;
             }
             
-            /* Modal footer fix for all mobile/tablet devices */
             .modal-body {
-                padding-bottom: 150px !important;
-                max-height: calc(100vh - 120px) !important;
+                padding: 1rem 1rem 1.25rem !important;
+                max-height: none !important;
                 overflow-y: auto !important;
                 width: 100% !important;
             }
             
             .modal-footer {
-                position: fixed !important;
+                position: sticky !important;
                 bottom: 0 !important;
-                left: 0 !important;
-                right: 0 !important;
                 width: 100% !important;
                 background: white !important;
-                z-index: 1060 !important;
-                border-top: 2px solid #dee2e6 !important;
-                padding: 1rem !important;
-                box-shadow: 0 -4px 12px rgba(0,0,0,0.15) !important;
+                z-index: 2 !important;
+                border-top: 1px solid #dee2e6 !important;
+                padding: 0.875rem 1rem !important;
+                box-shadow: 0 -4px 12px rgba(0,0,0,0.08) !important;
                 margin: 0 !important;
+                gap: 0.75rem !important;
+                flex-wrap: wrap !important;
+            }
+
+            .modal-footer .btn {
+                flex: 1 1 180px;
             }
             
-            /* Extra padding for photo sections */
             #listingPhotoInputs > div:last-child {
-                margin-bottom: 4rem !important;
-                padding-bottom: 2rem !important;
-            }
-            
-            /* Ensure scrolling works */
-            .modal-dialog {
-                margin: 0.5rem !important;
-            }
-            
-            .modal-content {
-                max-height: 100vh !important;
+                margin-bottom: 0 !important;
+                padding-bottom: 0.5rem !important;
             }
         }
         
         /* Additional fixes for very small devices (iPhone SE, etc) */
         @media (max-width: 575px) {
+            .modal-dialog {
+                margin: 0 !important;
+                max-width: 100vw !important;
+                width: 100vw !important;
+            }
+
+            .modal-content {
+                border-radius: 0 !important;
+                min-height: 100dvh !important;
+                max-height: 100dvh !important;
+            }
+
             .modal-body {
-                padding: 1rem 0.75rem 180px 0.75rem !important;
+                padding: 1rem 0.9rem !important;
             }
             
             .modal-footer {
-                padding: 0.75rem !important;
+                padding: 0.75rem 0.9rem !important;
             }
             
             .modal-footer .btn {
+                width: 100%;
                 padding: 0.5rem 1rem !important;
                 font-size: 0.9rem !important;
             }
@@ -1347,15 +1362,24 @@
         }
 
         @media (max-width: 767.98px) {
+            body.home-page {
+                font-size: 16px;
+            }
+
             .top-banner {
                 padding-top: 6px;
             }
 
             .banner-container {
+                width: min(100% - 16px, 720px);
                 padding: 8px 0;
                 border-radius: 0;
                 align-items: flex-start;
                 flex-wrap: wrap;
+            }
+
+            .banner-logo img {
+                height: 48px;
             }
 
             .brand-wordmark {
@@ -1365,20 +1389,63 @@
             .banner-icons {
                 width: 100%;
                 justify-content: space-between;
+                gap: 8px;
             }
 
+            .banner-icon,
             .banner-contact {
-                flex: 1 1 auto;
+                flex: 1 1 0;
                 justify-content: center;
+                min-height: 46px;
+                padding: 0 14px;
+                font-size: 0.95rem;
             }
 
             .home-hero-card {
-                border-radius: 0 0 36px 36px;
-                padding: 28px 20px;
+                border-radius: 0 0 28px 28px;
+                padding: 28px 18px 24px;
+            }
+
+            .home-eyebrow {
+                font-size: 0.82rem;
             }
 
             .hero-mobile-form-card {
                 border-radius: 24px;
+                padding: 24px 18px;
+            }
+
+            .hero-mobile-form-card h5 {
+                font-size: 1.2rem;
+            }
+
+            .home-section,
+            .home-strip {
+                width: min(100% - 16px, 720px);
+            }
+
+            .home-section {
+                padding: 24px 0;
+            }
+
+            .home-section-header {
+                gap: 12px;
+                margin-bottom: 20px;
+            }
+
+            .home-section-header h2 {
+                font-size: clamp(2rem, 8vw, 2.6rem);
+            }
+
+            .home-section-header p {
+                max-width: none;
+                font-size: 1rem;
+                line-height: 1.75;
+            }
+
+            .home-hero-copy h1 {
+                font-size: clamp(2.2rem, 10vw, 3.2rem);
+                line-height: 1.08;
             }
 
             .hero-contact-grid {
@@ -1386,7 +1453,24 @@
             }
 
             .home-hero-copy p {
-                font-size: 0.95rem;
+                font-size: 1rem;
+                line-height: 1.75;
+            }
+
+            .home-hero-metrics {
+                gap: 12px;
+            }
+
+            .home-metric {
+                padding: 16px 0;
+            }
+
+            .home-metric strong {
+                font-size: 1.7rem;
+            }
+
+            .home-metric span {
+                font-size: 0.96rem;
             }
 
             .home-story-card > p {
@@ -1414,8 +1498,76 @@
                 border-radius: 0;
             }
 
+            .home-strip-card {
+                gap: 12px;
+                padding: 12px 0;
+            }
+
+            .home-service-card,
+            .home-story-card,
+            .home-step {
+                padding: 12px 0;
+            }
+
+            .home-strip-icon,
+            .home-service-card i,
+            .home-story-card i {
+                font-size: 1.15rem;
+            }
+
+            .home-strip-card strong,
+            .home-service-card h3,
+            .home-story-card h3,
+            .home-step h3 {
+                font-size: 1.15rem;
+            }
+
+            .home-strip-card span,
+            .home-service-card p,
+            .home-story-card p,
+            .home-step p,
+            .home-service-card ul,
+            .home-story-card ul {
+                font-size: 0.98rem;
+                line-height: 1.7;
+            }
+
             .home-btn-primary,
             .home-btn-secondary {
+                width: 100%;
+                min-height: 54px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .home-hero-copy h1 {
+                font-size: clamp(2rem, 11vw, 2.6rem);
+            }
+
+            .popular-car-card {
+                flex: 0 0 calc(100vw - 56px);
+            }
+
+            .car-image-wrapper {
+                height: 196px;
+            }
+
+            .car-info {
+                padding: 14px;
+            }
+
+            .car-name {
+                font-size: 1.05rem;
+            }
+
+            .car-card-footer {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .car-price,
+            .check-price-link {
                 width: 100%;
             }
         }
@@ -1629,12 +1781,12 @@
                     </button>
                 </div>
             </div>
-            <div class="d-flex align-items-center justify-content-between mb-3">
+            <div class="d-flex align-items-center justify-content-between mb-3 home-marketplace-header">
                 <div>
                     <span style="display:block; margin-bottom:6px; color:#b95730; font-size:0.8rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;">Featured Cars</span>
                     <h2 class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #0B2154; font-weight: 700;">Verified used cars ready for the next step</h2>
                 </div>
-                <button type="button" class="btn sell-car-btn" data-bs-toggle="modal" data-bs-target="#listCarModal">
+                <button type="button" class="btn sell-car-btn home-marketplace-sell" data-bs-toggle="modal" data-bs-target="#listCarModal">
                     Sell Your Car <span class="sell-car-dot">•</span>
                 </button>
             </div>
@@ -2054,6 +2206,16 @@
             background: #26a69a;
             color: #fff;
         }
+
+        .home-marketplace-header {
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .home-marketplace-sell {
+            flex: 0 0 auto;
+            margin-left: auto;
+        }
         .sell-car-dot {
             color: #D81324;
             font-size: 1.2rem;
@@ -2077,6 +2239,18 @@
             box-shadow: 0 4px 12px rgba(38, 166, 154, 0.3);
         }
         @media (max-width: 767px) {
+            .home-marketplace-header {
+                align-items: stretch !important;
+            }
+
+            .home-marketplace-sell {
+                width: 100%;
+                margin-left: 0;
+                display: inline-flex;
+                justify-content: center;
+                padding: 12px 20px;
+            }
+
             .popular-car-card {
                 flex: 0 0 286px;
             }
