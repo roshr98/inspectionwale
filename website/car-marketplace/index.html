@@ -21,7 +21,7 @@
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&family=Barlow:wght@600;700&family=Ubuntu:wght@400;500&family=Lato:wght@400;700&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"> 
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -604,6 +604,1326 @@
         .modal-header.bg-primary {
             background-color: #26a69a !important;
         }
+
+        :root {
+            --mp-bg: #f5f2ec;
+            --mp-surface: rgba(255, 255, 255, 0.72);
+            --mp-surface-strong: rgba(255, 255, 255, 0.9);
+            --mp-ink: #111827;
+            --mp-ink-soft: #667085;
+            --mp-line: rgba(17, 24, 39, 0.08);
+            --mp-blue-start: #163d8f;
+            --mp-blue-end: #3a7dff;
+            --mp-blue-glow: rgba(58, 125, 255, 0.18);
+            --mp-shadow: 0 24px 60px rgba(15, 23, 42, 0.09);
+            --mp-shadow-lg: 0 28px 70px rgba(15, 23, 42, 0.12);
+        }
+
+        body.marketplace-page {
+            background:
+                radial-gradient(circle at top left, rgba(58, 125, 255, 0.12), transparent 28%),
+                radial-gradient(circle at top right, rgba(17, 24, 39, 0.06), transparent 22%),
+                linear-gradient(180deg, #f6f3ee 0%, #f7f5f1 52%, #faf8f4 100%);
+            color: var(--mp-ink);
+            font-family: 'Montserrat', Arial, sans-serif;
+            padding-top: 0;
+        }
+
+        .marketplace-page,
+        .marketplace-page * {
+            font-family: 'Montserrat', Arial, sans-serif;
+        }
+
+        .marketplace-page .fa,
+        .marketplace-page .fas,
+        .marketplace-page .far,
+        .marketplace-page .fal,
+        .marketplace-page .fab,
+        .marketplace-page [class^="fa-"],
+        .marketplace-page [class*=" fa-"] {
+            font-family: "Font Awesome 5 Free" !important;
+        }
+
+        .marketplace-page .fab,
+        .marketplace-page .fa-facebook-f,
+        .marketplace-page .fa-twitter,
+        .marketplace-page .fa-youtube,
+        .marketplace-page .fa-linkedin-in,
+        .marketplace-page .fa-instagram,
+        .marketplace-page .fa-google {
+            font-family: "Font Awesome 5 Brands" !important;
+        }
+
+        .marketplace-page .bi,
+        .marketplace-page [class^="bi-"],
+        .marketplace-page [class*=" bi-"] {
+            font-family: "bootstrap-icons" !important;
+        }
+
+        .marketplace-page .top-banner {
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+            padding: 8px 0 2px;
+            background: linear-gradient(180deg, rgba(245, 237, 226, 0.94), rgba(245, 237, 226, 0.72) 70%, rgba(245, 237, 226, 0));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .marketplace-page .banner-container {
+            width: min(1280px, calc(100% - 24px));
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 6px 4px;
+            border: none;
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .marketplace-page .banner-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 0;
+            text-decoration: none;
+            flex: 0 0 auto;
+            min-width: max-content;
+        }
+
+        .marketplace-page .banner-logo img {
+            height: 42px !important;
+            max-height: 42px !important;
+            width: auto;
+            max-width: none !important;
+            object-fit: contain;
+            display: block;
+            opacity: 1 !important;
+            transform: none !important;
+            filter: none !important;
+        }
+
+        .marketplace-page .banner-icons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .marketplace-page .banner-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 42px;
+            min-width: 42px;
+            padding: 0 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(20, 33, 61, 0.1);
+            background: rgba(255, 255, 255, 0.72);
+            color: var(--mp-ink);
+            text-decoration: none;
+            box-shadow: 0 10px 24px rgba(20, 33, 61, 0.08);
+            font-size: 0.95rem;
+        }
+
+        .marketplace-page .banner-icon:hover {
+            color: #163d8f;
+            border-color: rgba(20, 33, 61, 0.14);
+            background: rgba(255, 255, 255, 0.92);
+            transform: translateY(-1px);
+        }
+
+        .marketplace-page .banner-icon-circle {
+            width: 42px;
+            min-width: 42px;
+            padding: 0;
+        }
+
+        .marketplace-page .banner-icon-circle i {
+            font-size: 0.95rem;
+            line-height: 1;
+        }
+
+        .marketplace-page .banner-translate {
+            padding: 0 14px !important;
+            background: rgba(255, 255, 255, 0.72) !important;
+            border: 1px solid rgba(20, 33, 61, 0.1) !important;
+            color: var(--mp-ink) !important;
+            box-shadow: 0 10px 24px rgba(20, 33, 61, 0.08);
+        }
+
+        .marketplace-banner {
+            position: relative;
+            min-height: 430px;
+            height: auto;
+            padding: 110px 0 140px;
+            background:
+                linear-gradient(135deg, rgba(9, 19, 42, 0.84), rgba(15, 26, 58, 0.7)),
+                radial-gradient(circle at 18% 18%, rgba(18, 144, 131, 0.18), transparent 22%),
+                radial-gradient(circle at 78% 14%, rgba(58, 125, 255, 0.2), transparent 20%),
+                linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0)),
+                url('/Images/marketplace.png') center center no-repeat;
+            background-size: cover;
+            border-radius: 0 0 52px 52px;
+            align-items: flex-end;
+            overflow: hidden;
+        }
+
+        .marketplace-banner::before,
+        .marketplace-banner::after {
+            content: '';
+            position: absolute;
+            border-radius: 999px;
+            pointer-events: none;
+        }
+
+        .marketplace-banner::before {
+            width: 360px;
+            height: 360px;
+            top: 72px;
+            right: -110px;
+            background: radial-gradient(circle, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0) 72%);
+        }
+
+        .marketplace-banner::after {
+            width: 280px;
+            height: 280px;
+            left: -60px;
+            bottom: -90px;
+            background: radial-gradient(circle, rgba(18, 144, 131, 0.18) 0%, rgba(18, 144, 131, 0) 74%);
+        }
+
+        .marketplace-site-footer {
+            background: #0B2154;
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .marketplace-site-footer a {
+            text-decoration: none;
+        }
+
+        .marketplace-banner .container {
+            position: relative;
+            z-index: 1;
+            width: min(1320px, calc(100% - 28px));
+            max-width: none;
+            text-align: left !important;
+        }
+
+        .marketplace-banner h1 {
+            font-size: clamp(2.5rem, 5vw, 4.6rem);
+            letter-spacing: -0.04em;
+            line-height: 0.98;
+            margin-bottom: 14px !important;
+            font-weight: 800;
+        }
+
+        .marketplace-banner p {
+            max-width: 620px;
+            font-size: 1.03rem !important;
+            color: rgba(255, 255, 255, 0.8) !important;
+            margin-bottom: 0 !important;
+        }
+
+        .marketplace-page-shell {
+            width: min(1320px, calc(100% - 28px));
+            margin: -88px auto 0;
+            position: relative;
+            z-index: 3;
+        }
+
+        .marketplace-control-shell {
+            background: rgba(255, 255, 255, 0.66);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.38);
+            border-radius: 32px;
+            box-shadow: var(--mp-shadow-lg);
+            padding: 30px;
+        }
+
+        .marketplace-control-top {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .finder-title {
+            font-size: clamp(1.8rem, 3vw, 2.45rem);
+            line-height: 1.04;
+            letter-spacing: -0.03em;
+            margin-bottom: 8px !important;
+        }
+
+        .marketplace-control-copy {
+            color: var(--mp-ink-soft);
+            max-width: 560px;
+            margin: 0;
+            font-size: 0.98rem;
+        }
+
+        .finder-links {
+            margin-top: 0 !important;
+        }
+
+        .finder-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+            padding: 0 18px;
+            border-radius: 999px;
+            border: 1px solid var(--mp-line);
+            background: rgba(255, 255, 255, 0.56);
+            color: var(--mp-ink);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .finder-input-wrapper {
+            padding: 10px 12px 10px 22px;
+            border-radius: 20px;
+            border: 1px solid rgba(17, 24, 39, 0.08);
+            background: rgba(255, 255, 255, 0.82);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+        }
+
+        .finder-input-wrapper input {
+            font-size: 1rem;
+            padding: 14px 6px;
+        }
+
+        .finder-input-wrapper button {
+            min-height: 46px;
+            min-width: 46px;
+            border-radius: 14px;
+            padding: 0 16px;
+            background: linear-gradient(135deg, var(--mp-blue-start), var(--mp-blue-end));
+            box-shadow: 0 16px 34px var(--mp-blue-glow);
+        }
+
+        .marketplace-filter-bar {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .marketplace-filter-pill {
+            display: grid;
+            gap: 8px;
+            padding: 14px 16px;
+            border-radius: 999px;
+            border: 1px solid rgba(17, 24, 39, 0.08);
+            background: rgba(255, 255, 255, 0.62);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+
+        .marketplace-filter-pill label {
+            margin: 0;
+            font-size: 0.72rem;
+            line-height: 1;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--mp-ink-soft);
+        }
+
+        .marketplace-filter-pill .form-select,
+        .marketplace-filter-pill .form-control {
+            border: none;
+            background: transparent;
+            padding: 0;
+            box-shadow: none !important;
+            color: var(--mp-ink);
+            font-weight: 600;
+            min-height: auto;
+        }
+
+        .marketplace-section {
+            margin-top: 42px;
+        }
+
+        .marketplace-section-head {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .marketplace-section-kicker {
+            display: inline-block;
+            margin-bottom: 8px;
+            color: #47608f;
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .marketplace-section-head h2 {
+            margin: 0;
+            font-size: clamp(1.6rem, 2.8vw, 2.5rem);
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            font-weight: 800;
+            color: var(--mp-ink);
+        }
+
+        .marketplace-section-head p,
+        .marketplace-results-meta {
+            color: var(--mp-ink-soft);
+        }
+
+        .marketplace-results-meta {
+            margin: 0;
+            justify-content: space-between;
+            padding-top: 4px;
+        }
+
+        .marketplace-categories {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .marketplace-category-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            width: 100%;
+            padding: 18px 20px;
+            border: 1px solid rgba(17, 24, 39, 0.08);
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.74);
+            box-shadow: var(--mp-shadow);
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+            text-align: left;
+        }
+
+        .marketplace-category-card:hover,
+        .marketplace-category-card.is-active {
+            transform: translateY(-3px);
+            box-shadow: 0 22px 48px rgba(15, 23, 42, 0.12);
+            border-color: rgba(58, 125, 255, 0.24);
+        }
+
+        .marketplace-category-card i {
+            flex: 0 0 42px;
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #2450af;
+            background: linear-gradient(135deg, rgba(22, 61, 143, 0.08), rgba(58, 125, 255, 0.14));
+        }
+
+        .marketplace-category-card strong {
+            display: block;
+            font-size: 1rem;
+            color: var(--mp-ink);
+        }
+
+        .marketplace-category-card span {
+            display: block;
+            margin-top: 4px;
+            font-size: 0.88rem;
+            color: var(--mp-ink-soft);
+        }
+
+        .marketplace-featured-grid .col-lg-6,
+        #carListingsGrid > div {
+            display: flex;
+        }
+
+        .car-card {
+            border: 1px solid rgba(17, 24, 39, 0.08);
+            border-radius: 24px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.88);
+            box-shadow: var(--mp-shadow);
+            transition: transform 0.24s ease, box-shadow 0.24s ease, filter 0.24s ease;
+        }
+
+        .car-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 28px 64px rgba(15, 23, 42, 0.14);
+        }
+
+        .car-card-featured {
+            flex-direction: column;
+            min-height: 100%;
+        }
+
+        .car-card-featured .car-card-img-wrapper {
+            min-height: 310px;
+        }
+
+        .car-card-featured .car-card-img {
+            height: 310px;
+            transition: transform 0.45s ease, filter 0.3s ease;
+        }
+
+        .car-card:hover .car-card-img {
+            transform: scale(1.04);
+            filter: brightness(1.03);
+        }
+
+        .car-card-featured .car-card-img-wrapper::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(12, 21, 44, 0.04) 0%, rgba(12, 21, 44, 0.4) 100%);
+            pointer-events: none;
+        }
+
+        .featured-badge {
+            top: 18px;
+            left: 18px;
+            padding: 7px 14px;
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            color: #fff;
+            box-shadow: 0 0 24px rgba(58, 125, 255, 0.35);
+        }
+
+        .seller-type-badge,
+        .location-badge {
+            border-radius: 999px;
+            padding: 6px 12px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .seller-type-badge {
+            right: 18px;
+            top: 18px;
+            background: rgba(11, 33, 84, 0.78);
+        }
+
+        .seller-type-badge.dealer {
+            background: rgba(31, 41, 55, 0.82);
+        }
+
+        .location-badge {
+            left: 18px;
+            bottom: 18px;
+            background: rgba(11, 33, 84, 0.54);
+        }
+
+        .car-card-body {
+            padding: 22px;
+        }
+
+        .car-card-featured .car-card-body {
+            padding: 26px;
+        }
+
+        .car-title {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            font-size: 1.24rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .car-card-featured .car-title {
+            font-size: 1.44rem;
+        }
+
+        .car-price {
+            font-size: 1.2rem;
+            color: #12306b;
+            letter-spacing: -0.02em;
+        }
+
+        .car-card-featured .car-price {
+            font-size: 1.8rem;
+        }
+
+        .car-subtitle,
+        .car-spec-item,
+        .make-offer-link {
+            color: var(--mp-ink-soft);
+        }
+
+        .car-specs-row {
+            gap: 12px;
+            margin: 14px 0 0;
+            flex-wrap: wrap;
+        }
+
+        .car-spec-item {
+            min-height: 34px;
+            padding: 0 12px;
+            border-radius: 999px;
+            background: rgba(17, 24, 39, 0.04);
+            border: 1px solid rgba(17, 24, 39, 0.05);
+        }
+
+        .car-card-actions {
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .marketplace-action-btn,
+        .view-more-btn {
+            min-height: 46px;
+            border-radius: 999px;
+            padding: 0 18px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            border: none;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+        }
+
+        .view-more-btn {
+            background: linear-gradient(135deg, var(--mp-blue-start), var(--mp-blue-end));
+            color: #fff;
+            box-shadow: 0 16px 32px var(--mp-blue-glow);
+        }
+
+        .view-more-btn:hover {
+            background: linear-gradient(135deg, #14357e, #316ce3);
+        }
+
+        .make-offer-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 46px;
+            padding: 0 18px !important;
+            border-radius: 999px;
+            border: 1px solid rgba(17, 24, 39, 0.08);
+            background: rgba(255, 255, 255, 0.64);
+            text-decoration: none !important;
+        }
+
+        .make-offer-link:hover {
+            color: var(--mp-ink);
+            background: rgba(255, 255, 255, 0.88);
+        }
+
+        .car-chip {
+            background: rgba(22, 61, 143, 0.06);
+            color: #24448d;
+            padding: 6px 12px;
+            border: 1px solid rgba(22, 61, 143, 0.08);
+        }
+
+        .marketplace-empty-state,
+        .marketplace-inquiry-cta {
+            background: rgba(255, 255, 255, 0.62);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(17, 24, 39, 0.08);
+            border-radius: 28px;
+            box-shadow: var(--mp-shadow);
+        }
+
+        .marketplace-inquiry-cta {
+            padding: 28px 24px;
+            text-align: center;
+        }
+
+        .marketplace-inquiry-cta .btn {
+            min-height: 52px;
+            border-radius: 999px;
+            padding: 0 26px;
+        }
+
+        .marketplace-banner-shell {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(290px, 0.6fr);
+            gap: 28px;
+            align-items: end;
+        }
+
+        .marketplace-banner-copy {
+            max-width: 720px;
+        }
+
+        .marketplace-banner-panel {
+            padding: 24px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.11);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 24px 60px rgba(8, 18, 38, 0.18);
+        }
+
+        .marketplace-banner-panel p {
+            max-width: none;
+            font-size: 0.95rem !important;
+            line-height: 1.55;
+            margin-bottom: 18px !important;
+            color: rgba(255, 255, 255, 0.78) !important;
+        }
+
+        .marketplace-banner-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .marketplace-banner-metric {
+            padding: 14px 16px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .marketplace-banner-metric strong {
+            display: block;
+            font-size: 1.05rem;
+            color: #fff;
+        }
+
+        .marketplace-banner-metric span {
+            display: block;
+            margin-top: 4px;
+            font-size: 0.78rem;
+            color: rgba(255, 255, 255, 0.68);
+        }
+
+        .marketplace-filter-pill {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            min-height: 64px;
+            padding: 0;
+            overflow: hidden;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.86);
+            box-shadow: 0 16px 32px rgba(15, 23, 42, 0.06);
+        }
+
+        .marketplace-filter-icon {
+            width: 50px;
+            min-height: 64px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #129083;
+            background: linear-gradient(180deg, rgba(18, 144, 131, 0.12), rgba(18, 144, 131, 0.06));
+            border-right: 1px solid rgba(17, 24, 39, 0.06);
+        }
+
+        .marketplace-filter-copy {
+            flex: 1;
+            display: grid;
+            gap: 3px;
+            padding: 10px 14px;
+        }
+
+        .marketplace-filter-copy label {
+            margin: 0;
+            font-size: 0.72rem;
+            line-height: 1;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--mp-ink-soft);
+        }
+
+        .marketplace-filter-copy .form-select {
+            font-size: 1rem;
+        }
+
+        .marketplace-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .marketplace-category-card {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: auto;
+            min-height: 48px;
+            padding: 0 22px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.82);
+            box-shadow: none;
+        }
+
+        .marketplace-category-card:hover,
+        .marketplace-category-card.is-active {
+            transform: translateY(-1px);
+            border-color: #129083;
+            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+        }
+
+        .marketplace-category-card i {
+            width: auto;
+            height: auto;
+            flex: 0 0 auto;
+            border-radius: 0;
+            background: transparent;
+            color: #129083;
+        }
+
+        .marketplace-category-card strong {
+            display: inline;
+            font-size: 0.98rem;
+            font-weight: 500;
+        }
+
+        .marketplace-category-card span {
+            display: none;
+        }
+
+        .marketplace-featured-grid > div,
+        #carListingsGrid > div {
+            display: flex;
+        }
+
+        .car-card {
+            width: 100%;
+            border-radius: 26px;
+            background: rgba(255, 255, 255, 0.94);
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            transform: translateZ(0);
+            will-change: transform;
+        }
+
+        .car-card:hover {
+            transform: translate3d(0, -4px, 0);
+        }
+
+        .car-card-featured,
+        .car-card-standard {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+        }
+
+        .car-card-img-wrapper {
+            min-height: 188px;
+            padding: 0;
+            background: linear-gradient(180deg, #ffffff 0%, #fbfaf7 100%);
+            overflow: hidden;
+        }
+
+        .car-card-img {
+            width: 100%;
+            height: 188px;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .car-card-featured .car-card-img-wrapper,
+        .car-card-standard .car-card-img-wrapper {
+            min-height: 188px;
+        }
+
+        .car-card-featured .car-card-img,
+        .car-card-standard .car-card-img {
+            height: 188px;
+        }
+
+        .car-card-featured .car-card-img-wrapper::after {
+            display: none;
+        }
+
+        .featured-badge {
+            top: 16px;
+            left: 16px;
+            padding: 5px 11px;
+            background: rgba(239, 252, 249, 0.96);
+            border: 1px solid rgba(18, 144, 131, 0.28);
+            color: #0d7c71;
+            box-shadow: 0 12px 24px rgba(18, 144, 131, 0.14);
+            z-index: 3;
+        }
+
+        .sold-out-banner {
+            transform: rotate(45deg) translateZ(0);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            will-change: transform;
+        }
+
+        .seller-type-badge,
+        .location-badge {
+            padding: 5px 10px;
+            border: 1px solid transparent;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+            z-index: 3;
+            font-weight: 700;
+        }
+
+        .seller-type-badge {
+            right: 16px;
+            top: 16px;
+            background: rgba(237, 251, 248, 0.98);
+            color: #0e7b71;
+            border-color: rgba(18, 144, 131, 0.28);
+        }
+
+        .seller-type-badge.dealer {
+            background: rgba(255, 247, 237, 0.98);
+            color: #8b5a20;
+            border-color: rgba(190, 128, 58, 0.28);
+        }
+
+        .location-badge {
+            left: 16px;
+            bottom: 12px;
+            background: rgba(239, 244, 255, 0.98);
+            color: #18376f;
+            border-color: rgba(11, 33, 84, 0.22);
+        }
+
+        .location-badge i,
+        .seller-type-badge i,
+        .featured-badge i,
+        .car-spec-item i,
+        .marketplace-filter-icon i,
+        .marketplace-category-card i {
+            font-family: inherit;
+        }
+
+        .location-badge i {
+            color: #129083;
+        }
+
+        .car-card.sold-out {
+            contain: paint;
+        }
+
+        .car-card.sold-out .car-card-img,
+        .car-card.sold-out .sold-out-banner,
+        .car-card.sold-out .seller-type-badge,
+        .car-card.sold-out .location-badge {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            transform: translateZ(0);
+        }
+
+        .car-card-body {
+            padding: 10px 16px 14px;
+        }
+
+        .car-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .car-card-featured .car-title,
+        .car-card-standard .car-title {
+            font-size: 1.05rem;
+        }
+
+        .car-price {
+            margin-top: 4px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #2f3a4c;
+        }
+
+        .car-card-featured .car-price,
+        .car-card-standard .car-price {
+            font-size: 0.95rem;
+        }
+
+        .car-summary {
+            margin-top: 8px;
+            font-size: 0.84rem;
+            line-height: 1.4;
+            color: #7b5b29;
+        }
+
+        .car-specs-row {
+            gap: 8px;
+            margin: 8px 0 0;
+        }
+
+        .car-spec-item {
+            min-height: 28px;
+            padding: 0 9px;
+            font-size: 0.72rem;
+        }
+
+        .car-card-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .view-more-btn,
+        .make-offer-link {
+            min-height: auto;
+            padding: 0 !important;
+            border: none;
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
+            font-weight: 600;
+        }
+
+        .view-more-btn {
+            color: #1477d3;
+        }
+
+        .view-more-btn:hover {
+            background: transparent;
+            color: #0b5cad;
+        }
+
+        .make-offer-link {
+            font-size: 0.8rem;
+            color: var(--mp-ink-soft);
+        }
+
+        .car-card-tags {
+            display: none;
+        }
+
+        #featuredCarsSection.d-none,
+        #availableCarsSection.d-none {
+            display: none !important;
+        }
+
+        #carDetailModal .modal-content {
+            background: linear-gradient(180deg, #f6f3ee 0%, #f8f6f1 100%) !important;
+            font-family: 'Montserrat', sans-serif !important;
+        }
+
+        #carDetailModal .modal-header {
+            padding: 22px 30px !important;
+            background: rgba(246, 243, 238, 0.8) !important;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(17, 24, 39, 0.08) !important;
+        }
+
+        #carDetailModal .modal-body {
+            background: transparent !important;
+        }
+
+        #carDetailModal .detail-media-column {
+            padding: 0 0 24px 0 !important;
+            background: transparent !important;
+        }
+
+        #carDetailModal .detail-aside-column {
+            padding: 28px 30px !important;
+            background: rgba(255, 255, 255, 0.54) !important;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-left: 1px solid rgba(17, 24, 39, 0.08);
+        }
+
+        #carDetailModal .detail-gallery-shell {
+            display: flex;
+            gap: 14px;
+            padding: 0 !important;
+            background: transparent !important;
+            border-radius: 0 !important;
+        }
+
+        #carDetailModal #carDetailCarouselMain .carousel-inner,
+        #carDetailModal #carDetailThumbnails img {
+            border-radius: 18px !important;
+        }
+
+        #carDetailModal #carDetailCarouselMain .carousel-inner {
+            box-shadow: 0 24px 56px rgba(15, 23, 42, 0.14);
+            background: rgba(255, 255, 255, 0.7);
+            overflow: hidden;
+        }
+
+        #carDetailModal #carDetailCarouselMain img {
+            height: 520px !important;
+            object-fit: cover !important;
+            background: linear-gradient(180deg, #edf2fb 0%, #f7f9fc 100%) !important;
+        }
+
+        #carDetailModal #carDetailThumbnails {
+            display: grid !important;
+            grid-template-rows: repeat(3, minmax(0, 1fr));
+            width: 164px !important;
+            height: 520px;
+            gap: 12px !important;
+        }
+
+        #carDetailModal #carDetailThumbnails img {
+            border: 1px solid rgba(17, 24, 39, 0.08) !important;
+            background: rgba(255, 255, 255, 0.78) !important;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.1);
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+        }
+
+        #carDetailModal #photoCountText {
+            color: #24448d !important;
+            font-weight: 700;
+        }
+
+        #carDetailModal #carDetailDescription,
+        #carDetailModal #carDetailDescription p,
+        #carDetailModal #carDetailModalTitle,
+        #carDetailModal #carDetailExpPrice,
+        #carDetailModal .modal-title,
+        #carDetailModal h5,
+        #carDetailModal h6,
+        #carDetailModal .form-control,
+        #carDetailModal .form-select,
+        #carDetailModal table,
+        #carDetailModal small {
+            font-family: 'Montserrat', sans-serif !important;
+        }
+
+        #carDetailModal #carDetailDescription {
+            font-size: 0.94rem !important;
+            line-height: 1.8 !important;
+            color: rgba(20, 33, 61, 0.76) !important;
+        }
+
+        #carDetailModal .detail-theme-card {
+            padding: 22px 24px;
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.58);
+            border: 1px solid rgba(17, 24, 39, 0.08);
+            box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);
+        }
+
+        #carDetailModal .detail-section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            color: #14213d;
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        #carDetailModal .detail-section-title i {
+            color: #167c74;
+        }
+
+        #carDetailModal .detail-note-card {
+            padding: 20px 22px;
+            border-radius: 22px;
+            background: linear-gradient(135deg, rgba(216, 111, 69, 0.12), rgba(22, 124, 116, 0.08));
+            border: 1px solid rgba(17, 24, 39, 0.08);
+        }
+
+        #carDetailModal .detail-note-card p {
+            margin: 0;
+            color: rgba(20, 33, 61, 0.78);
+            line-height: 1.7;
+            font-size: 0.92rem;
+        }
+
+        #carDetailModal #carDetailSpecsTable {
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+
+        #carDetailModal #carDetailSpecsTable td {
+            border: none !important;
+            padding: 14px 16px !important;
+            background: rgba(255, 255, 255, 0.76) !important;
+        }
+
+        #carDetailModal #carDetailSpecsTable td:nth-child(1),
+        #carDetailModal #carDetailSpecsTable td:nth-child(3) {
+            color: var(--mp-ink-soft) !important;
+            font-weight: 700 !important;
+        }
+
+        #carDetailModal #carDetailRequestInfoBtn,
+        #carDetailModal #carDetailBookInspectionBtn,
+        #carDetailModal #carDetailRatingsLink {
+            border-radius: 999px !important;
+        }
+
+        #carDetailModal #carDetailRequestInfoBtn {
+            background: linear-gradient(135deg, var(--mp-blue-start), var(--mp-blue-end)) !important;
+            box-shadow: 0 18px 34px var(--mp-blue-glow);
+        }
+
+        #carDetailModal #carDetailBookInspectionBtn {
+            min-height: 46px;
+        }
+
+        #carDetailModal .detail-services-column,
+        #carDetailModal .detail-features-column,
+        #carDetailModal .detail-reviews-row {
+            background: transparent !important;
+            border-color: rgba(17, 24, 39, 0.08) !important;
+        }
+
+        #carDetailModal .detail-services-column,
+        #carDetailModal .detail-features-column {
+            padding: 26px 32px !important;
+        }
+
+        #carDetailModal .detail-services-column {
+            border-left: 1px solid rgba(17, 24, 39, 0.08) !important;
+        }
+
+        #carDetailModal #carDetailFeaturesSection {
+            background: rgba(255, 255, 255, 0.5) !important;
+            border: 1px solid rgba(17, 24, 39, 0.08) !important;
+            border-radius: 20px !important;
+        }
+
+        #carDetailModal #carDetailFeaturesSection > div > div {
+            border-radius: 18px !important;
+            border: 1px solid rgba(17, 24, 39, 0.06) !important;
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+        }
+
+        #carDetailModal .detail-services-column .col-6 > div,
+        #carDetailModal .detail-features-column > div:first-child {
+            border-radius: 18px !important;
+        }
+
+        #carDetailModal .detail-footer-row > .col-12 {
+            background: #10213f !important;
+        }
+
+        @media (max-width: 991.98px) {
+            .marketplace-page-shell {
+                width: min(100% - 20px, 1120px);
+                margin-top: -72px;
+            }
+
+            .marketplace-banner-shell {
+                grid-template-columns: 1fr;
+            }
+
+            .marketplace-banner-panel {
+                max-width: 520px;
+            }
+
+            .marketplace-control-top,
+            .marketplace-section-head {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            #carDetailModal .detail-media-column,
+            #carDetailModal .detail-aside-column,
+            #carDetailModal .detail-features-column,
+            #carDetailModal .detail-services-column {
+                padding: 20px !important;
+                border-left: none !important;
+            }
+
+            #carDetailModal #carDetailCarouselMain img,
+            #carDetailModal #carDetailThumbnails {
+                height: 420px !important;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .marketplace-page .top-banner {
+                padding-top: 10px;
+            }
+
+            .marketplace-page .banner-container {
+                width: min(100% - 20px, 1280px);
+                gap: 12px;
+                padding: 6px 0;
+            }
+
+            .marketplace-page .banner-logo img {
+                height: 32px !important;
+                max-height: 32px !important;
+            }
+
+            .marketplace-page .banner-icon {
+                min-height: 38px;
+                min-width: 38px;
+            }
+
+            .marketplace-page .banner-icon-circle {
+                width: 38px;
+                min-width: 38px;
+            }
+
+            .marketplace-banner {
+                padding: 92px 0 120px;
+                min-height: 360px;
+                border-radius: 0 0 34px 34px;
+            }
+
+            .marketplace-page-shell {
+                margin-top: -62px;
+            }
+
+            .marketplace-control-shell {
+                padding: 22px;
+                border-radius: 24px;
+            }
+
+            .marketplace-filter-bar {
+                grid-template-columns: 1fr;
+            }
+
+            .marketplace-filter-pill {
+                min-height: 60px;
+            }
+
+            .marketplace-filter-icon {
+                min-height: 60px;
+            }
+
+            .marketplace-banner-metrics {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .car-card-featured .car-card-img-wrapper,
+            .car-card-standard .car-card-img-wrapper {
+                min-height: 176px;
+            }
+
+            .car-card-featured .car-card-img,
+            .car-card-standard .car-card-img {
+                height: 176px;
+            }
+
+            #carDetailModal .modal-header {
+                padding: 18px 18px !important;
+            }
+
+            #carDetailModal #carDetailCarouselMain img {
+                height: 280px !important;
+            }
+
+            #carDetailModal #carDetailThumbnails {
+                width: 100% !important;
+                height: auto !important;
+                grid-template-rows: none;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
     </style>
 </head>
 
@@ -619,23 +1939,23 @@
     <!-- Top Header with Logo and Icons -->
     <div class="top-banner">
         <div class="banner-container">
-            <a href="/" class="banner-logo">
-                <img src="/Images/brand_logo_new_1.png" alt="inspectionWale Logo" loading="eager" decoding="async" style="height: 35px; width: auto; object-fit: contain; display: block;">
+            <a href="/" class="banner-logo" aria-label="inspectionWale homepage">
+                <img src="../Images/brand_logo_new_1.png" alt="inspectionWale Logo" loading="eager" decoding="async" fetchpriority="high">
             </a>
             <div class="banner-icons">
-                <a href="/" class="banner-icon" title="Home">
+                <a href="/" class="banner-icon banner-icon-circle" title="Home" aria-label="Home">
                     <i class="fas fa-home"></i>
                 </a>
-                <a href="tel:+919876543210" class="banner-icon" title="Call Us">
+                <a href="https://maps.google.com/?q=InspectionWale" class="banner-icon banner-icon-circle" title="Location" aria-label="Location" target="_blank" rel="noopener noreferrer">
                     <i class="fas fa-map-marker-alt"></i>
                 </a>
                 <div class="translate-btn-wrapper" style="position: relative;">
-                    <button type="button" class="btn btn-sm banner-icon" onclick="toggleTranslateDropdown()" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem;">
+                    <button type="button" class="btn btn-sm banner-icon banner-translate" onclick="toggleTranslateDropdown()" aria-label="Change language">
                         <i class="fas fa-language me-1"></i> <span class="d-none d-md-inline">हिंदी</span>
                     </button>
                     <div id="google_translate_element" style="position: absolute; top: 100%; right: 0; margin-top: 5px; display: none; background: #fff; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); padding: 10px; min-width: 180px; z-index: 9999;"></div>
                 </div>
-                <a href="/inspector-login.html" title="Inspector Login" class="banner-icon">
+                <a href="/inspector-login.html" title="Inspector Login" class="banner-icon banner-icon-circle" aria-label="Inspector login">
                     <i class="fa fa-user"></i>
                 </a>
             </div>
@@ -644,112 +1964,263 @@
 
     <!-- Banner Start -->
     <div class="marketplace-banner">
-        <div class="container text-center">
-            <h1 class="display-3 text-white mb-3 animated slideInDown">Buy Used Cars</h1>
-            <p class="fs-5 text-white mb-4">Buy verified, inspected cars directly from owners</p>
+        <div class="container">
+            <div class="marketplace-banner-shell">
+                <div class="marketplace-banner-copy">
+                    <h1 class="display-3 text-white mb-3 animated slideInDown">Buy better used cars with cleaner discovery</h1>
+                    <p class="fs-5 text-white mb-4">Browse verified inventory, narrow it down fast, and move straight into seller contact or inspection support with the same premium tone as the homepage.</p>
+                </div>
+                <div class="marketplace-banner-panel">
+                    <p>Every listing flow stays intact while the front-end experience becomes faster to scan, more premium to browse, and easier to filter on mobile.</p>
+                    <div class="marketplace-banner-metrics">
+                        <div class="marketplace-banner-metric">
+                            <strong>Verified Listings</strong>
+                            <span>Live customer inventory with existing actions preserved</span>
+                        </div>
+                        <div class="marketplace-banner-metric">
+                            <strong>Direct Contact</strong>
+                            <span>Seller details, reserve, inquiry and booking flows intact</span>
+                        </div>
+                        <div class="marketplace-banner-metric">
+                            <strong>Inspection Support</strong>
+                            <span>Pre-purchase inspection CTA remains available in detail view</span>
+                        </div>
+                        <div class="marketplace-banner-metric">
+                            <strong>Daily Updates</strong>
+                            <span>Inventory and featured listings refresh from the same API</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <!-- Banner End -->
 
     <!-- Marketplace Content Start -->
-    <div class="container-xxl py-5">
-        <div class="container" style="max-width: 1200px;">
-            <div class="marketplace-search-card">
-                <p class="finder-title mb-2">Find Second Hand Cars</p>
+    <div class="container-xxl pb-5">
+        <div class="marketplace-page-shell">
+            <section class="marketplace-control-shell">
+                <div class="marketplace-control-top">
+                    <div>
+                        <span class="marketplace-section-kicker">Premium Marketplace</span>
+                        <p class="finder-title mb-2">Find the right used car without the usual clutter</p>
+                    </div>
+                    <div class="finder-links d-flex flex-wrap">
+                        <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#listCarModal">Sell Your Car</a>
+                    </div>
+                </div>
+
                 <div class="finder-input-wrapper">
                     <label for="marketplaceSearch" class="visually-hidden">Search cars</label>
-                    <input type="text" id="marketplaceSearch" placeholder="Type model name, e.g., Used Alto">
+                    <input type="text" id="marketplaceSearch" placeholder="Search by brand, model, body style or city">
                     <button type="button" aria-label="Search">
                         <i class="fa fa-search"></i>
                     </button>
                 </div>
-                <div class="finder-links d-flex flex-wrap mt-3">
-                    <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#listCarModal">Sell Your Car</a>
-                </div>
-            </div>
-            <div class="filter-section mb-4">
-                <!-- Popular Cities Section -->
-                <div class="mb-3 pb-3 border-bottom">
-                    <label class="form-label mb-2 fw-semibold">Popular Cities</label>
-                    <div class="d-flex flex-wrap gap-2" id="cityChips">
-                        <button type="button" class="btn btn-sm city-chip active" data-city="">ALL</button>
-                        <button type="button" class="btn btn-sm city-chip" data-city="Mumbai">MUMBAI</button>
-                        <button type="button" class="btn btn-sm city-chip" data-city="Navi Mumbai">NAVI MUMBAI</button>
-                        <button type="button" class="btn btn-sm city-chip" data-city="Thane">THANE</button>
-                        <button type="button" class="btn btn-sm city-chip" data-city="Kalyan">KALYAN</button>
-                        <button type="button" class="btn btn-sm city-chip" data-city="Dombivli">DOMBIVLI</button>
-                    </div>
-                </div>
-                
-                <!-- Filter Controls -->
-                <div class="row g-3 align-items-end">
-                    <div class="col-6 col-md-4">
-                        <label for="marketplacePrice" class="form-label mb-1 fw-semibold">Budget</label>
-                        <select id="marketplacePrice" class="form-select">
-                            <option value="">Any</option>
-                            <option value="lt1">Below ₹1 Lakh</option>
-                            <option value="lt2">Below ₹2 Lakh</option>
-                            <option value="lt3">Below ₹3 Lakh</option>
-                            <option value="lt5">Below ₹5 Lakh</option>
-                            <option value="lt10">Below ₹10 Lakh</option>
-                            <option value="gte10">₹10 Lakh +</option>
-                        </select>
-                    </div>
-                    <div class="col-6 col-md-4">
-                        <label for="marketplaceFuel" class="form-label mb-1 fw-semibold">Fuel</label>
-                        <select id="marketplaceFuel" class="form-select">
-                            <option value="">Any</option>
-                            <option value="petrol">Petrol</option>
-                            <option value="diesel">Diesel</option>
-                            <option value="cng">CNG</option>
-                            <option value="electric">Electric</option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-md-4">
-                        <label for="marketplaceSort" class="form-label mb-1 fw-semibold">Sort by</label>
-                        <select id="marketplaceSort" class="form-select">
-                            <option value="recent">Recently Added</option>
-                            <option value="lowToHigh">Price: Low to High</option>
-                            <option value="highToLow">Price: High to Low</option>
-                            <option value="kms">Lowest KMs</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="marketplace-results-meta" id="marketplaceResultsMeta">
-                <span id="marketplaceResultsCount">Loading cars...</span>
-                <span class="text-muted small">Updated daily</span>
-            </div>
-            <!-- Car Listings Grid -->
-            <div class="row g-4" id="carListingsGrid">
-                <!-- Listings will be loaded here dynamically -->
-                <div class="col-12 text-center py-5">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading cars...</span>
-                    </div>
-                    <p class="mt-3 text-muted">Loading available cars...</p>
-                </div>
-            </div>
 
-            <!-- No Cars Message (hidden by default) -->
-            <div id="noCarsMessage" class="text-center py-5 d-none">
+                <div class="marketplace-filter-bar">
+                    <div class="marketplace-filter-pill">
+                        <span class="marketplace-filter-icon"><i class="fas fa-wallet"></i></span>
+                        <div class="marketplace-filter-copy">
+                            <label for="marketplacePrice">Budget</label>
+                            <select id="marketplacePrice" class="form-select">
+                                <option value="">Any budget</option>
+                                <option value="lt1">Below ₹1 Lakh</option>
+                                <option value="lt2">Below ₹2 Lakh</option>
+                                <option value="lt3">Below ₹3 Lakh</option>
+                                <option value="lt5">Below ₹5 Lakh</option>
+                                <option value="lt10">Below ₹10 Lakh</option>
+                                <option value="gte10">₹10 Lakh +</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="marketplace-filter-pill">
+                        <span class="marketplace-filter-icon"><i class="fas fa-car-side"></i></span>
+                        <div class="marketplace-filter-copy">
+                            <label for="marketplaceBrand">Brand</label>
+                            <select id="marketplaceBrand" class="form-select">
+                                <option value="">Any brand</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="marketplace-filter-pill">
+                        <span class="marketplace-filter-icon"><i class="fas fa-gas-pump"></i></span>
+                        <div class="marketplace-filter-copy">
+                            <label for="marketplaceFuel">Fuel</label>
+                            <select id="marketplaceFuel" class="form-select">
+                                <option value="">Any fuel</option>
+                                <option value="petrol">Petrol</option>
+                                <option value="diesel">Diesel</option>
+                                <option value="cng">CNG</option>
+                                <option value="electric">Electric</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="marketplace-filter-pill">
+                        <span class="marketplace-filter-icon"><i class="fas fa-map-marker-alt"></i></span>
+                        <div class="marketplace-filter-copy">
+                            <label for="marketplaceCity">City</label>
+                            <select id="marketplaceCity" class="form-select">
+                                <option value="">All cities</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="marketplace-filter-pill">
+                        <span class="marketplace-filter-icon"><i class="fas fa-sliders-h"></i></span>
+                        <div class="marketplace-filter-copy">
+                            <label for="marketplaceSort">Sort</label>
+                            <select id="marketplaceSort" class="form-select">
+                                <option value="recent">Recently Added</option>
+                                <option value="lowToHigh">Price: Low to High</option>
+                                <option value="highToLow">Price: High to Low</option>
+                                <option value="kms">Lowest KMs</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="cityChips" class="d-none" aria-hidden="true"></div>
+            </section>
+
+            <section class="marketplace-section">
+                <div class="marketplace-section-head">
+                    <div>
+                        <span class="marketplace-section-kicker">Browse Categories</span>
+                    </div>
+                </div>
+                <div class="marketplace-categories" id="marketplaceCategories">
+                    <button type="button" class="marketplace-category-card" data-category="budget" data-value="lt5">
+                        <i class="fas fa-wallet"></i>
+                        <div>
+                            <strong>Budget Cars</strong>
+                            <span>Budget-friendly cars across the active inventory</span>
+                        </div>
+                    </button>
+                    <button type="button" class="marketplace-category-card" data-category="keyword" data-value="suv">
+                        <i class="fas fa-car-side"></i>
+                        <div>
+                            <strong>SUV</strong>
+                            <span>Family-ready options with more stance and cabin space</span>
+                        </div>
+                    </button>
+                    <button type="button" class="marketplace-category-card" data-category="keyword" data-value="automatic">
+                        <i class="fas fa-sliders-h"></i>
+                        <div>
+                            <strong>Automatic</strong>
+                            <span>Easy city-driving picks filtered by drivetrain keywords</span>
+                        </div>
+                    </button>
+                    <button type="button" class="marketplace-category-card" data-category="fuel" data-value="diesel">
+                        <i class="fas fa-gas-pump"></i>
+                        <div>
+                            <strong>Diesel</strong>
+                            <span>Torque-focused long-distance choices in one tap</span>
+                        </div>
+                    </button>
+                </div>
+            </section>
+
+            <section class="marketplace-section" id="featuredCarsSection">
+                <div class="marketplace-section-head">
+                    <div>
+                        <span class="marketplace-section-kicker">Featured Cars</span>
+                        <h2>Curated listings worth opening first</h2>
+                    </div>
+                    <p class="mb-0">Highlighted inventory surfaces here automatically when the listing carries featured signals.</p>
+                </div>
+                <div class="row g-4 marketplace-featured-grid" id="featuredCarsGrid">
+                    <div class="col-12 text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading featured cars...</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="marketplace-section" id="availableCarsSection">
+                <div class="marketplace-section-head">
+                    <div>
+                        <span class="marketplace-section-kicker">Marketplace Listings</span>
+                    </div>
+                    <div class="marketplace-results-meta d-flex flex-column flex-md-row gap-2 text-md-end" id="marketplaceResultsMeta">
+                        <span id="marketplaceResultsCount">Loading cars...</span>
+                        <span class="small">Updated daily</span>
+                    </div>
+                </div>
+
+                <div class="row g-4" id="carListingsGrid">
+                    <div class="col-12 text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading cars...</span>
+                        </div>
+                        <p class="mt-3 text-muted">Loading available cars...</p>
+                    </div>
+                </div>
+            </section>
+
+            <div id="noCarsMessage" class="marketplace-empty-state text-center py-5 px-4 d-none mt-4">
                 <i class="fa fa-car fa-3x text-muted mb-3"></i>
                 <h4 class="text-muted" id="noCarsTitle">No cars available at the moment</h4>
-                <p class="text-muted" id="noCarsCopy">Check back soon or submit your requirements!</p>
-                <button class="btn btn-primary rounded-pill px-4 mt-3" data-bs-toggle="modal" data-bs-target="#inquiryModal">
+                <p class="text-muted mb-0" id="noCarsCopy">Check back soon or submit your requirements!</p>
+                <button class="btn btn-primary rounded-pill px-4 mt-4" data-bs-toggle="modal" data-bs-target="#inquiryModal">
                     Submit Your Requirements
                 </button>
             </div>
 
-            <!-- Inquiry Call-to-Action -->
-            <div class="text-center mt-5">
+            <div class="marketplace-inquiry-cta mt-4">
+                <span class="marketplace-section-kicker">Need Help</span>
+                <h3 class="h4 mb-2">Looking for something specific?</h3>
+                <p class="text-muted mb-4">Tell the team what you want and keep the manual assisted-buying flow active even when inventory filters do not match.</p>
                 <button class="btn btn-primary rounded-pill px-5" data-bs-toggle="modal" data-bs-target="#inquiryModal">
-                    <i class="fa fa-search me-2"></i>Looking for Something Specific? Tell Us!
+                    <i class="fa fa-search me-2"></i>Tell Us What You Need
                 </button>
             </div>
         </div>
     </div>
     <!-- Marketplace Content End -->
+
+    <!-- Footer Start -->
+    <div class="container-fluid text-light footer pt-4 pb-3 marketplace-site-footer">
+        <div class="container">
+            <div class="row align-items-center py-3 border-bottom" style="border-color: rgba(255,255,255,0.15) !important;">
+                <div class="col-lg-3 col-md-4 mb-3 mb-md-0">
+                    <span style="color: rgba(255,255,255,0.6); font-size: 14px;">Language:</span>
+                    <a href="#" class="text-white text-decoration-none ms-2" style="font-weight: 500; font-size: 14px;">English</a>
+                    <a href="#" class="text-decoration-none ms-2" style="color: rgba(255,255,255,0.6); font-size: 14px;">हिंदी</a>
+                </div>
+                <div class="col-lg-9 col-md-8">
+                    <div class="d-flex flex-wrap justify-content-md-end justify-content-start gap-4">
+                        <a href="#" class="text-white text-decoration-none" style="font-size: 14px;">About Us</a>
+                        <a href="/careers.html" class="text-white text-decoration-none" style="font-size: 14px;">Careers</a>
+                        <a href="/terms.html" class="text-white text-decoration-none" style="font-size: 14px;">Terms & Conditions</a>
+                        <a href="#" class="text-white text-decoration-none" style="font-size: 14px;">Advertise</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row py-3 border-bottom" style="border-color: rgba(255,255,255,0.15) !important;">
+                <div class="col-12">
+                    <div class="d-flex align-items-center">
+                        <span class="text-uppercase me-3" style="color: rgba(255,255,255,0.6); font-size: 11px; letter-spacing: 1px;">Connect With Us</span>
+                        <div class="d-flex gap-3">
+                            <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-youtube"></i></a>
+                            <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row pt-3">
+                <div class="col-md-6 text-md-start text-center mb-2 mb-md-0">
+                    <span style="color: rgba(255,255,255,0.5); font-size: 12px;">&copy; 2025 inspectionwale.com. All Rights Reserved.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
 
     <!-- Inquiry Modal -->
     <div class="modal fade inquiry-modal" id="inquiryModal" tabindex="-1" aria-labelledby="inquiryModalLabel" aria-hidden="true">
@@ -885,31 +2356,31 @@
     <!-- Car Detail Modal - Compact Design -->
     <div class="modal fade" id="carDetailModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen">
-            <div class="modal-content" style="background: white; font-family: 'Roboto', sans-serif;">
+            <div class="modal-content" style="background: transparent; font-family: 'Montserrat', sans-serif;">
                 <!-- Header with Back Button -->
-                <div class="modal-header" style="padding: 20px 30px; background: white; border-bottom: none;">
-                    <button type="button" class="btn btn-link p-0" data-bs-dismiss="modal" style="color: #1a1a1a; text-decoration: none; font-size: 24px; margin-right: 15px;">
+                <div class="modal-header" style="padding: 20px 30px; background: transparent; border-bottom: none;">
+                    <button type="button" class="btn btn-link p-0" data-bs-dismiss="modal" style="color: #14213d; text-decoration: none; font-size: 24px; margin-right: 15px;">
                         <i class="fas fa-arrow-left"></i>
                     </button>
-                    <h3 class="modal-title mb-0" id="carDetailTitle" style="font-weight: 700; color: #1a1a1a; font-size: 28px; font-family: 'Roboto', sans-serif;">Hyundai i10 Sportz</h3>
+                    <h3 class="modal-title mb-0" id="carDetailTitle" style="font-weight: 700; color: #14213d; font-size: 28px; font-family: 'Montserrat', sans-serif;">Hyundai i10 Sportz</h3>
                     <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <!-- Full Screen Body -->
-                <div class="modal-body p-0" style="overflow-y: auto; max-height: calc(100vh - 50px); background: white;">
+                <div class="modal-body p-0" style="overflow-y: auto; max-height: calc(100vh - 50px); background: transparent;">
                     <div class="container-fluid p-0">
                         <div class="row g-0">
                             <!-- Left Column: Large Image Gallery + Specs Table -->
-                            <div class="col-lg-7" style="background: white;">
+                            <div class="col-lg-7 detail-media-column" style="background: transparent;">
                                 <!-- Image Gallery -->
                                 <div class="position-relative">
-                                    <div class="d-flex gap-2" style="background: linear-gradient(135deg, #f5f7fa 0%, #e8edf2 100%); padding: 15px; border-radius: 8px;">
+                                    <div class="detail-gallery-shell">
                                         <!-- Main Large Image -->
                                         <div style="flex: 1;">
                                             <div id="carDetailCarouselMain" class="carousel slide" data-bs-ride="false">
                                                 <div class="carousel-inner" style="border-radius: 8px; overflow: hidden;">
                                                     <div class="carousel-item active">
-                                                        <img src="/Images/brand_logo_new_1.png" class="d-block w-100" alt="Car main image" style="height: 480px; object-fit: contain; background: #f5f5f5;">
+                                                        <img src="/Images/brand_logo_new_1.png" class="d-block w-100" alt="Car main image" style="height: 520px; object-fit: cover; background: linear-gradient(180deg, #edf2fb 0%, #f7f9fc 100%);">
                                                     </div>
                                                 </div>
                                                 <button class="carousel-control-prev" type="button" data-bs-target="#carDetailCarouselMain" data-bs-slide="prev" style="width: 40px;">
@@ -922,16 +2393,16 @@
                                         </div>
 
                                         <!-- Right Side: Vertical Stack of 3 Thumbnails -->
-                                        <div class="d-flex flex-column gap-2" id="carDetailThumbnails" style="width: 140px;">
-                                            <img src="/Images/brand_logo_new_1.png" class="img-thumbnail" style="width: 100%; height: 156px; object-fit: cover; cursor: pointer; border: 2px solid #333; border-radius: 4px; background: #f5f5f5;" alt="Thumb">
-                                            <img src="/Images/brand_logo_new_1.png" class="img-thumbnail" style="width: 100%; height: 156px; object-fit: cover; cursor: pointer; border: 2px solid #333; border-radius: 4px; background: #f5f5f5;" alt="Thumb">
-                                            <img src="/Images/brand_logo_new_1.png" class="img-thumbnail" style="width: 100%; height: 156px; object-fit: cover; cursor: pointer; border: 2px solid #333; border-radius: 4px; background: #f5f5f5;" alt="Thumb">
+                                        <div class="d-flex flex-column gap-2" id="carDetailThumbnails" style="width: 164px;">
+                                            <img src="/Images/brand_logo_new_1.png" class="img-thumbnail" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer; border: 1px solid rgba(17, 24, 39, 0.08); border-radius: 18px; background: #f5f5f5;" alt="Thumb">
+                                            <img src="/Images/brand_logo_new_1.png" class="img-thumbnail" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer; border: 1px solid rgba(17, 24, 39, 0.08); border-radius: 18px; background: #f5f5f5;" alt="Thumb">
+                                            <img src="/Images/brand_logo_new_1.png" class="img-thumbnail" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer; border: 1px solid rgba(17, 24, 39, 0.08); border-radius: 18px; background: #f5f5f5;" alt="Thumb">
                                         </div>
                                     </div>
 
                                     <!-- Photo Counter (Clickable) -->
-                                    <div class="text-center py-2" style="background: #f5f5f5;">
-                                        <small class="text-muted" style="font-size: 12px; font-family: 'Roboto', sans-serif;">
+                                    <div class="text-center py-3" style="background: rgba(255,255,255,0.4); border-bottom: 1px solid rgba(17, 24, 39, 0.06);">
+                                        <small class="text-muted" style="font-size: 12px; font-family: 'Montserrat', sans-serif;">
                                             <i class="fas fa-camera me-1"></i> 
                                             <a href="#" id="photoCountText" style="color: #007bff; text-decoration: underline; cursor: pointer;" title="Click to browse all photos">46 Photos</a>
                                         </small>
@@ -939,11 +2410,11 @@
                                 </div>
 
                                 <!-- Car Details Section - Right Below Images -->
-                                <div style="padding: 20px; background: white;">
-                                    <h5 class="mb-3" style="font-weight: 600; color: #1a1a1a; font-size: 18px;">
-                                        <i class="fas fa-car" style="color: #26a69a;"></i> Car Details
+                                <div class="detail-theme-card" style="margin: 18px 20px 0;">
+                                    <h5 class="detail-section-title">
+                                        <i class="fas fa-car"></i> Car Details
                                     </h5>
-                                    <table class="table table-bordered mb-0" style="font-family: 'Roboto', sans-serif; font-size: 14px;">
+                                    <table class="table table-bordered mb-0" style="font-family: 'Montserrat', sans-serif; font-size: 14px;">
                                         <tbody id="carDetailSpecsTable">
                                             <tr>
                                                 <td style="font-weight: 600; color: #666; width: 35%; padding: 12px; background: #f9f9f9;">Make:</td>
@@ -981,27 +2452,27 @@
                                     </table>
 
                                     <!-- Vehicle Description -->
-                                    <div class="mt-3" id="carDetailDescription" style="font-size: 13px; line-height: 1.7; color: #555; font-family: 'Roboto', sans-serif;">
+                                    <div class="mt-4" id="carDetailDescription" style="font-size: 14px; line-height: 1.8; color: rgba(20, 33, 61, 0.76); font-family: 'Montserrat', sans-serif;">
                                         <p>Vehicle description and inspection recommendation will appear here.</p>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Right Column: Pricing & Contact -->
-                            <div class="col-lg-5" style="background: #f9f9f9; padding: 20px;">
+                            <div class="col-lg-5 detail-aside-column" style="background: transparent; padding: 20px;">
                                 <!-- Price -->
-                                <h2 class="mb-2" id="carDetailExpPrice" style="font-weight: 700; color: #1a1a1a; font-size: 36px; font-family: 'Roboto', sans-serif;">₹1,30,000</h2>
+                                <h2 class="mb-2" id="carDetailExpPrice" style="font-weight: 700; color: #14213d; font-size: 36px; font-family: 'Montserrat', sans-serif;">₹1,30,000</h2>
                                 
                                 <!-- Vehicle Title -->
-                                <h5 class="mb-3" id="carDetailModalTitle" style="font-weight: 600; color: #1a1a1a; font-size: 20px; font-family: 'Roboto', sans-serif;">Used 2022 Nissan Altima 2.5 SV</h5>
+                                <h5 class="mb-3" id="carDetailModalTitle" style="font-weight: 600; color: #14213d; font-size: 20px; font-family: 'Montserrat', sans-serif;">Used 2022 Nissan Altima 2.5 SV</h5>
                                 
                                 <!-- Rating -->
                                 <div class="mb-3">
-                                    <a href="#" id="carDetailRatingsLink" style="color: #007bff; text-decoration: underline; cursor: pointer; font-weight: 600;">Get car ratings by InspectionWale</a>
+                                    <a href="#" id="carDetailRatingsLink" style="color: #24448d; text-decoration: underline; cursor: pointer; font-weight: 700;">Get car ratings by InspectionWale</a>
                                 </div>
 
                                 <!-- Key Stats Row -->
-                                <div class="d-flex align-items-center gap-3 mb-4 pb-3" style="border-bottom: 1px solid #e0e0e0; flex-wrap: wrap;">
+                                <div class="d-flex align-items-center gap-3 mb-4 pb-3" style="border-bottom: 1px solid rgba(17, 24, 39, 0.08); flex-wrap: wrap;">
                                     <div class="d-flex align-items-center gap-2">
                                         <i class="fas fa-tachometer-alt" style="color: #666;"></i>
                                         <span id="carDetailKmsDisplay" style="font-size: 14px; font-weight: 600;">22,825 mi</span>
@@ -1021,9 +2492,9 @@
                                 </div>
 
                                 <!-- Contact Form -->
-                                <h6 class="mb-3" style="font-weight: 700; font-size: 16px;">Got Questions? Contact the Dealer</h6>
+                                <h6 class="mb-3" style="font-weight: 700; font-size: 16px; color: #14213d;">Got Questions? Contact the Dealer</h6>
                                 
-                                <select id="carDetailInquiryType" class="form-select mb-3" style="border: 1px solid #ddd; padding: 12px; font-size: 14px; border-radius: 6px;">
+                                <select id="carDetailInquiryType" class="form-select mb-3" style="border: 1px solid rgba(17, 24, 39, 0.12); padding: 12px; font-size: 14px; border-radius: 16px;">
                                     <option selected>This Vehicle's Availability</option>
                                     <option>Request Test Drive</option>
                                     <option>Pricing Question</option>
@@ -1033,36 +2504,36 @@
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-6">
-                                        <input type="text" id="carDetailFirstName" class="form-control" placeholder="First Name" required style="border: 1px solid #ddd; padding: 12px; font-size: 14px; border-radius: 6px;">
+                                        <input type="text" id="carDetailFirstName" class="form-control" placeholder="First Name" required style="border: 1px solid rgba(17, 24, 39, 0.12); padding: 12px; font-size: 14px; border-radius: 16px;">
                                     </div>
                                     <div class="col-6">
-                                        <input type="text" id="carDetailLastName" class="form-control" placeholder="Last Name" required style="border: 1px solid #ddd; padding: 12px; font-size: 14px; border-radius: 6px;">
+                                        <input type="text" id="carDetailLastName" class="form-control" placeholder="Last Name" required style="border: 1px solid rgba(17, 24, 39, 0.12); padding: 12px; font-size: 14px; border-radius: 16px;">
                                     </div>
                                 </div>
 
                                 <div class="row g-2 mb-2">
                                     <div class="col-6">
-                                        <input type="email" id="carDetailEmail" class="form-control" placeholder="Email" required style="border: 1px solid #ddd; padding: 12px; font-size: 14px; border-radius: 6px;">
+                                        <input type="email" id="carDetailEmail" class="form-control" placeholder="Email" required style="border: 1px solid rgba(17, 24, 39, 0.12); padding: 12px; font-size: 14px; border-radius: 16px;">
                                     </div>
                                     <div class="col-6">
-                                        <input type="tel" id="carDetailPhone" class="form-control" placeholder="Phone" pattern="[0-9]{10,11}" required style="border: 1px solid #ddd; padding: 12px; font-size: 14px; border-radius: 6px;">
+                                        <input type="tel" id="carDetailPhone" class="form-control" placeholder="Phone" pattern="[0-9]{10,11}" required style="border: 1px solid rgba(17, 24, 39, 0.12); padding: 12px; font-size: 14px; border-radius: 16px;">
                                     </div>
                                 </div>
                                 
                                 <div id="carDetailContactAlert" class="alert d-none" role="alert"></div>
 
-                                <textarea class="form-control mb-3" rows="4" id="carDetailContactMessage" placeholder="Is your Used 2022 Nissan Altima 2.5 SV listed for ₹1,30,000 still available?" style="border: 1px solid #ddd; padding: 12px; font-size: 14px; border-radius: 6px;"></textarea>
+                                <textarea class="form-control mb-3" rows="4" id="carDetailContactMessage" placeholder="Is your Used 2022 Nissan Altima 2.5 SV listed for ₹1,30,000 still available?" style="border: 1px solid rgba(17, 24, 39, 0.12); padding: 12px; font-size: 14px; border-radius: 16px;"></textarea>
 
-                                <button id="carDetailRequestInfoBtn" class="btn btn-primary w-100 mb-3" style="padding: 14px; font-weight: 700; font-size: 15px; border-radius: 6px; background: #0052CC; border: none;">Request Info</button>
+                                <button id="carDetailRequestInfoBtn" class="btn btn-primary w-100 mb-3" style="padding: 14px; font-weight: 700; font-size: 15px; border-radius: 999px; background: #24448d; border: none;">Request Info</button>
                                 
                                 <p class="text-muted mb-0" style="font-size: 11px; line-height: 1.4;">By clicking "Request Info", you accept the terms of our <a href="#" class="text-primary">Visitor Agreement</a></p>
 
                                 <!-- Inspection CTA -->
-                                <div class="mt-4 p-3" style="background: linear-gradient(135deg, #26a69a 0%, #1e8d84 100%); border-radius: 8px; text-align: center;">
+                                <div class="mt-4 p-4" style="background: linear-gradient(135deg, #167c74 0%, #24448d 100%); border-radius: 24px; text-align: center;">
                                     <i class="fas fa-shield-alt" style="font-size: 28px; color: white; margin-bottom: 8px;"></i>
                                     <h6 class="text-white mb-2" style="font-weight: 700; font-size: 14px;">Get Peace of Mind</h6>
                                     <p class="text-white mb-3" style="font-size: 12px; line-height: 1.4; opacity: 0.95;">Book a professional pre-purchase inspection from InspectionWale before buying</p>
-                                    <button id="carDetailBookInspectionBtn" class="btn btn-light w-100" style="font-weight: 700; padding: 10px; border-radius: 6px; font-size: 13px; color: #26a69a;">
+                                    <button id="carDetailBookInspectionBtn" class="btn btn-light w-100" style="font-weight: 700; padding: 12px; border-radius: 999px; font-size: 13px; color: #167c74;">
                                         <i class="fas fa-calendar-check me-1"></i> Book Inspection @ ₹1,399
                                     </button>
                                 </div>
@@ -1073,21 +2544,19 @@
                         <!-- Vehicle Features Section and Advertisement -->
                         <div class="row g-0">
                             <!-- Left Column: Vehicle Features (50%) -->
-                            <div class="col-lg-6" style="background: white; padding: 25px 40px; border-top: 1px solid #e0e0e0;">
+                            <div class="col-lg-6 detail-features-column" style="background: white; padding: 25px 40px; border-top: 1px solid #e0e0e0;">
                                 <!-- Why Book an Inspection Section (moved here) -->
-                                <div style="background: #fff3cd; padding: 20px; border-radius: 8px; border-left: 3px solid #ffc107; margin-bottom: 20px;">
-                                    <h6 class="mb-2" style="font-weight: 600; color: #1a1a1a; font-size: 16px;">
-                                        <i class="fas fa-clipboard-check" style="color: #ffc107;"></i> Why Book an Inspection?
+                                <div class="detail-note-card" style="margin-bottom: 20px;">
+                                    <h6 class="mb-2" style="font-weight: 700; color: #14213d; font-size: 16px;">
+                                        <i class="fas fa-clipboard-check" style="color: #d86f45;"></i> Why Book an Inspection?
                                     </h6>
-                                    <p style="margin-bottom: 0; color: #333; font-size: 13px; line-height: 1.5;">
-                                        Before making your purchase decision, we highly recommend booking a professional pre-purchase inspection from InspectionWale.
-                                        Our certified inspectors will thoroughly examine the vehicle's mechanical condition, bodywork, electronics, and provide a detailed report
-                                        including actual market value assessment. Get peace of mind knowing exactly what you're buying!
+                                    <p style="margin-bottom: 0; color: rgba(20, 33, 61, 0.78); font-size: 14px; line-height: 1.7;">
+                                        Book a professional pre-purchase inspection to verify condition, expose hidden repair risk, and understand fair value before you commit.
                                     </p>
                                 </div>
 
-                                <h5 class="mb-3" style="font-weight: 600; color: #1a1a1a; font-size: 18px;">
-                                    <i class="fas fa-cogs" style="color: #26a69a;"></i> Vehicle Features
+                                <h5 class="detail-section-title mb-3" style="font-weight: 700; color: #14213d; font-size: 18px;">
+                                    <i class="fas fa-cogs" style="color: #167c74;"></i> Vehicle Features
                                 </h5>
                                 <div class="row g-3" id="carDetailFeaturesSection" style="padding: 20px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
                                     <!-- Features will be populated by JavaScript - 3 columns layout -->
@@ -1137,7 +2606,7 @@
                             </div>
 
                             <!-- Right Column: Advertisement and Services (50%) -->
-                            <div class="col-lg-6" style="background: white; padding: 25px 40px; border-top: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0;">
+                            <div class="col-lg-6 detail-services-column" style="background: white; padding: 25px 40px; border-top: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0;">
                                 <!-- Smaller Advertisement -->
                                 <div style="width: 100%; max-width: 100%; margin-bottom: 20px;">
                                     <div id="iwPostAdTrigger" class="w-100" role="button" tabindex="0" style="display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 8px; border: 1px solid #dee2e6; background: #f8f9fa; min-height: 200px; cursor: pointer;">
@@ -1182,7 +2651,7 @@
                         </div>
 
                         <!-- Customer Reviews Section (Google Reviews) -->
-                        <div class="row g-0">
+                        <div class="row g-0 detail-reviews-row">
                             <div class="col-12" style="background: #f8f9fa; padding: 20px 40px; border-top: 1px solid #e0e0e0;">
                                 <h5 class="mb-3" style="font-weight: 600; color: #1a1a1a; font-size: 16px;">
                                     <i class="fab fa-google"></i> Google Reviews
@@ -1199,7 +2668,7 @@
                         </div>
 
                         <!-- Footer -->
-                        <div class="row g-0">
+                        <div class="row g-0 detail-footer-row">
                             <div class="col-12" style="background: #1e3a5f; padding: 20px 40px; color: white;">
                                 <!-- Language & Links Row -->
                                 <div class="row align-items-center py-3 border-bottom" style="border-color: rgba(255,255,255,0.15) !important;">
@@ -1702,6 +3171,9 @@
     let allMarketplaceListings = window.allMarketplaceListings;
     let listingsLoadedOnce = false;
 
+    const featuredGridElement = document.getElementById('featuredCarsGrid');
+    const featuredSectionEl = document.getElementById('featuredCarsSection');
+    const availableSectionEl = document.getElementById('availableCarsSection');
     const gridElement = document.getElementById('carListingsGrid');
     const noCarsMessageEl = document.getElementById('noCarsMessage');
     const noCarsTitleEl = document.getElementById('noCarsTitle');
@@ -1711,15 +3183,20 @@
     const searchInput = document.getElementById('marketplaceSearch');
     const finderSearchButton = document.querySelector('.finder-input-wrapper button');
     const priceSelect = document.getElementById('marketplacePrice');
+    const brandSelect = document.getElementById('marketplaceBrand');
     const fuelSelect = document.getElementById('marketplaceFuel');
+    const citySelect = document.getElementById('marketplaceCity');
     const sortSelect = document.getElementById('marketplaceSort');
+    const categoryCardsContainer = document.getElementById('marketplaceCategories');
     const cityChipsContainer = document.getElementById('cityChips');
 
     const filterState = {
         search: '',
         budget: '',
+        brand: '',
         fuel: '',
         city: '',
+        category: '',
         sort: 'recent'
     };
 
@@ -1843,9 +3320,23 @@
             });
         }
 
+        if (brandSelect) {
+            brandSelect.addEventListener('change', (event) => {
+                filterState.brand = safeLower(event.target.value);
+                applyFiltersAndRender();
+            });
+        }
+
         if (fuelSelect) {
             fuelSelect.addEventListener('change', (event) => {
                 filterState.fuel = event.target.value;
+                applyFiltersAndRender();
+            });
+        }
+
+        if (citySelect) {
+            citySelect.addEventListener('change', (event) => {
+                filterState.city = safeLower(event.target.value);
                 applyFiltersAndRender();
             });
         }
@@ -1857,11 +3348,55 @@
             });
         }
 
+        if (categoryCardsContainer) {
+            categoryCardsContainer.addEventListener('click', (event) => {
+                const card = event.target.closest('.marketplace-category-card');
+                if (!card) return;
+
+                const categoryType = card.dataset.category || '';
+                const categoryValue = card.dataset.value || '';
+                const alreadyActive = card.classList.contains('is-active');
+
+                categoryCardsContainer.querySelectorAll('.marketplace-category-card').forEach((item) => {
+                    item.classList.remove('is-active');
+                });
+
+                filterState.category = '';
+
+                if (alreadyActive) {
+                    if (categoryType === 'budget' && priceSelect) {
+                        priceSelect.value = '';
+                        filterState.budget = '';
+                    }
+                    if (categoryType === 'fuel' && fuelSelect) {
+                        fuelSelect.value = '';
+                        filterState.fuel = '';
+                    }
+                } else {
+                    card.classList.add('is-active');
+                    if (categoryType === 'budget' && priceSelect) {
+                        priceSelect.value = categoryValue;
+                        filterState.budget = categoryValue;
+                    } else if (categoryType === 'fuel' && fuelSelect) {
+                        fuelSelect.value = categoryValue;
+                        filterState.fuel = categoryValue;
+                    } else if (categoryType === 'keyword') {
+                        filterState.category = safeLower(categoryValue);
+                    }
+                }
+
+                applyFiltersAndRender();
+            });
+        }
+
         if (cityChipsContainer) {
             cityChipsContainer.addEventListener('click', (event) => {
                 const chip = event.target.closest('.city-chip');
                 if (!chip) return;
                 filterState.city = (chip.dataset.city || '').toLowerCase();
+                if (citySelect) {
+                    citySelect.value = chip.dataset.city || '';
+                }
                 cityChipsContainer.querySelectorAll('.city-chip').forEach(btn => btn.classList.toggle('active', btn === chip));
                 applyFiltersAndRender();
             });
@@ -1877,7 +3412,7 @@
     }
 
     function applyFiltersAndRender() {
-        if (!gridElement) return;
+        if (!gridElement || !featuredGridElement) return;
         if (!allMarketplaceListings.length) {
             if (!listingsLoadedOnce) return;
             updateResultsCount(0, 0);
@@ -1885,7 +3420,10 @@
                 updateNoCarsMessage(false);
                 noCarsMessageEl.classList.remove('d-none');
             }
+            featuredSectionEl?.classList.add('d-none');
+            availableSectionEl?.classList.add('d-none');
             gridElement.classList.add('d-none');
+            featuredGridElement.classList.add('d-none');
             return;
         }
 
@@ -1893,7 +3431,10 @@
         updateResultsCount(filtered.length, allMarketplaceListings.length);
 
         if (!filtered.length) {
+            featuredSectionEl?.classList.add('d-none');
+            availableSectionEl?.classList.add('d-none');
             gridElement.classList.add('d-none');
+            featuredGridElement.classList.add('d-none');
             if (noCarsMessageEl) {
                 updateNoCarsMessage(true);
                 noCarsMessageEl.classList.remove('d-none');
@@ -1904,8 +3445,23 @@
         if (noCarsMessageEl) {
             noCarsMessageEl.classList.add('d-none');
         }
+        const featuredListings = filtered.filter(isListingFeatured).slice(0, 4);
+        const availableListings = filtered.filter(listing => !featuredListings.some(featured => featured.listingId === listing.listingId));
+        const visibleListings = availableListings.length ? availableListings : filtered;
+
+        if (featuredListings.length) {
+            featuredSectionEl?.classList.remove('d-none');
+            featuredGridElement.classList.remove('d-none');
+            featuredGridElement.innerHTML = featuredListings.map(buildFeaturedCard).join('');
+        } else {
+            featuredSectionEl?.classList.add('d-none');
+            featuredGridElement.classList.add('d-none');
+            featuredGridElement.innerHTML = '';
+        }
+
+        availableSectionEl?.classList.remove('d-none');
         gridElement.classList.remove('d-none');
-        gridElement.innerHTML = filtered.map(buildCard).join('');
+        gridElement.innerHTML = visibleListings.map(buildInventoryCard).join('');
     }
 
     function updateResultsCount(visible, total) {
@@ -1933,7 +3489,7 @@
     }
 
     function matchesAllFilters(listing) {
-        return matchesSearch(listing) && matchesBudget(listing) && matchesFuel(listing) && matchesCity(listing);
+        return matchesSearch(listing) && matchesBudget(listing) && matchesBrand(listing) && matchesFuel(listing) && matchesCity(listing) && matchesCategory(listing);
     }
 
     function sortListings(listings) {
@@ -1990,11 +3546,35 @@
         return fuel === filterState.fuel;
     }
 
+    function matchesBrand(listing) {
+        if (!filterState.brand) return true;
+        const brand = getListingBrand(listing);
+        if (!brand) return false;
+        return brand === filterState.brand;
+    }
+
     function matchesCity(listing) {
         if (!filterState.city) return true;
         const city = getListingCity(listing);
         if (!city) return false;
         return city.includes(filterState.city.toLowerCase());
+    }
+
+    function matchesCategory(listing) {
+        if (!filterState.category) return true;
+        const categoryHaystack = [
+            buildListingTitle(listing),
+            listing.summary,
+            listing.description,
+            listing.display?.tagline,
+            listing.car?.bodyType,
+            listing.car?.vehicleType,
+            listing.car?.transmission,
+            listing.car?.variant,
+            ...(Array.isArray(listing.tags) ? listing.tags : []),
+            ...(Array.isArray(listing.features) ? listing.features : [])
+        ].map(safeLower).filter(Boolean).join(' ');
+        return categoryHaystack.includes(filterState.category);
     }
 
     function matchesSearch(listing) {
@@ -2039,6 +3619,15 @@
     function getListingFuel(listing) {
         const car = listing?.car || {};
         const candidates = [car.fuelType, car.fuel, listing?.fuelType, listing?.fuel];
+        for (const candidate of candidates) {
+            const value = safeLower(candidate);
+            if (value) return value;
+        }
+        return '';
+    }
+
+    function getListingBrand(listing) {
+        const candidates = [listing?.car?.make, listing?.make, listing?.brand, listing?.manufacturer];
         for (const candidate of candidates) {
             const value = safeLower(candidate);
             if (value) return value;
@@ -2174,9 +3763,28 @@
             .join(' ');
     };
 
+    function populateDynamicFilters(listings) {
+        if (brandSelect) {
+            const brands = Array.from(new Set(listings.map(getListingBrand).filter(Boolean))).sort((a, b) => a.localeCompare(b));
+            brandSelect.innerHTML = ['<option value="">Any brand</option>', ...brands.map(brand => `<option value="${brand}">${titleCase(brand)}</option>`)].join('');
+            brandSelect.value = filterState.brand;
+        }
+
+        if (citySelect) {
+            const cities = Array.from(new Set(listings.map(getListingCity).filter(Boolean))).sort((a, b) => a.localeCompare(b));
+            citySelect.innerHTML = ['<option value="">All cities</option>', ...cities.map(city => `<option value="${city}">${city.split(',').map(part => titleCase(part.trim())).join(', ')}</option>`)].join('');
+            citySelect.value = filterState.city;
+        }
+
+        if (cityChipsContainer) {
+            const popularCities = Array.from(new Set(listings.map(getListingCity).filter(Boolean))).slice(0, 6);
+            cityChipsContainer.innerHTML = ['<button type="button" class="btn btn-sm city-chip active" data-city="">ALL</button>', ...popularCities.map(city => `<button type="button" class="btn btn-sm city-chip" data-city="${city}">${titleCase(city)}</button>`)].join('');
+        }
+    }
+
         // Load customer listings and display them as cards
         (async function loadListings() {
-            if (!gridElement) return;
+            if (!gridElement || !featuredGridElement) return;
 
             try {
                 const res = await fetch(API_ENDPOINT, { headers: { Accept: 'application/json' } });
@@ -2192,6 +3800,7 @@
                     allMarketplaceListings = data.items.slice();
                     window.carListingsData = data.items;
                     listingsLoadedOnce = true;
+                    populateDynamicFilters(allMarketplaceListings);
                     applyFiltersAndRender();
                     bindListingEvents();
                     handleListingDeepLink();
@@ -2199,7 +3808,10 @@
                     allMarketplaceListings = [];
                     listingsLoadedOnce = true;
                     updateResultsCount(0, 0);
+                    featuredSectionEl?.classList.add('d-none');
+                    availableSectionEl?.classList.add('d-none');
                     gridElement.classList.add('d-none');
+                    featuredGridElement.classList.add('d-none');
                     if (noCarsMessageEl) {
                         updateNoCarsMessage(false);
                         noCarsMessageEl.classList.remove('d-none');
@@ -2213,6 +3825,8 @@
                     </div>
                 `;
                 gridElement.classList.remove('d-none');
+                featuredSectionEl?.classList.add('d-none');
+                availableSectionEl?.classList.remove('d-none');
                 if (noCarsMessageEl) {
                     noCarsMessageEl.classList.add('d-none');
                 }
@@ -2222,8 +3836,8 @@
         })();
 
         function bindListingEvents() {
-            if (listingEventsBound || !gridElement) return;
-            gridElement.addEventListener('click', function (event) {
+            if (listingEventsBound) return;
+            document.addEventListener('click', function (event) {
                 const detailTrigger = event.target.closest('.js-view-details');
                 if (detailTrigger) {
                     event.preventDefault();
@@ -2328,22 +3942,26 @@
         }
 
         function buildCard(listing) {
+            return buildInventoryCard(listing);
+        }
+
+        function buildFeaturedCard(listing) {
             const car = listing?.car || {};
             const title = buildListingTitle(listing) || 'Customer Listing';
             const kmsFormatted = formatKms(car.kmsDriven);
             const priceFormatted = formatPrice(car.expectedPrice);
             const primaryPhoto = resolvePrimaryPhoto(listing);
             const isSoldOut = isListingSold(listing);
-            const cardClass = `car-card${isSoldOut ? ' sold-out' : ''}`;
+            const cardClass = `car-card car-card-featured${isSoldOut ? ' sold-out' : ''}`;
             const specLine = buildListingSpecLine(listing, kmsFormatted);
             const fuelLabel = getListingFuel(listing);
             const fuelDisplay = fuelLabel ? titleCase(fuelLabel) : 'Fuel NA';
             const city = getListingCity(listing);
             const cityDisplay = city ? city.split(',').map(part => titleCase(part.trim())).join(', ') : 'Location NA';
             const highlights = getListingHighlights(listing);
-            const featured = isListingFeatured(listing);
             const listingIdAttr = listing?.listingId ? `data-listing-id="${listing.listingId}"` : '';
             const kmsDisplay = kmsFormatted || 'KMs NA';
+            const summaryLine = highlights[0] || listing.summary || '';
             const offerAction = isSoldOut
                 ? '<span class="text-muted fw-semibold">Sold Out</span>'
                 : `<button class="btn btn-link make-offer-link p-0 js-make-offer" type="button" ${listingIdAttr}>Make Offer</button>`;
@@ -2356,26 +3974,18 @@
             const locationBadgeHtml = locationForBadge ? `<span class="location-badge"><i class="fa fa-map-marker-alt"></i> ${locationForBadge}</span>` : '';
 
             return `
-                <div class="col-12 col-sm-6 col-md-4 col-lg-3 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="${cardClass}">
                         <div class="car-card-img-wrapper ${isSoldOut ? '' : 'js-view-details'}" ${listingIdAttr}>
                             <img src="${primaryPhoto}" alt="${title}" class="car-card-img" width="400" height="240" loading="lazy" decoding="async" onerror="this.src='${FALLBACK_IMAGE}'">
-                            ${featured ? '<span class="featured-badge">Featured</span>' : ''}
+                            <span class="featured-badge">Featured</span>
                             ${isSoldOut ? '<div class="sold-out-banner">Sold Out</div>' : ''}
                             ${locationBadgeHtml}
                             <span class="seller-type-badge ${sellerClass}">${sellerType}</span>
                         </div>
                         <div class="car-card-body">
-                            <div class="d-flex justify-content-between align-items-start gap-3">
-                                <div>
-                                    <h5 class="car-title mb-1">${title}</h5>
-                                    <p class="car-subtitle mb-0">${specLine || 'Verified listing'}</p>
-                                </div>
-                                <div class="text-end">
-                                    ${car.registrationYear ? `<span class="badge bg-light text-dark mb-1">${car.registrationYear}</span>` : ''}
-                                    <div class="car-price">${priceFormatted}</div>
-                                </div>
-                            </div>
+                            <h5 class="car-title mb-0">${title}</h5>
+                            <div class="car-price">${priceFormatted}</div>
                             <div class="car-specs-row">
                                 <div class="car-spec-item">
                                     <i class="fa fa-road text-primary"></i>
@@ -2390,11 +4000,73 @@
                                     <span>${cityDisplay}</span>
                                 </div>
                             </div>
+                            ${summaryLine ? `<div class="car-summary">${summaryLine}</div>` : ''}
                             <div class="car-card-actions">
+                                <button class="btn view-more-btn js-view-details" type="button" ${listingIdAttr} ${isSoldOut ? 'disabled aria-disabled="true"' : ''}>${isSoldOut ? 'Unavailable' : 'View Details'}</button>
                                 ${offerAction}
-                                <button class="btn view-more-btn js-view-details" type="button" ${listingIdAttr} ${isSoldOut ? 'disabled aria-disabled="true"' : ''}>${isSoldOut ? 'Unavailable' : 'Seller Details'}</button>
                             </div>
-                            ${highlights.length ? `<div class="car-card-tags mt-3">${highlights.map(feature => `<span class="car-chip">${feature}</span>`).join('')}</div>` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function buildInventoryCard(listing) {
+            const car = listing?.car || {};
+            const title = buildListingTitle(listing) || 'Customer Listing';
+            const kmsFormatted = formatKms(car.kmsDriven);
+            const priceFormatted = formatPrice(car.expectedPrice);
+            const primaryPhoto = resolvePrimaryPhoto(listing);
+            const isSoldOut = isListingSold(listing);
+            const specLine = buildListingSpecLine(listing, kmsFormatted);
+            const fuelLabel = getListingFuel(listing);
+            const fuelDisplay = fuelLabel ? titleCase(fuelLabel) : 'Fuel NA';
+            const city = getListingCity(listing);
+            const cityDisplay = city ? city.split(',').map(part => titleCase(part.trim())).join(', ') : 'Location NA';
+            const highlights = getListingHighlights(listing);
+            const listingIdAttr = listing?.listingId ? `data-listing-id="${listing.listingId}"` : '';
+            const kmsDisplay = kmsFormatted || 'KMs NA';
+            const summaryLine = highlights[0] || listing.summary || '';
+            const sellerType = getListingSellerTypeLabel(listing);
+            const sellerClass = sellerType === 'Dealer' ? 'dealer' : '';
+            const offerAction = isSoldOut
+                ? '<span class="text-muted fw-semibold">Sold Out</span>'
+                : `<button class="btn btn-link make-offer-link p-0 js-make-offer" type="button" ${listingIdAttr}>Make Offer</button>`;
+            const locationForBadge = city && city.toLowerCase() !== 'location na' ? city : '';
+            const locationBadgeHtml = locationForBadge ? `<span class="location-badge"><i class="fa fa-map-marker-alt"></i> ${locationForBadge}</span>` : '';
+
+            return `
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="car-card car-card-standard${isSoldOut ? ' sold-out' : ''}">
+                        <div class="car-card-img-wrapper ${isSoldOut ? '' : 'js-view-details'}" ${listingIdAttr}>
+                            <img src="${primaryPhoto}" alt="${title}" class="car-card-img" width="400" height="240" loading="lazy" decoding="async" onerror="this.src='${FALLBACK_IMAGE}'">
+                            ${isListingFeatured(listing) ? '<span class="featured-badge">Featured</span>' : ''}
+                            ${isSoldOut ? '<div class="sold-out-banner">Sold Out</div>' : ''}
+                            ${locationBadgeHtml}
+                            <span class="seller-type-badge ${sellerClass}">${sellerType}</span>
+                        </div>
+                        <div class="car-card-body">
+                            <h5 class="car-title mb-0">${title}</h5>
+                            <div class="car-price">${priceFormatted}</div>
+                            <div class="car-specs-row">
+                                <div class="car-spec-item">
+                                    <i class="fa fa-road text-primary"></i>
+                                    <span>${kmsDisplay}</span>
+                                </div>
+                                <div class="car-spec-item">
+                                    <i class="fa fa-gas-pump text-primary"></i>
+                                    <span>${fuelDisplay}</span>
+                                </div>
+                                <div class="car-spec-item">
+                                    <i class="fa fa-map-marker-alt text-primary"></i>
+                                    <span>${cityDisplay}</span>
+                                </div>
+                            </div>
+                            ${summaryLine ? `<div class="car-summary">${summaryLine}</div>` : ''}
+                            <div class="car-card-actions">
+                                <button class="btn view-more-btn js-view-details" type="button" ${listingIdAttr} ${isSoldOut ? 'disabled aria-disabled="true"' : ''}>${isSoldOut ? 'Unavailable' : 'View Details'}</button>
+                                ${offerAction}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2953,7 +4625,7 @@
             return `
                 <div class="carousel-item${idx === 0 ? ' active' : ''}">
                     <img src="${url}" class="d-block w-100" alt="Car photo ${idx + 1}" 
-                         style="height: 480px; object-fit: contain; background: #f5f5f5;"
+                         style="height: 520px; object-fit: cover; background: linear-gradient(180deg, #edf2fb 0%, #f7f9fc 100%);"
                          onerror="this.src='${FALLBACK_IMAGE}';">
                 </div>
             `;
@@ -2993,12 +4665,12 @@
                 return `
                     <img src="${url}" 
                          class="img-thumbnail car-thumbnail${isActive ? ' active-thumb' : ''}" 
-                         style="width: 100%; height: 156px; object-fit: cover; cursor: pointer; 
-                                border: 2px solid ${isActive ? '#007bff' : '#ddd'}; border-radius: 4px;" 
+                        style="width: 100%; height: 100%; object-fit: cover; cursor: pointer; 
+                            border: 1px solid ${isActive ? 'rgba(36, 68, 141, 0.35)' : 'rgba(17, 24, 39, 0.08)'}; border-radius: 18px;" 
                          alt="Thumbnail ${idx + 1}" 
                          data-slide-to="${idx}"
                          onerror="this.src='${FALLBACK_IMAGE}';"
-                         onclick="document.querySelectorAll('.car-thumbnail').forEach(t => { t.style.border='2px solid #ddd'; t.classList.remove('active-thumb'); }); this.style.border='2px solid #007bff'; this.classList.add('active-thumb'); var carousel = bootstrap.Carousel.getInstance(document.getElementById('carDetailCarouselMain')); if(!carousel) { carousel = new bootstrap.Carousel(document.getElementById('carDetailCarouselMain')); } carousel.to(${idx});">
+                        onclick="document.querySelectorAll('.car-thumbnail').forEach(t => { t.style.border='1px solid rgba(17, 24, 39, 0.08)'; t.classList.remove('active-thumb'); }); this.style.border='1px solid rgba(36, 68, 141, 0.35)'; this.classList.add('active-thumb'); var carousel = bootstrap.Carousel.getInstance(document.getElementById('carDetailCarouselMain')); if(!carousel) { carousel = new bootstrap.Carousel(document.getElementById('carDetailCarouselMain')); } carousel.to(${idx});">
                 `;
             }).join('');
         }
@@ -3074,10 +4746,10 @@
             
             featuresSection.innerHTML = features.map(f => `
                 <div class="col-md-4 col-6">
-                    <div class="p-3" style="background: white; border-radius: 8px; text-align: center; border: 1px solid #dee2e6;">
-                        <i class="fas ${f.icon}" style="font-size: 24px; color: #26a69a; margin-bottom: 8px;"></i>
-                        <div style="font-size: 11px; color: #888; margin-bottom: 4px;">${f.label}</div>
-                        <div style="font-weight: 600; font-size: 13px; color: #1a1a1a;">${f.value}</div>
+                    <div class="p-3" style="background: rgba(255,255,255,0.88); border-radius: 18px; text-align: center; border: 1px solid rgba(17, 24, 39, 0.08); box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);">
+                        <i class="fas ${f.icon}" style="font-size: 24px; color: #167c74; margin-bottom: 8px;"></i>
+                        <div style="font-size: 11px; color: rgba(20, 33, 61, 0.55); margin-bottom: 4px;">${f.label}</div>
+                        <div style="font-weight: 700; font-size: 13px; color: #14213d;">${f.value}</div>
                     </div>
                 </div>
             `).join('');
@@ -3091,10 +4763,10 @@
                 // Update thumbnail highlights (only for first 3 visible thumbnails)
                 document.querySelectorAll('.car-thumbnail').forEach((thumb, idx) => {
                     if (idx === newIndex && newIndex < 3) {
-                        thumb.style.border = '2px solid #007bff';
+                        thumb.style.border = '1px solid rgba(36, 68, 141, 0.35)';
                         thumb.classList.add('active-thumb');
                     } else {
-                        thumb.style.border = '2px solid #ddd';
+                        thumb.style.border = '1px solid rgba(17, 24, 39, 0.08)';
                         thumb.classList.remove('active-thumb');
                     }
                 });
@@ -3307,6 +4979,10 @@
                     const respJson = await response.json();
 
                     if (response.ok && respJson.ok) {
+                        if (!respJson.paymentUrl) {
+                            throw new Error('Payment link is unavailable right now. Please try again or choose Pay Later.');
+                        }
+
                         alertBox.className = 'alert alert-success mt-3';
                         alertBox.innerHTML = '<i class="fas fa-check-circle me-2"></i>Booking created! Redirecting to payment...';
                         alertBox.style.display = 'block';
@@ -3330,7 +5006,7 @@
                     alertBox.style.display = 'block';
                 } finally {
                     submitBtn.disabled = false;
-                    submitBtn.innerHTML = 'Pay Now @ ₹1,399';
+                    submitBtn.innerHTML = 'Book Inspection @ ₹1,399';
                 }
             });
         }
