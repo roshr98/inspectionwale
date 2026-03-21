@@ -3904,6 +3904,7 @@
                         }
                     });
                     allMarketplaceListings = data.items.slice();
+                    window.allMarketplaceListings = allMarketplaceListings;
                     window.carListingsData = data.items;
                     listingsLoadedOnce = true;
                     populateDynamicFilters(allMarketplaceListings);
@@ -3912,6 +3913,7 @@
                     handleListingDeepLink();
                 } else {
                     allMarketplaceListings = [];
+                    window.allMarketplaceListings = allMarketplaceListings;
                     listingsLoadedOnce = true;
                     updateResultsCount(0, 0);
                     featuredSectionEl?.classList.add('d-none');
@@ -3980,6 +3982,15 @@
             }
             deepLinkHandled = true;
             setTimeout(() => showCarDetails(requestedId), 200);
+        }
+
+        function findListingById(listingId) {
+            const normalizedId = String(listingId || '').trim();
+            if (!normalizedId) return null;
+            return (window.listingMap && window.listingMap.get(normalizedId))
+                || (window.allMarketplaceListings || []).find(item => item.listingId === normalizedId)
+                || (window.carListingsData || []).find(item => item.listingId === normalizedId)
+                || null;
         }
 
         function isListingSold(listing) {
@@ -4246,14 +4257,14 @@
 
         // Show car details in modal
         function showCarDetails(listingId) {
-            const listing = (window.listingMap && window.listingMap.get(listingId)) || (window.allMarketplaceListings || []).find(c => c.listingId === listingId);
+            const listing = findListingById(listingId);
             if (!listing) {
                 console.error('Listing not found for ID:', listingId);
                 return;
             }
 
             // Use the new full-screen modal
-            openCarDetailModal(listingId);
+            openCarDetailModal(listing.listingId || listingId);
         }
 
         function openC2CReserveModal(listingId) {
@@ -4601,8 +4612,10 @@
     // ============ CAR DETAIL MODAL ============
     let currentDetailListing = null;
 
+    window.showCarDetails = showCarDetails;
+
     function openCarDetailModal(listingId) {
-        const listing = (window.listingMap && window.listingMap.get(listingId)) || (window.allMarketplaceListings || []).find(item => item.listingId === listingId);
+        const listing = findListingById(listingId);
         if (!listing) {
             console.error('Listing not found in openCarDetailModal:', listingId);
             return;
@@ -4614,9 +4627,22 @@
             console.error('Modal element not found!');
             return;
         }
-        const modal = new bootstrap.Modal(modalEl, { backdrop: 'static', keyboard: false });
-        modal.show();
+        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+            const modal = bootstrap.Modal.getOrCreateInstance(modalEl, { backdrop: 'static', keyboard: false });
+            modal.show();
+            return;
+        }
+        if (typeof window.jQuery !== 'undefined' && window.jQuery.fn?.modal) {
+            window.jQuery(modalEl).modal('show');
+            return;
+        }
+        modalEl.classList.add('show');
+        modalEl.style.display = 'block';
+        modalEl.removeAttribute('aria-hidden');
+        modalEl.setAttribute('aria-modal', 'true');
     }
+
+    window.openCarDetailModal = openCarDetailModal;
 
     function populateCarDetailModal(listing) {
         const FALLBACK_IMAGE = '/Images/brand_logo_new_1.png';
