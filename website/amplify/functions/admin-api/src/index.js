@@ -23,6 +23,7 @@ const PAYMENTS_TABLE = process.env.PAYMENTS_TABLE || 'InspectionPayments';
 const LISTINGS_TABLE = process.env.LISTINGS_TABLE || 'CarListings';
 const REPORTS_TABLE = process.env.REPORTS_TABLE || 'inspectionwale-inspections';
 const INSPECTIONS_TABLE = process.env.INSPECTIONS_TABLE || REPORTS_TABLE;
+const LEADS_TABLE = process.env.LEADS_TABLE || process.env.QUOTES_TABLE || process.env.STORAGE_QUOTES_NAME;
 const REPORT_GENERATOR_URL = process.env.REPORT_GENERATOR_URL || 'https://mfy5ajp4e5lggmqypfbco34dd40ugreq.lambda-url.us-east-1.on.aws/';
 const LATEST_TS = 'LATEST';
 const INSPECTION_INDEX_PK = 'INSPECTION_INDEX';
@@ -31,9 +32,6 @@ function response(statusCode, body) {
   return {
     statusCode,
     headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Headers': 'Content-Type,Authorization',
-      'Access-Control-Allow-Methods': 'OPTIONS,GET,POST,PUT,DELETE',
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(body)
@@ -626,6 +624,28 @@ async function updateReport(reportId, updates) {
   }
 }
 
+// ===================== LEADS =====================
+async function listLeads() {
+  try {
+    if (!LEADS_TABLE) {
+      return response(500, { ok: false, error: 'Leads table is not configured' });
+    }
+
+    const result = await docClient.send(new ScanCommand({
+      TableName: LEADS_TABLE
+    }));
+
+    const items = (result.Items || [])
+      .filter((item) => item && item.formType === 'partner-service-lead')
+      .sort((a, b) => new Date(b.receivedAt || 0) - new Date(a.receivedAt || 0));
+
+    return response(200, { ok: true, items });
+  } catch (error) {
+    console.error('Error listing leads:', error);
+    return response(500, { ok: false, error: 'Failed to list leads' });
+  }
+}
+
 // ===================== MAIN HANDLER =====================
 exports.handler = async (event) => {
   console.log('Admin API Event:', JSON.stringify(event, null, 2));
@@ -692,6 +712,10 @@ exports.handler = async (event) => {
       }
       const body = parseBody(event);
       return await updateReport(reportId, body);
+    }
+
+    if (path === '/admin/leads' && method === 'GET') {
+      return await listLeads();
     }
 
     if (path === '/admin/inspections' && method === 'GET') {

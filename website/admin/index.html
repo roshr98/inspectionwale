@@ -218,6 +218,9 @@
           <a class="nav-link" data-tab="inspections" href="#">
             <i class="bi bi-clipboard2-data"></i> Inspection Editor
           </a>
+          <a class="nav-link" data-tab="leads" href="#">
+            <i class="bi bi-person-lines-fill"></i> Partner Leads
+          </a>
           <a class="nav-link" data-tab="reports" href="#">
             <i class="bi bi-file-earmark-pdf"></i> Inspection Reports
           </a>
@@ -412,6 +415,71 @@
                 </thead>
                 <tbody id="inspectionsTableBody">
                   <tr><td colspan="6" class="text-center py-4">Loading...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Leads Tab -->
+        <div class="tab-content" id="tab-leads">
+          <div class="page-header d-flex justify-content-between align-items-center">
+            <div>
+              <h4 class="mb-1">Partner Leads</h4>
+              <p class="text-muted mb-0">Track loan, insurance, warranty and RTO transfer inquiries from the public site</p>
+            </div>
+            <button class="btn btn-outline-primary refresh-btn" onclick="loadLeads()">
+              <i class="bi bi-arrow-clockwise"></i> Refresh
+            </button>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+              <div class="stats-card">
+                <div class="number" id="totalLeads">-</div>
+                <div class="text-muted">Total Leads</div>
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="stats-card">
+                <div class="number text-primary" id="loanLeads">-</div>
+                <div class="text-muted">Loan</div>
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="stats-card">
+                <div class="number text-success" id="insuranceLeads">-</div>
+                <div class="text-muted">Insurance</div>
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="stats-card">
+                <div class="number text-secondary" id="ownershipLeads">-</div>
+                <div class="text-muted">Warranty + RTO</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-card">
+            <div class="card-header d-flex justify-content-between align-items-center gap-3 flex-wrap">
+              <span>All Partner Service Leads</span>
+              <input type="text" class="form-control w-auto" placeholder="Search by service, customer, phone, listing..." id="leadsSearch">
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead>
+                  <tr>
+                    <th>Received</th>
+                    <th>Service</th>
+                    <th>Customer</th>
+                    <th>Mobile</th>
+                    <th>Email</th>
+                    <th>Page</th>
+                    <th>Vehicle / Listing</th>
+                  </tr>
+                </thead>
+                <tbody id="leadsTableBody">
+                  <tr><td colspan="7" class="text-center py-4">Loading...</td></tr>
                 </tbody>
               </table>
             </div>
@@ -732,6 +800,7 @@
     let paymentsData = [];
     let listingsData = [];
     let inspectionsData = [];
+    let leadsData = [];
     let reportsData = [];
 
     // DOM Elements
@@ -848,6 +917,7 @@
         if (tab === 'payments') loadPayments();
         if (tab === 'listings') loadListings();
         if (tab === 'inspections') loadInspections();
+        if (tab === 'leads') loadLeads();
         if (tab === 'reports') loadReports();
 
         // Close mobile sidebar
@@ -1369,6 +1439,74 @@
       } catch (error) {
         alert('Inspection payload must be valid JSON before quick edits can be applied.');
       }
+    });
+
+    // ===================== LEADS =====================
+    async function loadLeads() {
+      showLoading();
+      try {
+        const response = await apiFetch('/admin/leads');
+        const data = await response.json();
+        leadsData = data.items || [];
+        renderLeadsTable();
+        updateLeadStats();
+      } catch (error) {
+        console.error('Failed to load leads:', error);
+        document.getElementById('leadsTableBody').innerHTML = '<tr><td colspan="7" class="text-center py-4 text-danger">Failed to load data</td></tr>';
+      }
+      hideLoading();
+    }
+
+    function renderLeadsTable(filter = '') {
+      const tbody = document.getElementById('leadsTableBody');
+      let items = leadsData;
+
+      if (filter) {
+        const normalized = filter.toLowerCase();
+        items = items.filter((lead) =>
+          (lead.serviceLabel || '').toLowerCase().includes(normalized) ||
+          (lead.leadCategory || '').toLowerCase().includes(normalized) ||
+          (lead.name || '').toLowerCase().includes(normalized) ||
+          (lead.mobile || '').toLowerCase().includes(normalized) ||
+          (lead.email || '').toLowerCase().includes(normalized) ||
+          (lead.extra?.pageContext || '').toLowerCase().includes(normalized) ||
+          (lead.extra?.listingTitle || '').toLowerCase().includes(normalized) ||
+          (lead.extra?.vehicleDetails || '').toLowerCase().includes(normalized)
+        );
+      }
+
+      if (items.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4">No partner leads found</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = items.map((lead) => {
+        const service = escapeHtml(lead.serviceLabel || lead.leadCategory || '-');
+        const pageContext = escapeHtml(lead.extra?.pageContext || '-');
+        const vehicleContext = escapeHtml(lead.extra?.listingTitle || lead.extra?.vehicleDetails || lead.model || '-');
+        return `
+          <tr>
+            <td><small>${formatDate(lead.receivedAt)}</small></td>
+            <td><span class="badge ${getStatusBadge(lead.leadCategory || 'pending')}">${service}</span></td>
+            <td>${escapeHtml(lead.name || '-')}</td>
+            <td>${escapeHtml(lead.mobile || '-')}</td>
+            <td>${escapeHtml(lead.email || '-')}</td>
+            <td>${pageContext}</td>
+            <td>${vehicleContext}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function updateLeadStats() {
+      document.getElementById('totalLeads').textContent = leadsData.length;
+      document.getElementById('loanLeads').textContent = leadsData.filter((lead) => lead.leadCategory === 'loan').length;
+      document.getElementById('insuranceLeads').textContent = leadsData.filter((lead) => lead.leadCategory === 'insurance').length;
+      document.getElementById('ownershipLeads').textContent = leadsData.filter((lead) => ['warranty', 'rto-transfer'].includes(lead.leadCategory)).length;
+    }
+
+    document.getElementById('leadsSearch').addEventListener('input', (e) => {
+      renderLeadsTable(e.target.value);
     });
 
     // ===================== REPORTS =====================

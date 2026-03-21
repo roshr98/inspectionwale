@@ -131,6 +131,7 @@
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
     <link href="css/monetization.css" rel="stylesheet">
+    <link href="css/partner-leads.css" rel="stylesheet">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9282573140274859" crossorigin="anonymous"></script>
     
     <!-- Structured Data (JSON-LD) for SEO -->
@@ -1596,6 +1597,38 @@
     <!-- Buy Used Cars Section -->
     <section class="py-5 home-band home-band-warm" id="marketplace">
         <div class="container">
+            <div class="partner-leads-section">
+                <div class="partner-leads-grid">
+                    <button type="button" class="partner-lead-card" data-partner-service="loan" data-partner-service-source="homepage" data-partner-service-copy="Compare EMI-fit finance options once the car and budget look right.">
+                        <span class="partner-lead-card__icon partner-lead-card__icon--loan"><i class="fas fa-hand-holding-usd"></i></span>
+                        <span class="partner-lead-card__body">
+                            <strong>Car Loan</strong>
+                            <span>Compare EMI-fit finance options once the car and budget look right.</span>
+                        </span>
+                    </button>
+                    <button type="button" class="partner-lead-card" data-partner-service="insurance" data-partner-service-source="homepage" data-partner-service-copy="Renew expiring policies or request quotes that match the inspected vehicle.">
+                        <span class="partner-lead-card__icon partner-lead-card__icon--insurance"><i class="fas fa-shield-alt"></i></span>
+                        <span class="partner-lead-card__body">
+                            <strong>Insurance</strong>
+                            <span>Renew expiring policies or request quotes that match the inspected vehicle.</span>
+                        </span>
+                    </button>
+                    <button type="button" class="partner-lead-card" data-partner-service="warranty" data-partner-service-source="homepage" data-partner-service-copy="Keep major repair risk covered for used cars with longer ownership plans.">
+                        <span class="partner-lead-card__icon partner-lead-card__icon--warranty"><i class="fas fa-certificate"></i></span>
+                        <span class="partner-lead-card__body">
+                            <strong>Extended Warranty</strong>
+                            <span>Keep major repair risk covered for used cars with longer ownership plans.</span>
+                        </span>
+                    </button>
+                    <button type="button" class="partner-lead-card" data-partner-service="rto-transfer" data-partner-service-source="homepage" data-partner-service-copy="Track ownership paperwork, RC transfer and compliance tasks after the deal closes.">
+                        <span class="partner-lead-card__icon partner-lead-card__icon--rto-transfer"><i class="fas fa-exchange-alt"></i></span>
+                        <span class="partner-lead-card__body">
+                            <strong>RTO Transfer</strong>
+                            <span>Track ownership paperwork, RC transfer and compliance tasks after the deal closes.</span>
+                        </span>
+                    </button>
+                </div>
+            </div>
             <div class="d-flex align-items-center justify-content-between mb-3">
                 <div>
                     <span style="display:block; margin-bottom:6px; color:#b95730; font-size:0.8rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;">Featured Cars</span>
@@ -3294,6 +3327,67 @@
     </div>
     <!-- Footer End -->
 
+    <div class="modal fade partner-service-modal" id="partnerServiceModal" tabindex="-1" aria-labelledby="partnerServiceModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="partner-service-modal__hero">
+                    <div class="d-flex align-items-start justify-content-between gap-3">
+                        <div>
+                            <h5 id="partnerServiceModalLabel">Request Assistance</h5>
+                            <p>Share your requirement and the team will connect with the right next step for the car, paperwork, or protection service you need.</p>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="partner-service-modal__selected">
+                        <span class="partner-service-modal__selected-icon"><i class="fas fa-briefcase"></i></span>
+                        <div>
+                            <strong data-partner-service-selected-title>Select a service</strong>
+                            <span data-partner-service-selected-copy>Choose the support you need and share a few details so the team can follow up properly.</span>
+                        </div>
+                    </div>
+
+                    <form id="partnerServiceRequestForm" novalidate>
+                        <input type="hidden" name="serviceCategory" id="partnerServiceCategory" value="">
+                        <input type="hidden" name="serviceSource" id="partnerServiceSource" value="homepage">
+                        <input type="hidden" name="serviceContext" id="partnerServiceContext" value="">
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="partnerServiceName" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="partnerServiceName" name="name" placeholder="Your full name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="partnerServiceMobile" class="form-label">Mobile Number</label>
+                                <input type="tel" class="form-control" id="partnerServiceMobile" name="mobile" placeholder="10-digit mobile number" pattern="^0?\d{10}$" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="partnerServiceEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="partnerServiceEmail" name="email" placeholder="name@example.com">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="partnerServiceCity" class="form-label">City</label>
+                                <input type="text" class="form-control" id="partnerServiceCity" name="city" placeholder="Mumbai, Navi Mumbai, Thane...">
+                            </div>
+                            <div class="col-12">
+                                <label for="partnerServiceRequirement" class="form-label">Requirement</label>
+                                <textarea class="form-control" id="partnerServiceRequirement" name="message" placeholder="Tell us what you need, the vehicle stage, budget, or any timing requirement." required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="partner-service-modal__status" id="partnerServiceRequestStatus" role="status" aria-live="polite"></div>
+
+                        <div class="modal-footer d-flex justify-content-between gap-3 flex-column flex-sm-row">
+                            <button type="button" class="btn btn-outline-secondary w-100 w-sm-auto" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary w-100 w-sm-auto" id="partnerServiceRequestSubmit">Request Assistance</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
@@ -3955,6 +4049,7 @@
             })()
         });
         </script>
+        <script defer src="js/partner-services.js"></script>
         <script defer src="js/main.js"></script>
         
         <!-- Schema.org Structured Data (JSON-LD) for SEO -->

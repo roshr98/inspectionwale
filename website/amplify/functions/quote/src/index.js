@@ -11,6 +11,23 @@ const ses = new SESClient({ region: REGION })
 
 function safeString(v) { return v === undefined || v === null ? '' : String(v) }
 
+const partnerServiceLabels = {
+  loan: 'Car Loan',
+  insurance: 'Insurance',
+  warranty: 'Extended Warranty',
+  'rto-transfer': 'RTO Transfer'
+}
+
+function normalizePartnerServiceCategory(value) {
+  const normalized = safeString(value)
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+
+  return partnerServiceLabels[normalized] ? normalized : ''
+}
+
 exports.handler = async (event) => {
   try {
     const body = event.body ? JSON.parse(event.body) : {}
@@ -24,6 +41,9 @@ exports.handler = async (event) => {
     const make = safeString(body.make || '')
     const ownership = safeString(body.ownership || body.ownershipType || '')
     const formType = safeString(body.formType || 'booking')
+    const leadCategory = formType === 'partner-service-lead'
+      ? normalizePartnerServiceCategory(body.serviceCategory || body.leadCategory || body.category)
+      : ''
     const extra = {}
     // copy any other fields for storage
     for (const k of Object.keys(body)) {
@@ -53,6 +73,10 @@ exports.handler = async (event) => {
     }
 
     if (!item.ownership) delete item.ownership
+    if (leadCategory) {
+      item.leadCategory = leadCategory
+      item.serviceLabel = partnerServiceLabels[leadCategory]
+    }
 
     if (!QUOTES_TABLE) console.warn('QUOTES_TABLE not set; skipping DynamoDB save')
     else await ddbDoc.send(new PutCommand({ TableName: QUOTES_TABLE, Item: item }))
@@ -120,6 +144,41 @@ exports.handler = async (event) => {
         ``,
         `Received: ${item.receivedAt}`
       ].filter(Boolean).join('\n');
+    } else if (formType === 'partner-service-lead') {
+      const serviceLabel = partnerServiceLabels[leadCategory] || safeString(body.serviceLabel || 'Partner Service')
+      const listingTitle = safeString(body.listingTitle || '')
+      const vehicleDetails = safeString(body.vehicleDetails || body.model || '')
+      const pageContext = safeString(body.pageContext || '')
+      const sourceSection = safeString(body.sourceSection || '')
+      const message = safeString(body.message || '')
+      const expectedPrice = safeString(body.expectedPrice || '')
+      const listingId = safeString(body.listingId || '')
+
+      emailSubject = `Partner Lead: ${serviceLabel} - ${item.name}`
+      emailLines = [
+        `PARTNER SERVICE LEAD`,
+        `====================`,
+        '',
+        `Requested Service: ${serviceLabel}`,
+        pageContext ? `Page Context: ${pageContext}` : null,
+        sourceSection ? `Source Section: ${sourceSection}` : null,
+        '',
+        `Customer Details:`,
+        `Name: ${item.name}`,
+        `Mobile: ${item.mobile}`,
+        item.email ? `Email: ${item.email}` : null,
+        item.city ? `City: ${item.city}` : null,
+        '',
+        `Vehicle / Deal Context:`,
+        vehicleDetails ? `Vehicle Details: ${vehicleDetails}` : null,
+        listingTitle ? `Listing Title: ${listingTitle}` : null,
+        listingId ? `Listing ID: ${listingId}` : null,
+        expectedPrice ? `Expected Price: ${expectedPrice}` : null,
+        '',
+        message ? `Customer Message:\n${message}` : null,
+        Object.keys(item.extra || {}).length ? `Extra: ${JSON.stringify(item.extra)}` : null,
+        `Received: ${item.receivedAt}`
+      ].filter(Boolean).join('\n')
     } else {
       // Default email format for other form types
       emailLines = [
