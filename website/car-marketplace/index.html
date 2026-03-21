@@ -13,7 +13,7 @@
     <meta property="og:description" content="Browse verified used cars inspected by inspectionWale professionals before you buy.">
     <meta property="og:image" content="https://www.inspectionwale.com/Images/brand_logo_new_1.png">
 
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://translate.googleapis.com https://www.gstatic.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://423cmvhw3g.execute-api.us-east-1.amazonaws.com https://inspectionWale-car-listings.s3.amazonaws.com https://inspectionWale-car-listings.s3.us-east-1.amazonaws.com https://inspectionWale-car-listings.s3-us-east-1.amazonaws.com https://e5c4zwzl3vvb5t6fq3djkuhvjm0omhdm.lambda-url.us-east-1.on.aws https://www.google-analytics.com https://cdn.jsdelivr.net https://translate.googleapis.com https://translate-pa.googleapis.com; frame-src 'self' https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://www.gstatic.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://translate.googleapis.com https://www.gstatic.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://423cmvhw3g.execute-api.us-east-1.amazonaws.com https://inspectionWale-car-listings.s3.amazonaws.com https://inspectionWale-car-listings.s3.us-east-1.amazonaws.com https://inspectionWale-car-listings.s3-us-east-1.amazonaws.com https://e5c4zwzl3vvb5t6fq3djkuhvjm0omhdm.lambda-url.us-east-1.on.aws https://www.google-analytics.com https://cdn.jsdelivr.net https://translate.googleapis.com https://translate-pa.googleapis.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com; frame-src 'self' https://www.google.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://pagead2.googlesyndication.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
 
     <!-- Favicon -->
     <link href="/Images/brand_logo_new_1.png" rel="icon">
@@ -36,6 +36,8 @@
 
     <!-- Template Stylesheet -->
     <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/monetization.css" rel="stylesheet">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9282573140274859" crossorigin="anonymous"></script>
 
     <style>
         :root {
@@ -1927,7 +1929,7 @@
     </style>
 </head>
 
-<body class="marketplace-page">
+<body class="marketplace-page" data-page="marketplace">
     <!-- Spinner Start -->
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
@@ -2079,6 +2081,8 @@
                     </div>
                 </div>
 
+                <div id="marketplaceTopAdSlot" class="iw-monetization-zone mt-4" aria-label="Marketplace sponsored recommendations"></div>
+
                 <div id="cityChips" class="d-none" aria-hidden="true"></div>
             </section>
 
@@ -2175,6 +2179,8 @@
                     <i class="fa fa-search me-2"></i>Tell Us What You Need
                 </button>
             </div>
+
+            <section class="iw-monetization-zone" id="marketplaceMonetizationZone" aria-label="Recommended automotive offers"></section>
         </div>
     </div>
     <!-- Marketplace Content End -->
@@ -2470,6 +2476,8 @@
                                 <div class="mb-3">
                                     <a href="#" id="carDetailRatingsLink" style="color: #24448d; text-decoration: underline; cursor: pointer; font-weight: 700;">Get car ratings by InspectionWale</a>
                                 </div>
+
+                                <div id="carDetailMonetizationSlot" class="mb-4" aria-label="Sponsored recommendations"></div>
 
                                 <!-- Key Stats Row -->
                                 <div class="d-flex align-items-center gap-3 mb-4 pb-3" style="border-bottom: 1px solid rgba(17, 24, 39, 0.08); flex-wrap: wrap;">
@@ -3156,6 +3164,7 @@
     <script defer src="../lib/owlcarousel/owl.carousel.min.js"></script>
     <script defer src="../js/main.js"></script>
 
+    <script src="../js/monetization.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function () {
     const API_ENDPOINT = 'https://423cmvhw3g.execute-api.us-east-1.amazonaws.com/prod/customer-listings';
@@ -3199,6 +3208,8 @@
         category: '',
         sort: 'recent'
     };
+
+    initMarketplaceMonetization();
 
     const budgetRanges = {
         lt1: { max: 100000 },
@@ -3411,8 +3422,78 @@
         };
     }
 
+    function initMarketplaceMonetization() {
+        if (!window.IWMonetization) return;
+        renderMarketplaceMonetizationShell([]);
+        window.IWMonetization.mountStickyBottomAd({
+            context: { page: 'marketplace', budget: filterState.budget || 'lt5' },
+            offer: window.IWMonetization.offers.loan
+        });
+    }
+
+    function getMonetizationContext(listing) {
+        const price = listing ? extractPriceNumber(listing) : 0;
+        return {
+            page: 'marketplace',
+            budget: filterState.budget,
+            price,
+            segment: price >= 1000000 ? 'premium' : 'standard'
+        };
+    }
+
+    function renderMarketplaceMonetizationShell(listings) {
+        if (!window.IWMonetization) return;
+        const sampleListing = Array.isArray(listings) && listings.length ? listings[0] : null;
+        const context = getMonetizationContext(sampleListing);
+        const topSlot = document.getElementById('marketplaceTopAdSlot');
+        const preFooterZone = document.getElementById('marketplaceMonetizationZone');
+
+        if (topSlot) {
+            topSlot.innerHTML = window.IWMonetization.createAdBanner({
+                placement: 'marketplace-top-banner',
+                slotKey: 'topBanner',
+                title: context.segment === 'premium' ? 'Premium ownership offers for premium listings' : 'Useful finance and protection offers for active car shoppers',
+                description: context.segment === 'premium'
+                    ? 'Show premium insurance and warranty placements for higher-value cars without disrupting the main discovery flow.'
+                    : 'Blend loan, insurance and resale offers into the marketplace using ad slots sized to avoid layout shift.',
+                primaryCta: context.segment === 'premium' ? 'View Premium Cover' : 'Check Loan',
+                primaryHref: context.segment === 'premium' ? window.IWMonetization.offers.premiumInsurance.href : window.IWMonetization.offers.loan.href,
+                offerId: context.segment === 'premium' ? window.IWMonetization.offers.premiumInsurance.id : window.IWMonetization.offers.loan.id,
+                secondaryCta: 'Sell Your Car Instantly',
+                context
+            });
+            window.IWMonetization.hydrate(topSlot);
+        }
+
+        if (preFooterZone) {
+            preFooterZone.innerHTML = window.IWMonetization.createPreFooterRevenueSection({
+                placement: 'marketplace-pre-footer',
+                slotKey: 'footer',
+                context
+            });
+            window.IWMonetization.hydrate(preFooterZone);
+        }
+    }
+
+    function renderInventoryWithNativeAds(listings) {
+        const markup = [];
+        listings.forEach((listing, index) => {
+            markup.push(buildInventoryCard(listing));
+            const shouldInsertSponsoredCard = window.IWMonetization && (index + 1) % 4 === 0 && index < listings.length - 1;
+            if (shouldInsertSponsoredCard) {
+                markup.push(window.IWMonetization.createNativeAdCard({
+                    placement: 'marketplace-inline-native',
+                    context: getMonetizationContext(listing),
+                    offer: window.IWMonetization.pickOffer(getMonetizationContext(listing))
+                }));
+            }
+        });
+        return markup.join('');
+    }
+
     function applyFiltersAndRender() {
         if (!gridElement || !featuredGridElement) return;
+        renderMarketplaceMonetizationShell(allMarketplaceListings);
         if (!allMarketplaceListings.length) {
             if (!listingsLoadedOnce) return;
             updateResultsCount(0, 0);
@@ -3428,6 +3509,7 @@
         }
 
         const filtered = sortListings(allMarketplaceListings.filter(matchesAllFilters));
+    renderMarketplaceMonetizationShell(filtered);
         updateResultsCount(filtered.length, allMarketplaceListings.length);
 
         if (!filtered.length) {
@@ -3461,7 +3543,7 @@
 
         availableSectionEl?.classList.remove('d-none');
         gridElement.classList.remove('d-none');
-        gridElement.innerHTML = visibleListings.map(buildInventoryCard).join('');
+        gridElement.innerHTML = renderInventoryWithNativeAds(visibleListings);
     }
 
     function updateResultsCount(visible, total) {
@@ -4536,6 +4618,27 @@
         // Set modal title
         const modalTitleEl = document.getElementById('carDetailModalTitle');
         if (modalTitleEl) modalTitleEl.textContent = fullTitle;
+
+        const detailMonetizationSlot = document.getElementById('carDetailMonetizationSlot');
+        if (detailMonetizationSlot && window.IWMonetization) {
+            const detailContext = { page: 'marketplace', price, budget: filterState.budget, segment: price >= 1000000 ? 'premium' : 'standard' };
+            detailMonetizationSlot.innerHTML = window.IWMonetization.createAdBanner({
+                placement: 'detail-price-slot',
+                slotKey: 'detail',
+                title: price >= 1000000 ? 'Premium protection for premium cars' : 'Protect the next step after inspection',
+                description: price >= 1000000
+                    ? 'This pricing band is better matched with premium insurance and extended warranty recommendations.'
+                    : 'High-intent buyers here often compare insurance, EMI and warranty before the final decision.',
+                primaryCta: price >= 1000000 ? 'View Premium Cover' : 'Check Car Insurance',
+                primaryHref: price >= 1000000 ? window.IWMonetization.offers.premiumInsurance.href : window.IWMonetization.offers.insurance.href,
+                offerId: price >= 1000000 ? window.IWMonetization.offers.premiumInsurance.id : window.IWMonetization.offers.insurance.id,
+                secondaryCta: price < 500000 ? 'Calculate EMI' : 'View Offer',
+                secondaryHref: price < 500000 ? window.IWMonetization.offers.loan.href : window.IWMonetization.offers.warranty.href,
+                secondaryOfferId: price < 500000 ? window.IWMonetization.offers.loan.id : window.IWMonetization.offers.warranty.id,
+                context: detailContext
+            });
+            window.IWMonetization.hydrate(detailMonetizationSlot);
+        }
         
         // Generate dynamic badges based on car features
         const badges = [];
@@ -4984,8 +5087,20 @@
                         }
 
                         alertBox.className = 'alert alert-success mt-3';
-                        alertBox.innerHTML = '<i class="fas fa-check-circle me-2"></i>Booking created! Redirecting to payment...';
+                        alertBox.innerHTML = `
+                            <div><i class="fas fa-check-circle me-2"></i>Booking created! Redirecting to payment...</div>
+                            ${window.IWMonetization ? window.IWMonetization.createInlineRecommendation({
+                                placement: 'marketplace-booking-confirmation',
+                                title: 'Useful add-ons before you complete payment',
+                                copy: 'Keep insurance and warranty offers visible right after booking intent, while the user is still in purchase mode.',
+                                context: { page: 'marketplace', price: extractPriceNumber(currentDetailListing), budget: filterState.budget },
+                                offer: window.IWMonetization.pickOffer({ page: 'marketplace', price: extractPriceNumber(currentDetailListing), budget: filterState.budget })
+                            }) : ''}
+                        `;
                         alertBox.style.display = 'block';
+                        if (window.IWMonetization) {
+                            window.IWMonetization.hydrate(alertBox);
+                        }
                         
                         // Reset form and redirect to Razorpay
                         setTimeout(() => {
@@ -5084,8 +5199,21 @@
                         }).catch(err => console.warn('Quote email send failed:', err));
                         
                         alertBox.className = 'alert alert-success mt-3';
-                        alertBox.innerHTML = '<i class="fas fa-check-circle me-2"></i>Booking received! We will call you to confirm.';
+                        alertBox.innerHTML = `
+                            <div><i class="fas fa-check-circle me-2"></i>Booking received! We will call you to confirm.</div>
+                            ${window.IWMonetization ? window.IWMonetization.createInlineRecommendation({
+                                placement: 'marketplace-pay-later-confirmation',
+                                title: 'Recommended while our team follows up',
+                                copy: 'Pay-later journeys are a strong moment for financing and insurance suggestions that feel useful instead of intrusive.',
+                                context: { page: 'marketplace', price: extractPriceNumber(currentDetailListing), budget: filterState.budget },
+                                offer: window.IWMonetization.offers.loan
+                            }) : ''}
+                        `;
                         alertBox.style.display = 'block';
+                        if (window.IWMonetization) {
+                            window.IWMonetization.hydrate(alertBox);
+                            window.IWMonetization.trackConversion({ placement: 'marketplace-pay-later-confirmation', page: 'marketplace', formType: 'marketplace-booking-pay-later' });
+                        }
                         
                         // Reset form
                         setTimeout(() => {

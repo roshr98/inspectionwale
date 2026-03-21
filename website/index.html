@@ -128,6 +128,8 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <link href="css/monetization.css" rel="stylesheet">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9282573140274859" crossorigin="anonymous"></script>
     
     <!-- Structured Data (JSON-LD) for SEO -->
     <script type="application/ld+json">
@@ -488,7 +490,7 @@
                 </style>
 </head>
 
-<body class="home-page">
+<body class="home-page" data-page="home">
     <!-- Spinner Start -->
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center flex-column">
         <div class="car-loader" style="position: relative; width: 120px; height: 60px;">
@@ -527,10 +529,7 @@
         }
 
         body.home-page {
-            background:
-                radial-gradient(circle at top left, rgba(216, 111, 69, 0.16), transparent 32%),
-                radial-gradient(circle at top right, rgba(22, 124, 116, 0.16), transparent 24%),
-                linear-gradient(180deg, #f5ede2 0%, #f7f3ed 42%, #fbfaf7 100%);
+            background: #f8f3eb;
             color: var(--home-ink);
         }
 
@@ -645,6 +644,40 @@
                 linear-gradient(135deg, rgba(20, 33, 61, 0.95), rgba(17, 27, 49, 0.86)),
                 url('Images/final_banner.jpg') center/cover no-repeat;
             box-shadow: none;
+        }
+
+        .home-band {
+            position: relative;
+            isolation: isolate;
+        }
+
+        .home-band::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 100vw;
+            transform: translateX(-50%);
+            z-index: -1;
+            background: var(--home-band-bg,
+                radial-gradient(circle at top left, rgba(216, 111, 69, 0.08), transparent 32%),
+                radial-gradient(circle at top right, rgba(22, 124, 116, 0.08), transparent 24%),
+                linear-gradient(180deg, #f6f1e8 0%, #faf7f1 100%));
+        }
+
+        .home-band-warm {
+            --home-band-bg:
+                radial-gradient(circle at top left, rgba(216, 111, 69, 0.1), transparent 34%),
+                radial-gradient(circle at 84% 18%, rgba(22, 124, 116, 0.06), transparent 24%),
+                linear-gradient(180deg, #f5efe6 0%, #faf7f1 100%);
+        }
+
+        .home-band-light {
+            --home-band-bg:
+                radial-gradient(circle at 14% 16%, rgba(216, 111, 69, 0.06), transparent 28%),
+                radial-gradient(circle at top right, rgba(22, 124, 116, 0.08), transparent 22%),
+                linear-gradient(180deg, #f7f4ee 0%, #fcfaf6 100%);
         }
 
         .home-hero-card::before {
@@ -862,10 +895,6 @@
             color: #fff;
         }
 
-        .hero-form-toast.show {
-            display: flex;
-        }
-
         .hero-form-toast.error {
             background: rgba(216, 19, 36, 0.9);
         }
@@ -1063,15 +1092,20 @@
         }
 
         .home-story-grid {
-            grid-template-columns: 1.25fr 0.95fr;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+            align-items: stretch;
         }
 
         .home-story-card {
             padding: 12px 4px;
             display: grid;
             grid-template-columns: 18px minmax(0, 1fr);
+            grid-template-rows: auto auto 1fr;
             column-gap: 12px;
             align-items: flex-start;
+            align-content: start;
+            height: 100%;
         }
 
         .home-story-card > i {
@@ -1089,6 +1123,10 @@
 
         .home-story-card > h3 {
             margin-top: 0;
+        }
+
+        .home-story-card > p {
+            min-height: 3.6rem;
         }
 
         .home-story-list {
@@ -1123,6 +1161,54 @@
             color: rgba(70, 84, 111, 0.84);
             font-size: 0.9rem;
             line-height: 1.6;
+        }
+
+        .home-story-icon-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-auto-rows: 1fr;
+            gap: 14px;
+            margin-top: 20px;
+            align-self: start;
+        }
+
+        .home-story-icon-item {
+            display: grid;
+            grid-template-rows: auto auto 1fr;
+            align-content: start;
+            justify-items: flex-start;
+            gap: 10px;
+            padding: 16px 14px;
+            border: 1px solid rgba(20, 33, 61, 0.08);
+            background: rgba(255, 255, 255, 0.44);
+            min-height: 100%;
+        }
+
+        .home-story-icon-item i {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            color: var(--home-icon);
+            background: rgba(78, 138, 132, 0.12);
+            font-size: 0.95rem;
+        }
+
+        .home-story-icon-item strong {
+            display: block;
+            color: var(--home-ink);
+            font-size: 0.95rem;
+            line-height: 1.35;
+            min-height: 2.6rem;
+        }
+
+        .home-story-icon-item span {
+            display: block;
+            color: rgba(70, 84, 111, 0.84);
+            font-size: 0.87rem;
+            line-height: 1.55;
         }
 
         .home-story-card ul {
@@ -1229,6 +1315,12 @@
                 padding: 34px 24px;
             }
 
+            .home-band::before {
+                width: 100%;
+                left: 0;
+                transform: none;
+            }
+
             .hero-contact-card {
                 max-width: none;
             }
@@ -1239,6 +1331,10 @@
             .home-story-grid,
             .home-steps-grid {
                 grid-template-columns: 1fr 1fr;
+            }
+
+            .home-story-icon-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
             .home-cta-band {
@@ -1290,11 +1386,19 @@
                 font-size: 0.95rem;
             }
 
+            .home-story-card > p {
+                min-height: 0;
+            }
+
             .home-hero-metrics,
             .home-strip-grid,
             .home-services-grid,
             .home-story-grid,
             .home-steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .home-story-icon-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -1388,11 +1492,11 @@
                                 <div class="hero-contact-grid">
                                     <div>
                                         <label class="form-label" for="heroName">Name</label>
-                                        <input type="text" id="heroName" name="name" class="form-control" required>
+                                        <input type="text" id="heroName" name="name" class="form-control" placeholder="Enter your name" required>
                                     </div>
                                     <div>
                                         <label class="form-label" for="heroEmail">Email</label>
-                                        <input type="email" id="heroEmail" name="email" class="form-control" required>
+                                        <input type="email" id="heroEmail" name="email" class="form-control" placeholder="Enter your email" required>
                                     </div>
                                     <div class="hero-field-full">
                                         <label class="form-label" for="heroMobile">Mobile</label>
@@ -1419,8 +1523,8 @@
                     <h5>Check Your Car Value</h5>
                     <form id="mobileHeroForm" novalidate data-car-value-form="mobile" data-toast-id="heroFormToastMobile">
                         <input type="hidden" name="formSource" value="hero-mobile">
-                        <input type="text" name="name" required>
-                        <input type="email" name="email" required>
+                        <input type="text" name="name" placeholder="Enter your name" required>
+                        <input type="email" name="email" placeholder="Enter your email" required>
                         <input type="tel" name="mobile" placeholder="Mobile number" inputmode="tel" required pattern="[0-9+\-() ]{8,15}">
                         <textarea name="message" placeholder="Make, model, year, asking price" required></textarea>
                         <button type="submit">Get Value Estimate</button>
@@ -1433,7 +1537,7 @@
             </div>
         </section>
 
-        <section class="home-strip" aria-label="Key stats">
+        <section class="home-strip home-band home-band-warm" aria-label="Key stats">
             <div class="home-strip-grid">
                 <article class="home-strip-card">
                     <div class="home-strip-icon"><i class="fas fa-clipboard-check"></i></div>
@@ -1466,7 +1570,7 @@
             </div>
         </section>
 
-        <section class="home-section">
+        <section class="home-section home-band home-band-light">
             <div class="home-cta-band">
                 <div>
                     <h3>Need an inspection or want to list a car today?</h3>
@@ -1488,7 +1592,7 @@
     </main>
 
     <!-- Buy Used Cars Section -->
-    <section class="py-5" id="marketplace" style="background: #fff;">
+    <section class="py-5 home-band home-band-warm" id="marketplace">
         <div class="container">
             <div class="d-flex align-items-center justify-content-between mb-3">
                 <div>
@@ -1565,7 +1669,7 @@
         </div>
     </section>
 
-    <section class="home-section" id="process">
+    <section class="home-section home-band home-band-light" id="process">
         <div class="home-section-header">
             <div>
                 <span>How It Works</span>
@@ -1598,7 +1702,7 @@
         </div>
     </section>
 
-    <section class="home-section" id="services">
+    <section class="home-section home-band home-band-warm" id="services">
         <div class="home-section-header">
             <div>
                 <span>Services</span>
@@ -1642,33 +1746,27 @@
         </div>
     </section>
 
-    <section class="home-section">
+    <section class="home-section home-band home-band-light">
         <div class="home-story-grid">
             <article class="home-story-card">
                 <i class="fas fa-clipboard-check"></i>
                 <h3>What gets reported</h3>
-                <p>Every inspection is built to answer the real buyer questions: what is damaged, what will cost money, what can be negotiated, and what should stop the deal entirely.</p>
-                <div class="home-story-list">
-                    <div>
-                        <i class="fas fa-check-circle"></i>
-                        <div>
-                            <strong>Condition clarity</strong>
-                            <span>Panels, paint, structure, interior, electronics, tyres, underbody and road behavior.</span>
-                        </div>
+                <p>Reports focus on the decisions that matter before you commit to the car.</p>
+                <div class="home-story-icon-grid">
+                    <div class="home-story-icon-item">
+                        <i class="fas fa-search"></i>
+                        <strong>Condition snapshot</strong>
+                        <span>Panels, paint, structure, interior, electronics and road behavior.</span>
                     </div>
-                    <div>
+                    <div class="home-story-icon-item">
                         <i class="fas fa-tools"></i>
-                        <div>
-                            <strong>Repair exposure</strong>
-                            <span>Immediate issues, estimated expense, and visible signs of past fixes or hidden work.</span>
-                        </div>
+                        <strong>Repair risk</strong>
+                        <span>Visible damage, hidden fixes, and issues likely to cost money next.</span>
                     </div>
-                    <div>
-                        <i class="fas fa-rupee-sign"></i>
-                        <div>
-                            <strong>Negotiation support</strong>
-                            <span>Use the findings to challenge inflated asking prices with documented observations.</span>
-                        </div>
+                    <div class="home-story-icon-item">
+                        <i class="fas fa-comments-dollar"></i>
+                        <strong>Negotiation edge</strong>
+                        <span>Use documented findings to push back on inflated asking prices.</span>
                     </div>
                 </div>
             </article>
@@ -1676,13 +1774,24 @@
             <article class="home-story-card">
                 <i class="fas fa-bolt"></i>
                 <h3>Why buyers use inspectionWale</h3>
-                <p>Because seller enthusiasm and dealer assurance are not inspection evidence. Buyers need independent eyes and a record they can act on.</p>
-                <ul>
-                    <li>Spot transit or showroom damage on new cars before delivery acceptance</li>
-                    <li>Catch repaint, accident history, flood/fire signs and missing features</li>
-                    <li>Reduce the risk of buying a car with expensive hidden problems</li>
-                    <li>Move faster when a good car appears, because the report is usable immediately</li>
-                </ul>
+                <p>Independent inspection replaces seller claims with evidence you can act on immediately.</p>
+                <div class="home-story-icon-grid">
+                    <div class="home-story-icon-item">
+                        <i class="fas fa-car-side"></i>
+                        <strong>Delivery check</strong>
+                        <span>Catch transit or showroom issues before handover.</span>
+                    </div>
+                    <div class="home-story-icon-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <strong>History flags</strong>
+                        <span>Spot repaint, accident, flood signs or missing features.</span>
+                    </div>
+                    <div class="home-story-icon-item">
+                        <i class="fas fa-bolt"></i>
+                        <strong>Decide faster</strong>
+                        <span>Move on a good car without guesswork.</span>
+                    </div>
+                </div>
             </article>
         </div>
     </section>
@@ -3132,6 +3241,8 @@
         }
     </style>
 
+    <section class="iw-monetization-zone home-band home-band-light" id="homeMonetizationZone" aria-label="Recommended automotive offers"></section>
+
     <!-- Footer Start -->
     <div class="container-fluid text-light footer pt-4 pb-3" style="background: #0B2154; font-family: 'Montserrat', sans-serif;">
         <div class="container">
@@ -3189,6 +3300,7 @@
     <!-- JavaScript Libraries - load Bootstrap synchronously so it's available for inline scripts -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/monetization.js"></script>
     <script defer src="lib/wow/wow.min.js"></script>
     <script defer src="lib/easing/easing.min.js"></script>
     <script defer src="lib/waypoints/waypoints.min.js"></script>
@@ -3227,6 +3339,7 @@
             try {
                 if (typeof initHeroCarValueForms === 'function') initHeroCarValueForms();
                 if (typeof initBookingPanelForm === 'function') initBookingPanelForm();
+                if (typeof initHomepageMonetization === 'function') initHomepageMonetization();
                 
                 initInspectionModalForm({
                     formId: 'usedCarInspectionForm',
@@ -3339,6 +3452,58 @@
                 element.classList.remove('show', 'error');
             }, 4000);
         }
+
+        function initHomepageMonetization() {
+            if (!window.IWMonetization) return;
+
+            const zone = document.getElementById('homeMonetizationZone');
+            if (zone) {
+                zone.innerHTML = [
+                    window.IWMonetization.createAdBanner({
+                        placement: 'home-top-inline',
+                        slotKey: 'topBanner',
+                        title: 'Monetize high-intent buyers without breaking trust',
+                        description: 'Use premium insurance, EMI and resale placements that match the homepage tone and stay respectful of conversion-focused UX.',
+                        primaryCta: 'Check Car Insurance',
+                        secondaryCta: 'Calculate EMI',
+                        context: { page: 'home' }
+                    }),
+                    window.IWMonetization.createPreFooterRevenueSection({
+                        placement: 'home-pre-footer',
+                        slotKey: 'footer',
+                        context: { page: 'home' }
+                    })
+                ].join('');
+                window.IWMonetization.hydrate(zone);
+            }
+
+            window.IWMonetization.mountStickyBottomAd({
+                context: { page: 'home', budget: 'lt5' },
+                offer: window.IWMonetization.offers.loan
+            });
+        }
+
+        function applyPostSubmitMonetization(target, options) {
+            if (!target || !window.IWMonetization) return;
+            target.classList.add('iw-post-submit-host');
+            target.innerHTML = `
+                <span>${options.message}</span>
+                ${window.IWMonetization.createInlineRecommendation({
+                    placement: options.placement,
+                    title: options.title,
+                    copy: options.copy,
+                    context: options.context,
+                    offer: options.offer
+                })}
+            `;
+            window.IWMonetization.hydrate(target);
+            window.IWMonetization.trackConversion({
+                placement: options.placement,
+                page: options.context?.page || 'home',
+                formType: options.context?.formType || 'booking'
+            });
+        }
+
         function initBookingPanelForm() {
             const form = document.getElementById('bookingFormIW');
             const status = document.getElementById('bookingStatus');
@@ -3372,7 +3537,14 @@
                 try {
                     await submitQuote(payload);
                     status.className = 'text-success';
-                    status.textContent = 'Thank you — we will contact you shortly.';
+                    applyPostSubmitMonetization(status, {
+                        message: 'Thank you — we will contact you shortly.',
+                        placement: 'home-booking-panel-success',
+                        title: 'While you wait, compare the next useful step',
+                        copy: 'High-intent visitors usually check insurance value, EMI impact or resale options right after inspection interest.',
+                        context: { page: 'home', formType: 'inspection-panel', budget: 'lt5' },
+                        offer: window.IWMonetization?.offers.loan
+                    });
                     form.reset();
                 } catch (error) {
                     status.className = 'text-danger';
@@ -3457,11 +3629,32 @@
                         throw new Error(data.error || 'Booking failed');
                     }
 
+                    if (!data.paymentUrl) {
+                        throw new Error('Payment link is unavailable right now. Please try again or choose Pay Later.');
+                    }
+
                     console.log('[IW] Booking created:', data.bookingId);
                     
                     // Show success and redirect to Razorpay
                     submitBtn.innerHTML = '<i class="fas fa-check"></i> Redirecting to Payment...';
                     submitBtn.style.background = '#26a69a';
+                    const recommendationHost = form.querySelector('.iw-inline-recommendation-host') || document.createElement('div');
+                    if (!recommendationHost.classList.contains('iw-inline-recommendation-host')) {
+                        recommendationHost.className = 'iw-inline-recommendation-host mt-3';
+                        form.appendChild(recommendationHost);
+                    }
+                    recommendationHost.innerHTML = window.IWMonetization
+                        ? window.IWMonetization.createInlineRecommendation({
+                            placement: `${config.formType}-redirect`,
+                            title: 'Before payment completes, consider protection add-ons',
+                            copy: 'Premium insurance and warranty placements fit naturally after inspection intent and before final purchase commitment.',
+                            context: { page: 'home', formType: config.formType, price: payload.inspectionType === 'new-car' ? 1200000 : 450000 },
+                            offer: window.IWMonetization.pickOffer({ page: 'home', price: payload.inspectionType === 'new-car' ? 1200000 : 450000 })
+                        })
+                        : '';
+                    if (window.IWMonetization) {
+                        window.IWMonetization.hydrate(recommendationHost);
+                    }
                     form.reset();
 
                     // Close modal and redirect to Razorpay payment page
@@ -3557,6 +3750,24 @@
                         // Show success
                         payLaterBtn.innerHTML = '<i class="fas fa-check"></i> Booking Received!';
                         payLaterBtn.style.background = '#26a69a';
+                        const recommendationHost = form.querySelector('.iw-inline-recommendation-host') || document.createElement('div');
+                        if (!recommendationHost.classList.contains('iw-inline-recommendation-host')) {
+                            recommendationHost.className = 'iw-inline-recommendation-host mt-3';
+                            form.appendChild(recommendationHost);
+                        }
+                        recommendationHost.innerHTML = window.IWMonetization
+                            ? window.IWMonetization.createInlineRecommendation({
+                                placement: `${config.formType}-pay-later`,
+                                title: 'Recommended while we confirm your booking',
+                                copy: 'Use this confirmation moment to surface loan, insurance or warranty intent without adding friction to the form flow.',
+                                context: { page: 'home', formType: config.formType, budget: 'lt5' },
+                                offer: window.IWMonetization.offers.insurance
+                            })
+                            : '';
+                        if (window.IWMonetization) {
+                            window.IWMonetization.hydrate(recommendationHost);
+                            window.IWMonetization.trackConversion({ placement: `${config.formType}-pay-later`, page: 'home', formType: config.formType });
+                        }
                         form.reset();
 
                         setTimeout(() => {
