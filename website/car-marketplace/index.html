@@ -2002,14 +2002,39 @@
 
             .car-title {
                 font-size: 1.08rem;
+                display: -webkit-box;
+                line-clamp: 2;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                overflow: hidden;
+                min-height: 2.7em;
             }
 
             .car-price {
                 font-size: 1rem;
             }
 
+            .car-summary {
+                display: none;
+            }
+
+            .car-specs-row {
+                gap: 6px;
+                margin-top: 8px;
+            }
+
+            .car-spec-item:last-child {
+                display: none;
+            }
+
             .car-card-actions {
+                margin-top: 8px;
                 gap: 12px;
+            }
+
+            .view-more-btn,
+            .make-offer-link {
+                line-height: 1.2;
             }
 
             #carDetailModal .modal-header {
@@ -2101,6 +2126,7 @@
 
             .car-title {
                 font-size: 0.98rem;
+                min-height: 2.6em;
             }
 
             .car-price {
@@ -2162,6 +2188,7 @@
             .car-title {
                 font-size: 0.94rem;
                 line-height: 1.35;
+                min-height: 2.6em;
             }
 
             .car-price {
