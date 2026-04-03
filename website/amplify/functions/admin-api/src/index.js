@@ -160,8 +160,12 @@ function normalizeListingPhotos(photos) {
 
 function enrichListingForAdmin(item) {
   const photos = normalizeListingPhotos(item.photos || {});
+  const adminListingId = normaliseString(item.listingId || item.submissionId || item.id);
   return {
     ...item,
+    listingId: adminListingId,
+    adminListingId,
+    submissionId: normaliseString(item.submissionId || adminListingId),
     photos,
     display: item.display || {},
     car: item.car || {},
@@ -729,6 +733,53 @@ async function listListings() {
   }
 }
 
+async function findListingByIdentifier(identifier) {
+  const normalizedIdentifier = normaliseString(identifier);
+  if (!normalizedIdentifier) {
+    return null;
+  }
+
+  const directResult = await docClient.send(new GetCommand({
+    TableName: LISTINGS_TABLE,
+    Key: { listingId: normalizedIdentifier }
+  }));
+
+  if (directResult.Item) {
+    return {
+      item: directResult.Item,
+      listingId: normaliseString(directResult.Item.listingId || normalizedIdentifier)
+    };
+  }
+
+  const fallbackResult = await docClient.send(new ScanCommand({
+    TableName: LISTINGS_TABLE,
+    FilterExpression: '#submissionId = :identifier OR #legacyId = :identifier',
+    ExpressionAttributeNames: {
+      '#submissionId': 'submissionId',
+      '#legacyId': 'id'
+    },
+    ExpressionAttributeValues: {
+      ':identifier': normalizedIdentifier
+    },
+    Limit: 1
+  }));
+
+  const fallbackItem = (fallbackResult.Items || [])[0];
+  if (!fallbackItem) {
+    return null;
+  }
+
+  const resolvedListingId = normaliseString(fallbackItem.listingId || fallbackItem.submissionId || fallbackItem.id);
+  if (!resolvedListingId) {
+    return null;
+  }
+
+  return {
+    item: fallbackItem,
+    listingId: resolvedListingId
+  };
+}
+
 async function createListing(body) {
   try {
     const item = buildListingRecord(body, {});
@@ -751,16 +802,13 @@ async function createListing(body) {
 
 async function updateListing(listingId, updates) {
   try {
-    const getResult = await docClient.send(new GetCommand({
-      TableName: LISTINGS_TABLE,
-      Key: { listingId }
-    }));
+    const existingRecord = await findListingByIdentifier(listingId);
 
-    if (!getResult.Item) {
+    if (!existingRecord) {
       return response(404, { ok: false, error: 'Listing not found' });
     }
 
-    const item = buildListingRecord({ ...updates, listingId }, getResult.Item);
+    const item = buildListingRecord({ ...updates, listingId: existingRecord.listingId }, existingRecord.item);
     const validationError = validateListingRecord(item);
     if (validationError) {
       return response(400, { ok: false, error: validationError });
@@ -780,16 +828,13 @@ async function updateListing(listingId, updates) {
 
 async function deleteListing(listingId) {
   try {
-    const existing = await docClient.send(new GetCommand({
-      TableName: LISTINGS_TABLE,
-      Key: { listingId }
-    }));
+    const existing = await findListingByIdentifier(listingId);
 
-    if (!existing.Item) {
+    if (!existing) {
       return response(404, { ok: false, error: 'Listing not found' });
     }
 
-    const photos = Object.values(existing.Item.photos || {}).filter(Boolean);
+    const photos = Object.values(existing.item.photos || {}).filter(Boolean);
     if (LISTINGS_BUCKET && photos.length) {
       await Promise.allSettled(photos.map((photo) => {
         const key = typeof photo === 'string' ? '' : normaliseString(photo.key);
@@ -800,7 +845,7 @@ async function deleteListing(listingId) {
 
     await docClient.send(new DeleteCommand({
       TableName: LISTINGS_TABLE,
-      Key: { listingId }
+      Key: { listingId: existing.listingId }
     }));
 
     return response(200, { ok: true, message: 'Listing deleted' });

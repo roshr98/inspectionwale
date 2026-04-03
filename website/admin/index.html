@@ -1624,6 +1624,11 @@
       hideLoading();
     }
 
+    function getListingIdentifier(listing) {
+      if (!listing || typeof listing !== 'object') return '';
+      return String(listing.adminListingId || listing.listingId || listing.submissionId || '').trim();
+    }
+
     function getListingPhotoUrl(photo) {
       if (!photo) return '';
       if (typeof photo === 'string') return photo;
@@ -1675,10 +1680,11 @@
       const car = listing.car || {};
       const seller = listing.seller || {};
       const display = listing.display || {};
+      const listingId = getListingIdentifier(listing);
       activeListingPhotos = Object.assign({}, listing.photos || {});
-      listingDraftUploadId = listing.listingId || `admin_${Date.now()}`;
+      listingDraftUploadId = listingId || `admin_${Date.now()}`;
 
-      document.getElementById('editListingId').value = listing.listingId || '';
+      document.getElementById('editListingId').value = listingId || '';
       document.getElementById('editListingModalTitleText').textContent = 'Edit Listing';
       document.getElementById('deleteListingBtn').classList.remove('d-none');
       document.getElementById('editListingMake').value = car.make || listing.brand || '';
@@ -1885,7 +1891,7 @@
         filter = filter.toLowerCase();
         items = items.filter(l => 
           (l.carName || '').toLowerCase().includes(filter) ||
-          (l.listingId || '').toLowerCase().includes(filter) ||
+          getListingIdentifier(l).toLowerCase().includes(filter) ||
           (l.seller?.name || '').toLowerCase().includes(filter) ||
           (l.location || l.display?.location || '').toLowerCase().includes(filter) ||
           (l.status || '').toLowerCase().includes(filter)
@@ -1899,21 +1905,21 @@
 
       tbody.innerHTML = items.map(l => `
         <tr>
-          <td><input type="checkbox" class="form-check-input" ${selectedListingIds.has(l.listingId) ? 'checked' : ''} onchange="toggleListingSelection('${l.listingId}', this.checked)"></td>
-          <td><small>${(l.listingId || '').slice(0, 8)}...</small></td>
+          <td><input type="checkbox" class="form-check-input" ${selectedListingIds.has(getListingIdentifier(l)) ? 'checked' : ''} onchange="toggleListingSelection('${getListingIdentifier(l)}', this.checked)"></td>
+          <td><small>${getListingIdentifier(l).slice(0, 8)}...</small></td>
           <td>${escapeHtml(l.carName || [l.car?.make, l.car?.model, l.car?.edition].filter(Boolean).join(' ') || l.headline || '-')}</td>
           <td>${l.seller?.name || l.sellerName || '-'}</td>
           <td>${formatCurrency(l.askingPrice || l.price)}</td>
           <td><span class="badge ${getStatusBadge(l.status)}">${l.status || 'pending'}</span></td>
           <td><small>${formatDate(l.createdAt)}</small></td>
           <td>
-            <button class="btn btn-sm btn-outline-primary action-btn" onclick="editListing('${l.listingId}')">
+            <button class="btn btn-sm btn-outline-primary action-btn" onclick="editListing('${getListingIdentifier(l)}')">
               <i class="bi bi-pencil"></i>
             </button>
-            <button class="btn btn-sm btn-outline-info action-btn" onclick="duplicateListing('${l.listingId}')">
+            <button class="btn btn-sm btn-outline-info action-btn" onclick="duplicateListing('${getListingIdentifier(l)}')">
               <i class="bi bi-copy"></i>
             </button>
-            <button class="btn btn-sm btn-outline-danger action-btn" onclick="deleteListing('${l.listingId}')">
+            <button class="btn btn-sm btn-outline-danger action-btn" onclick="deleteListing('${getListingIdentifier(l)}')">
               <i class="bi bi-trash"></i>
             </button>
           </td>
@@ -1967,7 +1973,7 @@
     }
 
     function getSelectedListings() {
-      return listingsData.filter((listing) => selectedListingIds.has(listing.listingId));
+      return listingsData.filter((listing) => selectedListingIds.has(getListingIdentifier(listing)));
     }
 
     async function bulkUpdateListingStatus(status) {
@@ -1979,14 +1985,14 @@
 
       showLoading();
       try {
-        await Promise.all(selected.map((listing) => apiFetch(`/admin/listings/${listing.listingId}`, {
+        await Promise.all(selected.map((listing) => apiFetch(`/admin/listings/${getListingIdentifier(listing)}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ status })
         }).then(async (response) => {
           const data = await response.json().catch(() => ({}));
           if (!response.ok || !data.ok) {
-            throw new Error(data.error || `Failed to update ${listing.listingId}`);
+            throw new Error(data.error || `Failed to update ${getListingIdentifier(listing)}`);
           }
         })));
         selectedListingIds.clear();
@@ -2000,7 +2006,7 @@
     }
 
     async function duplicateListing(listingId) {
-      const listing = listingsData.find((item) => item.listingId === listingId);
+      const listing = listingsData.find((item) => getListingIdentifier(item) === listingId);
       if (!listing) return;
 
       showLoading();
@@ -2053,7 +2059,7 @@
           });
           const data = await response.json();
           if (!response.ok || !data.ok) {
-            throw new Error(data.error || `Failed to duplicate ${listing.listingId}`);
+            throw new Error(data.error || `Failed to duplicate ${getListingIdentifier(listing)}`);
           }
         }
         selectedListingIds.clear();
@@ -2080,10 +2086,10 @@
       showLoading();
       try {
         for (const listing of selected) {
-          const response = await apiFetch(`/admin/listings/${listing.listingId}`, { method: 'DELETE' });
+          const response = await apiFetch(`/admin/listings/${getListingIdentifier(listing)}`, { method: 'DELETE' });
           const data = await response.json().catch(() => ({}));
           if (!response.ok || !data.ok) {
-            throw new Error(data.error || `Failed to delete ${listing.listingId}`);
+            throw new Error(data.error || `Failed to delete ${getListingIdentifier(listing)}`);
           }
         }
         selectedListingIds.clear();
@@ -2108,7 +2114,7 @@
     });
 
     function editListing(listingId) {
-      const listing = listingsData.find(l => l.listingId === listingId);
+      const listing = listingsData.find(l => getListingIdentifier(l) === listingId);
       if (!listing) return;
       listingEditorMode = 'edit';
       document.getElementById('editListingForm').classList.remove('was-validated');
