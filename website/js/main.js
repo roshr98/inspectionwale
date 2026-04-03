@@ -584,6 +584,13 @@
         const submitBtn = document.getElementById('listCarSubmitBtn')
         const modalEl = document.getElementById('listCarModal')
 
+        // Required photos are validated by custom slot logic below.
+        // Leaving hidden file inputs as native required fields causes
+        // checkValidity() to fail with a generic "this field" message.
+        form.querySelectorAll('.list-car-photo-camera, .list-car-photo-gallery, .list-car-photo').forEach(input => {
+            input.required = false
+        })
+
         // Handle both camera and gallery photo inputs
         form.querySelectorAll('.list-car-photo-camera, .list-car-photo-gallery').forEach(input => {
             input.addEventListener('change', () => handlePhotoChange(input))
