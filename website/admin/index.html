@@ -2689,7 +2689,23 @@
         const item = data.item;
         const summary = item.summary || {};
         const reportRecord = reportsData.find((report) => report.reportId === inspectionId) || null;
-        const payload = item.data || {};
+        let payload = item.data || {};
+        // If the stored payload is completely empty, pre-populate from known summary
+        // metadata so the editor always has a starting point instead of showing blank.
+        if (Object.keys(payload).length === 0) {
+          payload = {
+            inspection: {
+              id: inspectionId,
+              inspector_name: summary.inspectorName || '',
+              date: '',
+              location: ''
+            },
+            vehicle: {
+              registration_number: summary.registrationNumber || '',
+              make_model: summary.makeModel || ''
+            }
+          };
+        }
         const unsafeArchivedPayload = item.timestamp !== 'LATEST' && !hasArchivedInspectionPayload(payload);
         document.getElementById('editInspectionId').value = inspectionId;
         document.getElementById('editInspectionIdDisplay').value = inspectionId;
@@ -2964,11 +2980,8 @@
             ${r.reportUrl ? `<a href="${r.reportUrl}" target="_blank" class="btn btn-sm btn-outline-success"><i class="bi bi-file-pdf"></i></a>` : '<span class="text-muted">-</span>'}
           </td>
           <td>
-            <button class="btn btn-sm btn-outline-secondary action-btn" onclick="openFullReportEditor('${encodeURIComponent(r.reportId || '')}')" title="Open full editor">
+            <button class="btn btn-sm btn-outline-primary action-btn" onclick="openFullReportEditor('${encodeURIComponent(r.reportId || '')}')" title="Edit Report">
               <i class="bi bi-pencil-square"></i>
-            </button>
-            <button class="btn btn-sm btn-outline-primary action-btn" onclick="editReport('${r.reportId}', '${r.timestamp || ''}')">
-              <i class="bi bi-pencil"></i>
             </button>
           </td>
         </tr>
