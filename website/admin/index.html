@@ -977,6 +977,7 @@
               <i class="bi bi-info-circle me-2"></i>
               Use the structured sections below for normal report editing. The raw JSON editor remains available as an advanced override when you need exact payload control.
             </div>
+            <div class="alert alert-warning d-none mb-3" id="inspectionEditorWarning"></div>
             <div class="table-card mb-3 border">
               <div class="card-header d-flex justify-content-between align-items-center">
                 <span>Quick Edit Fields</span>
@@ -1071,7 +1072,7 @@
             </button>
             <div class="d-flex gap-2">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-primary">Save Inspection</button>
+              <button type="submit" class="btn btn-primary" id="saveInspectionBtn">Save Inspection</button>
             </div>
           </div>
         </form>
@@ -1091,6 +1092,7 @@
     let inspectionsData = [];
     let leadsData = [];
     let reportsData = [];
+    let inspectionEditorLocked = false;
     const listingPhotoSlots = [
       { key: 'exteriorFront', label: 'Exterior Front', required: true },
       { key: 'exteriorBack', label: 'Exterior Back', required: true },
@@ -1501,6 +1503,33 @@
 
     function writeInspectionPayloadText(payload) {
       document.getElementById('editInspectionPayload').value = JSON.stringify(payload || {}, null, 2);
+    }
+
+    function hasArchivedInspectionPayload(payload) {
+      return Boolean(payload) && typeof payload === 'object' && Object.keys(payload).length > 0;
+    }
+
+    function setInspectionEditorLockState(locked, message = '', reportUrl = '') {
+      inspectionEditorLocked = Boolean(locked);
+      const warningNode = document.getElementById('inspectionEditorWarning');
+      const saveButton = document.getElementById('saveInspectionBtn');
+      const regenerateButton = document.getElementById('regenerateInspectionBtn');
+
+      if (warningNode) {
+        if (inspectionEditorLocked) {
+          const recoveryLink = reportUrl
+            ? ` <a href="${escapeHtml(reportUrl)}" target="_blank" rel="noopener">Open the last generated PDF</a> to recover values manually before editing.`
+            : '';
+          warningNode.innerHTML = `<i class="bi bi-exclamation-triangle me-2"></i>${escapeHtml(message)}${recoveryLink}`;
+          warningNode.classList.remove('d-none');
+        } else {
+          warningNode.innerHTML = '';
+          warningNode.classList.add('d-none');
+        }
+      }
+
+      if (saveButton) saveButton.disabled = inspectionEditorLocked;
+      if (regenerateButton) regenerateButton.disabled = inspectionEditorLocked;
     }
 
     function ensureInspectionPayloadShape(payload) {
@@ -2659,14 +2688,22 @@
 
         const item = data.item;
         const summary = item.summary || {};
+        const reportRecord = reportsData.find((report) => report.reportId === inspectionId) || null;
+        const payload = item.data || {};
+        const unsafeArchivedPayload = item.timestamp !== 'LATEST' && !hasArchivedInspectionPayload(payload);
         document.getElementById('editInspectionId').value = inspectionId;
         document.getElementById('editInspectionIdDisplay').value = inspectionId;
         document.getElementById('editInspectionRegistration').value = summary.registrationNumber || '';
         document.getElementById('editInspectionInspector').value = summary.inspectorName || '';
-        writeInspectionPayloadText(item.data || {});
-        populateQuickFieldsFromPayload(item.data || {});
-        populateStructuredFieldsFromPayload(item.data || {});
-        renderDynamicInspectionEditor(item.data || {});
+        writeInspectionPayloadText(payload);
+        populateQuickFieldsFromPayload(payload);
+        populateStructuredFieldsFromPayload(payload);
+        renderDynamicInspectionEditor(payload);
+        setInspectionEditorLockState(
+          unsafeArchivedPayload,
+          'This archived report does not contain a saved inspection payload. Saving or regenerating from this blank editor would overwrite the live inspection data with empty values.',
+          reportRecord && reportRecord.reportUrl ? reportRecord.reportUrl : ''
+        );
         document.getElementById('inspectionModalMeta').textContent = `Created: ${formatDate(item.createdAt)} | Updated: ${formatDate(item.updatedAt)}`;
 
         new bootstrap.Modal(document.getElementById('editInspectionModal')).show();
@@ -2678,6 +2715,10 @@
     }
 
     async function saveInspectionPayload() {
+      if (inspectionEditorLocked) {
+        throw new Error('This report opened without a stored inspection payload. Save is blocked to prevent overwriting the original report with blank data.');
+      }
+
       const inspectionId = document.getElementById('editInspectionId').value;
       let parsedPayload;
 
