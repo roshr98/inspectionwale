@@ -3,6 +3,7 @@ const {
   DynamoDBDocumentClient, 
   ScanCommand, 
   GetCommand, 
+  QueryCommand,
   UpdateCommand,
   PutCommand,
   DeleteCommand
@@ -520,12 +521,34 @@ async function listInspections(cursor, limit) {
 
 async function getInspection(inspectionId) {
   try {
-    const result = await docClient.send(new GetCommand({
+    let item = null;
+
+    const latestResult = await docClient.send(new GetCommand({
       TableName: INSPECTIONS_TABLE,
       Key: { reportId: inspectionId, timestamp: LATEST_TS }
     }));
 
-    if (!result.Item || result.Item.deletedAt) {
+    if (latestResult.Item && !latestResult.Item.deletedAt) {
+      item = latestResult.Item;
+    } else {
+      const historyResult = await docClient.send(new QueryCommand({
+        TableName: INSPECTIONS_TABLE,
+        KeyConditionExpression: 'reportId = :reportId',
+        ExpressionAttributeValues: {
+          ':reportId': inspectionId,
+        },
+        ScanIndexForward: false,
+        Limit: 10,
+      }));
+
+      item = (historyResult.Items || []).find((entry) => (
+        entry &&
+        entry.reportId !== INSPECTION_INDEX_PK &&
+        !entry.deletedAt
+      )) || null;
+    }
+
+    if (!item) {
       return response(404, { ok: false, error: 'Inspection not found' });
     }
 
@@ -533,12 +556,12 @@ async function getInspection(inspectionId) {
       ok: true,
       item: {
         inspectionId,
-        reportId: result.Item.reportId,
-        timestamp: result.Item.timestamp,
-        updatedAt: result.Item.updatedAt || null,
-        createdAt: result.Item.createdAt || null,
-        data: result.Item.data || {},
-        summary: buildInspectionSummary(result.Item),
+        reportId: item.reportId,
+        timestamp: item.timestamp,
+        updatedAt: item.updatedAt || null,
+        createdAt: item.createdAt || null,
+        data: item.data || {},
+        summary: buildInspectionSummary(item),
       }
     });
   } catch (error) {
@@ -920,6 +943,47 @@ async function updateReport(reportId, updates) {
   }
 }
 
+async function createInspectionImageUpload(body) {
+  try {
+    const inspectionId = normaliseString(body.inspectionId);
+    const fileName = normaliseString(body.fileName || 'image.jpg');
+    const contentType = normaliseString(body.contentType || 'image/jpeg');
+
+    if (!inspectionId) {
+      return response(400, { ok: false, error: 'inspectionId is required' });
+    }
+
+    const endpoint = `${trimTrailingSlash(REPORT_GENERATOR_URL)}/api/inspection/images/presign`;
+    const upstream = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${issueAdminToken(ADMIN_USERNAME)}`,
+      },
+      body: JSON.stringify({ inspectionId, fileName, contentType })
+    });
+
+    const payload = await upstream.json().catch(() => ({}));
+    if (!upstream.ok || !payload.success || !payload.uploadUrl) {
+      return response(upstream.status || 500, {
+        ok: false,
+        error: payload.message || 'Failed to create inspection image upload'
+      });
+    }
+
+    return response(200, {
+      ok: true,
+      uploadUrl: payload.uploadUrl,
+      publicUrl: payload.publicUrl || '',
+      key: payload.key || '',
+      inspectionId,
+    });
+  } catch (error) {
+    console.error('Error creating inspection image upload:', error);
+    return response(500, { ok: false, error: 'Failed to create inspection image upload' });
+  }
+}
+
 // ===================== LEADS =====================
 async function listLeads() {
   try {
@@ -1062,6 +1126,11 @@ exports.handler = async (event) => {
       }
       const body = parseBody(event);
       return await regenerateInspectionReport(inspectionId, body.data);
+    }
+
+    if (path === '/admin/inspection-images/presign' && method === 'POST') {
+      const body = parseBody(event);
+      return await createInspectionImageUpload(body);
     }
     
     return response(404, { ok: false, error: 'Not found' });

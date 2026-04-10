@@ -17,6 +17,7 @@ try {
 }
 
 const { renderPdfFromPayload } = require('./templateRenderer');
+const inspectionPlaceholders = require('./inspectionPlaceholders');
 const crypto = require('crypto');
 
 const s3Client = new S3Client({});
@@ -171,6 +172,49 @@ function stripLargeStrings(value, maxLen = 50_000) {
     return out;
   }
   return value;
+}
+
+function isPlainObject(value) {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
+function cloneValue(value) {
+  if (Array.isArray(value)) {
+    return value.map((entry) => cloneValue(entry));
+  }
+  if (isPlainObject(value)) {
+    const cloned = {};
+    for (const [key, entry] of Object.entries(value)) {
+      cloned[key] = cloneValue(entry);
+    }
+    return cloned;
+  }
+  return value;
+}
+
+function mergeInspectionPayloadShape(template, value) {
+  if (Array.isArray(template)) {
+    return Array.isArray(value) ? value.map((entry) => cloneValue(entry)) : cloneValue(template);
+  }
+
+  if (!isPlainObject(template)) {
+    return value == null ? cloneValue(template) : value;
+  }
+
+  const source = isPlainObject(value) ? value : {};
+  const merged = {};
+
+  for (const [key, templateValue] of Object.entries(template)) {
+    merged[key] = mergeInspectionPayloadShape(templateValue, source[key]);
+  }
+
+  for (const [key, sourceValue] of Object.entries(source)) {
+    if (!(key in merged)) {
+      merged[key] = cloneValue(sourceValue);
+    }
+  }
+
+  return merged;
 }
 
 async function handleInspectionApi(event) {
@@ -439,12 +483,14 @@ exports.handler = async (event) => {
       return json(400, { success: false, message: 'Invalid JSON body.' });
     }
 
+    const normalizedPayload = mergeInspectionPayloadShape(inspectionPlaceholders, payload);
+
     const now = Date.now();
-    const reportId = (payload.inspection && payload.inspection.id) ? String(payload.inspection.id) : `INS-${now}`;
-    const registrationNumber = payload.vehicle && payload.vehicle.registration_number ? String(payload.vehicle.registration_number) : 'UNKNOWN';
+    const reportId = normalizedPayload.inspection && normalizedPayload.inspection.id ? String(normalizedPayload.inspection.id) : `INS-${now}`;
+    const registrationNumber = normalizedPayload.vehicle && normalizedPayload.vehicle.registration_number ? String(normalizedPayload.vehicle.registration_number) : 'UNKNOWN';
 
     console.log('Rendering PDF via Playwright...');
-    const rendered = await renderPdfFromPayload(payload);
+    const rendered = await renderPdfFromPayload(normalizedPayload);
     const pdfBuffer = Buffer.isBuffer(rendered) ? rendered : rendered && rendered.pdfBuffer;
     const pdfDebug = !Buffer.isBuffer(rendered) && rendered && rendered.debug ? rendered.debug : null;
     if (!pdfBuffer || !Buffer.isBuffer(pdfBuffer)) {
@@ -475,7 +521,7 @@ exports.handler = async (event) => {
           reportId,
           timestamp: new Date().toISOString(),
           registrationNumber,
-          inspectorName: payload.inspection && payload.inspection.inspector_name ? String(payload.inspection.inspector_name) : undefined,
+          inspectorName: normalizedPayload.inspection && normalizedPayload.inspection.inspector_name ? String(normalizedPayload.inspection.inspector_name) : undefined,
           reportUrl,
         },
       }));
@@ -505,7 +551,7 @@ exports.handler = async (event) => {
       pdfData: inlinePdfAllowed ? pdfBuffer.toString('base64') : null,
       pdfBytes: pdfBuffer.length,
       inlinePdf: inlinePdfAllowed,
-      ...(payload.__debugPdf ? { pdfDebug } : {}),
+      ...(normalizedPayload.__debugPdf ? { pdfDebug } : {}),
     });
   } catch (error) {
     console.error('Report generation error:', error);

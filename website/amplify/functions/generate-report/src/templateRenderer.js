@@ -172,6 +172,16 @@ async function renderPdfFromPayload(payload) {
   try {
     const page = await browser.newPage({ viewport: { width: 794, height: 1123 } });
 
+    page.on('pageerror', (error) => {
+      console.error('Template page error:', error);
+    });
+
+    page.on('console', (message) => {
+      if (message.type() === 'error') {
+        console.error('Template console error:', message.text());
+      }
+    });
+
     await page.addInitScript((data) => {
       try {
         localStorage.setItem('inspectionData', JSON.stringify(data || {}));
@@ -180,7 +190,7 @@ async function renderPdfFromPayload(payload) {
       }
     }, payload || {});
 
-    await page.goto(`${server.baseUrl}/`, { waitUntil: 'load' });
+    await page.goto(`${server.baseUrl}/?view=report`, { waitUntil: 'load' });
 
     const devanagariDataUrl = await loadFontDataUrl(path.join(LAMBDA_FONTS_DIR, 'NotoSansDevanagari-Regular.ttf'));
     const devanagariFontUrl = devanagariDataUrl || `${server.baseUrl}/_lambda_fonts/NotoSansDevanagari-Regular.ttf`;
@@ -226,14 +236,8 @@ html, body {
       // ignore
     }
 
-    // The template app defaults to the form view; switch to report via its own UI.
-    // This keeps the template "locked" (no special routing required).
-    try {
-      await page.waitForSelector('button.btn-view-report', { timeout: 10_000 });
-      await page.click('button.btn-view-report');
-    } catch (_e) {
-      // If the template already loads in report mode, continue.
-    }
+    // Load directly into report mode so rendering does not depend on an
+    // interactive button click completing in headless Chromium.
 
     let debugInfo = null;
     if (debugPdf) {
@@ -296,7 +300,26 @@ html, body {
       // ignore
     }
 
-    await page.waitForFunction(() => document.querySelectorAll('.inspection-page').length >= 11, { timeout: 15_000 });
+    try {
+      await page.waitForFunction(() => {
+        const ready = document.documentElement.getAttribute('data-report-ready') === 'true';
+        const pageCount = document.querySelectorAll('.inspection-page').length;
+        return ready && pageCount >= 1;
+      }, { timeout: 15_000 });
+    } catch (error) {
+      const diagnostics = await page.evaluate(() => ({
+        href: window.location.href,
+        readyState: document.readyState,
+        reportReady: document.documentElement.getAttribute('data-report-ready'),
+        pageCount: document.querySelectorAll('.inspection-page').length,
+        hasViewReportButton: Boolean(document.querySelector('button.btn-view-report')),
+        hasBackButton: Boolean(document.querySelector('button.back-to-form-btn')),
+        localStorageInspectionDataLength: (localStorage.getItem('inspectionData') || '').length,
+        bodySnippet: (document.body?.innerText || '').slice(0, 1000),
+      }));
+      console.error('Template readiness diagnostics:', diagnostics);
+      throw error;
+    }
 
     const pdfBuffer = await page.pdf({
       format: 'A4',

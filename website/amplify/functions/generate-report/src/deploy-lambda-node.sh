@@ -25,7 +25,7 @@ rm -f "$ZIP_NAME"
 # - Includes: handler, renderer, template files, node_modules.
 # - Excludes: legacy Python artifacts, old backups, existing zips.
 zip -qr "$ZIP_NAME" \
-  index.js templateRenderer.js package.json package-lock.json \
+  index.js templateRenderer.js inspectionPlaceholders.js package.json package-lock.json \
   pdf-template node_modules lambda-fonts \
   -x "package/*" "__pycache__/*" "*.py" "*.zip" \
      "index-*.js" "index*.backup*" "index*.old*" "index-old-*.js" \

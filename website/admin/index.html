@@ -163,6 +163,58 @@
       bottom: 0;
       z-index: 2;
     }
+    .inspection-image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+    .inspection-image-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 12px;
+      background: #fff;
+    }
+    .inspection-image-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.92rem;
+    }
+    .inspection-image-preview {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      background: #f8fafc;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+    .inspection-image-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .inspection-image-empty {
+      color: #94a3b8;
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 8px;
+    }
+    .inspection-image-meta {
+      font-size: 0.78rem;
+      color: #64748b;
+      min-height: 2.2em;
+      word-break: break-word;
+      margin-bottom: 8px;
+    }
+    .inspection-upload-status {
+      font-size: 0.78rem;
+      color: #64748b;
+      min-height: 1.2em;
+    }
     .loading-overlay {
       position: fixed;
       top: 0;
@@ -247,7 +299,7 @@
         </div>
         <div class="mb-3">
           <label class="form-label">Password</label>
-          <input type="password" class="form-control" id="adminPassword" placeholder="Enter admin password" required>
+          <input type="password" class="form-control" id="adminPassword" placeholder="Enter admin password" autocomplete="current-password" required>
         </div>
         <button type="submit" class="btn btn-primary w-100">
           <i class="bi bi-box-arrow-in-right me-2"></i>Login
@@ -497,7 +549,7 @@
           <div class="page-header d-flex justify-content-between align-items-center">
             <div>
               <h4 class="mb-1">Service Requests</h4>
-              <p class="text-muted mb-0">Track loan, insurance, warranty and RTO transfer requests from the public site</p>
+                <p class="text-muted mb-0">Track loan, insurance and warranty requests from the public site</p>
             </div>
             <button class="btn btn-outline-primary refresh-btn" onclick="loadLeads()">
               <i class="bi bi-arrow-clockwise"></i> Refresh
@@ -526,7 +578,7 @@
             <div class="col-md-3 mb-3">
               <div class="stats-card">
                 <div class="number text-secondary" id="ownershipLeads">-</div>
-                <div class="text-muted">Warranty + RTO</div>
+                  <div class="text-muted">Warranty</div>
               </div>
             </div>
           </div>
@@ -989,6 +1041,24 @@
                 <div class="accordion" id="structuredInspectionAccordion"></div>
               </div>
             </div>
+            <div class="table-card mb-3 border">
+              <div class="card-header d-flex justify-content-between align-items-center gap-2 flex-wrap">
+                <span>Inspection Photos</span>
+                <small class="text-muted">Upload replacements and they will be written into the payload before save/regenerate.</small>
+              </div>
+              <div class="card-body p-3">
+                <div class="inspection-image-grid" id="inspectionImageUploadGrid"></div>
+              </div>
+            </div>
+            <div class="table-card mb-3 border">
+              <div class="card-header d-flex justify-content-between align-items-center gap-2 flex-wrap">
+                <span>All Payload Fields</span>
+                <small class="text-muted">Auto-generated editor for fields not covered above.</small>
+              </div>
+              <div class="card-body p-3">
+                <div class="accordion" id="dynamicInspectionAccordion"></div>
+              </div>
+            </div>
             <div class="mb-3">
               <label class="form-label">Inspection Payload JSON</label>
               <textarea class="form-control font-monospace" id="editInspectionPayload" rows="20" spellcheck="false"></textarea>
@@ -1036,6 +1106,29 @@
     let listingDraftUploadId = '';
     let listingEditorMode = 'edit';
     let selectedListingIds = new Set();
+    const INSPECTION_IMAGE_SLOTS = [
+      { path: 'images.vehicle_front', label: 'Vehicle Front' },
+      { path: 'images.vehicle_rhs', label: 'Vehicle RHS' },
+      { path: 'images.vehicle_lhs', label: 'Vehicle LHS' },
+      { path: 'images.vehicle_rear', label: 'Vehicle Rear' },
+      { path: 'images.dashboard', label: 'Dashboard' },
+      { path: 'images.cluster_meter', label: 'Cluster Meter' },
+      { path: 'images.driver_cabin', label: 'Driver Cabin' },
+      { path: 'images.rear_cabin', label: 'Rear Cabin' },
+      { path: 'images.boot_space', label: 'Boot Space' },
+      { path: 'images.engine_compartment', label: 'Engine Compartment' },
+      { path: 'images.firewall', label: 'Firewall' },
+      { path: 'images.battery', label: 'Battery' },
+      { path: 'images.rhs_apron', label: 'RHS Apron' },
+      { path: 'images.lhs_apron', label: 'LHS Apron' },
+      { path: 'images.chassis_plate', label: 'Chassis Plate' },
+      { path: 'images.cng_plate', label: 'CNG Plate' },
+      { path: 'images.tyre_rhs_front', label: 'Tyre RHS Front' },
+      { path: 'images.tyre_rhs_rear', label: 'Tyre RHS Rear' },
+      { path: 'images.tyre_lhs_front', label: 'Tyre LHS Front' },
+      { path: 'images.tyre_lhs_rear', label: 'Tyre LHS Rear' },
+      { path: 'images.spare_tyre', label: 'Spare Tyre' }
+    ];
     const structuredInspectionSections = [
       {
         id: 'inspectionBasics',
@@ -1087,6 +1180,11 @@
           { path: 'ratings.exterior', label: 'Exterior Rating', type: 'number', min: 1, max: 5 },
           { path: 'ratings.interior', label: 'Interior Rating', type: 'number', min: 1, max: 5 },
           { path: 'ratings.mechanical', label: 'Mechanical Rating', type: 'number', min: 1, max: 5 },
+          { path: 'ratings.engine', label: 'Engine Rating', type: 'number', min: 1, max: 5 },
+          { path: 'ratings.structure', label: 'Structure Rating', type: 'number', min: 1, max: 5 },
+          { path: 'ratings.test_drive', label: 'Test Drive Rating', type: 'number', min: 1, max: 5 },
+          { path: 'ratings.electrical', label: 'Electrical Rating', type: 'number', min: 1, max: 5 },
+          { path: 'ratings.exteriorBody', label: 'Exterior Body Rating', type: 'number', min: 1, max: 5 },
           { path: 'ratings.tyres', label: 'Tyres Rating', type: 'number', min: 1, max: 5 },
           { path: 'flags.major_accident', label: 'Major Accident' },
           { path: 'flags.minor_accident', label: 'Minor Accident' },
@@ -1096,6 +1194,12 @@
           { path: 'flags.buyer_beware', label: 'Buyer Beware' },
           { path: 'flags.chassis_damaged', label: 'Chassis Damaged' },
           { path: 'flags.engine_issue', label: 'Engine Issue' },
+          { path: 'comments.engine', label: 'Engine Comment', type: 'textarea' },
+          { path: 'comments.structure', label: 'Structure Comment', type: 'textarea' },
+          { path: 'comments.test_drive', label: 'Test Drive Comment', type: 'textarea' },
+          { path: 'comments.exterior', label: 'Exterior Comment', type: 'textarea' },
+          { path: 'comments.interior', label: 'Interior Comment', type: 'textarea' },
+          { path: 'comments.interior_additional', label: 'Additional Interior Comment', type: 'textarea' },
           { path: 'comments.major_comment', label: 'Major Comment', type: 'textarea' },
           { path: 'comments.minor_comment', label: 'Minor Comment', type: 'textarea' },
           { path: 'comments.flood_comment', label: 'Flood Comment', type: 'textarea' },
@@ -1149,16 +1253,35 @@
           { path: 'engine.oil_leak', label: 'Oil Leak' },
           { path: 'engine.coolant_leak', label: 'Coolant Leak' },
           { path: 'engine.engine_mounting', label: 'Engine Mounting' },
+          { path: 'engine.mounting', label: 'Engine Mounting (Detailed)' },
           { path: 'engine.battery_condition', label: 'Battery Condition' },
+          { path: 'engine.hose_pipes', label: 'Hose Pipes' },
+          { path: 'engine.oil_condition', label: 'Oil Condition' },
+          { path: 'engine.wiring', label: 'Wiring' },
+          { path: 'engine.brake_oil_level', label: 'Brake Oil Level' },
+          { path: 'engine.coolant_level', label: 'Coolant Level' },
+          { path: 'engine.belts', label: 'Belts' },
+          { path: 'engine.firewall_rust', label: 'Firewall Rust' },
+          { path: 'engine.estimated_repair_cost', label: 'Engine Estimated Repair Cost' },
           { path: 'engine.radiator_condition', label: 'Radiator Condition' },
           { path: 'engine.alternator_working', label: 'Alternator Working' },
           { path: 'engine.starter_working', label: 'Starter Working' },
+          { path: 'performance.steering', label: 'Steering' },
+          { path: 'performance.alignment', label: 'Alignment' },
+          { path: 'performance.ignition', label: 'Ignition' },
+          { path: 'performance.clutch', label: 'Clutch' },
+          { path: 'performance.brakes', label: 'Brakes' },
+          { path: 'performance.gear_shift', label: 'Gear Shift' },
           { path: 'performance.acceleration', label: 'Acceleration' },
-          { path: 'performance.braking', label: 'Braking' },
-          { path: 'performance.steering_response', label: 'Steering Response' },
           { path: 'performance.suspension', label: 'Suspension' },
-          { path: 'performance.gear_shifting', label: 'Gear Shifting' },
-          { path: 'performance.clutch_operation', label: 'Clutch Operation' },
+          { path: 'performance.cng_mode', label: 'CNG Mode' },
+          { path: 'performance.engine_noise', label: 'Engine Noise' },
+          { path: 'performance.wheel_alignment', label: 'Wheel Alignment' },
+          { path: 'performance.estimated_repair_cost', label: 'Performance Estimated Repair Cost' },
+          { path: 'performance.braking', label: 'Braking (Legacy)' },
+          { path: 'performance.steering_response', label: 'Steering Response (Legacy)' },
+          { path: 'performance.gear_shifting', label: 'Gear Shifting (Legacy)' },
+          { path: 'performance.clutch_operation', label: 'Clutch Operation (Legacy)' },
           { path: 'performance.test_drive_km', label: 'Test Drive Distance' }
         ]
       },
@@ -1183,10 +1306,28 @@
           { path: 'images.vehicle_lhs', label: 'Vehicle LHS Image URL' },
           { path: 'images.vehicle_rear', label: 'Vehicle Rear Image URL' },
           { path: 'images.dashboard', label: 'Dashboard Image URL' },
-          { path: 'images.engine_compartment', label: 'Engine Bay Image URL' }
+          { path: 'images.cluster_meter', label: 'Cluster Meter Image URL' },
+          { path: 'images.driver_cabin', label: 'Driver Cabin Image URL' },
+          { path: 'images.rear_cabin', label: 'Rear Cabin Image URL' },
+          { path: 'images.boot_space', label: 'Boot Space Image URL' },
+          { path: 'images.engine_compartment', label: 'Engine Bay Image URL' },
+          { path: 'images.firewall', label: 'Firewall Image URL' },
+          { path: 'images.battery', label: 'Battery Image URL' },
+          { path: 'images.rhs_apron', label: 'RHS Apron Image URL' },
+          { path: 'images.lhs_apron', label: 'LHS Apron Image URL' },
+          { path: 'images.chassis_plate', label: 'Chassis Plate Image URL' },
+          { path: 'images.cng_plate', label: 'CNG Plate Image URL' },
+          { path: 'images.tyre_rhs_front', label: 'Tyre RHS Front Image URL' },
+          { path: 'images.tyre_rhs_rear', label: 'Tyre RHS Rear Image URL' },
+          { path: 'images.tyre_lhs_front', label: 'Tyre LHS Front Image URL' },
+          { path: 'images.tyre_lhs_rear', label: 'Tyre LHS Rear Image URL' },
+          { path: 'images.spare_tyre', label: 'Spare Tyre Image URL' }
         ]
       }
     ];
+    const structuredInspectionFieldPaths = new Set(
+      structuredInspectionSections.flatMap((section) => section.fields.map((field) => field.path))
+    );
 
     // DOM Elements
     const loginContainer = document.getElementById('loginContainer');
@@ -1405,6 +1546,233 @@
       return `structuredField_${String(path).replace(/[^a-zA-Z0-9]+/g, '__')}`;
     }
 
+    function dynamicFieldId(path) {
+      return `dynamicField_${String(path).replace(/[^a-zA-Z0-9]+/g, '__')}`;
+    }
+
+    function isPlainObject(value) {
+      return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+    }
+
+    function collectDynamicFieldDescriptors(value, basePath = '', acc = []) {
+      if (Array.isArray(value)) {
+        if (basePath && !structuredInspectionFieldPaths.has(basePath)) {
+          acc.push({ path: basePath, value, kind: 'array' });
+        }
+        return acc;
+      }
+
+      if (isPlainObject(value)) {
+        Object.entries(value).forEach(([key, nestedValue]) => {
+          const nextPath = basePath ? `${basePath}.${key}` : key;
+          collectDynamicFieldDescriptors(nestedValue, nextPath, acc);
+        });
+        return acc;
+      }
+
+      if (basePath && !structuredInspectionFieldPaths.has(basePath)) {
+        acc.push({ path: basePath, value, kind: typeof value });
+      }
+      return acc;
+    }
+
+    function inferDynamicInputKind(descriptor) {
+      if (descriptor.kind === 'array') return 'textarea';
+      if (typeof descriptor.value === 'boolean') return 'boolean';
+      if (typeof descriptor.value === 'number') return 'number';
+      if (descriptor.path.toLowerCase().includes('date')) return 'date';
+      if (typeof descriptor.value === 'string' && descriptor.value.length > 120) return 'textarea';
+      return 'text';
+    }
+
+    function renderDynamicInspectionEditor(payload) {
+      const container = document.getElementById('dynamicInspectionAccordion');
+      if (!container) return;
+
+      const descriptors = collectDynamicFieldDescriptors(payload)
+        .sort((left, right) => left.path.localeCompare(right.path));
+
+      if (!descriptors.length) {
+        container.innerHTML = '<div class="text-muted small">No additional payload fields outside the structured editor.</div>';
+        return;
+      }
+
+      const grouped = descriptors.reduce((acc, descriptor) => {
+        const root = descriptor.path.split('.')[0] || 'other';
+        if (!acc[root]) acc[root] = [];
+        acc[root].push(descriptor);
+        return acc;
+      }, {});
+
+      container.innerHTML = Object.entries(grouped).map(([root, fields], index) => `
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="dynamic-heading-${root}">
+            <button class="accordion-button ${index === 0 ? '' : 'collapsed'}" type="button" data-bs-toggle="collapse" data-bs-target="#dynamic-collapse-${root}" aria-expanded="${index === 0 ? 'true' : 'false'}" aria-controls="dynamic-collapse-${root}">
+              ${escapeHtml(root)}
+            </button>
+          </h2>
+          <div id="dynamic-collapse-${root}" class="accordion-collapse collapse ${index === 0 ? 'show' : ''}" aria-labelledby="dynamic-heading-${root}" data-bs-parent="#dynamicInspectionAccordion">
+            <div class="accordion-body">
+              <div class="row g-3">
+                ${fields.map((field) => {
+                  const inputId = dynamicFieldId(field.path);
+                  const inputKind = inferDynamicInputKind(field);
+                  const label = field.path.split('.').slice(1).join(' / ') || field.path;
+                  const rawValue = field.kind === 'array' ? JSON.stringify(field.value || [], null, 2) : field.value;
+                  const safeValue = rawValue === undefined || rawValue === null ? '' : String(rawValue);
+                  if (inputKind === 'textarea') {
+                    return `
+                      <div class="col-12">
+                        <label class="form-label" for="${inputId}">${escapeHtml(label)}</label>
+                        <textarea class="form-control" id="${inputId}" rows="3">${escapeHtml(safeValue)}</textarea>
+                      </div>
+                    `;
+                  }
+                  if (inputKind === 'boolean') {
+                    return `
+                      <div class="col-md-4">
+                        <label class="form-label" for="${inputId}">${escapeHtml(label)}</label>
+                        <select class="form-select" id="${inputId}">
+                          <option value="">Select</option>
+                          <option value="true" ${field.value === true ? 'selected' : ''}>true</option>
+                          <option value="false" ${field.value === false ? 'selected' : ''}>false</option>
+                        </select>
+                      </div>
+                    `;
+                  }
+                  const type = inputKind === 'number' ? 'number' : inputKind === 'date' ? 'date' : 'text';
+                  return `
+                    <div class="col-md-4">
+                      <label class="form-label" for="${inputId}">${escapeHtml(label)}</label>
+                      <input type="${type}" class="form-control" id="${inputId}" value="${escapeHtml(safeValue)}">
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function applyDynamicFieldsToPayload(payload) {
+      const nextPayload = ensureInspectionPayloadShape(payload);
+      collectDynamicFieldDescriptors(nextPayload).forEach((descriptor) => {
+        const input = document.getElementById(dynamicFieldId(descriptor.path));
+        if (!input) return;
+        let value = input.value;
+        const inputKind = inferDynamicInputKind(descriptor);
+        if (inputKind === 'number') {
+          value = value === '' ? '' : Number(value);
+        } else if (inputKind === 'boolean') {
+          value = value === '' ? '' : value === 'true';
+        } else if (descriptor.kind === 'array') {
+          try {
+            value = value.trim() ? JSON.parse(value) : [];
+          } catch (_error) {
+            value = descriptor.value;
+          }
+        }
+        setNestedValue(nextPayload, descriptor.path, value);
+      });
+      return nextPayload;
+    }
+
+    function resolveInspectionImageUrl(value) {
+      if (!value) return '';
+      if (typeof value === 'string') return value;
+      if (typeof value === 'object') {
+        return value.publicUrl || value.url || value.base64 || '';
+      }
+      return '';
+    }
+
+    function renderInspectionImageUploadGrid(payload) {
+      const container = document.getElementById('inspectionImageUploadGrid');
+      if (!container) return;
+      const nextPayload = ensureInspectionPayloadShape(payload);
+
+      container.innerHTML = INSPECTION_IMAGE_SLOTS.map((slot) => {
+        const value = getNestedValue(nextPayload, slot.path);
+        const url = resolveInspectionImageUrl(value);
+        const statusId = `${structuredFieldId(slot.path)}__status`;
+        return `
+          <div class="inspection-image-card">
+            <strong>${escapeHtml(slot.label)}</strong>
+            <div class="inspection-image-preview">
+              ${url
+                ? `<img src="${escapeHtml(url)}" alt="${escapeHtml(slot.label)}">`
+                : '<div class="inspection-image-empty">No image uploaded</div>'}
+            </div>
+            <div class="inspection-image-meta">${url ? escapeHtml(url) : 'Upload a JPG, PNG or WEBP file.'}</div>
+            <input class="form-control form-control-sm mb-2" type="file" accept="image/*" onchange="handleInspectionImageSelection('${slot.path}', this)">
+            <div class="inspection-upload-status" id="${statusId}"></div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function requestInspectionImageUpload(inspectionId, file) {
+      const response = await apiFetch('/admin/inspection-images/presign', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          inspectionId,
+          fileName: file.name,
+          contentType: file.type || 'image/jpeg'
+        })
+      });
+      const data = await response.json();
+      if (!response.ok || !data.ok || !data.uploadUrl) {
+        throw new Error(data.error || 'Failed to create inspection image upload');
+      }
+      return data;
+    }
+
+    window.handleInspectionImageSelection = async function handleInspectionImageSelection(path, input) {
+      const file = input?.files?.[0];
+      if (!file) return;
+
+      const inspectionId = document.getElementById('editInspectionId').value.trim();
+      const statusNode = document.getElementById(`${structuredFieldId(path)}__status`);
+      if (!inspectionId) {
+        alert('Open an inspection before uploading photos.');
+        input.value = '';
+        return;
+      }
+
+      if (statusNode) statusNode.textContent = 'Uploading...';
+
+      try {
+        const upload = await requestInspectionImageUpload(inspectionId, file);
+        const putResponse = await fetch(upload.uploadUrl, {
+          method: 'PUT',
+          headers: { 'Content-Type': file.type || 'image/jpeg' },
+          body: file,
+        });
+
+        if (!putResponse.ok) {
+          throw new Error('Failed to upload image file');
+        }
+
+        let payload = parseInspectionPayloadText();
+        payload = ensureInspectionPayloadShape(payload);
+        setNestedValue(payload, path, upload.publicUrl);
+        writeInspectionPayloadText(payload);
+        populateStructuredFieldsFromPayload(payload);
+        renderDynamicInspectionEditor(payload);
+        renderInspectionImageUploadGrid(payload);
+
+        if (statusNode) statusNode.textContent = 'Uploaded';
+      } catch (error) {
+        console.error('Failed to upload inspection image:', error);
+        if (statusNode) statusNode.textContent = 'Upload failed';
+        alert(error.message || 'Failed to upload inspection image');
+      } finally {
+        input.value = '';
+      }
+    };
+
     function renderStructuredInspectionEditor() {
       const container = document.getElementById('structuredInspectionAccordion');
       if (!container) return;
@@ -1449,6 +1817,7 @@
           input.value = value === undefined || value === null ? '' : value;
         });
       });
+      renderInspectionImageUploadGrid(nextPayload);
     }
 
     function applyStructuredFieldsToPayload(payload) {
@@ -2297,6 +2666,7 @@
         writeInspectionPayloadText(item.data || {});
         populateQuickFieldsFromPayload(item.data || {});
         populateStructuredFieldsFromPayload(item.data || {});
+        renderDynamicInspectionEditor(item.data || {});
         document.getElementById('inspectionModalMeta').textContent = `Created: ${formatDate(item.createdAt)} | Updated: ${formatDate(item.updatedAt)}`;
 
         new bootstrap.Modal(document.getElementById('editInspectionModal')).show();
@@ -2317,8 +2687,9 @@
         throw new Error('Inspection payload must be valid JSON');
       }
 
-      parsedPayload = applyQuickFieldsToPayload(parsedPayload);
-  parsedPayload = applyStructuredFieldsToPayload(parsedPayload);
+        parsedPayload = applyQuickFieldsToPayload(parsedPayload);
+        parsedPayload = applyStructuredFieldsToPayload(parsedPayload);
+        parsedPayload = applyDynamicFieldsToPayload(parsedPayload);
       parsedPayload.inspection.id = inspectionId;
       writeInspectionPayloadText(parsedPayload);
 
@@ -2410,6 +2781,8 @@
       try {
         const payload = applyQuickFieldsToPayload(parseInspectionPayloadText());
         writeInspectionPayloadText(payload);
+        renderDynamicInspectionEditor(payload);
+        renderInspectionImageUploadGrid(payload);
       } catch (error) {
         alert('Inspection payload must be valid JSON before quick edits can be applied.');
       }
@@ -2417,8 +2790,10 @@
 
     document.getElementById('syncStructuredFieldsBtn').addEventListener('click', () => {
       try {
-        const payload = applyStructuredFieldsToPayload(applyQuickFieldsToPayload(parseInspectionPayloadText()));
+        const payload = applyDynamicFieldsToPayload(applyStructuredFieldsToPayload(applyQuickFieldsToPayload(parseInspectionPayloadText())));
         writeInspectionPayloadText(payload);
+        renderDynamicInspectionEditor(payload);
+        renderInspectionImageUploadGrid(payload);
       } catch (error) {
         alert('Inspection payload must be valid JSON before structured edits can be applied.');
       }
@@ -2429,6 +2804,7 @@
         const payload = parseInspectionPayloadText();
         populateQuickFieldsFromPayload(payload);
         populateStructuredFieldsFromPayload(payload);
+        renderDynamicInspectionEditor(payload);
       } catch (error) {
         alert('Inspection payload must be valid JSON before the form can be reloaded.');
       }
@@ -2495,7 +2871,7 @@
       document.getElementById('totalLeads').textContent = leadsData.length;
       document.getElementById('loanLeads').textContent = leadsData.filter((lead) => lead.leadCategory === 'loan').length;
       document.getElementById('insuranceLeads').textContent = leadsData.filter((lead) => lead.leadCategory === 'insurance').length;
-      document.getElementById('ownershipLeads').textContent = leadsData.filter((lead) => ['warranty', 'rto-transfer'].includes(lead.leadCategory)).length;
+      document.getElementById('ownershipLeads').textContent = leadsData.filter((lead) => lead.leadCategory === 'warranty').length;
     }
 
     document.getElementById('leadsSearch').addEventListener('input', (e) => {
@@ -2635,6 +3011,7 @@
     });
 
     renderStructuredInspectionEditor();
+    renderDynamicInspectionEditor({});
 
     // Initialize
     checkSession();
