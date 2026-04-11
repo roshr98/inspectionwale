@@ -34,17 +34,25 @@
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="theme-color" content="#0b2154">
     <link rel="alternate" hreflang="en-IN" href="https://www.inspectionwale.com/">
+    
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.inspectionwale.com/">
     <meta property="og:title" content="Car Inspection in Mumbai, Navi Mumbai, Thane, Kalyan & Dombivli | inspectionWale">
     <meta property="og:description" content="160+ point pre-purchase car inspection in Mumbai, Navi Mumbai, Thane, Kalyan & Dombivli. Same-day reports by certified inspectors. Book your used car inspection online today!">
     <meta property="og:image" content="https://www.inspectionwale.com/Images/brand_logo_new_1.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="en_IN">
     <meta property="og:site_name" content="inspectionWale">
+    
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://www.inspectionwale.com/">
+    <meta name="twitter:title" content="Car Inspection in Mumbai, Navi Mumbai, Thane, Kalyan & Dombivli">
     <meta name="twitter:description" content="160+ point pre-purchase car inspection. Same-day reports by certified inspectors. Serving Mumbai Metropolitan Region.">
     <meta name="twitter:image" content="https://www.inspectionwale.com/Images/brand_logo_new_1.png">
+
     <!-- Favicon -->
     <link href="Images/brand_logo_new_1.png" rel="icon">
     <link href="Images/brand_logo_new_1.png" rel="apple-touch-icon">
@@ -52,6 +60,10 @@
     <!-- Preload Critical Resources -->
     <link rel="preload" href="css/bootstrap.min.css" as="style">
     <link rel="preload" href="css/style.css" as="style">
+    <link rel="preload" href="Images/final_banner.jpg" as="image" type="image/jpeg" fetchpriority="high">
+    
+    <!-- DNS Prefetch -->
+    <link rel="dns-prefetch" href="//code.jquery.com">
     <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="preconnect" href="https://423cmvhw3g.execute-api.us-east-1.amazonaws.com">
@@ -60,36 +72,45 @@
     <!-- Get your Measurement ID from: https://analytics.google.com/analytics/web/#/a{accountId}/admin/streams/table -->
     <script defer src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'G-XXXXXXXXXX', {
-                'send_page_view': true,
-                'page_title': document.title,
-                'page_location': window.location.href
-            });
-
-            window.trackEvent = function(eventName, eventParams) {
-                if (typeof gtag === 'function') {
-                    gtag('event', eventName, eventParams || {});
-                }
-            };
-
-            window.addEventListener('load', function() {
-                const timing = window.performance.timing;
-                const loadTime = timing.loadEventEnd - timing.navigationStart;
-                gtag('event', 'page_performance', {
-                    'load_time_ms': loadTime,
-                    'page_path': window.location.pathname
-                });
-            });
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      
+      // Main configuration
+      gtag('config', 'G-XXXXXXXXXX', {
+        'send_page_view': true,
+        'page_title': document.title,
+        'page_location': window.location.href
+      });
+      
+      // Custom event tracking helper
+      window.trackEvent = function(eventName, eventParams) {
+        if (typeof gtag === 'function') {
+          gtag('event', eventName, eventParams || {});
+        }
+      };
+      
+      // Track page performance
+      window.addEventListener('load', function() {
+        if (window.performance && window.performance.timing) {
+          const timing = window.performance.timing;
+          const loadTime = timing.loadEventEnd - timing.navigationStart;
+          gtag('event', 'page_performance', {
+            'load_time_ms': loadTime,
+            'page_path': window.location.pathname
+          });
+        }
+      });
     </script>
     
     <!-- Content Security Policy - Updated for Google Translate and SEO -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://www.gstatic.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://*.adtrafficquality.google https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google; script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://www.gstatic.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://*.adtrafficquality.google https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://translate.googleapis.com https://www.gstatic.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://423cmvhw3g.execute-api.us-east-1.amazonaws.com https://inspectionWale-car-listings.s3.amazonaws.com https://inspectionWale-car-listings.s3.us-east-1.amazonaws.com https://inspectionWale-car-listings.s3-us-east-1.amazonaws.com https://www.google-analytics.com https://cdn.jsdelivr.net https://translate.googleapis.com https://translate-pa.googleapis.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://*.adtrafficquality.google https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google; frame-src 'self' https://www.google.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://pagead2.googlesyndication.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
 
     <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet"></noscript>
@@ -98,6 +119,9 @@
     <noscript><link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet"></noscript>
 
     <!-- Libraries Stylesheet -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="lib/animate/animate.min.css" rel="stylesheet"></noscript>
+    
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet"></noscript>
 
@@ -118,10 +142,16 @@
       "name": "inspectionWale",
       "description": "Expert pre-purchase car inspection services in Mumbai, Navi Mumbai, Thane & Pune. 160+ point inspection, same-day reports, unbiased evaluation.",
       "image": "https://www.inspectionwale.com/Images/brand_logo_new_1.png",
+      "url": "https://www.inspectionwale.com",
+      "telephone": "+91-8238089600",
+      "email": "inspectionwale@zohomail.in",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Balaji Arcade, Ground Floor Rd, Sapna Industrial Estate, Pimplaphar",
         "addressLocality": "Kalyan",
+        "addressRegion": "Maharashtra",
+        "postalCode": "421311",
+        "addressCountry": "IN"
       },
       "geo": {
         "@type": "GeoCoordinates",
@@ -216,16 +246,15 @@
             scroll-padding-top: 100px;
         }
 
-        /* Homepage typography baseline */
+        /* Montserrat as default font with Arial fallback */
         html, body, h1, h2, h3, h4, h5, h6, p, a, li, span, input, button, select, textarea, label, div {
-            font-family: 'Manrope', 'Roboto', Arial, sans-serif;
+            font-family: 'Montserrat', Arial, sans-serif;
         }
-
+        
         * {
-            font-family: 'Manrope', 'Roboto', Arial, sans-serif;
+            font-family: 'Montserrat', Arial, sans-serif;
         }
         body.home-page {
-            font-family: 'Manrope', 'Roboto', Arial, sans-serif;
             padding-top: 0;
         }
 
@@ -504,53 +533,22 @@
     <!-- Homepage Redesign -->
     <style>
         :root {
-            --home-bg: #ffffff;
-            --home-surface: #ffffff;
-            --home-surface-strong: #ffffff;
-            --home-ink: #1d2939;
-            --home-ink-soft: #5e6b7c;
-            --home-accent: #68768a;
-            --home-accent-dark: #23324a;
-            --home-highlight: #808d9f;
-            --home-icon: #75879d;
-            --home-line: rgba(20, 33, 61, 0.08);
-            --home-shadow: 0 18px 42px rgba(15, 23, 42, 0.06);
+            --home-bg: #f4efe6;
+            --home-surface: rgba(255, 250, 244, 0.82);
+            --home-surface-strong: #fffaf3;
+            --home-ink: #14213d;
+            --home-ink-soft: #46546f;
+            --home-accent: #d86f45;
+            --home-accent-dark: #b95730;
+            --home-highlight: #167c74;
+            --home-icon: #4e8a84;
+            --home-line: rgba(20, 33, 61, 0.12);
+            --home-shadow: 0 24px 60px rgba(27, 39, 59, 0.14);
         }
 
         body.home-page {
-            background: #ffffff;
-            color: #212121;
-            font-size: 14px;
-            line-height: 1.5;
-            font-family: 'Manrope', 'Roboto', Arial, sans-serif;
-        }
-
-        body.home-page h1 {
-            font-size: clamp(2rem, 3.4vw, 2.75rem);
-            font-weight: 800;
-            line-height: 1.12;
-            letter-spacing: -0.04em;
-        }
-
-        body.home-page h2 {
-            font-size: clamp(1.4rem, 2.3vw, 1.75rem);
-            font-weight: 700;
-            letter-spacing: -0.03em;
-        }
-
-        body.home-page h3 {
-            font-size: 18px;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-        }
-
-        body.home-page p,
-        body.home-page .home-section-header p,
-        body.home-page .home-strip-card span,
-        body.home-page .home-service-card p,
-        body.home-page .home-story-card p,
-        body.home-page .home-step p {
-            color: #666666;
+            background: #f8f3eb;
+            color: var(--home-ink);
         }
 
         .top-banner {
@@ -565,7 +563,7 @@
         }
 
         .top-banner.is-scrolled {
-            background: rgba(255, 255, 255, 0.82);
+            background: rgba(248, 243, 235, 0.68);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             box-shadow: 0 10px 24px rgba(17, 27, 49, 0.08);
@@ -611,7 +609,7 @@
 
         .home-nav a {
             color: var(--home-accent-dark);
-            font-size: 14px;
+            font-size: 0.9rem;
             font-weight: 600;
             text-decoration: none;
         }
@@ -636,18 +634,18 @@
             min-height: 36px;
             padding: 0 12px;
             border-radius: 999px;
-            border: 1px solid rgba(17, 24, 39, 0.1);
-            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(185, 87, 48, 0.14);
+            background: transparent;
             color: var(--home-accent-dark);
             text-decoration: none;
-            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+            box-shadow: none;
         }
 
         .banner-icon:hover,
         .banner-contact:hover {
             color: var(--home-accent-dark);
-            border-color: rgba(17, 24, 39, 0.14);
-            background: #ffffff;
+            border-color: rgba(185, 87, 48, 0.22);
+            background: rgba(185, 87, 48, 0.04);
         }
 
         .banner-contact {
@@ -662,24 +660,18 @@
         .home-hero {
             width: 100%;
             margin: 0;
-            padding: 0;
+            padding: 10px 0 14px;
         }
 
         .home-hero-card {
             position: relative;
             overflow: hidden;
-            border-radius: 0;
-            padding: 34px 0 30px;
-            background: #eef3f8;
-            border: none;
-            min-height: 360px;
-        }
-
-        .home-hero-layout {
-            align-items: flex-start;
-            width: min(1240px, calc(100% - 36px));
-            margin: 0 auto;
-            min-height: 320px;
+            border-radius: 0 0 56px 56px;
+            padding: 48px 52px;
+            background:
+                linear-gradient(135deg, rgba(20, 33, 61, 0.95), rgba(17, 27, 49, 0.86)),
+                url('Images/final_banner.jpg') center/cover no-repeat;
+            box-shadow: none;
         }
 
         .home-band {
@@ -697,17 +689,23 @@
             transform: translateX(-50%);
             z-index: -1;
             background: var(--home-band-bg,
-                linear-gradient(180deg, #ffffff 0%, #ffffff 100%));
+                radial-gradient(circle at top left, rgba(216, 111, 69, 0.08), transparent 32%),
+                radial-gradient(circle at top right, rgba(22, 124, 116, 0.08), transparent 24%),
+                linear-gradient(180deg, #f6f1e8 0%, #faf7f1 100%));
         }
 
         .home-band-warm {
             --home-band-bg:
-                linear-gradient(180deg, rgba(243, 246, 249, 0.92) 0%, rgba(247, 249, 252, 0.92) 100%);
+                radial-gradient(circle at top left, rgba(216, 111, 69, 0.1), transparent 34%),
+                radial-gradient(circle at 84% 18%, rgba(22, 124, 116, 0.06), transparent 24%),
+                linear-gradient(180deg, #f5efe6 0%, #faf7f1 100%);
         }
 
         .home-band-light {
             --home-band-bg:
-                linear-gradient(180deg, rgba(243, 246, 249, 0.92) 0%, rgba(247, 249, 252, 0.92) 100%);
+                radial-gradient(circle at 14% 16%, rgba(216, 111, 69, 0.06), transparent 28%),
+                radial-gradient(circle at top right, rgba(22, 124, 116, 0.08), transparent 22%),
+                linear-gradient(180deg, #f7f4ee 0%, #fcfaf6 100%);
         }
 
         .home-hero-card::before {
@@ -715,31 +713,15 @@
             position: absolute;
             inset: 0;
             background:
-                    linear-gradient(90deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.82) 30%, rgba(255, 255, 255, 0.42) 56%, rgba(255, 255, 255, 0.12) 78%, rgba(255, 255, 255, 0.04) 100%),
-                    linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(10, 25, 52, 0.08) 100%);
+                radial-gradient(circle at 18% 22%, rgba(216, 111, 69, 0.42), transparent 28%),
+                radial-gradient(circle at 82% 14%, rgba(22, 124, 116, 0.34), transparent 22%);
             pointer-events: none;
-            z-index: 1;
-        }
-
-        .home-hero-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-                background: url('Images/final_banner.jpg') center center / cover no-repeat;
-                opacity: 1;
-                filter: saturate(1.02) brightness(1.02) contrast(1.02);
-            pointer-events: none;
-            z-index: 0;
         }
 
         .home-hero-card > * {
             position: relative;
-            z-index: 2;
+            z-index: 1;
         }
-
-            .home-hero-copy {
-                max-width: 620px;
-            }
 
         .home-eyebrow {
             display: inline-flex;
@@ -747,39 +729,36 @@
             gap: 8px;
             padding: 8px 14px;
             border-radius: 999px;
-            background: rgba(255, 255, 255, 0.72);
-            color: #526074;
+            background: rgba(255, 255, 255, 0.1);
+            color: #f6e5d6;
             font-size: 0.78rem;
             font-weight: 700;
             letter-spacing: 0.12em;
             text-transform: uppercase;
-            backdrop-filter: blur(8px);
         }
 
         .home-hero-copy h1 {
-            margin: 14px 0 10px;
-            max-width: 520px;
-            color: #1f2937;
-            font-size: clamp(2.2rem, 3.8vw, 3.35rem);
+            margin: 14px 0 16px;
+            max-width: 580px;
+            color: #fff7ef;
+            font-size: clamp(2rem, 4vw, 3.8rem);
             line-height: 1.02;
             font-weight: 800;
-            letter-spacing: -0.05em;
         }
 
         .home-hero-copy p {
-            max-width: 520px;
-            margin-bottom: 20px;
-            color: #506074;
-            font-size: 1.03rem;
-            line-height: 1.78;
-            font-weight: 500;
+            max-width: 560px;
+            margin-bottom: 24px;
+            color: rgba(255, 247, 239, 0.82);
+            font-size: 1.02rem;
+            line-height: 1.75;
         }
 
         .home-hero-actions {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 0;
+            gap: 14px;
+            margin-bottom: 28px;
         }
 
         .home-btn-primary,
@@ -788,91 +767,88 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            min-height: 48px;
-            padding: 0 18px;
-            border-radius: 12px;
-            font-size: 0.94rem;
+            min-height: 52px;
+            padding: 0 22px;
+            border-radius: 999px;
+            font-size: 0.95rem;
             font-weight: 700;
             text-decoration: none;
             transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
         }
 
         .home-btn-primary {
-            border: 1px solid rgba(78, 93, 120, 0.14);
-            background: #5f7088;
+            border: none;
+            background: linear-gradient(135deg, var(--home-accent), #ef9362);
             color: #fff;
-            box-shadow: 0 10px 22px rgba(95, 112, 136, 0.18);
+            box-shadow: 0 16px 35px rgba(216, 111, 69, 0.28);
         }
 
         .home-btn-primary:hover {
             color: #fff;
             transform: translateY(-2px);
-            background: #55657b;
-            box-shadow: 0 14px 26px rgba(95, 112, 136, 0.22);
+            box-shadow: 0 18px 38px rgba(216, 111, 69, 0.34);
         }
 
         .home-btn-secondary {
-            border: 1px solid rgba(17, 24, 39, 0.1);
-            background: #ffffff;
-            color: #24324a;
-            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff7ef;
         }
 
         .home-btn-secondary:hover {
-            color: #1f2937;
-            border-color: rgba(17, 24, 39, 0.14);
-            background: #f8fafc;
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.4);
             transform: translateY(-2px);
         }
 
         .home-hero-metrics {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 12px;
-            max-width: 680px;
+            gap: 14px;
+            max-width: 720px;
         }
 
         .home-metric {
-            padding: 14px 16px;
-            border-radius: 16px;
-            background: rgba(255, 255, 255, 0.54);
+            padding: 18px 20px;
+            border-radius: 0;
+            background: transparent;
             border: none;
-            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.16);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
         }
 
         .home-metric strong {
             display: block;
-            color: #24324a;
-            font-size: 1.35rem;
-            font-weight: 600;
+            color: #fff;
+            font-size: 1.55rem;
+            font-weight: 800;
         }
 
         .home-metric span {
             display: block;
             margin-top: 4px;
-            color: #667085;
-            font-size: 0.84rem;
-            line-height: 1.55;
+            color: rgba(255, 247, 239, 0.75);
+            font-size: 0.88rem;
         }
 
         .hero-contact-card {
-            max-width: 420px;
+            max-width: 520px;
             width: 100%;
             margin-left: auto;
-            padding: 24px 24px;
-            border-radius: 24px;
-            background: rgba(255, 255, 255, 0.68);
-            border: none;
-            box-shadow: 0 18px 36px rgba(17, 27, 49, 0.08);
-            backdrop-filter: blur(16px);
+            padding: 36px 34px;
+            border-radius: 34px;
+            background: rgba(255, 250, 244, 0.88);
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            box-shadow: 0 18px 36px rgba(17, 27, 49, 0.14);
         }
 
         .hero-contact-card h5,
         .hero-mobile-form-card h5 {
             margin-bottom: 14px;
             color: var(--home-ink);
-            font-size: 22px;
-            font-weight: 600;
+            font-size: 1.32rem;
+            font-weight: 800;
         }
 
         .hero-contact-form {
@@ -894,7 +870,7 @@
         .hero-contact-card .form-label {
             color: var(--home-ink-soft);
             font-size: 0.82rem;
-            font-weight: 500;
+            font-weight: 700;
             letter-spacing: 0.04em;
             text-transform: uppercase;
         }
@@ -928,11 +904,11 @@
         .hero-mobile-form-card button {
             min-height: 54px;
             border: none;
-            border-radius: 14px;
-            background: #667892;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--home-highlight), #26a69a);
             color: #fff;
-            font-weight: 500;
-            box-shadow: 0 10px 24px rgba(102, 120, 146, 0.18);
+            font-weight: 700;
+            box-shadow: 0 16px 30px rgba(22, 124, 116, 0.25);
         }
 
         .hero-form-toast {
@@ -958,9 +934,9 @@
         .hero-mobile-form-card {
             padding: 30px 24px;
             border-radius: 30px;
-            background: rgba(255, 255, 255, 0.96);
-            border: 1px solid rgba(20, 33, 61, 0.08);
-            box-shadow: 0 12px 28px rgba(17, 27, 49, 0.08);
+            background: rgba(255, 250, 244, 0.88);
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            box-shadow: 0 16px 32px rgba(17, 27, 49, 0.12);
         }
 
         .hero-mobile-form-card form {
@@ -988,7 +964,7 @@
             margin-bottom: 8px;
             color: var(--home-accent-dark);
             font-size: 0.8rem;
-            font-weight: 600;
+            font-weight: 700;
             letter-spacing: 0.12em;
             text-transform: uppercase;
         }
@@ -996,9 +972,9 @@
         .home-section-header h2 {
             margin: 0;
             color: var(--home-ink);
-            font-size: clamp(1.4rem, 2.3vw, 1.75rem);
-            line-height: 1.2;
-            font-weight: 600;
+            font-size: clamp(1.8rem, 3.2vw, 3rem);
+            line-height: 1.08;
+            font-weight: 800;
         }
 
         .home-section-header p {
@@ -1006,19 +982,6 @@
             max-width: 460px;
             color: rgba(70, 84, 111, 0.8);
             line-height: 1.7;
-        }
-
-        #marketplace {
-            padding: 30px 0 38px !important;
-        }
-
-        #marketplace .container {
-            padding: 34px 28px 36px;
-            border-radius: 28px;
-            background: rgba(246, 248, 251, 0.76);
-            border: none;
-            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.03);
-            backdrop-filter: blur(10px);
         }
 
         .home-strip {
@@ -1072,7 +1035,7 @@
             display: block;
             font-size: 1.08rem;
             color: var(--home-ink);
-            font-weight: 600;
+            font-weight: 800;
         }
 
         .home-strip-card span {
@@ -1126,7 +1089,7 @@
             margin: 10px 0 6px;
             color: var(--home-ink);
             font-size: 1.08rem;
-            font-weight: 500;
+            font-weight: 800;
         }
 
         .home-service-card h3,
@@ -1204,11 +1167,10 @@
             display: flex;
             align-items: flex-start;
             gap: 12px;
-            padding: 12px 14px;
-            border-radius: 18px;
-            background: rgba(255, 255, 255, 0.42);
-            border-bottom: none;
-            backdrop-filter: blur(8px);
+            padding: 10px 0;
+            border-radius: 0;
+            background: transparent;
+            border-bottom: 1px solid rgba(20, 33, 61, 0.08);
         }
 
         .home-story-list div:last-child {
@@ -1245,11 +1207,9 @@
             justify-items: flex-start;
             gap: 10px;
             padding: 16px 14px;
-            border: none;
+            border: 1px solid rgba(20, 33, 61, 0.08);
             background: rgba(255, 255, 255, 0.44);
-            backdrop-filter: blur(8px);
             min-height: 100%;
-            border-radius: 18px;
         }
 
         .home-story-icon-item i {
@@ -1270,7 +1230,6 @@
             font-size: 0.95rem;
             line-height: 1.35;
             min-height: 2.6rem;
-            font-weight: 500;
         }
 
         .home-story-icon-item span {
@@ -1292,7 +1251,7 @@
         .home-story-card ul li {
             position: relative;
             padding: 10px 0 10px 18px;
-            border-bottom: none;
+            border-bottom: 1px solid rgba(20, 33, 61, 0.08);
         }
 
         .home-story-card ul li:last-child {
@@ -1329,14 +1288,14 @@
             background: rgba(78, 138, 132, 0.12);
             color: var(--home-icon);
             font-size: 0.95rem;
-            font-weight: 700;
+            font-weight: 800;
         }
 
         .home-step h3 {
             margin: 0 0 10px;
             color: var(--home-ink);
             font-size: 1.08rem;
-            font-weight: 500;
+            font-weight: 800;
         }
 
         .home-step p {
@@ -1351,20 +1310,16 @@
             align-items: center;
             justify-content: space-between;
             gap: 18px;
-            background: rgba(246, 248, 251, 0.72);
-            border-top: none;
-            border-bottom: none;
-            border-radius: 24px;
-            padding-left: 18px;
-            padding-right: 18px;
-            backdrop-filter: blur(10px);
+            background: transparent;
+            border-top: 1px solid rgba(20, 33, 61, 0.08);
+            border-bottom: 1px solid rgba(20, 33, 61, 0.08);
         }
 
         .home-cta-band h3 {
             margin: 0 0 6px;
             color: var(--home-ink);
-            font-size: 22px;
-            font-weight: 600;
+            font-size: 1.5rem;
+            font-weight: 800;
         }
 
         .home-cta-band p {
@@ -1384,28 +1339,8 @@
                 display: none;
             }
 
-            .home-hero-card::after {
-                display: block;
-            }
-
             .home-hero-card {
-                 padding: 26px 0 22px;
-                 background: #eef3f8;
-            }
-
-            .home-hero-layout {
-                width: min(100% - 20px, 1000px);
-                min-height: auto;
-            }
-
-            .home-hero-card::after {
-                background-position: center 54%;
-            }
-
-            .home-hero-card::before {
-                background:
-                        linear-gradient(180deg, rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0.72) 36%, rgba(255, 255, 255, 0.22) 100%),
-                        linear-gradient(180deg, rgba(10, 25, 52, 0.04) 0%, rgba(10, 25, 52, 0.16) 100%);
+                padding: 34px 24px;
             }
 
             .home-band::before {
@@ -1495,26 +1430,8 @@
             }
 
             .home-hero-card {
-                border-radius: 0;
-                padding: 18px 0 14px;
-                background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-                min-height: auto;
-            }
-
-            .home-hero-layout {
-                width: min(100% - 16px, 720px);
-            }
-
-            .home-hero-card::after {
-                background-position: center center;
-                background-size: cover;
-                opacity: 0.9;
-            }
-
-            .home-hero-card::before {
-                background:
-                    linear-gradient(180deg, rgba(247, 249, 252, 0.96) 0%, rgba(247, 249, 252, 0.9) 46%, rgba(247, 249, 252, 0.84) 100%),
-                    radial-gradient(circle at 18% 18%, rgba(102, 120, 146, 0.06), transparent 28%);
+                border-radius: 0 0 28px 28px;
+                padding: 28px 18px 24px;
             }
 
             .home-eyebrow {
@@ -1522,8 +1439,8 @@
             }
 
             .hero-mobile-form-card {
-                border-radius: 20px;
-                padding: 18px 16px;
+                border-radius: 24px;
+                padding: 24px 18px;
             }
 
             .hero-mobile-form-card h5 {
@@ -1536,27 +1453,27 @@
             }
 
             .home-section {
-                padding: 18px 0;
+                padding: 24px 0;
             }
 
             .home-section-header {
-                gap: 10px;
-                margin-bottom: 16px;
+                gap: 12px;
+                margin-bottom: 20px;
             }
 
             .home-section-header h2 {
-                font-size: clamp(1.4rem, 5.8vw, 1.8rem);
+                font-size: clamp(2rem, 8vw, 2.6rem);
             }
 
             .home-section-header p {
                 max-width: none;
-                font-size: 0.95rem;
-                line-height: 1.65;
+                font-size: 1rem;
+                line-height: 1.75;
             }
 
             .home-hero-copy h1 {
-                font-size: clamp(1.8rem, 7vw, 2.15rem);
-                line-height: 1.06;
+                font-size: clamp(2.2rem, 10vw, 3.2rem);
+                line-height: 1.08;
             }
 
             .hero-contact-grid {
@@ -1564,24 +1481,24 @@
             }
 
             .home-hero-copy p {
-                font-size: 0.98rem;
-                line-height: 1.7;
+                font-size: 1rem;
+                line-height: 1.75;
             }
 
             .home-hero-metrics {
-                gap: 10px;
+                gap: 12px;
             }
 
             .home-metric {
-                padding: 12px 14px;
+                padding: 16px 0;
             }
 
             .home-metric strong {
-                font-size: 1.3rem;
+                font-size: 1.7rem;
             }
 
             .home-metric span {
-                font-size: 0.84rem;
+                font-size: 0.96rem;
             }
 
             .home-story-card > p {
@@ -1630,7 +1547,7 @@
             .home-service-card h3,
             .home-story-card h3,
             .home-step h3 {
-                font-size: 1.02rem;
+                font-size: 1.15rem;
             }
 
             .home-strip-card span,
@@ -1639,41 +1556,37 @@
             .home-step p,
             .home-service-card ul,
             .home-story-card ul {
-                font-size: 0.92rem;
-                line-height: 1.62;
+                font-size: 0.98rem;
+                line-height: 1.7;
             }
 
             .home-btn-primary,
             .home-btn-secondary {
                 width: 100%;
-                min-height: 46px;
-                font-size: 0.92rem;
-            }
-
-            #marketplace {
-                padding: 22px 0 24px !important;
+                min-height: 54px;
+                font-size: 1rem;
             }
         }
 
         @media (max-width: 575.98px) {
             .home-hero-copy h1 {
-                font-size: clamp(1.48rem, 8vw, 1.8rem);
+                font-size: clamp(2rem, 11vw, 2.6rem);
             }
 
             .popular-car-card {
-                flex: 0 0 calc((100vw - 76px) / 3);
+                flex: 0 0 calc(100vw - 56px);
             }
 
             .car-image-wrapper {
-                height: auto;
+                height: 196px;
             }
 
             .car-info {
-                padding: 5px 6px;
+                padding: 14px;
             }
 
             .car-name {
-                font-size: 9px;
+                font-size: 1.05rem;
             }
 
             .car-card-footer {
@@ -1695,7 +1608,7 @@
             </a>
 
             <nav class="home-nav" aria-label="Primary navigation">
-                <a href="#process">Services</a>
+                <a href="#services">Services</a>
                 <a href="#process">How It Works</a>
                 <a href="#marketplace">Featured Cars</a>
                 <a href="#reviews">Reviews</a>
@@ -1723,10 +1636,11 @@
     <main class="home-shell">
         <section class="home-hero">
             <div class="home-hero-card">
-                <div class="row g-4 home-hero-layout">
-                    <div class="col-lg-12 home-hero-copy">
+                <div class="row g-4 align-items-center">
+                    <div class="col-lg-6 home-hero-copy">
                         <span class="home-eyebrow">Mumbai • Navi Mumbai • Thane • Kalyan</span>
-                        <h1>Safety starts with inspection.</h1>
+                        <h1>Make every car decision with a clean inspection trail.</h1>
+                        <p>Independent pre-purchase inspections, new car delivery checks, verified used car leads, and pricing guidance built for buyers who do not want surprises after payment.</p>
                         <div class="home-hero-actions">
                             <button type="button" class="home-btn-primary" data-bs-toggle="modal" data-bs-target="#usedCarInspectionModal">
                                 <i class="fas fa-search"></i>
@@ -1737,12 +1651,76 @@
                                 <span>Browse Featured Cars</span>
                             </a>
                         </div>
+                        <div class="home-hero-metrics">
+                            <div class="home-metric">
+                                <strong>160+</strong>
+                                <span>checkpoints across engine, body, electricals and road test</span>
+                            </div>
+                            <div class="home-metric">
+                                <strong>Same day</strong>
+                                <span>reporting for faster negotiation and decision support</span>
+                            </div>
+                            <div class="home-metric">
+                                <strong>Buyer-first</strong>
+                                <span>independent observations instead of dealer-led summaries</span>
+                            </div>
+                        </div>
                     </div>
+
+                    <div class="col-lg-6 d-none d-lg-block">
+                        <div class="hero-contact-card">
+                            <h5>Check Your Car Value</h5>
+                            <form class="hero-contact-form" id="heroContactForm" novalidate data-car-value-form="desktop" data-toast-id="heroFormToastDesktop">
+                                <input type="hidden" name="formSource" value="hero-desktop">
+                                <div class="hero-contact-grid">
+                                    <div>
+                                        <label class="form-label" for="heroName">Name</label>
+                                        <input type="text" id="heroName" name="name" class="form-control" placeholder="Enter your name" required>
+                                    </div>
+                                    <div>
+                                        <label class="form-label" for="heroEmail">Email</label>
+                                        <input type="email" id="heroEmail" name="email" class="form-control" placeholder="Enter your email" required>
+                                    </div>
+                                    <div class="hero-field-full">
+                                        <label class="form-label" for="heroMobile">Mobile</label>
+                                        <input type="tel" id="heroMobile" name="mobile" class="form-control" placeholder="Mobile number" inputmode="tel" required pattern="[0-9+\-() ]{8,15}">
+                                    </div>
+                                    <div class="hero-field-full">
+                                        <label class="form-label" for="heroMessage">Vehicle details</label>
+                                        <textarea id="heroMessage" name="message" class="form-control" rows="3" placeholder="Make, model, year, variant, asking price..." required></textarea>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn w-100 hero-submit-btn">Get Value Estimate</button>
+                                <div id="heroFormToastDesktop" class="hero-form-toast" role="status" aria-live="polite">
+                                    <i class="fas fa-check-circle" aria-hidden="true"></i>
+                                    <span>Captured! We will call you shortly.</span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-mobile-panel d-lg-none">
+                <div class="hero-mobile-form-card">
+                    <h5>Check Your Car Value</h5>
+                    <form id="mobileHeroForm" novalidate data-car-value-form="mobile" data-toast-id="heroFormToastMobile">
+                        <input type="hidden" name="formSource" value="hero-mobile">
+                        <input type="text" name="name" placeholder="Enter your name" required>
+                        <input type="email" name="email" placeholder="Enter your email" required>
+                        <input type="tel" name="mobile" placeholder="Mobile number" inputmode="tel" required pattern="[0-9+\-() ]{8,15}">
+                        <textarea name="message" placeholder="Make, model, year, asking price" required></textarea>
+                        <button type="submit">Get Value Estimate</button>
+                        <div id="heroFormToastMobile" class="hero-form-toast" role="status" aria-live="polite">
+                            <i class="fas fa-check-circle" aria-hidden="true"></i>
+                            <span>Captured! We will call you shortly.</span>
+                        </div>
+                    </form>
                 </div>
             </div>
         </section>
 
-        <section class="home-strip home-band" aria-label="Key stats">
+        <section class="home-strip home-band home-band-warm" aria-label="Key stats">
             <div class="home-strip-grid">
                 <article class="home-strip-card">
                     <div class="home-strip-icon"><i class="fas fa-clipboard-check"></i></div>
@@ -1797,32 +1775,43 @@
 
     <!-- Buy Used Cars Section -->
     <section class="py-5 home-band home-band-warm" id="marketplace">
-        <div class="container marketplace-stage">
-            <div class="inspection-checks-strip-wrapper">
-                <div class="inspection-checks-strip">
-                    <table class="checks-table">
-                        <tr>
-                            <td><i class="fas fa-cogs"></i>Engine</td>
-                            <td><i class="fas fa-car-crash"></i>Structure</td>
-                            <td><i class="fas fa-exclamation-triangle"></i>Accidental Check</td>
-                            <td><i class="fas fa-water"></i>Flood Damage</td>
-                            <td><i class="fas fa-fire"></i>Fire Damage</td>
-                            <td><i class="fas fa-paint-roller"></i>Paint Check</td>
-                        </tr>
-                        <tr>
-                            <td><i class="fas fa-car-side"></i>Exterior</td>
-                            <td><i class="fas fa-couch"></i>Interior</td>
-                            <td><i class="fas fa-bolt"></i>Electrical Checks</td>
-                            <td><i class="fas fa-shield-alt"></i>Exterior Condition</td>
-                            <td><i class="fas fa-road"></i>Road Test upto 5 KMs</td>
-                            <td></td>
-                        </tr>
-                    </table>
+        <div class="container">
+            <div class="partner-leads-section">
+                <div class="partner-leads-grid">
+                    <button type="button" class="partner-lead-card" data-partner-service="loan" data-partner-service-source="homepage" data-partner-service-copy="Compare EMI-fit finance options once the car and budget look right.">
+                        <span class="partner-lead-card__icon partner-lead-card__icon--loan"><i class="fas fa-hand-holding-usd"></i></span>
+                        <span class="partner-lead-card__body">
+                            <strong>Car Loan</strong>
+                            <span>Compare EMI-fit finance options once the car and budget look right.</span>
+                        </span>
+                    </button>
+                    <button type="button" class="partner-lead-card" data-partner-service="insurance" data-partner-service-source="homepage" data-partner-service-copy="Renew expiring policies or request quotes that match the inspected vehicle.">
+                        <span class="partner-lead-card__icon partner-lead-card__icon--insurance"><i class="fas fa-shield-alt"></i></span>
+                        <span class="partner-lead-card__body">
+                            <strong>Insurance</strong>
+                            <span>Renew expiring policies or request quotes that match the inspected vehicle.</span>
+                        </span>
+                    </button>
+                    <button type="button" class="partner-lead-card" data-partner-service="warranty" data-partner-service-source="homepage" data-partner-service-copy="Keep major repair risk covered for used cars with longer ownership plans.">
+                        <span class="partner-lead-card__icon partner-lead-card__icon--warranty"><i class="fas fa-certificate"></i></span>
+                        <span class="partner-lead-card__body">
+                            <strong>Extended Warranty</strong>
+                            <span>Keep major repair risk covered for used cars with longer ownership plans.</span>
+                        </span>
+                    </button>
+                    <button type="button" class="partner-lead-card" data-partner-service="rto-transfer" data-partner-service-source="homepage" data-partner-service-copy="Track ownership paperwork, RC transfer and compliance tasks after the deal closes.">
+                        <span class="partner-lead-card__icon partner-lead-card__icon--rto-transfer"><i class="fas fa-exchange-alt"></i></span>
+                        <span class="partner-lead-card__body">
+                            <strong>RTO Transfer</strong>
+                            <span>Track ownership paperwork, RC transfer and compliance tasks after the deal closes.</span>
+                        </span>
+                    </button>
                 </div>
             </div>
             <div class="d-flex align-items-center justify-content-between mb-3 home-marketplace-header">
                 <div>
-                    <span style="display:block; margin-bottom:2px; color:#667085; font-size:0.76rem; font-weight:600; letter-spacing:0.14em; text-transform:uppercase;">Featured Cars</span>
+                    <span style="display:block; margin-bottom:6px; color:#b95730; font-size:0.8rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;">Featured Cars</span>
+                    <h2 class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #0B2154; font-weight: 700;">Verified used cars ready for the next step</h2>
                 </div>
                 <button type="button" class="btn sell-car-btn home-marketplace-sell" data-bs-toggle="modal" data-bs-target="#listCarModal">
                     Sell Your Car <span class="sell-car-dot">•</span>
@@ -1891,254 +1880,133 @@
                     View More <i class="fas fa-chevron-right ms-2"></i>
                 </a>
             </div>
-
-            <div class="partner-leads-section">
-                <div class="partner-leads-grid">
-                    <button type="button" class="partner-lead-card" data-partner-service="loan" data-partner-service-source="homepage" data-partner-service-copy="Compare EMI-fit finance options once the car and budget look right.">
-                        <span class="partner-lead-card__icon partner-lead-card__icon--loan"><i class="fas fa-hand-holding-usd"></i></span>
-                        <span class="partner-lead-card__body">
-                            <strong>Car Loan</strong>
-                            <span>Compare EMI-fit finance options once the car and budget look right.</span>
-                        </span>
-                    </button>
-                    <button type="button" class="partner-lead-card" data-partner-service="insurance" data-partner-service-source="homepage" data-partner-service-copy="Renew expiring policies or request quotes that match the inspected vehicle.">
-                        <span class="partner-lead-card__icon partner-lead-card__icon--insurance"><i class="fas fa-shield-alt"></i></span>
-                        <span class="partner-lead-card__body">
-                            <strong>Insurance</strong>
-                            <span>Renew expiring policies or request quotes that match the inspected vehicle.</span>
-                        </span>
-                    </button>
-                    <button type="button" class="partner-lead-card" data-partner-service="warranty" data-partner-service-source="homepage" data-partner-service-copy="Keep major repair risk covered for used cars with longer ownership plans.">
-                        <span class="partner-lead-card__icon partner-lead-card__icon--warranty"><i class="fas fa-certificate"></i></span>
-                        <span class="partner-lead-card__body">
-                            <strong>Extended Warranty</strong>
-                            <span>Keep major repair risk covered for used cars with longer ownership plans.</span>
-                        </span>
-                    </button>
-                </div>
-            </div>
         </div>
     </section>
 
-    <style>
-        /* Info Tabs — How It Works / Services / Report */
-        .info-tabs-nav {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 28px;
-            flex-wrap: nowrap;
-        }
-        .info-tab-btn {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            gap: 8px;
-            padding: 18px 12px;
-            border: 1.5px solid rgba(17,24,39,0.09);
-            background: #fff;
-            color: #5e6b7c;
-            font-family: 'Manrope','Roboto',Arial,sans-serif;
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            border-radius: 16px;
-            transition: all 0.22s ease;
-            box-shadow: 0 2px 8px rgba(15,23,42,0.04);
-        }
-        .info-tab-btn:hover {
-            border-color: rgba(18,144,131,0.35);
-            color: #1d2939;
-            box-shadow: 0 6px 18px rgba(15,23,42,0.07);
-        }
-        .info-tab-btn.active {
-            border-color: #129083;
-            color: #1d2939;
-            font-weight: 600;
-            box-shadow: 0 6px 20px rgba(18,144,131,0.14);
-        }
-        .info-tab-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: rgba(78,138,132,0.1);
-            color: #75879d;
-            font-size: 1.15rem;
-            transition: all 0.22s ease;
-        }
-        .info-tab-btn.active .info-tab-icon {
-            background: rgba(18,144,131,0.16);
-            color: #129083;
-        }
-        .info-tab-label {
-            text-align: center;
-            line-height: 1.3;
-            font-size: 0.88rem;
-        }
-        .info-tab-panel { display: none; }
-        .info-tab-panel.active {
-            display: block;
-            animation: fadeTabIn 0.28s ease;
-        }
-        @keyframes fadeTabIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-        @media (max-width: 575.98px) {
-            .info-tabs-nav { gap: 8px; }
-            .info-tab-btn { font-size: 0.78rem; padding: 12px 8px; }
-            .info-tab-icon { width: 36px; height: 36px; font-size: 0.95rem; }
-        }
-    </style>
-    <script>
-        function switchInfoTab(btn, panelId) {
-            document.querySelectorAll('.info-tab-btn').forEach(function(b) { b.classList.remove('active'); });
-            document.querySelectorAll('.info-tab-panel').forEach(function(p) { p.classList.remove('active'); });
-            btn.classList.add('active');
-            document.getElementById(panelId).classList.add('active');
-        }
-    <\/script>
-
     <section class="home-section home-band home-band-light" id="process">
-        <div class="info-tabs-nav" role="tablist">
-            <button class="info-tab-btn active" onclick="switchInfoTab(this,'tab-process')" role="tab">
-                <span class="info-tab-icon"><i class="fas fa-route"></i></span>
-                <span class="info-tab-label">How It Works</span>
-            </button>
-            <button class="info-tab-btn" onclick="switchInfoTab(this,'tab-services')" role="tab">
-                <span class="info-tab-icon"><i class="fas fa-tools"></i></span>
-                <span class="info-tab-label">Our Services</span>
-            </button>
-            <button class="info-tab-btn" onclick="switchInfoTab(this,'tab-report')" role="tab">
-                <span class="info-tab-icon"><i class="fas fa-clipboard-list"></i></span>
-                <span class="info-tab-label">Inspection Report</span>
-            </button>
+        <div class="home-section-header">
+            <div>
+                <span>How It Works</span>
+                <h2>A short path from inquiry to report.</h2>
+            </div>
+            <p>This keeps the user journey simple: book, inspect, receive findings, then decide whether to buy, renegotiate, reserve, or walk away.</p>
         </div>
 
-        <div id="tab-process" class="info-tab-panel active" role="tabpanel">
-            <div class="home-section-header">
-                <div>
-                    <span>How It Works</span>
-                    <h2>A short path from inquiry to report.</h2>
-                </div>
-                <p>Book, inspect, receive findings, then decide whether to buy, renegotiate, reserve, or walk away.</p>
-            </div>
-            <div class="home-steps-grid">
-                <article class="home-step">
-                    <span class="home-step-number">01</span>
-                    <h3>Share car details</h3>
-                    <p>Tell us the make, model, registration year, seller context, and whether it is a used-car purchase or new-car delivery check.</p>
-                </article>
-                <article class="home-step">
-                    <span class="home-step-number">02</span>
-                    <h3>Schedule the inspection</h3>
-                    <p>Pick the inspection type and submit through the live booking flow already wired into the page.</p>
-                </article>
-                <article class="home-step">
-                    <span class="home-step-number">03</span>
-                    <h3>Receive findings fast</h3>
-                    <p>Get photos, issue notes, and actionable insight quickly enough to support a live negotiation or delivery decision.</p>
-                </article>
-                <article class="home-step">
-                    <span class="home-step-number">04</span>
-                    <h3>Act with confidence</h3>
-                    <p>Proceed, negotiate, reserve, or reject the deal based on condition instead of pressure or guesswork.</p>
-                </article>
+        <div class="home-steps-grid">
+            <article class="home-step">
+                <span class="home-step-number">01</span>
+                <h3>Share car details</h3>
+                <p>Tell us the make, model, registration year, seller context, and whether it is a used-car purchase or new-car delivery check.</p>
+            </article>
+            <article class="home-step">
+                <span class="home-step-number">02</span>
+                <h3>Schedule the inspection</h3>
+                <p>Pick the inspection type and submit through the live booking flow already wired into the page.</p>
+            </article>
+            <article class="home-step">
+                <span class="home-step-number">03</span>
+                <h3>Receive findings fast</h3>
+                <p>Get photos, issue notes, and actionable insight quickly enough to support a live negotiation or delivery decision.</p>
+            </article>
+            <article class="home-step">
+                <span class="home-step-number">04</span>
+                <h3>Act with confidence</h3>
+                <p>Proceed, negotiate, reserve, or reject the deal based on condition instead of pressure or guesswork.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="home-section home-band home-band-warm" id="services">
+        <div class="home-section-header">
+            <div>
+                <span>Services</span>
+                <h2>Inspection-first services for buyers, sellers, and cautious deliveries.</h2>
             </div>
         </div>
 
-        <div id="tab-services" class="info-tab-panel" role="tabpanel">
-            <div class="home-section-header">
-                <div>
-                    <span>Services</span>
-                    <h2>Inspection-first services for buyers, sellers, and cautious deliveries.</h2>
-                </div>
-            </div>
-            <div class="home-services-grid">
-                <article class="home-service-card">
-                    <i class="fas fa-car-crash"></i>
-                    <h3>Used Car Inspection</h3>
-                    <p>Independent inspection before purchase with usable findings for negotiation.</p>
-                    <ul>
-                        <li>Body, paint and accident checks</li>
-                        <li>Engine, suspension and road test review</li>
-                        <li>Same-day summary for negotiation</li>
-                    </ul>
-                </article>
-                <article class="home-service-card">
-                    <i class="fas fa-shield-alt"></i>
-                    <h3>New Car Delivery Check</h3>
-                    <p>Pre-delivery validation before you accept a showroom handover.</p>
-                    <ul>
-                        <li>Transit damage and repaint detection</li>
-                        <li>Feature verification and software checks</li>
-                        <li>Dealer handover confidence</li>
-                    </ul>
-                </article>
-                <article class="home-service-card">
-                    <i class="fas fa-store"></i>
-                    <h3>Verified Used Car Access</h3>
-                    <p>Browse, reserve, or list cars through the verified marketplace flow.</p>
-                    <ul>
-                        <li>Customer listing submission flow</li>
-                        <li>Reserve and test-drive requests</li>
-                        <li>Condition-led discovery</li>
-                    </ul>
-                </article>
-            </div>
-        </div>
+        <div class="home-services-grid">
+            <article class="home-service-card">
+                <i class="fas fa-car-crash"></i>
+                <h3>Used Car Inspection</h3>
+                <p>Independent inspection before purchase with usable findings for negotiation.</p>
+                <ul>
+                    <li>Body, paint and accident checks</li>
+                    <li>Engine, suspension and road test review</li>
+                    <li>Same-day summary for negotiation</li>
+                </ul>
+            </article>
 
-        <div id="tab-report" class="info-tab-panel" role="tabpanel">
-            <div class="home-story-grid">
-                <article class="home-story-card">
-                    <i class="fas fa-clipboard-check"></i>
-                    <h3>What gets reported</h3>
-                    <p>Reports focus on the decisions that matter before you commit to the car.</p>
-                    <div class="home-story-icon-grid">
-                        <div class="home-story-icon-item">
-                            <i class="fas fa-search"></i>
-                            <strong>Condition snapshot</strong>
-                            <span>Panels, paint, structure, interior, electronics and road behavior.</span>
-                        </div>
-                        <div class="home-story-icon-item">
-                            <i class="fas fa-tools"></i>
-                            <strong>Repair risk</strong>
-                            <span>Visible damage, hidden fixes, and issues likely to cost money next.</span>
-                        </div>
-                        <div class="home-story-icon-item">
-                            <i class="fas fa-comments-dollar"></i>
-                            <strong>Negotiation edge</strong>
-                            <span>Use documented findings to push back on inflated asking prices.</span>
-                        </div>
+            <article class="home-service-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>New Car Delivery Check</h3>
+                <p>Pre-delivery validation before you accept a showroom handover.</p>
+                <ul>
+                    <li>Transit damage and repaint detection</li>
+                    <li>Feature verification and software checks</li>
+                    <li>Dealer handover confidence</li>
+                </ul>
+            </article>
+
+            <article class="home-service-card">
+                <i class="fas fa-store"></i>
+                <h3>Verified Used Car Access</h3>
+                <p>Browse, reserve, or list cars through the verified marketplace flow.</p>
+                <ul>
+                    <li>Customer listing submission flow</li>
+                    <li>Reserve and test-drive requests</li>
+                    <li>Condition-led discovery</li>
+                </ul>
+            </article>
+        </div>
+    </section>
+
+    <section class="home-section home-band home-band-light">
+        <div class="home-story-grid">
+            <article class="home-story-card">
+                <i class="fas fa-clipboard-check"></i>
+                <h3>What gets reported</h3>
+                <p>Reports focus on the decisions that matter before you commit to the car.</p>
+                <div class="home-story-icon-grid">
+                    <div class="home-story-icon-item">
+                        <i class="fas fa-search"></i>
+                        <strong>Condition snapshot</strong>
+                        <span>Panels, paint, structure, interior, electronics and road behavior.</span>
                     </div>
-                </article>
-                <article class="home-story-card">
-                    <i class="fas fa-bolt"></i>
-                    <h3>Why buyers use inspectionWale</h3>
-                    <p>Independent inspection replaces seller claims with evidence you can act on immediately.</p>
-                    <div class="home-story-icon-grid">
-                        <div class="home-story-icon-item">
-                            <i class="fas fa-car-side"></i>
-                            <strong>Delivery check</strong>
-                            <span>Catch transit or showroom issues before handover.</span>
-                        </div>
-                        <div class="home-story-icon-item">
-                            <i class="fas fa-shield-alt"></i>
-                            <strong>History flags</strong>
-                            <span>Spot repaint, accident, flood signs or missing features.</span>
-                        </div>
-                        <div class="home-story-icon-item">
-                            <i class="fas fa-bolt"></i>
-                            <strong>Decide faster</strong>
-                            <span>Move on a good car without guesswork.</span>
-                        </div>
+                    <div class="home-story-icon-item">
+                        <i class="fas fa-tools"></i>
+                        <strong>Repair risk</strong>
+                        <span>Visible damage, hidden fixes, and issues likely to cost money next.</span>
                     </div>
-                </article>
-            </div>
+                    <div class="home-story-icon-item">
+                        <i class="fas fa-comments-dollar"></i>
+                        <strong>Negotiation edge</strong>
+                        <span>Use documented findings to push back on inflated asking prices.</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="home-story-card">
+                <i class="fas fa-bolt"></i>
+                <h3>Why buyers use inspectionWale</h3>
+                <p>Independent inspection replaces seller claims with evidence you can act on immediately.</p>
+                <div class="home-story-icon-grid">
+                    <div class="home-story-icon-item">
+                        <i class="fas fa-car-side"></i>
+                        <strong>Delivery check</strong>
+                        <span>Catch transit or showroom issues before handover.</span>
+                    </div>
+                    <div class="home-story-icon-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <strong>History flags</strong>
+                        <span>Spot repaint, accident, flood signs or missing features.</span>
+                    </div>
+                    <div class="home-story-icon-item">
+                        <i class="fas fa-bolt"></i>
+                        <strong>Decide faster</strong>
+                        <span>Move on a good car without guesswork.</span>
+                    </div>
+                </div>
+            </article>
         </div>
     </section>
 
@@ -2148,33 +2016,30 @@
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
-            padding: 0;
-            border-bottom: none;
+            padding: 8px 0;
+            border-bottom: 2px solid #e0e0e0;
         }
         .price-filter-tab {
-            background: #f4f1ec;
-            border: 1px solid transparent;
-            color: #5b6473;
-            padding: 10px 16px;
-            font-size: 13px;
+            background: transparent;
+            border: none;
+            color: #666;
+            padding: 10px 20px;
+            font-size: 0.95rem;
             font-weight: 500;
             cursor: pointer;
-            border-radius: 999px;
+            border-bottom: 3px solid transparent;
             transition: all 0.3s ease;
             white-space: nowrap;
-            font-family: 'Manrope', 'Roboto', Arial, sans-serif;
+            font-family: 'Montserrat', sans-serif;
         }
         .price-filter-tab:hover {
-            color: #1f2d44;
-            background: #ffffff;
-            border-color: rgba(17, 24, 39, 0.1);
+            color: #26a69a;
+            background: rgba(38, 166, 154, 0.05);
         }
         .price-filter-tab.active {
-            color: #1f2d44;
-            background: #ffffff;
-            border-color: rgba(17, 24, 39, 0.1);
+            color: #26a69a;
+            border-bottom-color: #26a69a;
             font-weight: 600;
-            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
         }
         /* Note: removed transform-based auto-scroll to avoid white/blank space while scrolling */
         @media (max-width: 767px) {
@@ -2207,92 +2072,6 @@
         .popular-cars-track::-webkit-scrollbar {
             display: none;
         }
-
-        /* Inspection Checks Strip */
-        .marketplace-stage {
-            position: relative;
-            padding-top: 72px;
-        }
-        .inspection-checks-strip {
-            background: #ffffff;
-            padding: 0;
-            position: relative;
-            margin: 0 auto;
-            max-width: 1140px;
-            border-radius: 14px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.07);
-            overflow: hidden;
-        }
-        .inspection-checks-strip-wrapper {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 10;
-            padding: 0 40px;
-            transform: translateY(-78%);
-        }
-        .checks-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .checks-table td {
-            padding: 14px 12px;
-            text-align: center;
-            font-family: 'Manrope', 'Roboto', sans-serif;
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: #374151;
-            white-space: nowrap;
-            border: 1px solid #f0f0f0;
-            background: #ffffff;
-        }
-        .checks-table td i {
-            font-size: 0.95rem;
-            color: #0b2154;
-            margin-right: 8px;
-        }
-        @media (max-width: 991px) {
-            .marketplace-stage {
-                padding-top: 64px;
-            }
-            .inspection-checks-strip-wrapper {
-                padding: 0 20px;
-                transform: translateY(-68%);
-            }
-            .inspection-checks-strip {
-                border-radius: 10px;
-            }
-            .checks-table td {
-                font-size: 0.74rem;
-                padding: 10px 8px;
-            }
-            .checks-table td i {
-                font-size: 0.85rem;
-                margin-right: 6px;
-            }
-        }
-        @media (max-width: 575px) {
-            .marketplace-stage {
-                padding-top: 54px;
-            }
-            .inspection-checks-strip-wrapper {
-                padding: 0 12px;
-                transform: translateY(-52%);
-            }
-            .inspection-checks-strip {
-                border-radius: 8px;
-            }
-            .checks-table td {
-                font-size: 0.65rem;
-                padding: 8px 4px;
-            }
-            .checks-table td i {
-                font-size: 0.75rem;
-                margin-right: 4px;
-            }
-        }
-
         .popular-cars-slider {
             --popular-card-gap: 18px;
         }
@@ -2302,13 +2081,14 @@
         .popular-car-card {
             position: relative;
             display: block;
-            flex: 0 0 calc((100% - (var(--popular-card-gap) * 4)) / 5);
+            flex: 0 0 calc((100% - (var(--popular-card-gap) * 3)) / 4);
             min-width: 0;
-            background: #000;
-            border-radius: 0;
+            aspect-ratio: 1 / 1;
+            background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+            border-radius: 24px;
             overflow: hidden;
-            box-shadow: none;
-            border: none;
+            box-shadow: 0 12px 28px rgba(17, 27, 49, 0.08);
+            border: 1px solid rgba(20, 33, 61, 0.08);
             transition: box-shadow 0.2s, transform 0.2s;
             text-decoration: none;
         }
@@ -2317,40 +2097,54 @@
             min-height: 0;
         }
         .popular-car-card:hover {
-            box-shadow: 0 18px 38px rgba(17, 27, 49, 0.1);
-            transform: translateY(-3px);
+            box-shadow: 0 16px 30px rgba(17, 27, 49, 0.12);
+            transform: translateY(-4px);
         }
         .car-image-wrapper {
-            position: relative;
-            inset: auto;
+            position: absolute;
+            inset: 0;
             height: auto;
-            aspect-ratio: 1 / 1;
+            position: relative;
             overflow: hidden;
-            border-radius: 0;
-            background: #f5f3ef;
+            border-radius: 24px;
+            background: #d7e0ee;
         }
         .car-image-wrapper::after {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 50%;
-            background: linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 50%, transparent 100%);
+            inset: 0;
+            background: linear-gradient(180deg, rgba(7, 14, 30, 0) 42%, rgba(7, 14, 30, 0.14) 68%, rgba(7, 14, 30, 0.8) 100%);
             pointer-events: none;
-            z-index: 1;
-            border-radius: 0;
         }
         .popular-car-seller-badge {
-            display: none !important;
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 24px;
+            padding: 0 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.92);
+            color: #0e7b71;
+            border: 1px solid rgba(18, 144, 131, 0.24);
+            font-size: 0.58rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
         }
         .popular-car-seller-badge.dealer {
-            display: none !important;
+            color: #8b5a20;
+            border-color: rgba(190, 128, 58, 0.24);
+            background: rgba(255, 247, 237, 0.94);
         }
         .shimmer-block {
             width: 100%;
             height: 100%;
-            border-radius: 8px 8px 0 0;
+            border-radius: 24px;
             background: linear-gradient(90deg, #f0f0f0 25%, #f7f7f7 50%, #f0f0f0 75%);
             background-size: 200% 100%;
             animation: shimmer 1.2s linear infinite;
@@ -2366,14 +2160,11 @@
         }
         .car-info {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 2;
-            padding: 8px 10px;
+            inset: auto 0 0;
+            z-index: 1;
+            padding: 8px 10px 9px;
             display: grid;
-            gap: 1px;
-            background: transparent;
+            gap: 0;
             pointer-events: none;
         }
         .skeleton-line {
@@ -2393,19 +2184,19 @@
             display: block;
         }
         .car-name {
-            font-family: 'Manrope', 'Roboto', Arial, sans-serif;
-            font-size: 13px;
-            font-weight: 800;
-            color: #1a1a1a;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.92rem;
+                        font-weight: 700;
+            color: #fff5e8;
             margin: 0;
-            display: -webkit-box;
-            line-clamp: 1;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
+                        display: -webkit-box;
+                        line-clamp: 2;
+                        -webkit-line-clamp: 2;
+                        -webkit-box-orient: vertical;
             overflow: hidden;
-            min-height: 0;
-            line-height: 1.25;
-            text-shadow: none;
+                        min-height: 2.05em;
+                        line-height: 1.14;
+            text-shadow: 0 10px 24px rgba(0, 0, 0, 0.32);
         }
         .car-year-badge {
             display: none;
@@ -2424,16 +2215,13 @@
             padding: 0;
             border-radius: 0;
             background: transparent;
-            color: #0b2154;
-            font-size: 13px;
+            color: #ffd95c;
+            font-size: 0.77rem;
             font-weight: 700;
             margin: 0;
             box-shadow: none;
-            line-height: 1.2;
-            text-shadow: none;
-        }
-        .car-specs-brief {
-            display: none;
+            line-height: 1.05;
+            text-shadow: 0 10px 24px rgba(0, 0, 0, 0.34);
         }
         .car-price .car-kms {
             display: none;
@@ -2442,10 +2230,7 @@
             display: none;
         }
         .car-card-footer {
-            display: grid;
-            gap: 0;
-            padding-top: 0;
-            border-top: none;
+            display: block;
         }
         .check-price-link {
             display: none;
@@ -2490,50 +2275,28 @@
         /* Sell Your Car Button - Green */
         .sell-car-btn {
             background: #fff;
-            border: 1px solid rgba(17, 24, 39, 0.12);
-            color: #1f2d44;
-            padding: 10px 18px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 14px;
-            transition: all 0.25s ease;
-            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
+            border: 2px solid #26a69a;
+            color: #26a69a;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
         }
         .sell-car-btn:hover {
-            background: #1f2d44;
+            background: #26a69a;
             color: #fff;
-            border-color: #1f2d44;
         }
 
         .home-marketplace-header {
             gap: 16px;
             flex-wrap: wrap;
-            align-items: flex-start !important;
-        }
-
-        .home-marketplace-header > div {
-            display: grid;
-            gap: 8px;
-        }
-
-        .home-marketplace-copy {
-            margin: 0;
-            max-width: 560px;
-            color: #667085;
-            font-size: 14px;
-            line-height: 1.65;
         }
 
         .home-marketplace-sell {
             flex: 0 0 auto;
             margin-left: auto;
         }
-
-            #marketplace .partner-leads-section {
-                margin-top: 28px;
-                padding: 8px 0 0;
-            }
-
         .sell-car-dot {
             color: #D81324;
             font-size: 1.2rem;
@@ -2541,25 +2304,24 @@
         }
         /* View More Button - Green */
         .view-more-btn {
-            background: #5f7088;
+            background: #26a69a;
             color: #fff;
-            padding: 12px 22px;
-            border-radius: 12px;
+            padding: 12px 30px;
+            border-radius: 30px;
             font-weight: 500;
-            font-size: 14px;
+            font-size: 0.9rem;
             transition: all 0.3s ease;
             text-decoration: none;
-            box-shadow: 0 10px 22px rgba(95, 112, 136, 0.16);
         }
         .view-more-btn:hover {
-            background: #55657b;
+            background: #1e8e82;
             color: #fff;
             transform: translateY(-2px);
-            box-shadow: 0 14px 26px rgba(95, 112, 136, 0.2);
+            box-shadow: 0 4px 12px rgba(38, 166, 154, 0.3);
         }
         @media (max-width: 1199.98px) {
             .popular-car-card {
-                flex: 0 0 calc((100% - (var(--popular-card-gap) * 3)) / 4);
+                flex: 0 0 calc((100% - (var(--popular-card-gap) * 2)) / 3);
             }
         }
         @media (max-width: 991.98px) {
@@ -2584,43 +2346,49 @@
             }
 
             .popular-car-card {
-                flex: 0 0 calc((100% - (var(--popular-card-gap) * 2)) / 3);
-                border-radius: 0;
+                flex: 0 0 calc((100% - var(--popular-card-gap)) / 2);
+                border-radius: 18px;
             }
             .popular-car-card.loading-card {
                 min-height: 0;
             }
             .car-image-wrapper {
-                border-radius: 0;
+                border-radius: 18px;
             }
-            .car-image-wrapper::after {
-                border-radius: 0;
+            .popular-car-seller-badge {
+                top: 8px;
+                right: 8px;
+                min-height: 18px;
+                padding: 0 6px;
+                font-size: 0.43rem;
             }
             .car-image-wrapper img {
                 object-fit: cover;
                 padding: 0;
             }
             .car-info {
-                padding: 7px 8px;
-                gap: 1px;
+                padding: 7px 8px 8px;
+                gap: 0;
             }
             .car-title-row {
                 gap: 0;
             }
             .car-name {
-                font-size: 10px;
-                min-height: 0;
-                -webkit-line-clamp: 1;
-                line-clamp: 1;
+                font-size: 0.65rem;
+                min-height: 1.95em;
+                display: -webkit-box;
+                line-clamp: 2;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
                 white-space: normal;
-                line-height: 1.25;
+                line-height: 1.12;
             }
             .car-year-badge,
             .car-meta {
                 display: none;
             }
             .car-price {
-                font-size: 10px;
+                font-size: 0.56rem;
             }
             .popular-cars-nav-next {
                 right: 5px;
@@ -2631,37 +2399,25 @@
         }
         @media (max-width: 575.98px) {
             .popular-car-card {
-                flex: 0 0 calc((100% - (var(--popular-card-gap) * 2)) / 3);
-                border-radius: 0;
+                flex: 0 0 calc((100% - var(--popular-card-gap)) / 2);
             }
 
             .car-image-wrapper {
                 height: auto;
-                border-radius: 0;
-            }
-
-            .car-image-wrapper::after {
-                border-radius: 0;
             }
 
             .car-info {
-                padding: 5px 6px;
-                gap: 0;
+                padding: 6px 7px 7px;
             }
 
             .car-name {
-                font-size: 9px;
-                min-height: 0;
-                line-height: 1.2;
+                font-size: 0.62rem;
+                min-height: 1.9em;
+                line-height: 1.1;
             }
 
             .car-price {
-                font-size: 9px;
-            }
-
-            #marketplace .container {
-                padding: 20px 12px 24px;
-                border-radius: 16px;
+                font-size: 0.53rem;
             }
         }
     </style>
@@ -3037,7 +2793,6 @@
         function buildPopularCarCard(listing, index = 0) {
             const title = buildPopularListingTitle(listing);
             const price = formatListingPrice(listing?.car?.expectedPrice ?? listing.expectedPrice);
-            const specs = buildPopularListingSpecs(listing);
             const photo = resolveListingPhoto(listing);
             const listingId = listing?.listingId;
             const ctaUrl = listingId ? `${MARKETPLACE_ENTRY}?listingId=${encodeURIComponent(listingId)}` : MARKETPLACE_ENTRY;
@@ -3056,19 +2811,9 @@
                         </div>
                         <div class="car-card-footer">
                             <p class="car-price">${price}</p>
-                            <p class="car-specs-brief">${specs}</p>
                         </div>
                     </div>
                 </a>`;
-        }
-
-        function buildPopularListingSpecs(listing) {
-            const car = listing?.car || {};
-            const year = car.registrationYear || car.year || listing?.registrationYear || listing?.year || '';
-            const fuel = car.fuelType || listing?.fuelType || '';
-            const kms = formatListingKms(car.kmsDriven ?? listing?.kmsDriven);
-            const parts = [year, fuel, kms].filter(Boolean);
-            return parts.length ? parts.join(' • ') : 'Verified used car';
         }
 
         function buildPopularListingTitle(listing) {
@@ -3197,16 +2942,6 @@
 
             syncBannerState();
             window.addEventListener('scroll', syncBannerState, { passive: true });
-        })();
-
-        (function placeHomepageMarketplaceAfterHero() {
-            const homeShell = document.querySelector('.home-shell');
-            const heroSection = homeShell?.querySelector('.home-hero');
-            const marketplaceSection = document.getElementById('marketplace');
-            if (!homeShell || !heroSection || !marketplaceSection) return;
-            if (heroSection.nextElementSibling !== marketplaceSection) {
-                heroSection.insertAdjacentElement('afterend', marketplaceSection);
-            }
         })();
     </script>
 
@@ -3977,7 +3712,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content iw-sleek-modal-shell" style="border-radius: 16px; overflow: hidden;">
                 <div class="modal-header" style="background: #528FF0; border: none; padding: 20px 24px;">
-                    <h5 class="modal-title text-white" id="usedCarInspectionLabel" style="font-family: 'Manrope', 'Roboto', Arial, sans-serif; font-size: 1.25rem; font-weight: 700;">Book an Inspection</h5>
+                    <h5 class="modal-title text-white" id="usedCarInspectionLabel" style="font-family: 'Montserrat', sans-serif; font-size: 1.5rem; font-weight: 700;">Book an Inspection</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4" style="background: linear-gradient(180deg, #f5f5f5 0%, #e8e8e8 100%);">
@@ -4035,7 +3770,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content iw-sleek-modal-shell" style="border-radius: 16px; overflow: hidden;">
                 <div class="modal-header" style="background: #528FF0; border: none; padding: 20px 24px;">
-                    <h5 class="modal-title text-white" id="newCarInspectionLabel" style="font-family: 'Manrope', 'Roboto', Arial, sans-serif; font-size: 1.25rem; font-weight: 700;">Book an Inspection</h5>
+                    <h5 class="modal-title text-white" id="newCarInspectionLabel" style="font-family: 'Montserrat', sans-serif; font-size: 1.5rem; font-weight: 700;">Book an Inspection</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4" style="background: linear-gradient(180deg, #f5f5f5 0%, #e8e8e8 100%);">
@@ -4092,7 +3827,7 @@
     <section class="py-4" id="reviews" style="background: linear-gradient(180deg, #1a2a3a 0%, #2d4a5e 30%, #4a6a7a 60%, #6a8a9a 100%);">
         <div class="container">
             <div class="text-center mb-4">
-                <h2 class="text-white mb-2" style="font-family: 'Manrope', 'Roboto', Arial, sans-serif; font-weight: 700; font-size: clamp(1.45rem, 2.4vw, 1.85rem); letter-spacing: -0.03em;">
+                <h2 class="text-white mb-2" style="font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: clamp(1.7rem, 2.8vw, 2.4rem);">
                     What Our <span style="color: #D81324;">Customers</span> Say
                 </h2>
                 <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
@@ -4177,7 +3912,7 @@
     <section class="iw-monetization-zone home-band home-band-light" id="homeMonetizationZone" aria-label="Recommended automotive offers"></section>
 
     <!-- Footer Start -->
-    <div class="container-fluid text-light footer pt-4 pb-3" style="background: #0B2154; font-family: 'Manrope', 'Roboto', Arial, sans-serif;">
+    <div class="container-fluid text-light footer pt-4 pb-3" style="background: #0B2154; font-family: 'Montserrat', sans-serif;">
         <div class="container">
             <!-- Top Row: Language and Links -->
             <div class="row align-items-center py-3 border-bottom" style="border-color: rgba(255,255,255,0.15) !important;">
