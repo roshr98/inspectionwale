@@ -640,35 +640,8 @@
             padding-top: 0;
         }
 
-        .marketplace-page,
-        .marketplace-page * {
+        .marketplace-page {
             font-family: 'Montserrat', Arial, sans-serif;
-        }
-
-        .marketplace-page .fa,
-        .marketplace-page .fas,
-        .marketplace-page .far,
-        .marketplace-page .fal,
-        .marketplace-page .fab,
-        .marketplace-page [class^="fa-"],
-        .marketplace-page [class*=" fa-"] {
-            font-family: "Font Awesome 5 Free" !important;
-        }
-
-        .marketplace-page .fab,
-        .marketplace-page .fa-facebook-f,
-        .marketplace-page .fa-twitter,
-        .marketplace-page .fa-youtube,
-        .marketplace-page .fa-linkedin-in,
-        .marketplace-page .fa-instagram,
-        .marketplace-page .fa-google {
-            font-family: "Font Awesome 5 Brands" !important;
-        }
-
-        .marketplace-page .bi,
-        .marketplace-page [class^="bi-"],
-        .marketplace-page [class*=" bi-"] {
-            font-family: "bootstrap-icons" !important;
         }
 
         .marketplace-page .top-banner {
@@ -2468,35 +2441,13 @@
         }
 
         /* ── 2. GLOBAL ────────────────────────────────────────── */
-        html, body, *, *::before, *::after {
+        html, body {
             font-family: 'Inter', 'Montserrat', Arial, sans-serif !important;
         }
         body.marketplace-page {
             background: var(--mp2-bg) !important;
             color: var(--mp2-text) !important;
             padding-top: 0 !important;
-        }
-        /* Font-awesome icon families stay untouched */
-        .marketplace-page .fa,
-        .marketplace-page .fas,
-        .marketplace-page .far,
-        .marketplace-page .fab,
-        .marketplace-page [class^="fa-"],
-        .marketplace-page [class*=" fa-"] {
-            font-family: "Font Awesome 5 Free" !important;
-        }
-        .marketplace-page .fab,
-        .marketplace-page .fa-facebook-f,
-        .marketplace-page .fa-twitter,
-        .marketplace-page .fa-youtube,
-        .marketplace-page .fa-instagram,
-        .marketplace-page .fa-google {
-            font-family: "Font Awesome 5 Brands" !important;
-        }
-        .marketplace-page .bi,
-        .marketplace-page [class^="bi-"],
-        .marketplace-page [class*=" bi-"] {
-            font-family: "bootstrap-icons" !important;
         }
 
         /* ── 3. STICKY NAV (same as homepage for consistency) ── */
@@ -3279,19 +3230,10 @@
         ══════════════════════════════════════════════════════════ */
 
         /* ── Global reset for marketplace ── */
-        html, body.marketplace-page, body.marketplace-page *, body.marketplace-page *::before, body.marketplace-page *::after {
+        html, body.marketplace-page {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif !important;
-            box-sizing: border-box;
         }
-        body.marketplace-page .fa, body.marketplace-page .fas, body.marketplace-page .far,
-        body.marketplace-page .fab, body.marketplace-page [class^="fa-"], body.marketplace-page [class*=" fa-"] {
-            font-family: "Font Awesome 5 Free" !important;
-        }
-        body.marketplace-page .fab, body.marketplace-page .fa-facebook-f,
-        body.marketplace-page .fa-twitter, body.marketplace-page .fa-youtube,
-        body.marketplace-page .fa-linkedin-in, body.marketplace-page .fa-instagram,
-        body.marketplace-page .fa-google { font-family: "Font Awesome 5 Brands" !important; }
-        body.marketplace-page .bi, body.marketplace-page [class^="bi-"], body.marketplace-page [class*=" bi-"] { font-family: "bootstrap-icons" !important; }
+        body.marketplace-page * { box-sizing: border-box; }
 
         body.marketplace-page {
             background: #f5f7fa !important;
@@ -3635,7 +3577,47 @@
         }
 
         /* Sidebar service cards */
-        .cw-sidebar-services { padding: 16px 18px; border-top: 2px solid #e4e8f0; }
+        .cw-sidebar-services { padding: 12px 18px 14px; border-top: 1px solid #e4e8f0; }
+        .cw-services-compact-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .cw-svc-compact {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 8px;
+            background: #f4f7ff;
+            border: 1px solid #d0dcf5;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background .15s, border-color .15s, transform .15s;
+            text-align: center;
+        }
+        .cw-svc-compact:hover {
+            background: #e4edff;
+            border-color: #1a4da6;
+            transform: translateY(-2px);
+        }
+        .cw-svc-compact-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(0,47,108,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #002f6c;
+            font-size: 0.85rem;
+        }
+        .cw-svc-compact-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #1a1f36;
+            line-height: 1.2;
+        }
         .cw-service-card {
             display: flex;
             align-items: center;
@@ -4368,23 +4350,17 @@
 
                 <!-- Partner Services -->
                 <div class="cw-sidebar-services">
-                    <div class="cw-filter-group-head mb-3"><i class="fas fa-star"></i> Related Services</div>
-                    <button type="button" class="cw-service-card partner-lead-card" data-partner-service="loan" data-partner-service-source="marketplace" data-partner-service-copy="Compare EMI-fit finance options once the car and budget look right.">
-                        <span class="cw-service-icon partner-lead-card__icon partner-lead-card__icon--loan"><i class="fas fa-hand-holding-usd"></i></span>
-                        <span class="partner-lead-card__body"><strong>Car Loan</strong><br><small>Compare finance options</small></span>
-                    </button>
-                    <button type="button" class="cw-service-card partner-lead-card" data-partner-service="insurance" data-partner-service-source="marketplace" data-partner-service-copy="Renew expiring policies or request quotes that match the inspected vehicle.">
-                        <span class="cw-service-icon partner-lead-card__icon partner-lead-card__icon--insurance"><i class="fas fa-shield-alt"></i></span>
-                        <span class="partner-lead-card__body"><strong>Insurance</strong><br><small>Get quotes instantly</small></span>
-                    </button>
-                    <button type="button" class="cw-service-card partner-lead-card" data-partner-service="warranty" data-partner-service-source="marketplace" data-partner-service-copy="Keep major repair risk covered for used cars with longer ownership plans.">
-                        <span class="cw-service-icon partner-lead-card__icon partner-lead-card__icon--warranty"><i class="fas fa-certificate"></i></span>
-                        <span class="partner-lead-card__body"><strong>Extended Warranty</strong><br><small>Extended coverage plans</small></span>
-                    </button>
-                    <button type="button" class="cw-service-card partner-lead-card" data-partner-service="rto-transfer" data-partner-service-source="marketplace" data-partner-service-copy="Track ownership paperwork, RC transfer and compliance tasks after the deal closes.">
-                        <span class="cw-service-icon partner-lead-card__icon partner-lead-card__icon--rto-transfer"><i class="fas fa-exchange-alt"></i></span>
-                        <span class="partner-lead-card__body"><strong>RTO Transfer</strong><br><small>Ownership paperwork</small></span>
-                    </button>
+                    <div class="cw-filter-group-head mb-2"><i class="fas fa-bolt"></i> Related Services</div>
+                    <div class="cw-services-compact-row">
+                        <button type="button" class="cw-svc-compact" data-partner-service="loan" data-partner-service-source="marketplace" data-partner-service-copy="Compare EMI-fit finance options once the car and budget look right.">
+                            <span class="cw-svc-compact-icon"><i class="fas fa-hand-holding-usd"></i></span>
+                            <span class="cw-svc-compact-label">Car Loan</span>
+                        </button>
+                        <button type="button" class="cw-svc-compact" data-partner-service="insurance" data-partner-service-source="marketplace" data-partner-service-copy="Renew expiring policies or request quotes that match the inspected vehicle.">
+                            <span class="cw-svc-compact-icon"><i class="fas fa-shield-alt"></i></span>
+                            <span class="cw-svc-compact-label">Insurance</span>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Hidden partner-leads-grid for JS compatibility -->
@@ -4392,8 +4368,6 @@
                     <div class="partner-leads-grid">
                         <button type="button" class="partner-lead-card" data-partner-service="loan" data-partner-service-source="marketplace" data-partner-service-copy="Compare EMI-fit finance options once the car and budget look right."><span class="partner-lead-card__icon partner-lead-card__icon--loan"><i class="fas fa-hand-holding-usd"></i></span><span class="partner-lead-card__body"><strong>Car Loan</strong><span>Compare EMI-fit finance options.</span></span></button>
                         <button type="button" class="partner-lead-card" data-partner-service="insurance" data-partner-service-source="marketplace" data-partner-service-copy="Renew expiring policies or request quotes that match the inspected vehicle."><span class="partner-lead-card__icon partner-lead-card__icon--insurance"><i class="fas fa-shield-alt"></i></span><span class="partner-lead-card__body"><strong>Insurance</strong><span>Renew or get new quotes.</span></span></button>
-                        <button type="button" class="partner-lead-card" data-partner-service="warranty" data-partner-service-source="marketplace" data-partner-service-copy="Keep major repair risk covered for used cars with longer ownership plans."><span class="partner-lead-card__icon partner-lead-card__icon--warranty"><i class="fas fa-certificate"></i></span><span class="partner-lead-card__body"><strong>Extended Warranty</strong><span>Cover major repair risk.</span></span></button>
-                        <button type="button" class="partner-lead-card" data-partner-service="rto-transfer" data-partner-service-source="marketplace" data-partner-service-copy="Track ownership paperwork, RC transfer and compliance tasks after the deal closes."><span class="partner-lead-card__icon partner-lead-card__icon--rto-transfer"><i class="fas fa-exchange-alt"></i></span><span class="partner-lead-card__body"><strong>RTO Transfer</strong><span>Ownership paperwork.</span></span></button>
                     </div>
                 </div>
 
@@ -5131,20 +5105,6 @@
                                         <span class="partner-lead-card__body">
                                             <strong>Insurance</strong>
                                             <span>Renew expiring policies or request quotes that match the inspected vehicle.</span>
-                                        </span>
-                                    </button>
-                                    <button type="button" class="partner-lead-card" data-partner-service="warranty" data-partner-service-source="marketplace-detail" data-partner-service-context-target="#carDetailModalTitle" data-partner-service-copy="Keep major repair risk covered for used cars with longer ownership plans.">
-                                        <span class="partner-lead-card__icon partner-lead-card__icon--warranty"><i class="fas fa-certificate"></i></span>
-                                        <span class="partner-lead-card__body">
-                                            <strong>Extended Warranty</strong>
-                                            <span>Keep major repair risk covered for used cars with longer ownership plans.</span>
-                                        </span>
-                                    </button>
-                                    <button type="button" class="partner-lead-card" data-partner-service="rto-transfer" data-partner-service-source="marketplace-detail" data-partner-service-context-target="#carDetailModalTitle" data-partner-service-copy="Track ownership paperwork, RC transfer and compliance tasks after the deal closes.">
-                                        <span class="partner-lead-card__icon partner-lead-card__icon--rto-transfer"><i class="fas fa-exchange-alt"></i></span>
-                                        <span class="partner-lead-card__body">
-                                            <strong>RTO Transfer</strong>
-                                            <span>Track ownership paperwork, RC transfer and compliance tasks after the deal closes.</span>
                                         </span>
                                     </button>
                                 </div>
