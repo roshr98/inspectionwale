@@ -2431,8 +2431,8 @@
     </style>
 
     <!-- ═══════════════════════════════════════════════════════════
-         INSPECTIONWALE MARKETPLACE — CARDEKHO / OLX INSPIRED REDESIGN
-         Clean white card grid, prominent filters, inventory feel.
+         INSPECTIONWALE MARKETPLACE — CARWALE-STYLE REDESIGN
+         Left sidebar filters · Horizontal car cards · Square edges
          All backend API calls and modal interactions unchanged.
     ═══════════════════════════════════════════════════════════ -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2440,8 +2440,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <style>
-        /* ── 1. MP DESIGN TOKENS ──────────────────────────────── */
+        /* ══════════════════════════════════════════════════════════
+           CARWALE-STYLE COMPLETE REDESIGN
+           Tokens · Navbar · Hero · Categories · Sidebar · Cards
+        ══════════════════════════════════════════════════════════ */
+
+        /* ── 0. TOKENS ──────────────────────────────────────────── */
         :root {
+            /* Keep original mp2 vars for modal compat */
             --mp2-blue:      #002f6c;
             --mp2-blue-mid:  #1a4da6;
             --mp2-blue-lt:   #e8f0fe;
@@ -3267,6 +3273,895 @@
                 align-items: flex-start !important;
             }
         }
+
+        /* ══════════════════════════════════════════════════════════
+           CARWALE COMPLETE REDESIGN STYLES
+        ══════════════════════════════════════════════════════════ */
+
+        /* ── Global reset for marketplace ── */
+        html, body.marketplace-page, body.marketplace-page *, body.marketplace-page *::before, body.marketplace-page *::after {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif !important;
+            box-sizing: border-box;
+        }
+        body.marketplace-page .fa, body.marketplace-page .fas, body.marketplace-page .far,
+        body.marketplace-page .fab, body.marketplace-page [class^="fa-"], body.marketplace-page [class*=" fa-"] {
+            font-family: "Font Awesome 5 Free" !important;
+        }
+        body.marketplace-page .fab, body.marketplace-page .fa-facebook-f,
+        body.marketplace-page .fa-twitter, body.marketplace-page .fa-youtube,
+        body.marketplace-page .fa-linkedin-in, body.marketplace-page .fa-instagram,
+        body.marketplace-page .fa-google { font-family: "Font Awesome 5 Brands" !important; }
+        body.marketplace-page .bi, body.marketplace-page [class^="bi-"], body.marketplace-page [class*=" bi-"] { font-family: "bootstrap-icons" !important; }
+
+        body.marketplace-page {
+            background: #f5f7fa !important;
+            color: #1a1f36 !important;
+            margin: 0; padding: 0 !important;
+        }
+
+        /* ── NAVBAR ────────────────────────────────────────────── */
+        .cw-navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1050;
+            background: #002f6c;
+            box-shadow: 0 2px 10px rgba(0,47,108,.22);
+        }
+        .cw-navbar-inner {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .cw-logo { flex: 0 0 auto; display: inline-flex; align-items: center; }
+        .cw-logo img { height: 38px; width: auto; filter: brightness(0) invert(1); }
+
+        /* Nav search */
+        .cw-nav-search {
+            flex: 1;
+            max-width: 580px;
+            display: flex;
+            align-items: center;
+            background: rgba(255,255,255,.12);
+            border: 1.5px solid rgba(255,255,255,.2);
+            border-radius: 6px;
+            overflow: hidden;
+            transition: background .2s, border-color .2s;
+        }
+        .cw-nav-search:focus-within {
+            background: rgba(255,255,255,.18);
+            border-color: rgba(255,255,255,.4);
+        }
+        .cw-nav-search-icon {
+            padding: 0 12px;
+            color: rgba(255,255,255,.65);
+            font-size: .9rem;
+        }
+        .cw-nav-search input {
+            flex: 1;
+            border: none !important;
+            background: transparent !important;
+            color: #fff !important;
+            font-size: .92rem !important;
+            padding: 10px 4px !important;
+            min-height: auto !important;
+            box-shadow: none !important;
+            outline: none;
+        }
+        .cw-nav-search input::placeholder { color: rgba(255,255,255,.55) !important; }
+        .cw-nav-search-btn {
+            border: none;
+            background: #e8520a;
+            color: #fff;
+            padding: 0 20px;
+            height: 44px;
+            font-size: .85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background .18s;
+            white-space: nowrap;
+        }
+        .cw-nav-search-btn:hover { background: #c94308; }
+
+        /* Nav actions */
+        .cw-nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: auto;
+        }
+        .cw-nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0 16px;
+            height: 38px;
+            border-radius: 6px;
+            font-size: .85rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all .18s;
+        }
+        .cw-nav-btn-outline {
+            border: 1.5px solid rgba(255,255,255,.35) !important;
+            background: transparent;
+            color: #fff;
+        }
+        .cw-nav-btn-outline:hover { background: rgba(255,255,255,.12); color: #fff; border-color: rgba(255,255,255,.6) !important; }
+        .cw-nav-icon-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 6px;
+            background: rgba(255,255,255,.1);
+            border: 1.5px solid rgba(255,255,255,.18);
+            color: #fff;
+            font-size: .9rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background .18s;
+        }
+        .cw-nav-icon-btn:hover { background: rgba(255,255,255,.2); color: #fff; }
+
+        /* ── HERO BANNER ───────────────────────────────────────── */
+        .cw-hero {
+            background: linear-gradient(135deg, #001e50 0%, #002f6c 50%, #1a4da6 100%);
+            padding: 36px 0 40px;
+        }
+        .cw-hero-inner {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        .cw-hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 14px;
+            border-radius: 4px;
+            background: rgba(232,82,10,.2);
+            border: 1px solid rgba(232,82,10,.4);
+            color: #ffb380;
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        .cw-hero h1 {
+            color: #fff !important;
+            font-size: clamp(1.8rem, 3.2vw, 3rem) !important;
+            font-weight: 800 !important;
+            letter-spacing: -.03em !important;
+            line-height: 1.05 !important;
+            margin: 0 0 10px !important;
+        }
+        .cw-hero p {
+            color: rgba(255,255,255,.72) !important;
+            font-size: 1rem !important;
+            margin: 0 0 24px !important;
+        }
+        .cw-hero-stats {
+            display: flex;
+            gap: 0;
+            border-top: 1px solid rgba(255,255,255,.15);
+            padding-top: 22px;
+            flex-wrap: wrap;
+        }
+        .cw-hero-stat {
+            padding: 0 28px 0 0;
+            margin-right: 28px;
+            border-right: 1px solid rgba(255,255,255,.14);
+        }
+        .cw-hero-stat:last-child { border-right: none; }
+        .cw-hero-stat strong {
+            display: block;
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -.02em;
+        }
+        .cw-hero-stat span {
+            display: block;
+            color: rgba(255,255,255,.6);
+            font-size: .78rem;
+            margin-top: 2px;
+        }
+
+        /* ── CATEGORIES BAR ────────────────────────────────────── */
+        .cw-categories-bar {
+            background: #fff;
+            border-bottom: 1.5px solid #e4e8f0;
+            box-shadow: 0 2px 6px rgba(0,47,108,.05);
+        }
+        .cw-categories-inner {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        .cw-categories-scroll {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            overflow-x: auto;
+            padding: 10px 0;
+            scrollbar-width: none;
+        }
+        .cw-categories-scroll::-webkit-scrollbar { display: none; }
+        .cw-cat-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: 1.5px solid #dde3f0;
+            background: #f8faff;
+            color: #3d4a6b;
+            font-size: .84rem;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all .18s;
+        }
+        .cw-cat-chip:hover {
+            border-color: #1a4da6;
+            background: #e8f0fe;
+            color: #002f6c;
+        }
+        .cw-cat-chip.is-active,
+        .cw-cat-chip.marketplace-category-card.is-active {
+            border-color: #002f6c !important;
+            background: #002f6c !important;
+            color: #fff !important;
+        }
+        .cw-cat-chip i { font-size: .82rem; }
+
+        /* ── PAGE BODY (sidebar + main) ─────────────────────────── */
+        .cw-page-body {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 24px 24px 48px;
+        }
+        .cw-page-inner {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        /* ── SIDEBAR ────────────────────────────────────────────── */
+        .cw-sidebar {
+            background: #fff;
+            border: 1.5px solid #dde3f0;
+            border-radius: 6px;
+            overflow: hidden;
+            position: sticky;
+            top: 80px;
+        }
+        .cw-sidebar-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 18px;
+            border-bottom: 1.5px solid #e4e8f0;
+            background: #f8faff;
+        }
+        .cw-sidebar-title {
+            font-size: .95rem;
+            font-weight: 800;
+            color: #002f6c;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .cw-sidebar-title i { color: #e8520a; }
+        .cw-clear-filters-btn {
+            background: none;
+            border: none;
+            color: #e8520a;
+            font-size: .8rem;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 4px 0;
+            text-decoration: underline;
+        }
+        .cw-filter-group {
+            padding: 16px 18px;
+            border-bottom: 1px solid #e4e8f0;
+        }
+        .cw-filter-group:last-child { border-bottom: none; }
+        .cw-filter-group-head {
+            font-size: .82rem;
+            font-weight: 800;
+            color: #002f6c;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+        .cw-filter-group-head i { color: #1a4da6; }
+        .cw-filter-select {
+            width: 100%;
+            border: 1.5px solid #dde3f0 !important;
+            border-radius: 6px !important;
+            background: #f8faff !important;
+            padding: 9px 12px !important;
+            font-size: .88rem !important;
+            font-weight: 600 !important;
+            color: #1a1f36 !important;
+            min-height: auto !important;
+            box-shadow: none !important;
+            cursor: pointer;
+            transition: border-color .18s !important;
+        }
+        .cw-filter-select:focus {
+            border-color: #1a4da6 !important;
+            outline: none !important;
+            box-shadow: 0 0 0 3px rgba(26,77,166,.1) !important;
+        }
+
+        /* Checkbox-style fuel filter */
+        .cw-checkbox-group { display: flex; flex-direction: column; gap: 6px; }
+        .cw-checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            cursor: pointer;
+            padding: 5px 8px;
+            border-radius: 4px;
+            transition: background .15s;
+        }
+        .cw-checkbox-item:hover { background: #f0f4fb; }
+        .cw-checkbox-item input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #002f6c;
+            cursor: pointer;
+            flex: 0 0 16px;
+        }
+        .cw-checkbox-item span {
+            font-size: .88rem;
+            font-weight: 500;
+            color: #3d4a6b;
+        }
+
+        /* Sidebar service cards */
+        .cw-sidebar-services { padding: 16px 18px; border-top: 2px solid #e4e8f0; }
+        .cw-service-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            padding: 10px 12px;
+            border: 1.5px solid #e4e8f0;
+            border-radius: 6px;
+            background: #f8faff;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all .18s;
+            text-align: left;
+        }
+        .cw-service-card:hover {
+            border-color: #1a4da6;
+            background: #e8f0fe;
+            transform: translateX(2px);
+        }
+        .cw-service-icon {
+            flex: 0 0 34px;
+            width: 34px;
+            height: 34px;
+            border-radius: 6px;
+            background: #dde9ff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #002f6c;
+            font-size: .9rem;
+        }
+        .cw-service-card strong { display: block; font-size: .85rem; font-weight: 700; color: #1a1f36; }
+        .cw-service-card small { color: #6b7280; font-size: .78rem; }
+
+        /* ── MAIN LISTINGS AREA ──────────────────────────────────── */
+        .cw-listings-main { min-width: 0; }
+
+        .cw-listings-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 16px;
+            background: #fff;
+            border: 1.5px solid #dde3f0;
+            border-radius: 6px;
+            margin-bottom: 16px;
+        }
+        .cw-listings-count { display: flex; align-items: center; gap: 10px; }
+        #marketplaceResultsCount {
+            font-size: .92rem;
+            font-weight: 700;
+            color: #002f6c;
+        }
+        .cw-listings-updated {
+            font-size: .78rem;
+            color: #9ca3af;
+            padding: 3px 8px;
+            background: #f0f4fb;
+            border-radius: 4px;
+        }
+        .cw-filter-toggle-btn {
+            display: none;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 14px;
+            border: 1.5px solid #dde3f0;
+            border-radius: 6px;
+            background: #fff;
+            color: #002f6c;
+            font-size: .85rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* ── SECTION HEADERS ────────────────────────────────────── */
+        .cw-section-head {
+            margin: 20px 0 14px;
+        }
+        .cw-kicker {
+            display: inline-block;
+            color: #e8520a;
+            font-size: .76rem;
+            font-weight: 800;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .cw-section-head h2 {
+            color: #002f6c !important;
+            font-size: 1.4rem !important;
+            font-weight: 800 !important;
+            letter-spacing: -.02em !important;
+            margin: 0 !important;
+        }
+
+        /* ── FEATURED GRID (vertical cards for featured) ──────────── */
+        .cw-featured-grid .col-lg-3,
+        .cw-featured-grid .col-md-4,
+        .cw-featured-grid .col-sm-6 { /* Bootstrap handles responsive */ }
+
+        /* ── CAR CARDS — CARWALE HORIZONTAL STYLE ────────────────── */
+
+        /* Featured cards stay vertical */
+        .car-card {
+            border: 1.5px solid #e4e8f0 !important;
+            border-radius: 4px !important;
+            overflow: hidden !important;
+            background: #fff !important;
+            box-shadow: 0 1px 4px rgba(0,47,108,.06) !important;
+            transition: box-shadow .2s, transform .2s !important;
+            display: flex !important;
+            flex-direction: column !important;
+        }
+        .car-card:hover {
+            box-shadow: 0 6px 22px rgba(0,47,108,.13) !important;
+            transform: translateY(-2px) !important;
+        }
+        .car-card:hover .car-card-img {
+            transform: scale(1.03) !important;
+            filter: brightness(1.04) !important;
+        }
+        .car-card-featured { flex-direction: column !important; }
+        .car-card-featured .car-card-img { height: 200px !important; }
+        .car-card-featured .car-card-img-wrapper { min-height: 200px !important; }
+
+        /* Standard listing cards — horizontal layout */
+        .car-card-standard {
+            flex-direction: row !important;
+            border-radius: 4px !important;
+        }
+        .car-card-standard .car-card-img-wrapper {
+            flex: 0 0 240px !important;
+            min-height: 160px !important;
+            height: auto !important;
+        }
+        .car-card-standard .car-card-img {
+            width: 240px !important;
+            height: 100% !important;
+            min-height: 160px !important;
+            object-fit: cover !important;
+        }
+        .car-card-standard .car-card-body {
+            flex: 1 !important;
+            padding: 16px 20px !important;
+            display: flex !important;
+            flex-direction: column !important;
+        }
+
+        /* Card image base */
+        .car-card-img {
+            width: 100% !important;
+            height: 180px !important;
+            object-fit: cover !important;
+            transition: transform .35s, filter .3s !important;
+            display: block !important;
+        }
+        .car-card-img-wrapper {
+            position: relative !important;
+            overflow: hidden !important;
+            flex: 0 0 auto !important;
+        }
+
+        /* Badges */
+        .featured-badge {
+            position: absolute !important;
+            top: 10px !important; left: 10px !important;
+            background: #e8520a !important;
+            color: #fff !important;
+            padding: 3px 10px !important;
+            border-radius: 3px !important;
+            font-size: .7rem !important;
+            font-weight: 700 !important;
+            letter-spacing: .04em !important;
+            text-transform: uppercase !important;
+        }
+        .seller-type-badge {
+            position: absolute !important;
+            top: 10px !important; right: 10px !important;
+            background: #002f6c !important;
+            color: #fff !important;
+            padding: 3px 8px !important;
+            border-radius: 3px !important;
+            font-size: .68rem !important;
+            font-weight: 700 !important;
+        }
+        .seller-type-badge.dealer { background: #7c4a1a !important; }
+        .location-badge {
+            position: absolute !important;
+            bottom: 10px !important; left: 10px !important;
+            background: rgba(0,0,0,.62) !important;
+            color: #fff !important;
+            padding: 3px 9px !important;
+            border-radius: 3px !important;
+            font-size: .68rem !important;
+            font-weight: 500 !important;
+        }
+        .sold-out-banner {
+            position: absolute !important;
+            top: 14px !important; right: -60px !important;
+            background: #1a1f36 !important;
+            color: #fff !important;
+            font-size: .78rem !important;
+            padding: 5px 60px !important;
+            transform: rotate(45deg) !important;
+        }
+
+        /* Card body */
+        .car-card-body {
+            padding: 14px 16px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            flex-grow: 1 !important;
+            gap: 0 !important;
+        }
+        .car-price {
+            font-size: 1.35rem !important;
+            font-weight: 800 !important;
+            color: #002f6c !important;
+            letter-spacing: -.02em !important;
+            display: block !important;
+            line-height: 1.15 !important;
+            padding: 0 !important;
+            background: transparent !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            min-height: auto !important;
+        }
+        .car-card-featured .car-price { font-size: 1.45rem !important; }
+        .car-title {
+            font-size: .98rem !important;
+            font-weight: 700 !important;
+            color: #1a1f36 !important;
+            margin: 5px 0 3px !important;
+            letter-spacing: -.01em !important;
+            line-height: 1.32 !important;
+            font-family: 'Inter', sans-serif !important;
+        }
+        .car-card-standard .car-title { font-size: 1.05rem !important; margin: 0 0 4px !important; }
+        .car-subtitle {
+            font-size: .83rem !important;
+            color: #6b7280 !important;
+            line-height: 1.4 !important;
+            margin: 0 0 8px !important;
+        }
+
+        /* Spec pills */
+        .car-specs-row {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 5px !important;
+            margin: 6px 0 !important;
+        }
+        .car-spec-item {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 5px !important;
+            padding: 3px 9px !important;
+            border-radius: 3px !important;
+            background: #f0f4fb !important;
+            border: 1px solid #dde3f0 !important;
+            color: #4b5680 !important;
+            font-size: .78rem !important;
+            font-weight: 500 !important;
+            white-space: nowrap !important;
+        }
+        .car-spec-item i { font-size: .7rem !important; }
+
+        .car-card-tags {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 5px !important;
+            margin-top: auto !important;
+            padding-top: 8px !important;
+        }
+        .car-chip {
+            background: #e8f0fe !important;
+            color: #002f6c !important;
+            padding: 2px 8px !important;
+            border-radius: 3px !important;
+            font-size: .7rem !important;
+            font-weight: 600 !important;
+        }
+
+        /* Card actions */
+        .car-card-actions {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 8px !important;
+            margin-top: 10px !important;
+            padding-top: 10px !important;
+            border-top: 1.5px solid #e4e8f0 !important;
+        }
+        .car-card-standard .car-card-actions {
+            margin-top: auto !important;
+        }
+        .view-more-btn {
+            flex: 1 !important;
+            min-height: 40px !important;
+            border-radius: 4px !important;
+            padding: 0 16px !important;
+            font-weight: 700 !important;
+            font-size: .84rem !important;
+            border: none !important;
+            background: #002f6c !important;
+            color: #fff !important;
+            transition: background .18s !important;
+            box-shadow: none !important;
+        }
+        .view-more-btn:hover { background: #1a4da6 !important; color: #fff !important; }
+        .car-card.sold-out .view-more-btn {
+            background: #9ca3af !important;
+            cursor: not-allowed !important;
+        }
+        .car-card.sold-out .view-more-btn:hover { background: #9ca3af !important; transform: none !important; }
+        .make-offer-link {
+            color: #1a4da6 !important;
+            font-weight: 600 !important;
+            font-size: .82rem !important;
+            text-decoration: none !important;
+        }
+        .make-offer-link:hover { color: #002f6c !important; text-decoration: underline !important; }
+
+        /* ── EMPTY STATE ─────────────────────────────────────────── */
+        .cw-empty-state {
+            text-align: center;
+            padding: 60px 24px;
+            background: #fff;
+            border: 1.5px solid #dde3f0;
+            border-radius: 6px;
+        }
+        .cw-empty-state i {
+            font-size: 3rem;
+            color: #c0c8e0;
+            display: block;
+            margin-bottom: 16px;
+        }
+        .cw-empty-state h4 { color: #002f6c; font-weight: 700; }
+        .cw-empty-state p { color: #6b7280; margin-bottom: 24px; }
+
+        /* ── HELP CTA ─────────────────────────────────────────────── */
+        .cw-help-cta {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 24px 28px;
+            background: #002f6c;
+            border-radius: 6px;
+            margin-top: 28px;
+            flex-wrap: wrap;
+        }
+        .cw-help-cta-icon {
+            flex: 0 0 52px;
+            width: 52px;
+            height: 52px;
+            border-radius: 6px;
+            background: rgba(255,255,255,.14);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.3rem;
+        }
+        .cw-help-cta-copy { flex: 1; min-width: 200px; }
+        .cw-help-cta-copy h4 { color: #fff !important; font-size: 1.05rem !important; font-weight: 700 !important; margin: 0 0 4px !important; }
+        .cw-help-cta-copy p { color: rgba(255,255,255,.72) !important; font-size: .88rem !important; margin: 0 !important; }
+        .cw-btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 22px;
+            height: 44px;
+            border-radius: 4px;
+            background: #e8520a;
+            color: #fff !important;
+            font-weight: 700;
+            font-size: .9rem;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: background .18s;
+        }
+        .cw-btn-primary:hover { background: #c94308; color: #fff !important; }
+
+        /* ── MODALS ───────────────────────────────────────────────── */
+        .modal-content { border: none !important; border-radius: 8px !important; box-shadow: 0 28px 70px rgba(0,0,0,.18) !important; }
+        .modal-header { border-bottom: 1px solid #e4e8f0 !important; padding: 18px 22px !important; }
+        .modal-header .modal-title { font-weight: 700 !important; color: #002f6c !important; }
+        .modal-header.bg-primary {
+            background: linear-gradient(135deg, #002f6c, #1a4da6) !important;
+            border-radius: 8px 8px 0 0 !important;
+        }
+        .modal-header.bg-primary .modal-title { color: #fff !important; }
+        .btn-primary {
+            background: #002f6c !important;
+            border: none !important;
+            font-weight: 700 !important;
+            border-radius: 4px !important;
+        }
+        .btn-primary:hover, .btn-primary:focus, .btn-primary:active { background: #1a4da6 !important; border: none !important; }
+        .spinner-border.text-primary { color: #1a4da6 !important; }
+
+        /* ── FOOTER ───────────────────────────────────────────────── */
+        .cw-footer {
+            background: #001e50;
+            color: rgba(255,255,255,.82);
+            margin-top: 48px;
+            padding: 40px 0 20px;
+        }
+        .cw-footer-inner {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        .cw-footer-top {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 48px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid rgba(255,255,255,.1);
+        }
+        .cw-footer-brand p { font-size: .88rem; color: rgba(255,255,255,.6); line-height: 1.65; margin-top: 14px; }
+        .cw-footer-links { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+        .cw-footer-links > div strong { display: block; font-size: .8rem; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 12px; }
+        .cw-footer-links > div a { display: block; font-size: .86rem; color: rgba(255,255,255,.6); text-decoration: none; margin-bottom: 8px; transition: color .18s; }
+        .cw-footer-links > div a:hover { color: #fff; }
+        .cw-footer-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 18px;
+            font-size: .8rem;
+            color: rgba(255,255,255,.45);
+        }
+        .cw-footer-bottom a { color: rgba(255,255,255,.55); text-decoration: none; }
+        .cw-footer-bottom a:hover { color: #fff; }
+
+        /* Back-to-top */
+        .back-to-top { background: #002f6c !important; border-radius: 4px !important; }
+
+        /* ── CITY CHIPS (hidden, JS compat) ─────────────────────── */
+        .city-chip {
+            border-radius: 4px !important;
+            border: 1.5px solid #dde3f0 !important;
+            color: #4b5680 !important;
+            background: #fff !important;
+            padding: 5px 14px !important;
+            font-weight: 600 !important;
+            font-size: .8rem !important;
+        }
+        .city-chip.active { background: #002f6c !important; color: #fff !important; border-color: #002f6c !important; }
+
+        /* ── RESPONSIVE ───────────────────────────────────────────── */
+        @media (max-width: 1199.98px) {
+            .cw-page-inner { grid-template-columns: 240px 1fr; }
+        }
+        @media (max-width: 991.98px) {
+            .cw-page-inner {
+                grid-template-columns: 1fr;
+            }
+            .cw-sidebar {
+                position: static;
+                display: none;
+            }
+            .cw-sidebar.is-open {
+                display: block;
+                position: fixed !important;
+                top: 0 !important; left: 0 !important; bottom: 0 !important;
+                width: 300px !important;
+                z-index: 2000 !important;
+                overflow-y: auto;
+                box-shadow: 4px 0 32px rgba(0,0,0,.22);
+            }
+            .cw-filter-toggle-btn { display: inline-flex; }
+            .car-card-standard {
+                flex-direction: column !important;
+            }
+            .car-card-standard .car-card-img-wrapper {
+                flex: none !important;
+                width: 100% !important;
+                min-height: 180px !important;
+            }
+            .car-card-standard .car-card-img {
+                width: 100% !important;
+                height: 180px !important;
+            }
+            .cw-footer-top { grid-template-columns: 1fr; gap: 28px; }
+            .cw-footer-links { grid-template-columns: repeat(2,1fr); }
+            .cw-hero-stats { gap: 16px; }
+            .cw-hero-stat { padding: 0 16px 0 0; margin-right: 16px; }
+        }
+        @media (max-width: 767.98px) {
+            .cw-navbar-inner { padding: 0 16px; gap: 10px; }
+            .cw-nav-search { max-width: 100%; }
+            .cw-nav-search-btn { display: none; }
+            .cw-nav-btn span { display: none; }
+            .cw-page-body { padding: 16px 14px 36px; }
+            .cw-hero { padding: 24px 0 28px; }
+            .cw-hero-inner { padding: 0 16px; }
+            .cw-hero h1 { font-size: 1.75rem !important; }
+            .cw-hero-stat strong { font-size: 1.2rem; }
+            .cw-help-cta { padding: 18px 20px; gap: 14px; }
+            .cw-help-cta-icon { display: none; }
+            .cw-footer-links { grid-template-columns: 1fr; }
+            .cw-footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+        }
+        @media (max-width: 575.98px) {
+            .cw-navbar-inner { height: 56px; padding: 0 12px; }
+            .cw-logo img { height: 30px; }
+            .cw-nav-search { max-width: calc(100% - 100px); }
+            .car-card-actions { flex-direction: column !important; align-items: stretch !important; }
+            .cw-hero-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+            .cw-hero-stat { border-right: none; padding: 0; margin: 0; border: 1px solid rgba(255,255,255,.12); border-radius: 4px; padding: 12px; }
+        }
+
+        /* Sidebar overlay on mobile */
+        .cw-sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.45);
+            z-index: 1999;
+        }
+        .cw-sidebar-overlay.is-open { display: block; }
     </style>
 </head>
 
@@ -3279,328 +4174,347 @@
     </div>
     <!-- Spinner End -->
 
-    <!-- Top Header with Logo and Icons -->
-    <div class="top-banner">
-        <div class="banner-container">
-            <a href="/" class="banner-logo" aria-label="inspectionWale homepage">
-                <img src="../Images/brand_logo_new_1.png" alt="inspectionWale Logo" loading="eager" decoding="async" fetchpriority="high">
+    <!-- ═══════════════ CARWALE-STYLE NAVBAR ═══════════════ -->
+    <nav class="cw-navbar">
+        <div class="cw-navbar-inner">
+            <!-- Logo -->
+            <a href="/" class="cw-logo" aria-label="inspectionWale homepage">
+                <img src="../Images/brand_logo_new_1.png" alt="inspectionWale" loading="eager" fetchpriority="high">
             </a>
-            <div class="banner-icons">
-                <a href="/" class="banner-icon banner-icon-circle" title="Home" aria-label="Home">
-                    <i class="fas fa-home"></i>
+
+            <!-- Center: Search bar -->
+            <div class="cw-nav-search">
+                <label for="marketplaceSearch" class="visually-hidden">Search cars</label>
+                <i class="fas fa-search cw-nav-search-icon"></i>
+                <input type="text" id="marketplaceSearch" placeholder="Search brand, model, city…" autocomplete="off">
+                <button type="button" class="cw-nav-search-btn" aria-label="Search">Search</button>
+            </div>
+
+            <!-- Right: actions -->
+            <div class="cw-nav-actions">
+                <a href="#" class="cw-nav-btn cw-nav-btn-outline" data-bs-toggle="modal" data-bs-target="#listCarModal">
+                    <i class="fas fa-plus-circle"></i> Sell Car
                 </a>
-                <a href="https://maps.google.com/?q=InspectionWale" class="banner-icon banner-icon-circle" title="Location" aria-label="Location" target="_blank" rel="noopener noreferrer">
-                    <i class="fas fa-map-marker-alt"></i>
-                </a>
-                <div class="translate-btn-wrapper" style="position: relative;">
-                    <button type="button" class="btn btn-sm banner-icon banner-translate" onclick="toggleTranslateDropdown()" aria-label="Change language">
-                        <i class="fas fa-language me-1"></i> <span class="d-none d-md-inline">हिंदी</span>
+                <div class="cw-translate-wrap" style="position:relative;">
+                    <button type="button" class="cw-nav-icon-btn" onclick="toggleTranslateDropdown()" aria-label="Language">
+                        <i class="fas fa-language"></i>
                     </button>
-                    <div id="google_translate_element" style="position: absolute; top: 100%; right: 0; margin-top: 5px; display: none; background: #fff; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); padding: 10px; min-width: 180px; z-index: 9999;"></div>
+                    <div id="google_translate_element" style="position:absolute;top:100%;right:0;margin-top:6px;display:none;background:#fff;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,.18);padding:10px;min-width:180px;z-index:9999;"></div>
                 </div>
-                <a href="/inspector-login.html" title="Inspector Login" class="banner-icon banner-icon-circle" aria-label="Inspector login">
-                    <i class="fa fa-user"></i>
+                <a href="/inspector-login.html" class="cw-nav-icon-btn" title="Inspector Login" aria-label="Inspector login">
+                    <i class="fas fa-user"></i>
                 </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ═══════════════ HERO BANNER ═══════════════ -->
+    <div class="cw-hero">
+        <div class="cw-hero-inner">
+            <div class="cw-hero-copy">
+                <span class="cw-hero-eyebrow"><i class="fas fa-shield-alt"></i> InspectionWale Certified</span>
+                <h1>Find Your Perfect<br>Used Car in Mumbai</h1>
+                <p>Browse verified listings · Compare prices · Book pre-purchase inspection</p>
+            </div>
+            <div class="cw-hero-stats">
+                <div class="cw-hero-stat">
+                    <strong id="heroStatListings">—</strong>
+                    <span>Active Listings</span>
+                </div>
+                <div class="cw-hero-stat">
+                    <strong>160+</strong>
+                    <span>Point Inspection</span>
+                </div>
+                <div class="cw-hero-stat">
+                    <strong>Same Day</strong>
+                    <span>Reports</span>
+                </div>
+                <div class="cw-hero-stat">
+                    <strong>Buyer-First</strong>
+                    <span>Independent Checks</span>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Banner Start -->
-    <div class="marketplace-banner">
-        <div class="container">
-            <div class="marketplace-banner-shell">
-                <div class="marketplace-banner-copy">
-                    <h1 class="display-3 text-white mb-3 animated slideInDown">Buy better used cars with cleaner discovery</h1>
-                    <p class="fs-5 text-white mb-4">Browse verified inventory, narrow it down fast, and move straight into seller contact or inspection support with the same premium tone as the homepage.</p>
-                </div>
-                <div class="marketplace-banner-panel">
-                    <p>Every listing flow stays intact while the front-end experience becomes faster to scan, more premium to browse, and easier to filter on mobile.</p>
-                    <div class="marketplace-banner-metrics">
-                        <div class="marketplace-banner-metric">
-                            <strong>Verified Listings</strong>
-                            <span>Live customer inventory with existing actions preserved</span>
-                        </div>
-                        <div class="marketplace-banner-metric">
-                            <strong>Direct Contact</strong>
-                            <span>Seller details, reserve, inquiry and booking flows intact</span>
-                        </div>
-                        <div class="marketplace-banner-metric">
-                            <strong>Inspection Support</strong>
-                            <span>Pre-purchase inspection CTA remains available in detail view</span>
-                        </div>
-                        <div class="marketplace-banner-metric">
-                            <strong>Daily Updates</strong>
-                            <span>Inventory and featured listings refresh from the same API</span>
-                        </div>
-                    </div>
-                </div>
+    <!-- ═══════════════ BROWSE CATEGORIES ═══════════════ -->
+    <div class="cw-categories-bar">
+        <div class="cw-categories-inner">
+            <div class="cw-categories-scroll" id="marketplaceCategories">
+                <button type="button" class="cw-cat-chip marketplace-category-card" data-category="budget" data-value="lt5">
+                    <i class="fas fa-wallet"></i> Budget Cars
+                </button>
+                <button type="button" class="cw-cat-chip marketplace-category-card" data-category="keyword" data-value="suv">
+                    <i class="fas fa-car"></i> SUV
+                </button>
+                <button type="button" class="cw-cat-chip marketplace-category-card" data-category="keyword" data-value="sedan">
+                    <i class="fas fa-car-side"></i> Sedan
+                </button>
+                <button type="button" class="cw-cat-chip marketplace-category-card" data-category="keyword" data-value="hatchback">
+                    <i class="fas fa-car-alt"></i> Hatchback
+                </button>
+                <button type="button" class="cw-cat-chip marketplace-category-card" data-category="keyword" data-value="automatic">
+                    <i class="fas fa-sliders-h"></i> Automatic
+                </button>
+                <button type="button" class="cw-cat-chip marketplace-category-card" data-category="fuel" data-value="diesel">
+                    <i class="fas fa-gas-pump"></i> Diesel
+                </button>
+                <button type="button" class="cw-cat-chip marketplace-category-card" data-category="fuel" data-value="petrol">
+                    <i class="fas fa-fill-drip"></i> Petrol
+                </button>
+                <button type="button" class="cw-cat-chip marketplace-category-card" data-category="fuel" data-value="cng">
+                    <i class="fas fa-leaf"></i> CNG
+                </button>
             </div>
         </div>
     </div>
-    <!-- Banner End -->
 
-    <!-- Marketplace Content Start -->
-    <div class="container-xxl pb-5">
-        <div class="marketplace-page-shell">
-            <section class="marketplace-control-shell">
-                <div class="marketplace-control-top">
-                    <div>
-                        <span class="marketplace-section-kicker">Premium Marketplace</span>
-                        <p class="finder-title mb-2">Find the right used car without the usual clutter</p>
-                    </div>
-                    <div class="finder-links d-flex flex-wrap">
-                        <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#listCarModal">Sell Your Car</a>
-                    </div>
+    <!-- ═══════════════ MAIN BODY: SIDEBAR + LISTINGS ═══════════════ -->
+    <div class="cw-page-body">
+        <div class="cw-page-inner">
+
+            <!-- ─── LEFT SIDEBAR FILTERS ─── -->
+            <aside class="cw-sidebar" id="cwSidebar">
+                <div class="cw-sidebar-head">
+                    <span class="cw-sidebar-title"><i class="fas fa-filter"></i> Filters</span>
+                    <button type="button" class="cw-clear-filters-btn" id="cwClearFilters">Clear All</button>
                 </div>
 
-                <div class="finder-input-wrapper">
-                    <label for="marketplaceSearch" class="visually-hidden">Search cars</label>
-                    <input type="text" id="marketplaceSearch" placeholder="Search by brand, model, body style or city">
-                    <button type="button" aria-label="Search">
-                        <i class="fa fa-search"></i>
+                <!-- Budget -->
+                <div class="cw-filter-group">
+                    <div class="cw-filter-group-head">
+                        <i class="fas fa-rupee-sign"></i> Budget
+                    </div>
+                    <select id="marketplacePrice" class="cw-filter-select">
+                        <option value="">Any Budget</option>
+                        <option value="lt1">Below ₹1 Lakh</option>
+                        <option value="lt2">Below ₹2 Lakh</option>
+                        <option value="lt3">Below ₹3 Lakh</option>
+                        <option value="lt5">Below ₹5 Lakh</option>
+                        <option value="lt10">Below ₹10 Lakh</option>
+                        <option value="gte10">₹10 Lakh+</option>
+                    </select>
+                </div>
+
+                <!-- Brand -->
+                <div class="cw-filter-group">
+                    <div class="cw-filter-group-head">
+                        <i class="fas fa-car-side"></i> Brand
+                    </div>
+                    <select id="marketplaceBrand" class="cw-filter-select">
+                        <option value="">All Brands</option>
+                    </select>
+                </div>
+
+                <!-- Fuel Type -->
+                <div class="cw-filter-group">
+                    <div class="cw-filter-group-head">
+                        <i class="fas fa-gas-pump"></i> Fuel Type
+                    </div>
+                    <div class="cw-checkbox-group">
+                        <label class="cw-checkbox-item">
+                            <input type="radio" name="cwFuelFilter" value="" checked onchange="document.getElementById('marketplaceFuel').value='';document.getElementById('marketplaceFuel').dispatchEvent(new Event('change'))">
+                            <span>All</span>
+                        </label>
+                        <label class="cw-checkbox-item">
+                            <input type="radio" name="cwFuelFilter" value="petrol" onchange="document.getElementById('marketplaceFuel').value='petrol';document.getElementById('marketplaceFuel').dispatchEvent(new Event('change'))">
+                            <span>Petrol</span>
+                        </label>
+                        <label class="cw-checkbox-item">
+                            <input type="radio" name="cwFuelFilter" value="diesel" onchange="document.getElementById('marketplaceFuel').value='diesel';document.getElementById('marketplaceFuel').dispatchEvent(new Event('change'))">
+                            <span>Diesel</span>
+                        </label>
+                        <label class="cw-checkbox-item">
+                            <input type="radio" name="cwFuelFilter" value="cng" onchange="document.getElementById('marketplaceFuel').value='cng';document.getElementById('marketplaceFuel').dispatchEvent(new Event('change'))">
+                            <span>CNG</span>
+                        </label>
+                        <label class="cw-checkbox-item">
+                            <input type="radio" name="cwFuelFilter" value="electric" onchange="document.getElementById('marketplaceFuel').value='electric';document.getElementById('marketplaceFuel').dispatchEvent(new Event('change'))">
+                            <span>Electric</span>
+                        </label>
+                    </div>
+                    <!-- Hidden select for JS compatibility -->
+                    <select id="marketplaceFuel" class="d-none">
+                        <option value="">Any fuel</option>
+                        <option value="petrol">Petrol</option>
+                        <option value="diesel">Diesel</option>
+                        <option value="cng">CNG</option>
+                        <option value="electric">Electric</option>
+                    </select>
+                </div>
+
+                <!-- City -->
+                <div class="cw-filter-group">
+                    <div class="cw-filter-group-head">
+                        <i class="fas fa-map-marker-alt"></i> City
+                    </div>
+                    <select id="marketplaceCity" class="cw-filter-select">
+                        <option value="">All Cities</option>
+                    </select>
+                </div>
+
+                <!-- Sort -->
+                <div class="cw-filter-group">
+                    <div class="cw-filter-group-head">
+                        <i class="fas fa-sort-amount-down"></i> Sort By
+                    </div>
+                    <select id="marketplaceSort" class="cw-filter-select">
+                        <option value="recent">Recently Added</option>
+                        <option value="lowToHigh">Price: Low → High</option>
+                        <option value="highToLow">Price: High → Low</option>
+                        <option value="kms">Lowest KMs</option>
+                    </select>
+                </div>
+
+                <!-- Partner Services -->
+                <div class="cw-sidebar-services">
+                    <div class="cw-filter-group-head mb-3"><i class="fas fa-star"></i> Related Services</div>
+                    <button type="button" class="cw-service-card partner-lead-card" data-partner-service="loan" data-partner-service-source="marketplace" data-partner-service-copy="Compare EMI-fit finance options once the car and budget look right.">
+                        <span class="cw-service-icon partner-lead-card__icon partner-lead-card__icon--loan"><i class="fas fa-hand-holding-usd"></i></span>
+                        <span class="partner-lead-card__body"><strong>Car Loan</strong><br><small>Compare finance options</small></span>
+                    </button>
+                    <button type="button" class="cw-service-card partner-lead-card" data-partner-service="insurance" data-partner-service-source="marketplace" data-partner-service-copy="Renew expiring policies or request quotes that match the inspected vehicle.">
+                        <span class="cw-service-icon partner-lead-card__icon partner-lead-card__icon--insurance"><i class="fas fa-shield-alt"></i></span>
+                        <span class="partner-lead-card__body"><strong>Insurance</strong><br><small>Get quotes instantly</small></span>
+                    </button>
+                    <button type="button" class="cw-service-card partner-lead-card" data-partner-service="warranty" data-partner-service-source="marketplace" data-partner-service-copy="Keep major repair risk covered for used cars with longer ownership plans.">
+                        <span class="cw-service-icon partner-lead-card__icon partner-lead-card__icon--warranty"><i class="fas fa-certificate"></i></span>
+                        <span class="partner-lead-card__body"><strong>Extended Warranty</strong><br><small>Extended coverage plans</small></span>
+                    </button>
+                    <button type="button" class="cw-service-card partner-lead-card" data-partner-service="rto-transfer" data-partner-service-source="marketplace" data-partner-service-copy="Track ownership paperwork, RC transfer and compliance tasks after the deal closes.">
+                        <span class="cw-service-icon partner-lead-card__icon partner-lead-card__icon--rto-transfer"><i class="fas fa-exchange-alt"></i></span>
+                        <span class="partner-lead-card__body"><strong>RTO Transfer</strong><br><small>Ownership paperwork</small></span>
                     </button>
                 </div>
 
-                <div class="marketplace-filter-bar">
-                    <div class="marketplace-filter-pill">
-                        <span class="marketplace-filter-icon"><i class="fas fa-wallet"></i></span>
-                        <div class="marketplace-filter-copy">
-                            <label for="marketplacePrice">Budget</label>
-                            <select id="marketplacePrice" class="form-select">
-                                <option value="">Any budget</option>
-                                <option value="lt1">Below ₹1 Lakh</option>
-                                <option value="lt2">Below ₹2 Lakh</option>
-                                <option value="lt3">Below ₹3 Lakh</option>
-                                <option value="lt5">Below ₹5 Lakh</option>
-                                <option value="lt10">Below ₹10 Lakh</option>
-                                <option value="gte10">₹10 Lakh +</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="marketplace-filter-pill">
-                        <span class="marketplace-filter-icon"><i class="fas fa-car-side"></i></span>
-                        <div class="marketplace-filter-copy">
-                            <label for="marketplaceBrand">Brand</label>
-                            <select id="marketplaceBrand" class="form-select">
-                                <option value="">Any brand</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="marketplace-filter-pill">
-                        <span class="marketplace-filter-icon"><i class="fas fa-gas-pump"></i></span>
-                        <div class="marketplace-filter-copy">
-                            <label for="marketplaceFuel">Fuel</label>
-                            <select id="marketplaceFuel" class="form-select">
-                                <option value="">Any fuel</option>
-                                <option value="petrol">Petrol</option>
-                                <option value="diesel">Diesel</option>
-                                <option value="cng">CNG</option>
-                                <option value="electric">Electric</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="marketplace-filter-pill">
-                        <span class="marketplace-filter-icon"><i class="fas fa-map-marker-alt"></i></span>
-                        <div class="marketplace-filter-copy">
-                            <label for="marketplaceCity">City</label>
-                            <select id="marketplaceCity" class="form-select">
-                                <option value="">All cities</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="marketplace-filter-pill">
-                        <span class="marketplace-filter-icon"><i class="fas fa-sliders-h"></i></span>
-                        <div class="marketplace-filter-copy">
-                            <label for="marketplaceSort">Sort</label>
-                            <select id="marketplaceSort" class="form-select">
-                                <option value="recent">Recently Added</option>
-                                <option value="lowToHigh">Price: Low to High</option>
-                                <option value="highToLow">Price: High to Low</option>
-                                <option value="kms">Lowest KMs</option>
-                            </select>
-                        </div>
+                <!-- Hidden partner-leads-grid for JS compatibility -->
+                <div class="partner-leads-section d-none">
+                    <div class="partner-leads-grid">
+                        <button type="button" class="partner-lead-card" data-partner-service="loan" data-partner-service-source="marketplace" data-partner-service-copy="Compare EMI-fit finance options once the car and budget look right."><span class="partner-lead-card__icon partner-lead-card__icon--loan"><i class="fas fa-hand-holding-usd"></i></span><span class="partner-lead-card__body"><strong>Car Loan</strong><span>Compare EMI-fit finance options.</span></span></button>
+                        <button type="button" class="partner-lead-card" data-partner-service="insurance" data-partner-service-source="marketplace" data-partner-service-copy="Renew expiring policies or request quotes that match the inspected vehicle."><span class="partner-lead-card__icon partner-lead-card__icon--insurance"><i class="fas fa-shield-alt"></i></span><span class="partner-lead-card__body"><strong>Insurance</strong><span>Renew or get new quotes.</span></span></button>
+                        <button type="button" class="partner-lead-card" data-partner-service="warranty" data-partner-service-source="marketplace" data-partner-service-copy="Keep major repair risk covered for used cars with longer ownership plans."><span class="partner-lead-card__icon partner-lead-card__icon--warranty"><i class="fas fa-certificate"></i></span><span class="partner-lead-card__body"><strong>Extended Warranty</strong><span>Cover major repair risk.</span></span></button>
+                        <button type="button" class="partner-lead-card" data-partner-service="rto-transfer" data-partner-service-source="marketplace" data-partner-service-copy="Track ownership paperwork, RC transfer and compliance tasks after the deal closes."><span class="partner-lead-card__icon partner-lead-card__icon--rto-transfer"><i class="fas fa-exchange-alt"></i></span><span class="partner-lead-card__body"><strong>RTO Transfer</strong><span>Ownership paperwork.</span></span></button>
                     </div>
                 </div>
-
-                <div id="marketplaceTopAdSlot" class="iw-monetization-zone mt-4" aria-label="Marketplace sponsored recommendations"></div>
 
                 <div id="cityChips" class="d-none" aria-hidden="true"></div>
-            </section>
+            </aside>
 
-            <section class="marketplace-section">
-                <div class="marketplace-section-head">
-                    <div>
-                        <span class="marketplace-section-kicker">Browse Categories</span>
+            <!-- ─── RIGHT: LISTINGS CONTENT ─── -->
+            <main class="cw-listings-main">
+
+                <!-- Top bar: results count + sort (mobile) + filter toggle -->
+                <div class="cw-listings-topbar">
+                    <div class="cw-listings-count" id="marketplaceResultsMeta">
+                        <span id="marketplaceResultsCount">Loading cars…</span>
+                        <span class="cw-listings-updated">Updated daily</span>
                     </div>
-                </div>
-                <div class="marketplace-categories" id="marketplaceCategories">
-                    <button type="button" class="marketplace-category-card" data-category="budget" data-value="lt5">
-                        <i class="fas fa-wallet"></i>
-                        <div>
-                            <strong>Budget Cars</strong>
-                            <span>Budget-friendly cars across the active inventory</span>
-                        </div>
-                    </button>
-                    <button type="button" class="marketplace-category-card" data-category="keyword" data-value="suv">
-                        <i class="fas fa-car-side"></i>
-                        <div>
-                            <strong>SUV</strong>
-                            <span>Family-ready options with more stance and cabin space</span>
-                        </div>
-                    </button>
-                    <button type="button" class="marketplace-category-card" data-category="keyword" data-value="automatic">
-                        <i class="fas fa-sliders-h"></i>
-                        <div>
-                            <strong>Automatic</strong>
-                            <span>Easy city-driving picks filtered by drivetrain keywords</span>
-                        </div>
-                    </button>
-                    <button type="button" class="marketplace-category-card" data-category="fuel" data-value="diesel">
-                        <i class="fas fa-gas-pump"></i>
-                        <div>
-                            <strong>Diesel</strong>
-                            <span>Torque-focused long-distance choices in one tap</span>
-                        </div>
+                    <button type="button" class="cw-filter-toggle-btn" id="cwFilterToggle" aria-label="Toggle filters">
+                        <i class="fas fa-filter"></i> Filters
                     </button>
                 </div>
-            </section>
 
-            <section class="marketplace-section" id="featuredCarsSection">
-                <div class="marketplace-section-head">
-                    <div>
-                        <span class="marketplace-section-kicker">Featured Cars</span>
-                        <h2>Curated listings worth opening first</h2>
+                <div id="marketplaceTopAdSlot" class="iw-monetization-zone" aria-label="Marketplace sponsored recommendations"></div>
+
+                <!-- Featured Section -->
+                <section id="featuredCarsSection">
+                    <div class="cw-section-head">
+                        <span class="cw-kicker">Featured</span>
+                        <h2>Curated picks worth seeing first</h2>
                     </div>
-                    <p class="mb-0">Highlighted inventory surfaces here automatically when the listing carries featured signals.</p>
-                </div>
-                <div class="row g-4 marketplace-featured-grid" id="featuredCarsGrid">
-                    <div class="col-12 text-center py-5">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading featured cars...</span>
+                    <div class="cw-featured-grid row g-3" id="featuredCarsGrid">
+                        <div class="col-12 text-center py-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading featured cars…</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            <section class="marketplace-section" id="availableCarsSection">
-                <div class="marketplace-section-head">
-                    <div>
-                        <span class="marketplace-section-kicker">Marketplace Listings</span>
+                <!-- All Listings Section -->
+                <section id="availableCarsSection">
+                    <div class="cw-section-head">
+                        <span class="cw-kicker">All Listings</span>
+                        <h2>Available Cars</h2>
                     </div>
-                    <div class="marketplace-results-meta d-flex flex-column flex-md-row gap-2 text-md-end" id="marketplaceResultsMeta">
-                        <span id="marketplaceResultsCount">Loading cars...</span>
-                        <span class="small">Updated daily</span>
-                    </div>
-                </div>
-
-                <div class="partner-leads-section">
-                    <div class="partner-leads-grid">
-                        <button type="button" class="partner-lead-card" data-partner-service="loan" data-partner-service-source="marketplace" data-partner-service-copy="Compare EMI-fit finance options once the car and budget look right.">
-                            <span class="partner-lead-card__icon partner-lead-card__icon--loan"><i class="fas fa-hand-holding-usd"></i></span>
-                            <span class="partner-lead-card__body">
-                                <strong>Car Loan</strong>
-                                <span>Compare EMI-fit finance options once the car and budget look right.</span>
-                            </span>
-                        </button>
-                        <button type="button" class="partner-lead-card" data-partner-service="insurance" data-partner-service-source="marketplace" data-partner-service-copy="Renew expiring policies or request quotes that match the inspected vehicle.">
-                            <span class="partner-lead-card__icon partner-lead-card__icon--insurance"><i class="fas fa-shield-alt"></i></span>
-                            <span class="partner-lead-card__body">
-                                <strong>Insurance</strong>
-                                <span>Renew expiring policies or request quotes that match the inspected vehicle.</span>
-                            </span>
-                        </button>
-                        <button type="button" class="partner-lead-card" data-partner-service="warranty" data-partner-service-source="marketplace" data-partner-service-copy="Keep major repair risk covered for used cars with longer ownership plans.">
-                            <span class="partner-lead-card__icon partner-lead-card__icon--warranty"><i class="fas fa-certificate"></i></span>
-                            <span class="partner-lead-card__body">
-                                <strong>Extended Warranty</strong>
-                                <span>Keep major repair risk covered for used cars with longer ownership plans.</span>
-                            </span>
-                        </button>
-                        <button type="button" class="partner-lead-card" data-partner-service="rto-transfer" data-partner-service-source="marketplace" data-partner-service-copy="Track ownership paperwork, RC transfer and compliance tasks after the deal closes.">
-                            <span class="partner-lead-card__icon partner-lead-card__icon--rto-transfer"><i class="fas fa-exchange-alt"></i></span>
-                            <span class="partner-lead-card__body">
-                                <strong>RTO Transfer</strong>
-                                <span>Track ownership paperwork, RC transfer and compliance tasks after the deal closes.</span>
-                            </span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="row g-4" id="carListingsGrid">
-                    <div class="col-12 text-center py-5">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading cars...</span>
+                    <div class="cw-listings-grid row g-3" id="carListingsGrid">
+                        <div class="col-12 text-center py-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading cars…</span>
+                            </div>
+                            <p class="mt-3 text-muted">Fetching available cars…</p>
                         </div>
-                        <p class="mt-3 text-muted">Loading available cars...</p>
                     </div>
+                </section>
+
+                <!-- No results -->
+                <div id="noCarsMessage" class="cw-empty-state d-none">
+                    <i class="fas fa-car-side"></i>
+                    <h4 id="noCarsTitle">No cars available at the moment</h4>
+                    <p id="noCarsCopy">Check back soon or submit your requirements!</p>
+                    <button class="cw-btn-primary" data-bs-toggle="modal" data-bs-target="#inquiryModal">
+                        Submit Requirements
+                    </button>
                 </div>
-            </section>
 
-            <div id="noCarsMessage" class="marketplace-empty-state text-center py-5 px-4 d-none mt-4">
-                <i class="fa fa-car fa-3x text-muted mb-3"></i>
-                <h4 class="text-muted" id="noCarsTitle">No cars available at the moment</h4>
-                <p class="text-muted mb-0" id="noCarsCopy">Check back soon or submit your requirements!</p>
-                <button class="btn btn-primary rounded-pill px-4 mt-4" data-bs-toggle="modal" data-bs-target="#inquiryModal">
-                    Submit Your Requirements
-                </button>
-            </div>
+                <!-- Need help CTA -->
+                <div class="cw-help-cta">
+                    <div class="cw-help-cta-icon"><i class="fas fa-headset"></i></div>
+                    <div class="cw-help-cta-copy">
+                        <h4>Can't find what you're looking for?</h4>
+                        <p>Tell us your requirements and our team will assist you personally.</p>
+                    </div>
+                    <button class="cw-btn-primary" data-bs-toggle="modal" data-bs-target="#inquiryModal">
+                        <i class="fas fa-search me-2"></i>Submit Requirements
+                    </button>
+                </div>
 
-            <div class="marketplace-inquiry-cta mt-4">
-                <span class="marketplace-section-kicker">Need Help</span>
-                <h3 class="h4 mb-2">Looking for something specific?</h3>
-                <p class="text-muted mb-4">Tell the team what you want and keep the manual assisted-buying flow active even when inventory filters do not match.</p>
-                <button class="btn btn-primary rounded-pill px-5" data-bs-toggle="modal" data-bs-target="#inquiryModal">
-                    <i class="fa fa-search me-2"></i>Tell Us What You Need
-                </button>
-            </div>
-
-            <section class="iw-monetization-zone" id="marketplaceMonetizationZone" aria-label="Recommended automotive offers"></section>
+                <section class="iw-monetization-zone" id="marketplaceMonetizationZone" aria-label="Recommended automotive offers"></section>
+            </main>
         </div>
     </div>
     <!-- Marketplace Content End -->
 
-    <!-- Footer Start -->
-    <div class="container-fluid text-light footer pt-4 pb-3 marketplace-site-footer">
-        <div class="container">
-            <div class="row align-items-center py-3 border-bottom" style="border-color: rgba(255,255,255,0.15) !important;">
-                <div class="col-lg-3 col-md-4 mb-3 mb-md-0">
-                    <span style="color: rgba(255,255,255,0.6); font-size: 14px;">Language:</span>
-                    <a href="#" class="text-white text-decoration-none ms-2" style="font-weight: 500; font-size: 14px;">English</a>
-                    <a href="#" class="text-decoration-none ms-2" style="color: rgba(255,255,255,0.6); font-size: 14px;">हिंदी</a>
+    <!-- Footer -->
+    <footer class="cw-footer">
+        <div class="cw-footer-inner">
+            <div class="cw-footer-top">
+                <div class="cw-footer-brand">
+                    <img src="../Images/brand_logo_new_1.png" alt="inspectionWale" style="height:36px;filter:brightness(0) invert(1);">
+                    <p>Mumbai's most trusted pre-purchase car inspection service. Independent, buyer-first, same-day reports.</p>
                 </div>
-                <div class="col-lg-9 col-md-8">
-                    <div class="d-flex flex-wrap justify-content-md-end justify-content-start gap-4">
-                        <a href="#" class="text-white text-decoration-none" style="font-size: 14px;">About Us</a>
-                        <a href="/careers.html" class="text-white text-decoration-none" style="font-size: 14px;">Careers</a>
-                        <a href="/terms.html" class="text-white text-decoration-none" style="font-size: 14px;">Terms & Conditions</a>
-                        <a href="#" class="text-white text-decoration-none" style="font-size: 14px;">Advertise</a>
+                <div class="cw-footer-links">
+                    <div>
+                        <strong>Company</strong>
+                        <a href="#">About Us</a>
+                        <a href="/careers.html">Careers</a>
+                        <a href="/terms.html">Terms & Conditions</a>
+                        <a href="#">Advertise With Us</a>
+                    </div>
+                    <div>
+                        <strong>Services</strong>
+                        <a href="/">Used Car Inspection</a>
+                        <a href="/">New Car Delivery Check</a>
+                        <a href="/car-marketplace/">Car Marketplace</a>
+                        <a href="/">Car Value Estimate</a>
+                    </div>
+                    <div>
+                        <strong>Connect</strong>
+                        <a href="#"><i class="fab fa-facebook-f me-2"></i>Facebook</a>
+                        <a href="#"><i class="fab fa-instagram me-2"></i>Instagram</a>
+                        <a href="#"><i class="fab fa-youtube me-2"></i>YouTube</a>
+                        <a href="#"><i class="fab fa-linkedin-in me-2"></i>LinkedIn</a>
                     </div>
                 </div>
             </div>
-
-            <div class="row py-3 border-bottom" style="border-color: rgba(255,255,255,0.15) !important;">
-                <div class="col-12">
-                    <div class="d-flex align-items-center">
-                        <span class="text-uppercase me-3" style="color: rgba(255,255,255,0.6); font-size: 11px; letter-spacing: 1px;">Connect With Us</span>
-                        <div class="d-flex gap-3">
-                            <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-youtube"></i></a>
-                            <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-instagram"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row pt-3">
-                <div class="col-md-6 text-md-start text-center mb-2 mb-md-0">
-                    <span style="color: rgba(255,255,255,0.5); font-size: 12px;">&copy; 2025 inspectionwale.com. All Rights Reserved.</span>
-                </div>
+            <div class="cw-footer-bottom">
+                <span>&copy; 2025 inspectionwale.com · All Rights Reserved</span>
+                <span>
+                    <a href="#">English</a> &nbsp;·&nbsp; <a href="#">हिंदी</a>
+                </span>
             </div>
         </div>
-    </div>
-    <!-- Footer End -->
+    </footer>
 
     <style>
         .iw-sleek-modal-shell {
@@ -4814,8 +5728,80 @@
         </div>
     </div>
 
+    <!-- Sidebar mobile overlay -->
+    <div class="cw-sidebar-overlay" id="cwSidebarOverlay"></div>
+
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+    <script>
+    // Mobile sidebar toggle
+    (function() {
+        const toggleBtn = document.getElementById('cwFilterToggle');
+        const sidebar   = document.getElementById('cwSidebar');
+        const overlay   = document.getElementById('cwSidebarOverlay');
+        const clearBtn  = document.getElementById('cwClearFilters');
+
+        if (toggleBtn && sidebar && overlay) {
+            toggleBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('is-open');
+                overlay.classList.toggle('is-open');
+            });
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('is-open');
+                overlay.classList.remove('is-open');
+            });
+        }
+
+        // Clear all filters
+        if (clearBtn) {
+            clearBtn.addEventListener('click', function() {
+                ['marketplacePrice','marketplaceBrand','marketplaceFuel','marketplaceCity','marketplaceSort'].forEach(function(id) {
+                    const el = document.getElementById(id);
+                    if (el) { el.value = id === 'marketplaceSort' ? 'recent' : ''; el.dispatchEvent(new Event('change')); }
+                });
+                // Reset radio buttons
+                document.querySelectorAll('input[name="cwFuelFilter"]').forEach(function(r,i) { r.checked = i === 0; });
+                // Clear category chips
+                document.querySelectorAll('.cw-cat-chip,.marketplace-category-card').forEach(function(c) { c.classList.remove('is-active'); });
+            });
+        }
+
+        // Sync cw-cat-chip clicks with marketplace-category-card data-attributes
+        document.querySelectorAll('.cw-cat-chip').forEach(function(chip) {
+            chip.addEventListener('click', function() {
+                // The JS listens on #marketplaceCategories, so delegate properly
+                var cat = chip.dataset.category;
+                var val = chip.dataset.value;
+                // Toggle active
+                var wasActive = chip.classList.contains('is-active');
+                document.querySelectorAll('.cw-cat-chip').forEach(function(c) { c.classList.remove('is-active'); });
+                if (!wasActive) chip.classList.add('is-active');
+                // Sync hidden select for fuel/budget category types
+                if (cat === 'fuel') {
+                    var fuelSel = document.getElementById('marketplaceFuel');
+                    if (fuelSel) { fuelSel.value = wasActive ? '' : val; fuelSel.dispatchEvent(new Event('change')); }
+                    document.querySelectorAll('input[name="cwFuelFilter"]').forEach(function(r) { r.checked = r.value === (wasActive ? '' : val); });
+                } else if (cat === 'budget') {
+                    var budgetSel = document.getElementById('marketplacePrice');
+                    if (budgetSel) { budgetSel.value = wasActive ? '' : val; budgetSel.dispatchEvent(new Event('change')); }
+                }
+            });
+        });
+
+        // Update hero stat when listings load
+        var observer = new MutationObserver(function() {
+            var countEl = document.getElementById('marketplaceResultsCount');
+            var heroStat = document.getElementById('heroStatListings');
+            if (countEl && heroStat) {
+                var match = countEl.textContent.match(/\d+/);
+                if (match) heroStat.textContent = match[0] + '+';
+            }
+        });
+        var countEl = document.getElementById('marketplaceResultsCount');
+        if (countEl) observer.observe(countEl, { childList: true, subtree: true, characterData: true });
+    })();
+    </script>
 
     <!-- JavaScript Libraries -->
     <script defer src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
