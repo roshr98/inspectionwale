@@ -941,7 +941,6 @@
             width: min(1280px, calc(100% - 40px)) !important;
             padding: 18px 0 !important;
             margin: 0 auto !important;
-            padding: 56px 0 !important;
         }
         .home-section-header {
             margin-bottom: 16px !important;
@@ -973,26 +972,26 @@
 
         /* ── 7. CTA BAND ───────────────────────────────────────── */
         .home-cta-band {
-            background: linear-gradient(135deg, #0b2154 0%, #0f3060 100%) !important;
-            border-radius: 16px !important;
-            padding: 22px 32px !important;
+            background: linear-gradient(135deg, #fff8f3 0%, #fef3ea 100%) !important;
+            border-radius: 14px !important;
+            padding: 20px 28px !important;
             display: flex !important;
             flex-direction: row !important;
             align-items: center !important;
             justify-content: space-between !important;
             gap: 24px !important;
-            border: none !important;
-            box-shadow: 0 4px 24px rgba(11,33,84,0.18) !important;
+            border: 1px solid rgba(232,82,10,0.18) !important;
+            box-shadow: 0 2px 16px rgba(232,82,10,0.07) !important;
         }
         .home-cta-band h3 {
-            color: #ffffff !important;
-            font-size: 1.2rem !important;
+            color: #0b2154 !important;
+            font-size: 1.15rem !important;
             font-weight: 800 !important;
             margin: 0 !important;
             white-space: nowrap !important;
         }
         .home-cta-band p {
-            color: rgba(255,255,255,0.75) !important;
+            color: rgba(70,84,111,0.84) !important;
             line-height: 1.65 !important;
             margin: 0 !important;
         }
@@ -1003,9 +1002,9 @@
             color: #fff !important;
         }
         .home-cta-band .home-btn-secondary {
-            background: rgba(255,255,255,0.12) !important;
-            border-color: rgba(255,255,255,0.3) !important;
-            color: #fff !important;
+            background: transparent !important;
+            border-color: rgba(11,33,84,0.25) !important;
+            color: #0b2154 !important;
         }
 
         /* ── 8. HOW IT WORKS ───────────────────────────────────── */
@@ -1812,6 +1811,154 @@
             .iw-checks-float-wrap { margin-top: -70px; padding: 0 3%; }
         }
 
+        /* ── COMPACT INFO BLOCK (How It Works + 3-col cards) ───── */
+        .iw-info-block {
+            padding-top: 20px !important;
+            padding-bottom: 24px !important;
+        }
+        .iw-block-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.13em;
+            text-transform: uppercase;
+            color: #e8520a;
+            margin-bottom: 12px;
+        }
+
+        /* Horizontal stepper */
+        .iw-stepper-row {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            background: #ffffff;
+            border: 1px solid rgba(20,33,61,0.08);
+            border-radius: 14px;
+            padding: 14px 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 10px rgba(20,33,61,0.05);
+        }
+        .iw-stepper-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+        .iw-stepper-num {
+            width: 30px;
+            height: 30px;
+            min-width: 30px;
+            border-radius: 8px;
+            background: rgba(232,82,10,0.1);
+            color: #e8520a;
+            font-size: 0.72rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .iw-stepper-text strong {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #0b2154;
+            line-height: 1.2;
+        }
+        .iw-stepper-text span {
+            display: block;
+            font-size: 0.68rem;
+            color: rgba(70,84,111,0.8);
+            line-height: 1.3;
+        }
+        .iw-stepper-arrow {
+            color: rgba(20,33,61,0.2);
+            font-size: 0.7rem;
+            padding: 0 10px;
+            flex-shrink: 0;
+        }
+
+        /* 3-col compact cards */
+        .iw-compact-cards-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+        .iw-compact-card {
+            background: #ffffff;
+            border: 1px solid rgba(20,33,61,0.08);
+            border-radius: 14px;
+            padding: 16px 18px;
+            box-shadow: 0 2px 10px rgba(20,33,61,0.05);
+        }
+        .iw-compact-card-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid rgba(20,33,61,0.07);
+        }
+        .iw-compact-icon {
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            border-radius: 9px;
+            background: rgba(232,82,10,0.1);
+            color: #e8520a;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .iw-compact-label {
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #e8520a;
+            line-height: 1;
+            margin-bottom: 3px;
+        }
+        .iw-compact-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #0b2154;
+            line-height: 1.2;
+        }
+        .iw-compact-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .iw-compact-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 0.78rem;
+            line-height: 1.4;
+            color: rgba(40,55,80,0.85);
+        }
+        .iw-compact-list li i {
+            color: #e8520a;
+            font-size: 0.7rem;
+            margin-top: 3px;
+            flex-shrink: 0;
+            width: 12px;
+        }
+        .iw-compact-list li strong {
+            color: #0b2154;
+        }
+        @media (max-width: 767.98px) {
+            .iw-stepper-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .iw-stepper-arrow { display: none; }
+            .iw-compact-cards-row { grid-template-columns: 1fr; }
+        }
+        @media (min-width: 768px) and (max-width: 991.98px) {
+            .iw-compact-cards-row { grid-template-columns: repeat(2, 1fr); }
+        }
+
         .home-band {
             position: relative;
             isolation: isolate;
@@ -2429,28 +2576,28 @@
         }
 
         .home-cta-band {
-            padding: 22px 32px;
+            padding: 20px 28px;
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
             gap: 24px;
-            background: linear-gradient(135deg, #0b2154 0%, #0f3060 100%);
-            border-radius: 16px;
-            border: none;
+            background: linear-gradient(135deg, #fff8f3 0%, #fef3ea 100%);
+            border-radius: 14px;
+            border: 1px solid rgba(232,82,10,0.18);
         }
 
         .home-cta-band h3 {
             margin: 0;
-            color: #ffffff;
-            font-size: 1.2rem;
+            color: #0b2154;
+            font-size: 1.15rem;
             font-weight: 800;
             white-space: nowrap;
         }
 
         .home-cta-band p {
             margin: 0;
-            color: rgba(255,255,255,0.75);
+            color: rgba(70,84,111,0.84);
             line-height: 1.7;
         }
         .home-cta-band .home-hero-actions {
@@ -2927,6 +3074,25 @@
         </div>
     </section>
 
+    <!-- CTA Band -->
+    <section class="home-section home-band home-band-light" style="padding-top:10px;padding-bottom:10px;">
+        <div class="home-cta-band">
+            <div>
+                <h3>Need an inspection or want to list a car today?</h3>
+            </div>
+            <div class="home-hero-actions mb-0">
+                <button type="button" class="home-btn-primary" data-bs-toggle="modal" data-bs-target="#newCarInspectionModal">
+                    <i class="fas fa-car"></i>
+                    <span>Book Inspection</span>
+                </button>
+                <button type="button" class="home-btn-secondary" data-bs-toggle="modal" data-bs-target="#listCarModal">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>List Your Car</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
     <!-- ═══ SERVICES WE PROVIDE ═══ -->
     <section class="iw-services-section home-band">
         <div class="iw-services-section-inner">
@@ -2953,149 +3119,100 @@
         </div>
     </section>
 
-    <!-- CTA Band -->
-    <section class="home-section home-band home-band-light" style="padding-top:10px;padding-bottom:10px;">
-        <div class="home-cta-band">
-            <div>
-                <h3>Need an inspection or want to list a car today?</h3>
+    <!-- ═══ HOW IT WORKS + SERVICES + WHY US — compact unified block ═══ -->
+    <section class="home-section home-band home-band-light iw-info-block" id="process">
+
+        <!-- How It Works — horizontal stepper -->
+        <div class="iw-block-label">How It Works</div>
+        <div class="iw-stepper-row">
+            <div class="iw-stepper-item">
+                <div class="iw-stepper-num">01</div>
+                <div class="iw-stepper-text">
+                    <strong>Share car details</strong>
+                    <span>Make, model, year &amp; seller context</span>
+                </div>
             </div>
-            <div class="home-hero-actions mb-0">
-                <button type="button" class="home-btn-primary" data-bs-toggle="modal" data-bs-target="#newCarInspectionModal">
-                    <i class="fas fa-car"></i>
-                    <span>Book New Car PDI</span>
-                </button>
-                <button type="button" class="home-btn-secondary" data-bs-toggle="modal" data-bs-target="#listCarModal">
-                    <i class="fas fa-plus-circle"></i>
-                    <span>Sell Your Car</span>
-                </button>
+            <div class="iw-stepper-arrow"><i class="fas fa-chevron-right"></i></div>
+            <div class="iw-stepper-item">
+                <div class="iw-stepper-num">02</div>
+                <div class="iw-stepper-text">
+                    <strong>Schedule inspection</strong>
+                    <span>Pick type &amp; confirm booking</span>
+                </div>
+            </div>
+            <div class="iw-stepper-arrow"><i class="fas fa-chevron-right"></i></div>
+            <div class="iw-stepper-item">
+                <div class="iw-stepper-num">03</div>
+                <div class="iw-stepper-text">
+                    <strong>Receive findings</strong>
+                    <span>Photos, notes &amp; same-day report</span>
+                </div>
+            </div>
+            <div class="iw-stepper-arrow"><i class="fas fa-chevron-right"></i></div>
+            <div class="iw-stepper-item">
+                <div class="iw-stepper-num">04</div>
+                <div class="iw-stepper-text">
+                    <strong>Act with confidence</strong>
+                    <span>Buy, negotiate or walk away</span>
+                </div>
             </div>
         </div>
+
+        <!-- Services + What's Reported + Why Us — 3-col compact cards -->
+        <div class="iw-compact-cards-row" id="services">
+            <!-- Services -->
+            <div class="iw-compact-card">
+                <div class="iw-compact-card-head">
+                    <span class="iw-compact-icon"><i class="fas fa-clipboard-list"></i></span>
+                    <div>
+                        <div class="iw-compact-label">Services</div>
+                        <div class="iw-compact-title">What we inspect</div>
+                    </div>
+                </div>
+                <ul class="iw-compact-list">
+                    <li><i class="fas fa-car-crash"></i><span><strong>Used Car Inspection</strong> — body, engine, paint &amp; road test</span></li>
+                    <li><i class="fas fa-shield-alt"></i><span><strong>New Car PDI</strong> — transit damage &amp; feature verification</span></li>
+                    <li><i class="fas fa-store"></i><span><strong>Verified Marketplace</strong> — list, reserve or buy with confidence</span></li>
+                </ul>
+            </div>
+
+            <!-- What Gets Reported -->
+            <div class="iw-compact-card">
+                <div class="iw-compact-card-head">
+                    <span class="iw-compact-icon"><i class="fas fa-file-alt"></i></span>
+                    <div>
+                        <div class="iw-compact-label">Report Contents</div>
+                        <div class="iw-compact-title">What gets reported</div>
+                    </div>
+                </div>
+                <ul class="iw-compact-list">
+                    <li><i class="fas fa-search"></i><span><strong>Condition snapshot</strong> — panels, paint, structure &amp; electricals</span></li>
+                    <li><i class="fas fa-tools"></i><span><strong>Repair risk</strong> — hidden fixes &amp; upcoming cost flags</span></li>
+                    <li><i class="fas fa-comments-dollar"></i><span><strong>Negotiation edge</strong> — documented issues to push back on price</span></li>
+                </ul>
+            </div>
+
+            <!-- Why InspectionWale -->
+            <div class="iw-compact-card">
+                <div class="iw-compact-card-head">
+                    <span class="iw-compact-icon"><i class="fas fa-bolt"></i></span>
+                    <div>
+                        <div class="iw-compact-label">Why Us</div>
+                        <div class="iw-compact-title">Why buyers choose us</div>
+                    </div>
+                </div>
+                <ul class="iw-compact-list">
+                    <li><i class="fas fa-car-side"></i><span><strong>Delivery check</strong> — catch showroom issues before handover</span></li>
+                    <li><i class="fas fa-eye"></i><span><strong>History flags</strong> — spot repaint, accident or flood signs</span></li>
+                    <li><i class="fas fa-user-check"></i><span><strong>Buyer-first</strong> — independent, not dealer-driven</span></li>
+                </ul>
+            </div>
+        </div>
+
     </section>
 
-    <section class="home-section home-band home-band-light" id="process">
-        <div class="home-section-header">
-            <div>
-                <span>How It Works</span>
-                <h2>A short path from inquiry to report.</h2>
-            </div>
-
-        </div>
-
-        <div class="home-steps-grid">
-            <article class="home-step">
-                <span class="home-step-number">01</span>
-                <h3>Share car details</h3>
-                <p>Tell us the make, model, registration year, seller context, and whether it is a used-car purchase or new-car delivery check.</p>
-            </article>
-            <article class="home-step">
-                <span class="home-step-number">02</span>
-                <h3>Schedule the inspection</h3>
-                <p>Pick the inspection type and submit through the live booking flow already wired into the page.</p>
-            </article>
-            <article class="home-step">
-                <span class="home-step-number">03</span>
-                <h3>Receive findings fast</h3>
-                <p>Get photos, issue notes, and actionable insight quickly enough to support a live negotiation or delivery decision.</p>
-            </article>
-            <article class="home-step">
-                <span class="home-step-number">04</span>
-                <h3>Act with confidence</h3>
-                <p>Proceed, negotiate, reserve, or reject the deal based on condition instead of pressure or guesswork.</p>
-            </article>
-        </div>
-    </section>
-
-    <section class="home-section home-band home-band-warm" id="services">
-        <div class="home-section-header">
-            <div>
-                <span>Services</span>
-                <h2>Inspection-first services for buyers, sellers, and cautious deliveries.</h2>
-            </div>
-        </div>
-
-        <div class="home-services-grid">
-            <article class="home-service-card">
-                <i class="fas fa-car-crash"></i>
-                <h3>Used Car Inspection</h3>
-                <p>Independent inspection before purchase with usable findings for negotiation.</p>
-                <ul>
-                    <li>Body, paint and accident checks</li>
-                    <li>Engine, suspension and road test review</li>
-                    <li>Same-day summary for negotiation</li>
-                </ul>
-            </article>
-
-            <article class="home-service-card">
-                <i class="fas fa-shield-alt"></i>
-                <h3>New Car Delivery Check</h3>
-                <p>Pre-delivery validation before you accept a showroom handover.</p>
-                <ul>
-                    <li>Transit damage and repaint detection</li>
-                    <li>Feature verification and software checks</li>
-                    <li>Dealer handover confidence</li>
-                </ul>
-            </article>
-
-            <article class="home-service-card">
-                <i class="fas fa-store"></i>
-                <h3>Verified Used Car Access</h3>
-                <p>Browse, reserve, or list cars through the verified marketplace flow.</p>
-                <ul>
-                    <li>Customer listing submission flow</li>
-                    <li>Reserve and test-drive requests</li>
-                    <li>Condition-led discovery</li>
-                </ul>
-            </article>
-        </div>
-    </section>
-
-    <section class="home-section home-band home-band-light">
+    <section class="home-section home-band home-band-light" style="display:none">
         <div class="home-story-grid">
-            <article class="home-story-card">
-                <i class="fas fa-clipboard-check"></i>
-                <h3>What gets reported</h3>
-                <p>Reports focus on the decisions that matter before you commit to the car.</p>
-                <div class="home-story-icon-grid">
-                    <div class="home-story-icon-item">
-                        <i class="fas fa-search"></i>
-                        <strong>Condition snapshot</strong>
-                        <span>Panels, paint, structure, interior, electronics and road behavior.</span>
-                    </div>
-                    <div class="home-story-icon-item">
-                        <i class="fas fa-tools"></i>
-                        <strong>Repair risk</strong>
-                        <span>Visible damage, hidden fixes, and issues likely to cost money next.</span>
-                    </div>
-                    <div class="home-story-icon-item">
-                        <i class="fas fa-comments-dollar"></i>
-                        <strong>Negotiation edge</strong>
-                        <span>Use documented findings to push back on inflated asking prices.</span>
-                    </div>
-                </div>
-            </article>
-
-            <article class="home-story-card">
-                <i class="fas fa-bolt"></i>
-                <h3>Why buyers use inspectionWale</h3>
-                <p>Independent inspection replaces seller claims with evidence you can act on immediately.</p>
-                <div class="home-story-icon-grid">
-                    <div class="home-story-icon-item">
-                        <i class="fas fa-car-side"></i>
-                        <strong>Delivery check</strong>
-                        <span>Catch transit or showroom issues before handover.</span>
-                    </div>
-                    <div class="home-story-icon-item">
-                        <i class="fas fa-shield-alt"></i>
-                        <strong>History flags</strong>
-                        <span>Spot repaint, accident, flood signs or missing features.</span>
-                    </div>
-                    <div class="home-story-icon-item">
-                        <i class="fas fa-bolt"></i>
-                        <strong>Decide faster</strong>
-                        <span>Move on a good car without guesswork.</span>
-                    </div>
-                </div>
-            </article>
         </div>
     </section>
 
