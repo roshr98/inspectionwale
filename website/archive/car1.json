@@ -1,0 +1,64 @@
+{
+  "listingId": {"S": "placeholder-001"},
+  "status": {"S": "approved"},
+  "isPlaceholder": {"BOOL": true},
+  "createdAt": {"S": "2025-01-15T12:00:00.000Z"},
+  "updatedAt": {"S": "2025-01-15T12:01:00.000Z"},
+  "seller": {
+    "M": {
+      "name": {"S": "Inpectionwale Team"},
+      "email": {"S": "info@inpectionwale.com"},
+      "mobile": {"S": "+91-9876543210"}
+    }
+  },
+  "car": {
+    "M": {
+      "make": {"S": "Tata"},
+      "model": {"S": "Altroz"},
+      "edition": {"S": "XZ Plus"},
+      "registrationYear": {"S": "2021"},
+      "kmsDriven": {"S": "32000"},
+      "expectedPrice": {"S": "750000"}
+    }
+  },
+  "photos": {
+    "M": {
+      "exteriorFront": {
+        "M": {
+          "key": {"S": "Images/Car-3.jpg"},
+          "publicUrl": {"S": "Images/Car-3.jpg"}
+        }
+      },
+      "exteriorBack": {
+        "M": {
+          "key": {"S": "Images/Car-3.jpg"},
+          "publicUrl": {"S": "Images/Car-3.jpg"}
+        }
+      },
+      "exteriorLeft": {
+        "M": {
+          "key": {"S": "Images/Car-3.jpg"},
+          "publicUrl": {"S": "Images/Car-3.jpg"}
+        }
+      },
+      "exteriorRight": {
+        "M": {
+          "key": {"S": "Images/Car-3.jpg"},
+          "publicUrl": {"S": "Images/Car-3.jpg"}
+        }
+      },
+      "interiorSeat": {
+        "M": {
+          "key": {"S": "Images/Car-3.jpg"},
+          "publicUrl": {"S": "Images/Car-3.jpg"}
+        }
+      },
+      "interiorCluster": {
+        "M": {
+          "key": {"S": "Images/Car-3.jpg"},
+          "publicUrl": {"S": "Images/Car-3.jpg"}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,253 @@
+{
+  "report": {
+    "title": "Vehicle Inspection Report",
+    "tagline": "The Hassle-Free Car Buying Experience.",
+    "subtagline": "Repair Estimate | Price Advice Neutral | Uncomplicated | Comprehensive"
+  },
+
+  "inspection": {
+    "id": "",
+    "date": "",
+    "location": "",
+    "inspector_name": ""
+  },
+
+  "vehicle": {
+    "registration_number": "",
+    "manufacturing_date": "",
+    "chassis_number": "",
+    "engine_number": "",
+    "registration_date": "",
+    "insurance_validity": "",
+    "owner_name": "",
+    "make_model": "",
+    "variant": "",
+    "fuel_type": "",
+    "owner_count": "",
+    "rc_type": "",
+    "hypothecation": "",
+    "cng": {
+      "present": "",
+      "type": "",
+      "validity": "",
+      "endorsed": ""
+    }
+  },
+
+  "ratings": {
+    "interior": "",
+    "exterior": "",
+    "engine": "",
+    "test_drive": "",
+    "structure": "",
+    "electrical": ""
+  },
+
+  "flags": {
+    "accidental": "",
+    "flood_damage": "",
+    "fire_damage": "",
+    "rc_chassis_match": "",
+    "service_logs_available": "",
+    "has_cng": "",
+    "has_hypothecation": ""
+  },
+
+  "comments": {
+    "engine": "",
+    "structure": "",
+    "test_drive": "",
+    "exterior": "",
+    "interior": "",
+    "interior_additional": ""
+  },
+
+  "front": {
+    "bumper_condition": "",
+    "bumper_repainted": "",
+    "bumper_paint_depth": "",
+    "bonnet_condition": "",
+    "bonnet_repainted": "",
+    "bonnet_paint_depth": "",
+    "bonnet_company_fitted": "",
+    "grill_condition": "",
+    "windshield_original": "",
+    "windshield_condition": "",
+    "headlight_condition": ""
+  },
+
+  "rhs": {
+    "fender_condition": "",
+    "fender_repainted": "",
+    "fender_paint_depth": "",
+    "front_door_condition": "",
+    "front_door_repainted": "",
+    "front_door_paint_depth": "",
+    "front_door_company_fitted": "",
+    "rear_door_condition": "",
+    "rear_door_repainted": "",
+    "rear_door_paint_depth": "",
+    "rear_door_company_fitted": "",
+    "quarter_panel_condition": "",
+    "quarter_panel_repainted": "",
+    "quarter_panel_paint_depth": "",
+    "window_glass_original": "",
+    "side_mirror_condition": ""
+  },
+
+  "lhs": {
+    "fender_condition": "",
+    "front_door_condition": "",
+    "rear_door_condition": "",
+    "quarter_panel_condition": "",
+    "window_glass_original": "",
+    "side_mirror_condition": ""
+  },
+
+  "rear": {
+    "bumper_condition": "",
+    "bumper_repainted": "",
+    "bumper_paint_depth": "",
+    "windshield_condition": "",
+    "windshield_original": "",
+    "tailgate_condition": "",
+    "tailgate_repainted": "",
+    "tailgate_paint_depth": "",
+    "tailgate_original": "",
+    "tail_lights_condition": ""
+  },
+
+  "roof": {
+    "condition": "",
+    "type": "",
+    "paint_depth": "",
+    "repainted": ""
+  },
+
+  "interior": {
+    "mil_light": "",
+    "dashboard_condition": "",
+    "music_system": "",
+    "steering_controls": "",
+    "paddle_shifters": "",
+    "hand_brake": "",
+    "speakers": "",
+    "ac_vents": "",
+    "ac_working": "",
+    "steering_type": "",
+    "cruise_control": "",
+    "navigation": "",
+    "glove_box": "",
+    "cabin_lights": "",
+    "headlights": "",
+    "wipers": "",
+    "trip_switch": "",
+    "boot_lever": "",
+    "central_lock": "",
+    "rear_wiper": "",
+    "rear_view_mirror": "",
+    "bonnet_lever": "",
+    "side_mirror_adjustment": "",
+    "fuel_lid_lever": "",
+    "power_windows": ""
+  },
+
+  "seats": {
+    "front_condition": "",
+    "adjustment_type": "",
+    "adjustment_working": "",
+    "seat_belts": ""
+  },
+
+  "rear_seats": {
+    "condition": "",
+    "arm_rest": "",
+    "ac_vent": "",
+    "rhs_panel": "",
+    "lhs_panel": ""
+  },
+
+  "boot": {
+    "condition": "",
+    "jack_available": ""
+  },
+
+  "engine": {
+    "oil_leak": "",
+    "battery_condition": "",
+    "hose_pipes": "",
+    "oil_condition": "",
+    "wiring": "",
+    "mounting": "",
+    "brake_oil_level": "",
+    "coolant_level": "",
+    "belts": "",
+    "firewall_rust": "",
+    "estimated_repair_cost": ""
+  },
+
+  "tyres": {
+    "rhs_front": { "brand": "", "wheel_type": "", "remaining_life": "", "estimated_cost": "" },
+    "rhs_rear": { "brand": "", "wheel_type": "", "remaining_life": "", "estimated_cost": "" },
+    "lhs_front": { "brand": "", "wheel_type": "", "remaining_life": "", "estimated_cost": "" },
+    "lhs_rear": { "brand": "", "wheel_type": "", "remaining_life": "", "estimated_cost": "" },
+    "spare": { "brand": "", "wheel_type": "", "remaining_life": "", "estimated_cost": "" }
+  },
+
+  "structure": {
+    "upper_member": "",
+    "lhs_apron": "",
+    "rhs_apron": "",
+    "a_pillar_lhs": "",
+    "a_pillar_rhs": "",
+    "b_pillar_lhs": "",
+    "b_pillar_rhs": "",
+    "c_pillar_lhs": "",
+    "c_pillar_rhs": "",
+    "fender_wall_lhs": "",
+    "fender_wall_rhs": "",
+    "cross_member": "",
+    "lower_member": "",
+    "dicky_tub": "",
+    "tailgate_frame": ""
+  },
+
+  "performance": {
+    "steering": "",
+    "alignment": "",
+    "ignition": "",
+    "clutch": "",
+    "brakes": "",
+    "gear_shift": "",
+    "acceleration": "",
+    "cng_mode": "",
+    "suspension": "",
+    "engine_noise": "",
+    "wheel_alignment": "",
+    "estimated_repair_cost": ""
+  },
+
+  "images": {
+    "rhs_apron": "",
+    "lhs_apron": "",
+    "chassis_plate": "",
+    "cng_plate": "",
+    "vehicle_front": "",
+    "vehicle_rhs": "",
+    "vehicle_lhs": "",
+    "vehicle_rear": "",
+    "dashboard": "",
+    "cluster_meter": "",
+    "driver_cabin": "",
+    "rear_cabin": "",
+    "boot_space": "",
+    "engine_compartment": "",
+    "firewall": "",
+    "battery": "",
+    "tyre_rhs_front": "",
+    "tyre_rhs_rear": "",
+    "tyre_lhs_front": "",
+    "tyre_lhs_rear": "",
+    "spare_tyre": ""
+  }
+}

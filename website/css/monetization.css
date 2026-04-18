@@ -1,0 +1,408 @@
+:root {
+    --iw-mon-surface: rgba(255, 255, 255, 0.82);
+    --iw-mon-surface-strong: rgba(255, 255, 255, 0.94);
+    --iw-mon-line: rgba(17, 24, 39, 0.08);
+    --iw-mon-shadow: 0 20px 44px rgba(15, 23, 42, 0.08);
+    --iw-mon-shadow-lg: 0 26px 60px rgba(15, 23, 42, 0.1);
+    --iw-mon-ink: #14213d;
+    --iw-mon-ink-soft: rgba(20, 33, 61, 0.7);
+    --iw-mon-accent: #167c74;
+    --iw-mon-accent-strong: #24448d;
+    --iw-mon-accent-warm: #d86f45;
+}
+
+.iw-monetization-zone {
+    width: min(1180px, calc(100% - 24px));
+    margin: 36px auto 0;
+}
+
+.iw-ad-banner,
+.iw-recommendation-widget,
+.iw-inline-recommendation,
+.iw-prefooter-revenue-section {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--iw-mon-line);
+    border-radius: 28px;
+    background: var(--iw-mon-surface);
+    box-shadow: var(--iw-mon-shadow);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.iw-ad-banner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+    gap: 18px;
+    padding: 24px 24px 22px;
+}
+
+.iw-ad-banner::before,
+.iw-recommendation-widget::before,
+.iw-inline-recommendation::before,
+.iw-prefooter-revenue-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at top left, rgba(216, 111, 69, 0.08), transparent 26%),
+        radial-gradient(circle at top right, rgba(22, 124, 116, 0.08), transparent 22%);
+    pointer-events: none;
+}
+
+.iw-ad-banner > *,
+.iw-recommendation-widget > *,
+.iw-inline-recommendation > *,
+.iw-prefooter-revenue-section > * {
+    position: relative;
+    z-index: 1;
+}
+
+.iw-sponsored-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 30px;
+    padding: 0 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(36, 68, 141, 0.12);
+    background: rgba(36, 68, 141, 0.08);
+    color: var(--iw-mon-accent-strong);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.iw-ad-banner-copy {
+    display: grid;
+    gap: 10px;
+    align-content: start;
+}
+
+.iw-ad-banner-copy h3,
+.iw-widget-head h3,
+.iw-revenue-column h3 {
+    margin: 0;
+    color: var(--iw-mon-ink);
+    font-size: clamp(1.2rem, 2vw, 1.7rem);
+    font-weight: 800;
+    line-height: 1.08;
+}
+
+.iw-ad-banner-copy p,
+.iw-widget-head p,
+.iw-revenue-column p,
+.iw-recommendation-offer p,
+.iw-inline-recommendation p {
+    margin: 0;
+    color: var(--iw-mon-ink-soft);
+    line-height: 1.65;
+}
+
+.iw-ad-banner-actions,
+.iw-recommendation-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.iw-affiliate-btn,
+.iw-affiliate-link,
+.iw-inline-recommendation a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0 18px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.iw-affiliate-btn {
+    background: linear-gradient(135deg, var(--iw-mon-accent-strong), #3c75e0);
+    color: #fff;
+    box-shadow: 0 14px 28px rgba(36, 68, 141, 0.18);
+}
+
+.iw-affiliate-btn:hover,
+.iw-affiliate-link:hover,
+.iw-inline-recommendation a:hover {
+    transform: translateY(-1px);
+}
+
+.iw-affiliate-link {
+    background: rgba(255, 255, 255, 0.72);
+    border-color: var(--iw-mon-line);
+    color: var(--iw-mon-ink);
+}
+
+.iw-adsense-shell {
+    min-height: 132px;
+    border-radius: 22px;
+    border: 1px dashed rgba(36, 68, 141, 0.18);
+    background: rgba(255, 255, 255, 0.68);
+    padding: 12px;
+}
+
+.iw-adsense-slot {
+    display: block;
+    width: 100%;
+    min-height: 108px;
+}
+
+.iw-recommendation-widget {
+    padding: 24px;
+}
+
+.iw-widget-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.iw-widget-kicker,
+.iw-revenue-kicker {
+    display: inline-block;
+    margin-bottom: 8px;
+    color: var(--iw-mon-accent-strong);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.iw-recommendation-grid,
+.iw-revenue-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.iw-recommendation-offer,
+.iw-revenue-column {
+    display: grid;
+    gap: 12px;
+    align-content: start;
+    padding: 18px;
+    border-radius: 22px;
+    border: 1px solid var(--iw-mon-line);
+    background: var(--iw-mon-surface-strong);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+.iw-recommendation-offer-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--iw-mon-accent);
+    background: rgba(22, 124, 116, 0.1);
+    font-size: 1rem;
+}
+
+.iw-recommendation-offer h4,
+.iw-revenue-column h4 {
+    margin: 0;
+    color: var(--iw-mon-ink);
+    font-size: 1.02rem;
+    font-weight: 800;
+}
+
+.iw-inline-recommendation {
+    margin-top: 14px;
+    padding: 18px 18px 16px;
+}
+
+.iw-inline-recommendation .iw-recommendation-actions {
+    margin-top: 12px;
+}
+
+.iw-post-submit-host {
+    display: grid;
+    gap: 12px;
+}
+
+.iw-prefooter-revenue-section {
+    padding: 24px;
+}
+
+.iw-prefooter-revenue-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
+    gap: 18px;
+    align-items: start;
+}
+
+.iw-native-ad-card {
+    position: relative;
+}
+
+.iw-native-ad-card .iw-sponsored-badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 3;
+}
+
+.iw-native-ad-card .car-card-img-wrapper {
+    display: flex;
+    align-items: end;
+    justify-content: start;
+    min-height: 188px;
+    padding: 18px;
+    background:
+        linear-gradient(180deg, rgba(9, 19, 42, 0.18), rgba(9, 19, 42, 0.5)),
+        linear-gradient(135deg, rgba(22, 124, 116, 0.52), rgba(36, 68, 141, 0.7));
+}
+
+.iw-native-ad-media {
+    display: grid;
+    gap: 10px;
+}
+
+.iw-native-ad-media i {
+    display: inline-flex;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.18);
+    color: #fff;
+}
+
+.iw-native-ad-copy {
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+.iw-native-ad-card .car-title,
+.iw-native-ad-card .car-price {
+    color: var(--iw-mon-ink);
+}
+
+.iw-native-ad-card .car-price {
+    color: var(--iw-mon-accent-strong);
+}
+
+.iw-native-ad-card .iw-affiliate-btn {
+    min-height: 42px;
+    padding: 0 16px;
+    font-size: 0.86rem;
+}
+
+.iw-sticky-bottom-ad {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    z-index: 1080;
+    display: none;
+    border-radius: 22px;
+    border: 1px solid var(--iw-mon-line);
+    background: rgba(9, 19, 42, 0.9);
+    box-shadow: var(--iw-mon-shadow-lg);
+    color: #fff;
+    overflow: hidden;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.iw-sticky-bottom-ad.is-visible {
+    display: grid;
+}
+
+.iw-sticky-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    padding: 14px 16px;
+    align-items: center;
+}
+
+.iw-sticky-copy {
+    display: grid;
+    gap: 4px;
+}
+
+.iw-sticky-copy strong {
+    font-size: 0.98rem;
+}
+
+.iw-sticky-copy span {
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 0.85rem;
+}
+
+.iw-sticky-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.iw-sticky-dismiss {
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.iw-sticky-bottom-ad .iw-affiliate-btn {
+    min-height: 40px;
+    padding: 0 16px;
+    box-shadow: none;
+}
+
+@media (max-width: 991.98px) {
+    .iw-ad-banner,
+    .iw-prefooter-revenue-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .iw-recommendation-grid,
+    .iw-revenue-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .iw-monetization-zone {
+        width: min(100% - 20px, 1180px);
+        margin-top: 28px;
+    }
+
+    .iw-ad-banner,
+    .iw-recommendation-widget,
+    .iw-inline-recommendation,
+    .iw-prefooter-revenue-section {
+        border-radius: 22px;
+    }
+
+    .iw-ad-banner,
+    .iw-recommendation-widget,
+    .iw-prefooter-revenue-section {
+        padding: 18px;
+    }
+
+    .iw-recommendation-grid,
+    .iw-revenue-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .iw-sticky-bottom-ad.is-visible {
+        display: grid;
+    }
+}
