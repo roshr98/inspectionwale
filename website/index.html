@@ -935,11 +935,12 @@
         /* ── 6. SECTION WRAPPERS ───────────────────────────────── */
         .home-section {
             width: min(1280px, calc(100% - 40px)) !important;
+            padding: 18px 0 !important;
             margin: 0 auto !important;
             padding: 56px 0 !important;
         }
         .home-section-header {
-            margin-bottom: 36px !important;
+            margin-bottom: 16px !important;
         }
         .home-section-header span {
             color: var(--iw-orange) !important;
@@ -970,20 +971,18 @@
         .home-cta-band {
             background: transparent !important;
             border-radius: 0 !important;
-            padding: 20px 4px 22px !important;
+            padding: 18px 4px !important;
             display: flex !important;
-            flex-direction: column !important;
-            align-items: flex-start !important;
-            justify-content: flex-start !important;
-            gap: 14px !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 20px !important;
             border: none !important;
             box-shadow: none !important;
-            border-top: 1px solid rgba(20,33,61,0.08) !important;
-            border-bottom: 1px solid rgba(20,33,61,0.08) !important;
         }
         .home-cta-band h3 {
             color: var(--home-ink, #14213d) !important;
-            font-size: 1.35rem !important;
+            font-size: 1.25rem !important;
             font-weight: 800 !important;
             margin: 0 !important;
             white-space: nowrap !important;
@@ -993,7 +992,7 @@
             line-height: 1.65 !important;
             margin: 0 !important;
         }
-        .home-cta-band .home-hero-actions { margin-bottom: 0 !important; width: 100% !important; }
+        .home-cta-band .home-hero-actions { margin-bottom: 0 !important; flex-shrink: 0 !important; }
         .home-cta-band .home-btn-secondary {
             border-color: rgba(20,33,61,0.2) !important;
         }
@@ -1200,7 +1199,7 @@
         /* ── 11. FEATURED CARS SECTION (homepage slider) ────────── */
         .iw-featured-section {
             background: #f4f6fb !important;
-            padding: 28px 0 40px !important;
+            padding: 20px 0 24px !important;
         }
         .iw-featured-section .container { max-width: 1320px !important; }
         #marketplace { background: #f4f6fb !important; }
@@ -1575,7 +1574,7 @@
         .iw-checks-float-wrap {
             position: relative;
             z-index: 10;
-            margin-top: -50px;
+            margin-top: -72px;
             padding: 0 7%;
             background: transparent;
         }
@@ -1583,18 +1582,18 @@
             max-width: 1080px;
             margin: 0 auto;
             background: #ffffff;
-            border-radius: 18px;
-            box-shadow: 0 8px 40px rgba(20,33,61,0.16), 0 1px 4px rgba(20,33,61,0.06);
-            padding: 18px 28px 16px;
+            border-radius: 14px;
+            box-shadow: 0 8px 40px rgba(20,33,61,0.18), 0 1px 4px rgba(20,33,61,0.06);
+            padding: 10px 22px 8px;
             border: 1px solid rgba(20,33,61,0.07);
         }
         .iw-checks-header-row {
             display: flex;
             align-items: center;
             gap: 0;
-            margin-bottom: 13px;
+            margin-bottom: 7px;
             flex-wrap: wrap;
-            row-gap: 4px;
+            row-gap: 3px;
         }
         /* All three labels share identical style */
         .iw-checks-label {
@@ -1649,8 +1648,8 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            gap: 5px;
-            padding: 8px 4px;
+            gap: 3px;
+            padding: 6px 4px;
             border-radius: 0;
             background: transparent;
             border: none;
@@ -1663,19 +1662,19 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 32px;
-            height: 32px;
-            min-width: 32px;
+            width: 22px;
+            height: 22px;
+            min-width: 22px;
             flex-shrink: 0;
             color: #e8520a;
         }
         .iw-check-icon i {
-            font-size: 1rem;
+            font-size: 0.72rem;
             line-height: 1;
             color: #e8520a;
         }
         .iw-check-label {
-            font-size: 0.7rem;
+            font-size: 0.62rem;
             font-weight: 600;
             color: #14213d;
             line-height: 1.2;
@@ -1685,7 +1684,7 @@
 
         /* ── SERVICES WE PROVIDE (below featured cars) ─────────── */
         .iw-services-section {
-            padding: 32px 0 8px;
+            padding: 18px 0 8px;
         }
         .iw-services-section-inner {
             max-width: 1080px;
@@ -1769,16 +1768,16 @@
 
         /* Responsive */
         @media (max-width: 991.98px) {
-            .iw-checks-float-wrap { margin-top: -44px; padding: 0 5%; }
-            .iw-checks-card { padding: 14px 20px 12px; }
+            .iw-checks-float-wrap { margin-top: -52px; padding: 0 5%; }
+            .iw-checks-card { padding: 8px 16px 7px; }
             .iw-services-section-inner { padding: 0 5%; }
         }
         @media (max-width: 767.98px) {
             .iw-checks-float-wrap { margin-top: -36px; padding: 0 3%; }
-            .iw-checks-card { padding: 12px 14px 10px; border-radius: 14px; }
-            .iw-check-item { padding: 7px 4px; }
-            .iw-check-icon { width: 26px; height: 26px; }
-            .iw-check-icon i { font-size: 0.82rem; }
+            .iw-checks-card { padding: 7px 10px 6px; border-radius: 12px; }
+            .iw-check-item { padding: 5px 3px; }
+            .iw-check-icon { width: 20px; height: 20px; }
+            .iw-check-icon i { font-size: 0.65rem; }
             .iw-check-label { font-size: 0.62rem; }
             .iw-services-mini-row {
                 flex-direction: column;
@@ -1793,9 +1792,9 @@
             .iw-services-section-inner { padding: 0 3%; }
         }
         @media (max-width: 575.98px) {
-            .iw-checks-grid { gap: 6px 4px; }
+            .iw-checks-grid { gap: 0; }
             .home-hero-card { padding-bottom: 72px !important; }
-            .iw-checks-float-wrap { margin-top: -28px; padding: 0 3%; }
+            .iw-checks-float-wrap { margin-top: -24px; padding: 0 3%; }
         }
 
         .home-band {
@@ -2066,7 +2065,7 @@
         .home-section {
             width: min(1180px, calc(100% - 24px));
             margin: 0 auto;
-            padding: 28px 0;
+            padding: 18px 0;
         }
 
         .home-section-header {
@@ -2074,8 +2073,8 @@
             flex-wrap: wrap;
             align-items: end;
             justify-content: space-between;
-            gap: 18px;
-            margin-bottom: 24px;
+            gap: 12px;
+            margin-bottom: 16px;
         }
 
         .home-section-header span {
@@ -2424,20 +2423,20 @@
         }
 
         .home-cta-band {
-            padding: 20px 4px 22px;
+            padding: 18px 4px;
             display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 14px;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
             background: transparent;
-            border-top: 1px solid rgba(20, 33, 61, 0.08);
-            border-bottom: 1px solid rgba(20, 33, 61, 0.08);
+            border: none;
         }
 
         .home-cta-band h3 {
             margin: 0;
             color: var(--home-ink);
-            font-size: 1.35rem;
+            font-size: 1.25rem;
             font-weight: 800;
             white-space: nowrap;
         }
@@ -2448,7 +2447,7 @@
             line-height: 1.7;
         }
         .home-cta-band .home-hero-actions {
-            width: 100%;
+            flex-shrink: 0;
         }
 
         @media (max-width: 991.98px) {
@@ -2494,7 +2493,9 @@
             .home-cta-band {
                 flex-direction: column;
                 align-items: flex-start;
+                gap: 12px;
             }
+            .home-cta-band .home-hero-actions { flex-shrink: initial; }
         }
 
         @media (max-width: 767.98px) {
@@ -2847,8 +2848,7 @@
         <div class="container">
             <div class="d-flex align-items-center justify-content-between mb-3 home-marketplace-header">
                 <div>
-                    <span style="display:block; margin-bottom:6px; color:#b95730; font-size:0.8rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;">Featured Cars</span>
-                    <h2 class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #0B2154; font-weight: 700;">Verified used cars ready for the next step</h2>
+                    <span style="display:block; color:#b95730; font-size:0.8rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;">Featured Cars</span>
                 </div>
                 <button type="button" class="btn sell-car-btn home-marketplace-sell" data-bs-toggle="modal" data-bs-target="#listCarModal">
                     Sell Your Car <span class="sell-car-dot">•</span>
@@ -2912,7 +2912,7 @@
             </div>
             
             <!-- View More Button -->
-            <div class="text-center mt-4">
+            <div class="text-center mt-3">
                 <a href="car-marketplace/index.html" id="viewMoreUsedCarsBtn" class="btn view-more-btn" onclick="navigateToMarketplaceWithFilter(event)">
                     View More <i class="fas fa-chevron-right ms-2"></i>
                 </a>
