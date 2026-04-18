@@ -1581,151 +1581,181 @@
         .iw-checks-float-wrap {
             position: relative;
             z-index: 10;
-            margin-top: -46px;
-            padding: 0 6%;
+            margin-top: -50px;
+            padding: 0 7%;
             background: transparent;
         }
         .iw-checks-card {
-            max-width: 1100px;
+            max-width: 1080px;
             margin: 0 auto;
             background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 6px 32px rgba(20, 33, 61, 0.14), 0 2px 6px rgba(20, 33, 61, 0.07);
-            padding: 12px 20px 10px;
-            border: 1px solid rgba(20, 33, 61, 0.08);
+            border-radius: 18px;
+            box-shadow: 0 8px 40px rgba(20,33,61,0.16), 0 1px 4px rgba(20,33,61,0.06);
+            padding: 18px 28px 16px;
+            border: 1px solid rgba(20,33,61,0.07);
         }
         .iw-checks-header-row {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 9px;
+            gap: 10px;
+            margin-bottom: 14px;
         }
         .iw-checks-label {
-            font-size: 0.65rem;
+            font-size: 0.62rem;
             font-weight: 700;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
             color: #e8520a;
+            white-space: nowrap;
             margin: 0;
         }
         .iw-checks-divider-line {
             flex: 1;
             height: 1px;
-            background: rgba(20, 33, 61, 0.08);
+            background: rgba(20,33,61,0.08);
         }
+        /* Inspection checkpoints - pill tags, no background box */
         .iw-checks-grid {
-            display: grid;
-            grid-template-columns: repeat(5, minmax(0, 1fr));
-            gap: 5px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 6px;
+            margin-bottom: 12px;
         }
         .iw-check-item {
-            display: flex;
-            flex-direction: row;
+            display: inline-flex;
             align-items: center;
-            gap: 7px;
-            padding: 7px 8px;
-            border-radius: 8px;
-            background: #f4f7fd;
-            border: 1px solid rgba(20, 33, 61, 0.06);
-            transition: background 0.18s;
+            gap: 6px;
+            padding: 5px 11px 5px 8px;
+            border-radius: 999px;
+            background: transparent;
+            border: 1px solid rgba(20,33,61,0.12);
             cursor: default;
+            transition: border-color 0.15s, background 0.15s;
         }
         .iw-check-item:hover {
-            background: #e8f0fe;
+            border-color: rgba(232,82,10,0.35);
+            background: rgba(232,82,10,0.04);
         }
         .iw-check-icon {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 26px;
-            height: 26px;
-            min-width: 26px;
-            border-radius: 6px;
-            background: rgba(20, 33, 61, 0.08);
-            color: #14213d;
+            width: 20px;
+            height: 20px;
+            min-width: 20px;
             flex-shrink: 0;
+            color: #e8520a;
         }
         .iw-check-icon i {
             font-size: 0.72rem;
             line-height: 1;
-            color: #14213d;
+            color: #e8520a;
         }
         .iw-check-label {
-            font-size: 0.68rem;
+            font-size: 0.72rem;
             font-weight: 600;
             color: #14213d;
-            line-height: 1.25;
+            line-height: 1;
+            white-space: nowrap;
+        }
+        /* Trust badges row below checkpoints */
+        .iw-checks-trust-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            padding-top: 11px;
+            border-top: 1px solid rgba(20,33,61,0.07);
+        }
+        .iw-trust-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 999px;
+            background: rgba(22,124,116,0.08);
+            border: 1px solid rgba(22,124,116,0.18);
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #0d6b63;
+        }
+        .iw-trust-badge i {
+            font-size: 0.65rem;
+            color: #167c74;
         }
 
         /* ── SERVICES WE PROVIDE (below featured cars) ─────────── */
         .iw-services-section {
-            padding: 28px 0 0;
+            padding: 32px 0 8px;
         }
         .iw-services-section-inner {
-            max-width: 1100px;
+            max-width: 1080px;
             margin: 0 auto;
-            padding: 0 6%;
+            padding: 0 7%;
         }
         .iw-services-section-label {
             display: block;
-            font-size: 0.72rem;
+            font-size: 0.65rem;
             font-weight: 700;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
             color: #e8520a;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
         .iw-services-section-title {
-            font-size: 1.35rem;
+            font-size: 1.25rem;
             font-weight: 800;
             color: #14213d;
-            margin: 0 0 18px;
+            margin: 0 0 16px;
             letter-spacing: -0.01em;
         }
         .iw-services-mini-row {
             display: flex;
-            align-items: stretch;
-            justify-content: stretch;
-            gap: 10px;
-            flex-wrap: nowrap;
+            align-items: center;
+            gap: 0;
+            background: #fff;
+            border-radius: 14px;
+            border: 1px solid rgba(20,33,61,0.09);
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(20,33,61,0.07);
         }
         .iw-svc-item {
             display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 6px;
-            padding: 14px 16px;
-            border-radius: 12px;
-            background: #ffffff;
-            border: 1.5px solid rgba(20,33,61,0.09);
+            flex-direction: row;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            background: transparent;
+            border: none;
+            border-right: 1px solid rgba(20,33,61,0.08);
             color: #14213d;
-            font-size: 0.82rem;
-            font-weight: 600;
+            font-size: 0.88rem;
+            font-weight: 700;
             cursor: pointer;
             text-decoration: none;
-            transition: box-shadow 0.18s, border-color 0.18s;
+            transition: background 0.15s;
             flex: 1;
-            box-shadow: 0 2px 8px rgba(20,33,61,0.06);
+        }
+        .iw-svc-item:last-child {
+            border-right: none;
         }
         .iw-svc-item:hover {
-            border-color: rgba(232, 82, 10, 0.3);
-            box-shadow: 0 4px 16px rgba(20,33,61,0.12);
+            background: rgba(232,82,10,0.04);
             color: #14213d;
         }
         .iw-svc-item-icon {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 34px;
-            height: 34px;
-            border-radius: 8px;
-            background: rgba(232, 82, 10, 0.09);
-            color: #e8520a;
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+            border-radius: 10px;
+            background: rgba(232,82,10,0.1);
             flex-shrink: 0;
-            margin-bottom: 2px;
         }
         .iw-svc-item-icon i {
-            font-size: 0.9rem;
+            font-size: 1rem;
             line-height: 1;
             color: #e8520a;
         }
@@ -1733,78 +1763,38 @@
             font-weight: 700;
             font-size: 0.85rem;
             color: #14213d;
+            line-height: 1.2;
         }
-        .iw-svc-item-desc {
-            font-size: 0.72rem;
-            font-weight: 400;
-            color: #6b7280;
-            line-height: 1.4;
-        }
+        /* hide desc */
+        .iw-svc-item-desc { display: none; }
 
-        /* Responsive - checks card */
+        /* Responsive */
         @media (max-width: 991.98px) {
-            .iw-checks-float-wrap {
-                margin-top: -40px;
-                padding: 0 4%;
-            }
-            .iw-checks-card {
-                padding: 10px 16px 9px;
-            }
-            .iw-services-section-inner {
-                padding: 0 4%;
-            }
+            .iw-checks-float-wrap { margin-top: -44px; padding: 0 5%; }
+            .iw-checks-card { padding: 14px 20px 12px; }
+            .iw-services-section-inner { padding: 0 5%; }
         }
         @media (max-width: 767.98px) {
-            .iw-checks-grid {
-                grid-template-columns: repeat(4, minmax(0, 1fr));
-                gap: 4px;
-            }
-            .iw-checks-float-wrap {
-                margin-top: -34px;
-                padding: 0 3%;
-            }
-            .iw-checks-card {
-                padding: 10px 12px 8px;
-                border-radius: 12px;
-            }
-            .iw-check-item {
-                padding: 6px 6px;
-                gap: 5px;
-            }
-            .iw-check-icon {
-                width: 22px;
-                height: 22px;
-                font-size: 0.62rem;
-            }
-            .iw-check-icon i { font-size: 0.62rem; }
-            .iw-check-label {
-                font-size: 0.6rem;
-            }
+            .iw-checks-float-wrap { margin-top: -36px; padding: 0 3%; }
+            .iw-checks-card { padding: 12px 14px 10px; border-radius: 14px; }
+            .iw-check-item { padding: 4px 9px 4px 7px; }
+            .iw-check-label { font-size: 0.67rem; white-space: normal; }
             .iw-services-mini-row {
-                flex-wrap: wrap;
-                gap: 8px;
+                flex-direction: column;
+                border-radius: 14px;
             }
             .iw-svc-item {
-                flex: 0 0 calc(50% - 5px);
+                border-right: none;
+                border-bottom: 1px solid rgba(20,33,61,0.08);
+                width: 100%;
             }
-            .iw-services-section-inner {
-                padding: 0 3%;
-            }
+            .iw-svc-item:last-child { border-bottom: none; }
+            .iw-services-section-inner { padding: 0 3%; }
         }
         @media (max-width: 575.98px) {
-            .iw-checks-grid {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-            }
-            .home-hero-card {
-                padding-bottom: 72px !important;
-            }
-            .iw-checks-float-wrap {
-                margin-top: -30px;
-                padding: 0 3%;
-            }
-            .iw-svc-item {
-                flex: 0 0 calc(50% - 5px);
-            }
+            .iw-checks-grid { gap: 6px 4px; }
+            .home-hero-card { padding-bottom: 72px !important; }
+            .iw-checks-float-wrap { margin-top: -28px; padding: 0 3%; }
         }
 
         .home-band {
@@ -2848,6 +2838,16 @@
                     <span class="iw-check-label">Road Test 3–5 km</span>
                 </div>
             </div>
+            <div class="iw-checks-trust-row">
+                <span class="iw-trust-badge">
+                    <i class="fas fa-check-circle"></i>
+                    Same-day report for faster decisions
+                </span>
+                <span class="iw-trust-badge">
+                    <i class="fas fa-check-circle"></i>
+                    Buyer-first insights, not dealer-driven
+                </span>
+            </div>
         </div>
     </div>
 
@@ -2938,58 +2938,20 @@
                 <button type="button" class="iw-svc-item" data-partner-service="loan" data-partner-service-source="homepage" data-partner-service-copy="Compare EMI-fit finance options once the car and budget look right.">
                     <span class="iw-svc-item-icon"><i class="fas fa-hand-holding-usd"></i></span>
                     <span class="iw-svc-item-name">Car Loan</span>
-                    <span class="iw-svc-item-desc">Compare EMI-fit finance options</span>
                 </button>
                 <button type="button" class="iw-svc-item" data-partner-service="insurance" data-partner-service-source="homepage" data-partner-service-copy="Renew expiring policies or request quotes that match the inspected vehicle.">
                     <span class="iw-svc-item-icon"><i class="fas fa-shield-alt"></i></span>
                     <span class="iw-svc-item-name">Insurance</span>
-                    <span class="iw-svc-item-desc">Renew or get quotes for your car</span>
                 </button>
                 <button type="button" class="iw-svc-item" data-bs-toggle="modal" data-bs-target="#usedCarInspectionModal">
                     <span class="iw-svc-item-icon"><i class="fas fa-clipboard-check"></i></span>
                     <span class="iw-svc-item-name">Inspection</span>
-                    <span class="iw-svc-item-desc">160+ point pre-purchase check</span>
                 </button>
                 <a href="car-marketplace/index.html" class="iw-svc-item">
                     <span class="iw-svc-item-icon"><i class="fas fa-car-side"></i></span>
                     <span class="iw-svc-item-name">Used Car Marketplace</span>
-                    <span class="iw-svc-item-desc">Verified C2C listings near you</span>
                 </a>
             </div>
-        </div>
-    </section>
-
-    <!-- Trust Strip -->
-    <section class="home-strip home-band home-band-warm" aria-label="Key stats">
-        <div class="home-strip-grid">
-            <article class="home-strip-card">
-                <div class="home-strip-icon"><i class="fas fa-clipboard-check"></i></div>
-                <div class="home-strip-copy">
-                    <strong>Pre-purchase</strong>
-                    <span>Inspection reports built to expose hidden repair risk before you pay.</span>
-                </div>
-            </article>
-            <article class="home-strip-card">
-                <div class="home-strip-icon"><i class="fas fa-shield-alt"></i></div>
-                <div class="home-strip-copy">
-                    <strong>New car PDI</strong>
-                    <span>Catch transit damage, paint defects, missing features, and delivery misses.</span>
-                </div>
-            </article>
-            <article class="home-strip-card">
-                <div class="home-strip-icon"><i class="fas fa-car-side"></i></div>
-                <div class="home-strip-copy">
-                    <strong>Verified listings</strong>
-                    <span>Customer-to-customer marketplace with usable photos and real condition context.</span>
-                </div>
-            </article>
-            <article class="home-strip-card">
-                <div class="home-strip-icon"><i class="fas fa-rupee-sign"></i></div>
-                <div class="home-strip-copy">
-                    <strong>Pricing help</strong>
-                    <span>Use inspection findings to negotiate based on condition instead of guesswork.</span>
-                </div>
-            </article>
         </div>
     </section>
 
