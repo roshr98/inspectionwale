@@ -525,7 +525,7 @@
             --iw-orange:     #e8520a;   /* CarWale accent orange */
             --iw-orange-lt:  #fff3ee;
             --iw-green:      #1a9e88;
-            --iw-bg:         #f4f6fb;
+            --iw-bg:         #f7f4ee;
             --iw-surface:    #ffffff;
             --iw-border:     #dde3f0;
             --iw-text:       #1a1f36;
@@ -539,11 +539,15 @@
         }
 
         /* ── 2. GLOBAL RESET ───────────────────────────────────── */
-        html, body, *, *::before, *::after {
+        html, body {
             font-family: 'Inter', 'Montserrat', Arial, sans-serif !important;
         }
+        /* Only set font on non-icon elements so FontAwesome ::before/::after still work */
+        *:not(i):not(.fas):not(.far):not(.fab):not(.fal):not(.fad):not([class^="fa-"]):not([class*=" fa-"]) {
+            font-family: inherit;
+        }
         body.home-page {
-            background: var(--iw-bg) !important;
+            background: #f7f4ee !important;
             color: var(--iw-text) !important;
             margin: 0;
             padding-top: 0 !important;
@@ -953,11 +957,11 @@
         }
         .home-section-header h2 {
             color: var(--iw-blue) !important;
-            font-size: clamp(1.9rem, 3vw, 2.8rem) !important;
+            font-size: clamp(1.4rem, 2.2vw, 1.9rem) !important;
             font-weight: 800 !important;
             letter-spacing: -.02em !important;
-            line-height: 1.1 !important;
-            margin: 0 0 12px !important;
+            line-height: 1.2 !important;
+            margin: 0 0 8px !important;
         }
         .home-section-header p {
             color: var(--iw-text-soft) !important;
@@ -969,32 +973,39 @@
 
         /* ── 7. CTA BAND ───────────────────────────────────────── */
         .home-cta-band {
-            background: transparent !important;
-            border-radius: 0 !important;
-            padding: 18px 4px !important;
+            background: linear-gradient(135deg, #0b2154 0%, #0f3060 100%) !important;
+            border-radius: 16px !important;
+            padding: 22px 32px !important;
             display: flex !important;
             flex-direction: row !important;
             align-items: center !important;
             justify-content: space-between !important;
-            gap: 20px !important;
+            gap: 24px !important;
             border: none !important;
-            box-shadow: none !important;
+            box-shadow: 0 4px 24px rgba(11,33,84,0.18) !important;
         }
         .home-cta-band h3 {
-            color: var(--home-ink, #14213d) !important;
-            font-size: 1.25rem !important;
+            color: #ffffff !important;
+            font-size: 1.2rem !important;
             font-weight: 800 !important;
             margin: 0 !important;
             white-space: nowrap !important;
         }
         .home-cta-band p {
-            color: rgba(70,84,111,0.84) !important;
+            color: rgba(255,255,255,0.75) !important;
             line-height: 1.65 !important;
             margin: 0 !important;
         }
         .home-cta-band .home-hero-actions { margin-bottom: 0 !important; flex-shrink: 0 !important; }
+        .home-cta-band .home-btn-primary {
+            background: #e8520a !important;
+            border-color: #e8520a !important;
+            color: #fff !important;
+        }
         .home-cta-band .home-btn-secondary {
-            border-color: rgba(20,33,61,0.2) !important;
+            background: rgba(255,255,255,0.12) !important;
+            border-color: rgba(255,255,255,0.3) !important;
+            color: #fff !important;
         }
 
         /* ── 8. HOW IT WORKS ───────────────────────────────────── */
@@ -1004,40 +1015,40 @@
             display: grid !important;
         }
         .home-step {
-            background: var(--iw-surface) !important;
-            border: 1.5px solid var(--iw-border) !important;
-            border-radius: var(--iw-radius-lg) !important;
-            padding: 28px 24px !important;
-            box-shadow: var(--iw-shadow-sm) !important;
-            transition: box-shadow .22s, transform .22s !important;
+            background: #ffffff !important;
+            border: 1px solid rgba(20,33,61,0.08) !important;
+            border-radius: 14px !important;
+            padding: 22px 20px !important;
+            box-shadow: 0 2px 12px rgba(20,33,61,0.06) !important;
+            transition: box-shadow .2s, transform .2s !important;
         }
         .home-step:hover {
-            box-shadow: var(--iw-shadow-md) !important;
-            transform: translateY(-4px) !important;
+            box-shadow: 0 6px 24px rgba(20,33,61,0.1) !important;
+            transform: translateY(-3px) !important;
         }
         .home-step-number {
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
-            width: 44px !important;
-            height: 44px !important;
-            border-radius: 12px !important;
-            background: var(--iw-blue-light) !important;
-            color: var(--iw-blue) !important;
-            font-size: 1rem !important;
+            width: 36px !important;
+            height: 36px !important;
+            border-radius: 10px !important;
+            background: rgba(232,82,10,0.1) !important;
+            color: #e8520a !important;
+            font-size: 0.9rem !important;
             font-weight: 800 !important;
-            margin-bottom: 18px !important;
+            margin-bottom: 14px !important;
         }
         .home-step h3 {
-            color: var(--iw-blue) !important;
-            font-size: 1.05rem !important;
+            color: #0b2154 !important;
+            font-size: 0.98rem !important;
             font-weight: 700 !important;
-            margin: 0 0 10px !important;
+            margin: 0 0 8px !important;
         }
         .home-step p {
-            color: var(--iw-text-soft) !important;
-            font-size: .9rem !important;
-            line-height: 1.7 !important;
+            color: rgba(70,84,111,0.85) !important;
+            font-size: .84rem !important;
+            line-height: 1.6 !important;
             margin: 0 !important;
         }
 
@@ -1045,44 +1056,44 @@
         .home-services-grid {
             display: grid !important;
             grid-template-columns: repeat(3, minmax(0,1fr)) !important;
-            gap: 20px !important;
+            gap: 16px !important;
         }
         .home-service-card {
-            background: var(--iw-surface) !important;
-            border: 1.5px solid var(--iw-border) !important;
-            border-radius: var(--iw-radius-lg) !important;
-            padding: 30px 26px !important;
-            box-shadow: var(--iw-shadow-sm) !important;
-            transition: box-shadow .22s, transform .22s !important;
-            border-top: 3px solid var(--iw-blue) !important;
+            background: #ffffff !important;
+            border: 1px solid rgba(20,33,61,0.08) !important;
+            border-radius: 14px !important;
+            padding: 24px 22px !important;
+            box-shadow: 0 2px 12px rgba(20,33,61,0.06) !important;
+            transition: box-shadow .2s, transform .2s !important;
+            border-top: 3px solid #e8520a !important;
         }
         .home-service-card:hover {
-            box-shadow: var(--iw-shadow-md) !important;
-            transform: translateY(-4px) !important;
+            box-shadow: 0 6px 24px rgba(20,33,61,0.1) !important;
+            transform: translateY(-3px) !important;
         }
         .home-service-card > i {
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
-            width: 52px !important;
-            height: 52px !important;
-            border-radius: 14px !important;
-            background: var(--iw-blue-light) !important;
-            color: var(--iw-blue) !important;
-            font-size: 1.3rem !important;
-            margin-bottom: 18px !important;
+            width: 44px !important;
+            height: 44px !important;
+            border-radius: 12px !important;
+            background: rgba(232,82,10,0.1) !important;
+            color: #e8520a !important;
+            font-size: 1.1rem !important;
+            margin-bottom: 14px !important;
         }
         .home-service-card h3 {
-            color: var(--iw-blue) !important;
-            font-size: 1.08rem !important;
+            color: #0b2154 !important;
+            font-size: 1rem !important;
             font-weight: 700 !important;
-            margin: 0 0 10px !important;
+            margin: 0 0 8px !important;
         }
         .home-service-card > p {
             color: var(--iw-text-soft) !important;
-            font-size: .9rem !important;
-            line-height: 1.65 !important;
-            margin: 0 0 16px !important;
+            font-size: .875rem !important;
+            line-height: 1.6 !important;
+            margin: 0 0 12px !important;
         }
         .home-service-card ul {
             list-style: none !important;
@@ -1090,84 +1101,84 @@
             margin: 0 !important;
         }
         .home-service-card ul li {
-            padding: 6px 0 6px 20px !important;
+            padding: 5px 0 5px 18px !important;
             position: relative !important;
             color: var(--iw-text-soft) !important;
-            font-size: .875rem !important;
-            line-height: 1.55 !important;
-            border-bottom: 1px solid var(--iw-border) !important;
+            font-size: .84rem !important;
+            line-height: 1.5 !important;
+            border-bottom: 1px solid rgba(20,33,61,0.06) !important;
         }
         .home-service-card ul li:last-child { border-bottom: none !important; }
         .home-service-card ul li::before {
             content: '' !important;
             position: absolute !important;
             left: 0 !important;
-            top: 13px !important;
-            width: 6px !important;
-            height: 6px !important;
+            top: 12px !important;
+            width: 5px !important;
+            height: 5px !important;
             border-radius: 50% !important;
-            background: var(--iw-orange) !important;
+            background: #e8520a !important;
         }
 
         /* ── 10. STORY CARDS ───────────────────────────────────── */
         .home-story-grid {
             display: grid !important;
             grid-template-columns: repeat(2, minmax(0,1fr)) !important;
-            gap: 20px !important;
+            gap: 16px !important;
         }
         .home-story-card {
-            background: var(--iw-surface) !important;
-            border: 1.5px solid var(--iw-border) !important;
-            border-radius: var(--iw-radius-lg) !important;
-            padding: 32px 28px !important;
-            box-shadow: var(--iw-shadow-sm) !important;
+            background: #ffffff !important;
+            border: 1px solid rgba(20,33,61,0.08) !important;
+            border-radius: 14px !important;
+            padding: 24px 22px !important;
+            box-shadow: 0 2px 12px rgba(20,33,61,0.06) !important;
         }
         .home-story-card > i {
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
-            width: 48px !important;
-            height: 48px !important;
-            border-radius: 12px !important;
-            background: var(--iw-blue-light) !important;
-            color: var(--iw-blue) !important;
-            font-size: 1.2rem !important;
-            margin-bottom: 16px !important;
+            width: 40px !important;
+            height: 40px !important;
+            border-radius: 10px !important;
+            background: rgba(232,82,10,0.1) !important;
+            color: #e8520a !important;
+            font-size: 1rem !important;
+            margin-bottom: 12px !important;
         }
         .home-story-card > h3 {
-            color: var(--iw-blue) !important;
-            font-size: 1.15rem !important;
+            color: #0b2154 !important;
+            font-size: 1.05rem !important;
             font-weight: 700 !important;
-            margin: 0 0 8px !important;
+            margin: 0 0 6px !important;
         }
         .home-story-card > p {
             color: var(--iw-text-soft) !important;
-            font-size: .9rem !important;
-            line-height: 1.65 !important;
-            margin: 0 0 20px !important;
+            font-size: .875rem !important;
+            line-height: 1.6 !important;
+            margin: 0 0 16px !important;
         }
         .home-story-icon-grid {
             display: grid !important;
             grid-template-columns: repeat(3, minmax(0,1fr)) !important;
-            gap: 12px !important;
+            gap: 10px !important;
         }
         .home-story-icon-item {
-            background: #f8faff !important;
-            border: 1.5px solid var(--iw-border) !important;
-            border-radius: var(--iw-radius) !important;
-            padding: 16px 14px !important;
+            background: #f7f4ee !important;
+            border: 1px solid rgba(20,33,61,0.07) !important;
+            border-radius: 10px !important;
+            padding: 14px 12px !important;
         }
         .home-story-icon-item i {
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
-            width: 36px !important;
-            height: 36px !important;
-            border-radius: 9px !important;
-            background: var(--iw-blue-light) !important;
-            color: var(--iw-blue) !important;
-            font-size: .9rem !important;
-            margin-bottom: 10px !important;
+            width: 32px !important;
+            height: 32px !important;
+            border-radius: 8px !important;
+            background: rgba(232,82,10,0.1) !important;
+            color: #e8520a !important;
+            font-size: .85rem !important;
+            margin-bottom: 8px !important;
         }
         .home-story-icon-item strong {
             display: block !important;
@@ -1336,7 +1347,7 @@
             .home-cta-band {
                 flex-direction: row !important;
                 align-items: center !important;
-                padding: 16px 4px !important;
+                padding: 20px 24px !important;
             }
             .banner-container {
                 width: min(100% - 24px, 1360px) !important;
@@ -1815,17 +1826,11 @@
             width: 100vw;
             transform: translateX(-50%);
             z-index: -1;
-            background: var(--home-band-bg,
-                radial-gradient(circle at top left, rgba(216, 111, 69, 0.08), transparent 32%),
-                radial-gradient(circle at top right, rgba(22, 124, 116, 0.08), transparent 24%),
-                linear-gradient(180deg, #f6f1e8 0%, #faf7f1 100%));
+            background: var(--home-band-bg, #f7f4ee);
         }
 
         .home-band-warm {
-            --home-band-bg:
-                radial-gradient(circle at top left, rgba(216, 111, 69, 0.1), transparent 34%),
-                radial-gradient(circle at 84% 18%, rgba(22, 124, 116, 0.06), transparent 24%),
-                linear-gradient(180deg, #f5efe6 0%, #faf7f1 100%);
+            --home-band-bg: #f7f4ee;
         }
 
         .home-band-light {
@@ -2424,27 +2429,28 @@
         }
 
         .home-cta-band {
-            padding: 18px 4px;
+            padding: 22px 32px;
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
-            gap: 20px;
-            background: transparent;
+            gap: 24px;
+            background: linear-gradient(135deg, #0b2154 0%, #0f3060 100%);
+            border-radius: 16px;
             border: none;
         }
 
         .home-cta-band h3 {
             margin: 0;
-            color: var(--home-ink);
-            font-size: 1.25rem;
+            color: #ffffff;
+            font-size: 1.2rem;
             font-weight: 800;
             white-space: nowrap;
         }
 
         .home-cta-band p {
             margin: 0;
-            color: rgba(70, 84, 111, 0.84);
+            color: rgba(255,255,255,0.75);
             line-height: 1.7;
         }
         .home-cta-band .home-hero-actions {
@@ -2948,7 +2954,7 @@
     </section>
 
     <!-- CTA Band -->
-    <section class="home-section home-band home-band-light">
+    <section class="home-section home-band home-band-light" style="padding-top:10px;padding-bottom:10px;">
         <div class="home-cta-band">
             <div>
                 <h3>Need an inspection or want to list a car today?</h3>
