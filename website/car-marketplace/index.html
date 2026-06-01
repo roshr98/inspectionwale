@@ -9452,6 +9452,51 @@
             .cw-cat-chip { min-width: 72px !important; font-size: 0.66rem !important; }
             .cw-cat-chip i { width: 40px !important; height: 40px !important; }
         }
+
+        /* ═══════════════════════════════════════════════════════════════════
+           AUTHORITATIVE MOBILE CAR-DETAIL GALLERY OVERRIDE
+           (placed last so it wins source-order over earlier tablet rules)
+           Mobile: main image full-width on top, square thumbnails in a row
+           below it, no leftover empty space.
+        ═══════════════════════════════════════════════════════════════════ */
+        @media (max-width: 767.98px) {
+            /* Gallery shell stacks vertically */
+            #carDetailModal .detail-gallery-shell {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 10px !important;
+                width: 100% !important;
+            }
+            /* Main image wrapper full width */
+            #carDetailModal .detail-gallery-shell > div:first-child {
+                width: 100% !important;
+                flex: none !important;
+            }
+            /* Thumbnails: horizontal row of squares, no fixed tall height */
+            #carDetailModal #carDetailThumbnails {
+                display: flex !important;
+                flex-direction: row !important;
+                width: 100% !important;
+                height: auto !important;
+                gap: 8px !important;
+                padding: 0 !important;
+                background: transparent !important;
+                grid-template-rows: none !important;
+                grid-template-columns: none !important;
+                box-sizing: border-box !important;
+            }
+            /* Each thumbnail = square (aspect-ratio 1:1), equal width */
+            #carDetailModal #carDetailThumbnails img {
+                flex: 1 1 0 !important;
+                width: 0 !important;
+                height: auto !important;
+                min-height: 0 !important;
+                aspect-ratio: 1 / 1 !important;
+                object-fit: cover !important;
+                border-radius: 8px !important;
+                display: block !important;
+            }
+        }
     </style>
 </body>
 
