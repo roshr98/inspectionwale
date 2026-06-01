@@ -2159,90 +2159,102 @@
             #carDetailModal .detail-features-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
-        /* ═══ MOBILE (≤767px): full reorder using display:contents ═══
-           Desired order:
-           1. Car Images (gallery)
-           2. Verified Listing / Price (summary card)
-           3. Vehicle Overview / Details (overview card)
-           4. Comments (handled outside top-row, below)
-           5. Seller Contact form
-           6. Book Inspection CTA
-        ═══════════════════════════════════════════════════════════════ */
+        /* ═══ MOBILE (≤767px): interleaved reorder via display:contents ═══
+           Order: Gallery → Price/Summary → Vehicle Overview → [Comments] → Contact → CTA
+        ══════════════════════════════════════════════════════════════════════════════════ */
         @media (max-width: 767.98px) {
-            /* Turn top-row into a flat flex column */
+            #carDetailModal .detail-shell { padding: 0 0 32px !important; }
+
+            /* Flat flex column — children of top-row are the cards */
             #carDetailModal .detail-top-row {
                 display: flex !important;
                 flex-direction: column !important;
-                gap: 12px !important;
+                gap: 0 !important;
             }
-            /* Both columns become display:contents so their children
-               are direct flex children of detail-top-row            */
+            /* Dissolve column wrappers so cards are direct flex children */
             #carDetailModal .detail-media-column,
-            #carDetailModal .detail-aside-column {
-                display: contents !important;
-            }
-            /* The inner stack also becomes contents */
+            #carDetailModal .detail-aside-column,
             #carDetailModal .detail-side-stack {
                 display: contents !important;
             }
-            /* Order each block */
-            /* 1 — Gallery wrapper (position:relative div containing gallery + counter) */
+
+            /* ── ORDER ── */
+            #carDetailModal .detail-gallery-wrap          { order: 1 !important; }
+            #carDetailModal .detail-summary-card          { order: 2 !important; margin: 10px 12px 0 !important; }
+            #carDetailModal .detail-theme-card.detail-overview-card { order: 3 !important; margin: 10px 12px 0 !important; }
+            #carDetailModal .detail-contact-card          { order: 4 !important; margin: 10px 12px 0 !important; }
+            #carDetailModal .detail-cta-card              { order: 5 !important; margin: 10px 12px 0 !important; }
+            #carDetailModal #carDetailMonetizationSlot    { display: none !important; }
+
+            /* ── Gallery: full width ── */
+            /* The gallery-wrap is a position:relative div — make it block full width */
             #carDetailModal .detail-gallery-wrap {
-                order: 1 !important;
+                width: 100% !important;
+                position: relative !important;
             }
-            /* 2 — Verified Listing / Price */
-            #carDetailModal .detail-summary-card {
-                order: 3 !important;
-                margin: 0 !important;
-            }
-            /* 3 — Vehicle Overview / Specs */
-            #carDetailModal .detail-theme-card.detail-overview-card {
-                order: 4 !important;
-                margin-top: 0 !important;
-            }
-            /* 5 — Seller Contact (after comments which is outside top-row) */
-            #carDetailModal .detail-contact-card {
-                order: 6 !important;
-            }
-            /* 6 — Book Inspection CTA */
-            #carDetailModal .detail-cta-card {
-                order: 7 !important;
-            }
-            /* Monetization slot hidden on mobile to reduce clutter */
-            #carDetailModal #carDetailMonetizationSlot {
-                display: none !important;
-            }
-            /* Gallery: big image full width, thumbnails below in a row */
+            /* gallery-shell: main image stacked above thumbnails */
             #carDetailModal .detail-gallery-shell {
-                flex-direction: column !important;
-                gap: 8px !important;
                 display: flex !important;
+                flex-direction: column !important;
+                gap: 0 !important;
+                width: 100% !important;
             }
+            /* Main image wrapper takes full width */
+            #carDetailModal .detail-gallery-shell > div:first-child {
+                width: 100% !important;
+                flex: none !important;
+            }
+            #carDetailModal #carDetailCarouselMain {
+                width: 100% !important;
+            }
+            #carDetailModal #carDetailCarouselMain .carousel-inner {
+                border-radius: 0 !important;
+                box-shadow: none !important;
+            }
+            #carDetailModal #carDetailCarouselMain img {
+                height: 250px !important;
+                width: 100% !important;
+                border-radius: 0 !important;
+            }
+            /* Thumbnails: horizontal row strip */
             #carDetailModal #carDetailThumbnails {
                 display: flex !important;
                 flex-direction: row !important;
                 width: 100% !important;
-                height: 80px !important;
-                gap: 8px !important;
+                height: auto !important;
+                gap: 6px !important;
+                padding: 8px 12px !important;
+                background: #f2f4f8 !important;
+                box-sizing: border-box !important;
+                /* override grid */
+                grid-template-rows: none !important;
             }
             #carDetailModal #carDetailThumbnails img {
                 flex: 1 1 0 !important;
                 width: 0 !important;
-                height: 80px !important;
+                height: 64px !important;
                 min-height: unset !important;
                 border-radius: 6px !important;
                 object-fit: cover !important;
+                display: block !important;
             }
-            #carDetailModal #carDetailCarouselMain img { height: 240px !important; }
+            #carDetailModal .detail-photo-counter-wrap {
+                padding: 6px 12px 8px !important;
+                background: #f2f4f8 !important;
+                margin: 0 !important;
+            }
+
+            /* ── Cards ── */
+            #carDetailModal .detail-summary-card,
+            #carDetailModal .detail-contact-card,
+            #carDetailModal .detail-cta-card { border-radius: 10px !important; }
+            #carDetailModal .detail-theme-card { border-radius: 10px !important; margin-top: 0 !important; }
+
             #carDetailModal .detail-specs-grid { grid-template-columns: 1fr 1fr !important; }
-            #carDetailModal .detail-summary-card { padding: 16px !important; }
         }
 
         @media (max-width: 575.98px) {
-            #carDetailModal .detail-shell { padding: 12px 10px 32px !important; }
-            #carDetailModal #carDetailCarouselMain img { height: 210px !important; }
-            #carDetailModal #carDetailThumbnails { height: 68px !important; }
-            #carDetailModal #carDetailThumbnails img { height: 68px !important; }
+            #carDetailModal #carDetailCarouselMain img { height: 220px !important; }
         }
 
         /* ═══ CAR DETAIL MODAL — REDESIGN OVERRIDES ═══ */
