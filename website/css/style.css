@@ -1,0 +1,1164 @@
+/********** Template CSS **********/
+:root {
+    --primary: #D81324;
+    --secondary: #0B2154;
+    --light: #F2F2F2;
+    --dark: #111111;
+    --text-color: #333333;
+}
+
+* {
+    font-family: 'Montserrat', Arial, sans-serif;
+}
+
+body {
+    font-family: 'Montserrat', Arial, sans-serif;
+    color: var(--text-color);
+    background-color: #ffffff;
+}
+
+.fw-medium {
+    font-weight: 600 !important;
+}
+
+.back-to-top {
+    position: fixed;
+    display: none;
+    right: 45px;
+    bottom: 45px;
+    z-index: 99;
+}
+
+
+/*** Spinner ***/
+#spinner {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .5s ease-out, visibility 0s linear .5s;
+    z-index: 99999;
+}
+
+#spinner.show {
+    transition: opacity .5s ease-out, visibility 0s linear 0s;
+    visibility: visible;
+    opacity: 1;
+}
+
+
+/*** Button ***/
+.btn {
+    font-weight: 500;
+    text-transform: uppercase;
+    transition: .5s;
+}
+
+.btn.btn-primary,
+.btn.btn-secondary {
+    color: #FFFFFF;
+}
+
+.btn-square {
+    width: 38px;
+    height: 38px;
+}
+
+.btn-sm-square {
+    width: 32px;
+    height: 32px;
+}
+
+.btn-lg-square {
+    width: 48px;
+    height: 48px;
+}
+
+.btn-square,
+.btn-sm-square,
+.btn-lg-square {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: normal;
+    border-radius: 2px;
+}
+
+
+/*** Navbar ***/
+.navbar-transparent,
+.navbar-transparent.scrolled {
+    background: rgba(7, 17, 48, 0.82) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 9999;
+    box-shadow: 0 12px 35px rgba(7, 17, 48, 0.35);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.navbar-transparent .navbar-toggler,
+.navbar-transparent.scrolled .navbar-toggler {
+    border-color: rgba(255,255,255,0.7);
+}
+
+.navbar-transparent .navbar-toggler-icon,
+.navbar-transparent.scrolled .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.95%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.navbar-transparent .fa-map-marker-alt,
+.navbar-transparent .fa-user,
+.navbar-transparent.scrolled .fa-map-marker-alt,
+.navbar-transparent.scrolled .fa-user {
+    color: rgba(255,255,255,0.9) !important;
+}
+
+.navbar-transparent .translate-btn-wrapper .btn,
+.navbar-transparent.scrolled .translate-btn-wrapper .btn {
+    border-color: rgba(255,255,255,0.7) !important;
+    color: rgba(255,255,255,0.9) !important;
+}
+
+.navbar .dropdown-toggle::after {
+    border: none;
+    content: "\f107";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    vertical-align: middle;
+    margin-left: 8px;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    margin-right: 30px;
+    padding: 25px 0;
+    color: #FFFFFF;
+    font-size: 15px;
+    text-transform: uppercase;
+    outline: none;
+    font-style: italic;
+}
+
+.navbar-light .navbar-nav .nav-link:hover,
+.navbar-light .navbar-nav .nav-link.active {
+    color: var(--primary);
+}
+
+@media (max-width: 991.98px) {
+    .navbar-light .navbar-nav .nav-link  {
+        margin-right: 0;
+        padding: 10px 0;
+    }
+
+    .navbar-light .navbar-nav {
+        border-top: 1px solid #EEEEEE;
+    }
+}
+
+.navbar-light .navbar-brand,
+.navbar-light a.btn {
+    height: 75px;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: var(--dark);
+    font-weight: 500;
+}
+
+.navbar-light.sticky-top {
+    top: -100px;
+    transition: .5s;
+}
+
+@media (min-width: 992px) {
+    .navbar .nav-item .dropdown-menu {
+        display: block;
+        border: none;
+        margin-top: 0;
+        top: 150%;
+        opacity: 0;
+        visibility: hidden;
+        transition: .5s;
+    }
+
+    .navbar .nav-item:hover .dropdown-menu {
+        top: 100%;
+        visibility: visible;
+        transition: .5s;
+        opacity: 1;
+    }
+}
+
+
+/*** Header ***/
+.carousel-caption {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* transparent overlay so the banner image shows clearly */
+    background: transparent;
+    backdrop-filter: none;
+    z-index: 1;
+}
+
+.hero-caption {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch !important;
+    padding: 1.5rem 0;
+    height: 100%;
+}
+
+.hero-caption > .container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.hero-caption-row {
+    width: 100%;
+    flex: 0 0 auto;
+}
+
+.hero-copy {
+    max-width: 620px;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+}
+
+.hero-copy h1 {
+    white-space: nowrap;
+    font-size: 1.75rem;
+}
+
+.hero-contact-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 0;
+    margin-right: 0;
+    position: absolute;
+    right: 10px;
+    top: 70px;
+    bottom: 120px;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 10%;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    width: 3rem;
+    height: 3rem;
+}
+
+.text-white-75 { color: rgba(255, 255, 255, 0.75) !important; }
+.letter-spacing-sm { letter-spacing: 0.08em; }
+@media (min-width: 992px) {
+    .display-lg-3 { font-size: 3.5rem; }
+    .hero-tagline {
+        padding-top: 100px;
+    }
+}
+
+.hero-contact-card {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    padding: 18px 18px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(182, 179, 176, 0.3);
+    max-width: 240px;
+    width: 240px;
+    margin-left: auto;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+}
+
+.hero-contact-card h5 {
+    color: #b6b3b0 !important;
+}
+
+.hero-contact-card .form-label {
+    color: #b6b3b0 !important;
+}
+
+.hero-contact-card .form-control-lg {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #b6b3b0;
+    color: #fff;
+}
+
+.hero-contact-card .form-control-lg::placeholder {
+    color: rgba(182, 179, 176, 0.7);
+}
+
+.hero-contact-card .form-control-lg:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #b6b3b0;
+    box-shadow: 0 0 0 0.2rem rgba(182, 179, 176, 0.25);
+    color: #fff;
+}
+
+.hero-contact-card p.small {
+    color: #b6b3b0 !important;
+}
+
+.hero-contact-card .form-label {
+    font-size: 0.75rem;
+    margin-bottom: 0.2rem;
+}
+
+.hero-contact-card .mb-3 {
+    margin-bottom: 0.75rem !important;
+}
+
+.hero-contact-card .mb-4 {
+    margin-bottom: 0.75rem !important;
+}
+
+.hero-contact-card h5 {
+    font-size: 1rem;
+    margin-bottom: 0.75rem !important;
+    font-weight: 600;
+}
+
+.hero-contact-card textarea {
+    min-height: 60px;
+    flex-grow: 1;
+}
+
+.hero-contact-card .btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    border-radius: 8px;
+    background-color: #D81324;
+    border-color: #D81324;
+    color: #fff;
+}
+
+.hero-contact-card .btn:hover {
+    background-color: #b00f1e;
+    border-color: #b00f1e;
+}
+
+.hero-contact-card p.small {
+    font-size: 0.7rem;
+    margin-top: 0.5rem !important;
+}
+
+.hero-contact-form .form-control {
+    border-radius: 0;
+    border-color: rgba(11, 33, 84, 0.15);
+}
+
+.hero-contact-form .form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(216, 19, 36, 0.15);
+    border-color: #D81324;
+}
+
+.hero-badge-bar {
+    margin-top: 0;
+    background: transparent;
+    border-radius: 30px;
+    padding: 0.75rem 1.5rem;
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    color: #ffffff;
+}
+
+.hero-badge {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-align: center;
+    gap: 0.5rem;
+}
+
+.hero-badge span {
+    color: #b6b3b0;
+}
+
+.hero-badge img {
+    width: 24px;
+    height: 24px;
+    max-width: 24px;
+    max-height: 24px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+@media (max-width: 991.98px) {
+    .hero-contact-card {
+        border-radius: 0;
+        padding: 15px 18px;
+        max-width: 220px;
+        width: 220px;
+        margin-left: auto;
+    }
+
+    .hero-contact-wrapper {
+        right: 20px;
+        top: 80px;
+        bottom: 100px;
+    }
+
+    .hero-badge-bar {
+        border-radius: 12px;
+        padding: 1rem;
+        gap: 0.75rem;
+    }
+
+    .hero-badge {
+        font-size: 0.8rem;
+    }
+
+    .hero-badge i {
+        font-size: 2rem;
+        width: 50px;
+        height: 50px;
+    }
+
+    .hero-caption {
+        padding: 1rem 0;
+    }
+
+    .hero-copy {
+        max-width: 320px;
+        padding: 1rem;
+    }
+
+    .hero-copy h1 {
+        font-size: 1.5rem !important;
+    }
+
+    .hero-copy p {
+        font-size: 0.85rem;
+    }
+
+    .hero-badge-bar-overlay {
+        bottom: 10px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    /* Hide the desktop contact form on mobile */
+    .hero-contact-wrapper {
+        display: none !important;
+    }
+    
+    .hero-tagline {
+        padding-top: 60px !important;
+        font-size: 14px !important;
+        line-height: 1.3 !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+        margin-bottom: 10px !important;
+    }
+    
+    .hero-caption-row {
+        flex-direction: column !important;
+    }
+
+    .hero-copy {
+        max-width: 100%;
+        margin: 0 auto;
+        text-align: center;
+    }
+}
+
+.hero-badge-bar-overlay {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(92%, 950px);
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    margin-top: 0;
+    padding: 12px 25px;
+}
+
+@media (max-width: 768px) {
+    #header-carousel .carousel-item {
+        position: relative;
+        min-height: 450px;
+    }
+    
+    #header-carousel .carousel-item img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.page-header {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+        /* show more of the right side of the image */
+        background-position: 70% center;
+}
+
+.page-header-inner {
+    background: rgba(0, 0, 0, .7);
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: var(--light);
+}
+
+
+/*** Facts ***/
+.fact {
+    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url(../img/carousel-bg-1.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+/*** Service ***/
+.service .nav .nav-link {
+    background: var(--light);
+    transition: .5s;
+}
+
+.service .nav .nav-link.active {
+    background: var(--primary);
+}
+
+.service .nav .nav-link.active h4 {
+    color: #FFFFFF !important;
+}
+
+
+/*** Booking ***/
+.booking {
+    /* booking now uses a blurred ::before background layer so the image itself is blurred
+       and content sits above it */
+    position: relative;
+    overflow: hidden;
+}
+
+.booking::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url(../Images/booknow_banner.jpg) 70% center / cover no-repeat;
+    filter: blur(6px);
+    transform: scale(1.03); /* slightly enlarge to hide edges when blurred */
+    z-index: 0;
+}
+
+.booking > .container { position: relative; z-index: 1; }
+
+/* panel used inside the booking column - make it transparent with a subtle border */
+.booking-panel {
+    /* subtle glass overlay similar to the header so the image reads through */
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(30,41,59,0.02));
+    border-radius: 8px;
+    color: var(--primary);
+    box-shadow: 0 6px 18px rgba(15,23,42,0.04);
+    padding: 20px;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.02);
+}
+
+/* booking button: solid red background with white text */
+.btn-booking {
+    background: #D81324;
+    color: #FFFFFF;
+    border: 2px solid #D81324;
+    font-weight: 700;
+    border-radius: 8px;
+}
+.btn-booking:hover{
+    background: #B00F1E;
+    color: #FFFFFF;
+    border-color: #B00F1E;
+}
+
+.bootstrap-datetimepicker-widget.bottom {
+    top: auto !important;
+}
+
+.bootstrap-datetimepicker-widget .table * {
+    border-bottom-width: 0px;
+}
+
+.bootstrap-datetimepicker-widget .table th {
+    font-weight: 500;
+}
+
+.bootstrap-datetimepicker-widget.dropdown-menu {
+    padding: 10px;
+    border-radius: 2px;
+}
+
+.bootstrap-datetimepicker-widget table td.active,
+.bootstrap-datetimepicker-widget table td.active:hover {
+    background: var(--primary);
+}
+
+.bootstrap-datetimepicker-widget table td.today::before {
+    border-bottom-color: var(--primary);
+}
+
+
+/*** Team ***/
+.team-item .team-overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary);
+    transform: scale(0);
+    transition: .5s;
+}
+
+.team-item:hover .team-overlay {
+    transform: scale(1);
+}
+
+.team-item .team-overlay .btn {
+    color: var(--primary);
+    background: #FFFFFF;
+}
+
+.team-item .team-overlay .btn:hover {
+    color: #FFFFFF;
+    background: var(--secondary)
+}
+
+
+/*** Testimonial ***/
+.testimonial-carousel .owl-item .testimonial-text,
+.testimonial-carousel .owl-item.center .testimonial-text * {
+    transition: .5s;
+}
+
+.testimonial-carousel .owl-item.center .testimonial-text {
+    background: var(--primary) !important;
+}
+
+.testimonial-carousel .owl-item.center .testimonial-text * {
+    color: #FFFFFF !important;
+}
+
+.testimonial-carousel .owl-dots {
+    margin-top: 24px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.testimonial-carousel .owl-dot {
+    position: relative;
+    display: inline-block;
+    margin: 0 5px;
+    width: 15px;
+    height: 15px;
+    border: 1px solid #CCCCCC;
+    transition: .5s;
+}
+
+.testimonial-carousel .owl-dot.active {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+
+/*** Footer ***/
+.footer {
+    background: linear-gradient(rgba(0, 0, 0, .9), rgba(0, 0, 0, .9)), url(../img/carousel-bg-1.jpg) center center no-repeat;
+    background-size: cover;
+}
+
+.footer .btn.btn-social {
+    margin-right: 5px;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--light);
+    border: 1px solid #FFFFFF;
+    border-radius: 35px;
+    transition: .3s;
+}
+
+.footer .btn.btn-social:hover {
+    color: var(--primary);
+}
+
+.footer .btn.btn-link {
+    display: block;
+    margin-bottom: 5px;
+    padding: 0;
+    text-align: left;
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: normal;
+    text-transform: capitalize;
+    transition: .3s;
+}
+
+.footer .btn.btn-link::before {
+    position: relative;
+    content: "\f105";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    margin-right: 10px;
+}
+
+.footer .btn.btn-link:hover {
+    letter-spacing: 1px;
+    box-shadow: none;
+}
+
+.footer .copyright {
+    padding: 25px 0;
+    font-size: 15px;
+    border-top: 1px solid rgba(256, 256, 256, .1);
+}
+
+.footer .copyright a {
+    color: var(--light);
+}
+
+.footer .footer-menu a {
+    margin-right: 15px;
+    padding-right: 15px;
+    border-right: 1px solid rgba(255, 255, 255, .3);
+}
+
+.footer .footer-menu a:last-child {
+    margin-right: 0;
+    padding-right: 0;
+    border-right: none;
+}
+
+/* Targeted color rules for About paragraph/list (normal weight) */
+#about-section p, #about-section ul, #about-section ul li {
+    color: var(--secondary) !important;
+    font-weight: 400 !important;
+}
+
+/* Set the tile color/weight at the tile container so icons and labels inherit */
+#what-checked .p-2.h-100 {
+    color: var(--secondary) !important;
+    font-weight: 700 !important;
+}
+
+/* Allow a single tile (e.g., .wc-engine) to control the color for all tiles by setting the container color */
+.wc-engine {
+    color: var(--secondary) !important;
+}
+
+/* what-is-checked icons: inherit color and use consistent sizing */
+#what-checked .what-icon,
+.what-icon {
+    color: currentColor !important; /* inherit from parent tile */
+    font-size: 2.2rem; /* for <i> icons */
+}
+
+/* Ensure inline SVGs with class what-icon scale and fill the current color */
+#what-checked svg.what-icon, svg.what-icon {
+    width: 2.2rem;
+    height: 2.2rem;
+    fill: currentColor;
+    vertical-align: middle;
+}
+
+/* About section icons: inherit color too and match size */
+.about-icon {
+    color: currentColor !important;
+    font-size: 2.2rem;
+}
+
+/* Slightly increase spacing on the About features for two-column layout */
+#about-section .row.g-4.mb-3 .col-6 {
+    margin-bottom: 0.75rem;
+}
+
+/* Ensure the features area doesn't add unexpected bottom spacing */
+#about-section .row.g-4.mb-3.pb-3 {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* Make about image fill the left column height so it stretches to match the feature grid */
+#about-section .col-lg-6.h-100 .img-fluid {
+    height: 100%;
+    max-height: none;
+    object-fit: cover;
+}
+
+/* Ensure the right column content starts at the top so the image and content align */
+#about-section .col-lg-6.d-flex.flex-column.justify-content-center {
+    justify-content: flex-start !important;
+}
+
+/* Make the about left column stretch to match the right column content */
+/* Ensure the About row stretches fully and left image fills height */
+#about-section .row.g-5.align-items-stretch { display:flex; align-items:stretch; }
+#about-section .col-lg-6.h-100 { display:flex; align-items:stretch; }
+#about-section .col-lg-6.h-100 .wow { flex:1 1 auto; display:flex; }
+#about-section .col-lg-6.h-100 .img-fluid { width:100%; height:100%; object-fit:cover; display:block }
+
+/* Ensure the About section is tall enough so the image extends to the feature grid end */
+#about-section {
+    /* Increased to ensure the left image stretches to the bottom of the feature grid */
+    min-height: 920px;
+}
+
+@media (max-width: 991.98px) {
+    /* reduce min-height on smaller screens to avoid excessive vertical space */
+    #about-section {
+        min-height: 700px;
+    }
+}
+
+/* Subtle dust/sand animated background for decorative effect */
+@keyframes dust-drift {
+    0% { transform: translateX(-10%) translateY(0) scale(1); opacity: 0.06 }
+    50% { transform: translateX(10%) translateY(-6%) scale(1.05); opacity: 0.09 }
+    100% { transform: translateX(-10%) translateY(0) scale(1); opacity: 0.06 }
+}
+
+.section-dust {
+    position: relative;
+    overflow: hidden;
+}
+
+.section-dust::before {
+    content: '';
+    position: absolute;
+    inset: -20% -30% -20% -30%;
+    background-image: radial-gradient(circle at 20% 30%, rgba(210,180,140,0.06) 0 5%, transparent 10%),
+                      radial-gradient(circle at 80% 70%, rgba(222,184,135,0.05) 0 6%, transparent 12%);
+    background-size: 80% 80%, 100% 100%;
+    pointer-events: none;
+    transform-origin: center;
+    animation: dust-drift 18s ease-in-out infinite;
+    will-change: transform, opacity;
+}
+
+/* Apply subtle darker tint for better contrast on content when needed */
+.section-dust .container { position: relative; z-index: 2; }
+
+/* Apply the dust overlay to What is checked and About sections */
+#what-checked.section-dust::before,
+#about-section.section-dust::before { display: block; }
+
+/* Ensure modals are scrollable */
+.modal-dialog-scrollable {
+    max-height: calc(100vh - 3.5rem);
+}
+
+.modal-dialog-scrollable .modal-body {
+    overflow-y: auto;
+    max-height: calc(100vh - 210px);
+}
+
+/* Customer listing cards hover effect */
+.customer-highlight-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.customer-highlight-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Fix modal footer visibility on mobile - CRITICAL */
+.modal-dialog-scrollable .modal-content {
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+}
+
+.modal-dialog-scrollable .modal-body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    max-height: calc(90vh - 140px);
+}
+
+.modal-dialog-scrollable .modal-footer {
+    flex-shrink: 0;
+    position: sticky;
+    bottom: 0;
+    background: white;
+    z-index: 1050;
+    border-top: 1px solid #dee2e6;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    display: flex !important;
+    gap: 10px;
+}
+
+/* Ensure buttons are always visible and tappable */
+.modal-footer .btn {
+    white-space: nowrap;
+}
+
+/* Mobile specific fixes - CRITICAL for submit button */
+@media (max-width: 768px) {
+    .modal-dialog-scrollable {
+        max-height: 95vh !important;
+        margin: 0.5rem;
+    }
+    
+    .modal-dialog-scrollable .modal-content {
+        max-height: 95vh !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    
+    .modal-dialog-scrollable .modal-body {
+        flex: 1 1 auto !important;
+        overflow-y: auto !important;
+        max-height: calc(95vh - 130px) !important;
+        padding-bottom: 30px !important;
+    }
+    
+    .modal-dialog-scrollable .modal-footer {
+        flex-shrink: 0 !important;
+        position: sticky !important;
+        bottom: 0 !important;
+        background: white !important;
+        z-index: 1051 !important;
+        padding: 12px 15px !important;
+        border-top: 2px solid #dee2e6 !important;
+        box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.15) !important;
+        display: flex !important;
+        gap: 8px !important;
+    }
+    
+    .modal-footer .btn {
+        padding: 14px 20px !important;
+        font-size: 16px !important;
+        min-height: 48px !important;
+        flex: 1 !important;
+        font-weight: 600 !important;
+    }
+    
+    /* Ensure all photo upload sections including RC are visible */
+    #listingPhotoInputs .col-sm-6,
+    #listingPhotoInputs .col-md-4 {
+        margin-bottom: 25px !important;
+    }
+    
+    /* Make form labels more visible on mobile */
+    .form-label {
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+}
+
+/*** SOLD OUT Banner Overlay ***/
+.sold-out-overlay {
+    position: relative;
+    opacity: 0.6;
+    pointer-events: none;
+    filter: grayscale(30%);
+}
+
+.sold-out-banner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-15deg);
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+    padding: 12px 40px;
+    font-weight: 900;
+    font-size: 28px;
+    letter-spacing: 3px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    border: 4px solid white;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4), inset 0 2px 3px rgba(255,255,255,0.3);
+    z-index: 10;
+    pointer-events: none;
+    border-radius: 8px;
+}
+
+.sold-out-banner::before,
+.sold-out-banner::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    bottom: -4px;
+    width: 4px;
+    background: white;
+}
+
+.sold-out-banner::before {
+    left: -4px;
+}
+
+.sold-out-banner::after {
+    right: -4px;
+}
+
+.customer-highlight-card.sold-out {
+    cursor: not-allowed !important;
+    transition: all 0.3s ease;
+}
+
+.customer-highlight-card.sold-out:hover {
+    transform: none !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08) !important;
+}
+
+/*** Enhanced List Your Car Button ***/
+.list-car-btn {
+    background: linear-gradient(135deg, #D81324 0%, #c8102e 100%);
+    color: white !important;
+    border: none;
+    padding: 12px 28px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(216, 19, 36, 0.4);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.list-car-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(216, 19, 36, 0.5);
+    background: linear-gradient(135deg, #c8102e 0%, #D81324 100%);
+}
+
+.list-car-btn:active {
+    transform: translateY(0);
+}
+
+.list-car-btn i {
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+/* Pulse animation for List Your Car button */
+@keyframes pulse-red {
+    0% {
+        box-shadow: 0 4px 15px rgba(216, 19, 36, 0.4);
+    }
+    50% {
+        box-shadow: 0 4px 25px rgba(216, 19, 36, 0.7);
+    }
+    100% {
+        box-shadow: 0 4px 15px rgba(216, 19, 36, 0.4);
+    }
+}
+
+.list-car-btn-pulse {
+    animation: pulse-red 2s infinite;
+}
+
+/*** Custom Carousel Dot Indicators ***/
+.carousel-indicators {
+    position: relative !important;
+    margin: 20px 0 0 0 !important;
+    bottom: auto !important;
+}
+
+.carousel-indicators [data-bs-target] {
+    width: 12px !important;
+    height: 12px !important;
+    border-radius: 50% !important;
+    background-color: #ccc !important;
+    border: 2px solid transparent !important;
+    opacity: 1 !important;
+    margin: 0 6px !important;
+    transition: all 0.3s ease !important;
+}
+
+.carousel-indicators [data-bs-target].active {
+    background-color: #D81324 !important;
+    border-color: #D81324 !important;
+    transform: scale(1.3);
+    box-shadow: 0 2px 8px rgba(216, 19, 36, 0.4);
+}
+
+.carousel-indicators [data-bs-target]:hover {
+    background-color: #999 !important;
+    transform: scale(1.15);
+}
+
+/* Hide default arrow controls */
+.carousel-control-prev,
+.carousel-control-next {
+    display: none !important;
+}
+
+/*** Image Loading Optimization ***/
+.customer-highlight-card img {
+    background: linear-gradient(to bottom, #f0f0f0 0%, #e0e0e0 100%);
+    transition: opacity 0.3s ease;
+}
+
+.customer-highlight-card img[loading="lazy"] {
+    opacity: 0;
+}
+
+.customer-highlight-card img.loaded {
+    opacity: 1;
+}
+
+/* Image placeholder blur effect */
+.img-placeholder {
+    background: linear-gradient(to bottom, #f0f0f0 0%, #e0e0e0 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.img-placeholder::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+    );
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+

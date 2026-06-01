@@ -1,0 +1,28 @@
+User-agent: *
+Allow: /
+Allow: /ads.txt
+
+# Sitemap
+Sitemap: https://www.inspectionwale.com/sitemap.xml
+
+# Block internal inspector tools
+Disallow: /admin/
+Disallow: /inspector-*.html$
+Disallow: /password-*.html$
+Disallow: /pdf_template.html
+
+# Block development files
+Disallow: /amplify/
+Disallow: /*.json$
+Disallow: /deploy-*.ps1$
+Disallow: /deploy-*.sh$
+Disallow: /*.md$
+
+# Block unused template image directory
+Disallow: /img/
+
+# Allow necessary resources
+Allow: /css/
+Allow: /js/
+Allow: /lib/
+Allow: /Images/

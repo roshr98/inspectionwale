@@ -1,0 +1,23 @@
+backend/
+
+# Local/dev artifacts
+website/workspace/
+
+# Local deploy bundles (built ZIPs, temp packaging dirs)
+.deploy/
+
+# Local test outputs
+website/test-output/
+
+# Never commit node_modules (does not affect already-tracked files)
+**/node_modules/
+
+# PDF generator outputs (keep the actual HTML/CSS template, ignore generated PDFs)
+website/pdf-template/**/*.pdf
+website/amplify/functions/**/pdf-template/**/*.pdf
+
+# Common junk
+.DS_Store
+Thumbs.db
+node_modules
+.venv

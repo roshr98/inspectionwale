@@ -1,0 +1,210 @@
+[
+  {
+    "listingId": "placeholder-001",
+    "status": "approved",
+    "isPlaceholder": true,
+    "createdAt": "2025-10-12T10:00:00.000Z",
+    "updatedAt": "2025-10-12T10:00:00.000Z",
+    "seller": {
+      "name": "Verified Owner",
+      "mobile": "9876543210",
+      "email": "hello@inspectionwale.com"
+    },
+    "car": {
+      "make": "Tata",
+      "model": "Altroz",
+      "edition": "XZ Plus",
+      "registrationYear": "2021",
+      "kmsDriven": "32000",
+      "expectedPrice": "750000"
+    },
+    "photos": {
+      "exteriorFront": {
+        "key": "Images/Car-3.jpg",
+        "url": "Images/Car-3.jpg",
+        "contentType": "image/jpeg"
+      },
+      "exteriorBack": {
+        "key": "Images/Car-3.jpg",
+        "url": "Images/Car-3.jpg",
+        "contentType": "image/jpeg"
+      },
+      "exteriorLeft": {
+        "key": "Images/Car-3.jpg",
+        "url": "Images/Car-3.jpg",
+        "contentType": "image/jpeg"
+      },
+      "exteriorRight": {
+        "key": "Images/Car-3.jpg",
+        "url": "Images/Car-3.jpg",
+        "contentType": "image/jpeg"
+      },
+      "interiorSeat": {
+        "key": "Images/Car-3.jpg",
+        "url": "Images/Car-3.jpg",
+        "contentType": "image/jpeg"
+      },
+      "interiorCluster": {
+        "key": "Images/Car-3.jpg",
+        "url": "Images/Car-3.jpg",
+        "contentType": "image/jpeg"
+      }
+    }
+  },
+  {
+    "listingId": "placeholder-002",
+    "status": "approved",
+    "isPlaceholder": true,
+    "createdAt": "2025-10-12T09:30:00.000Z",
+    "updatedAt": "2025-10-12T09:30:00.000Z",
+    "seller": {
+      "name": "Verified Owner",
+      "mobile": "9876543210",
+      "email": "hello@inspectionwale.com"
+    },
+    "car": {
+      "make": "Hyundai",
+      "model": "i10",
+      "edition": "Sportz",
+      "registrationYear": "2020",
+      "kmsDriven": "38000",
+      "expectedPrice": "525000"
+    },
+    "photos": {
+      "exteriorFront": {
+        "key": "Images/Car-4.jpg",
+        "url": "Images/Car-4.jpg",
+        "contentType": "image/jpeg"
+      },
+      "exteriorBack": {
+        "key": "Images/Car-4.jpg",
+        "url": "Images/Car-4.jpg",
+        "contentType": "image/jpeg"
+      },
+      "exteriorLeft": {
+        "key": "Images/Car-4.jpg",
+        "url": "Images/Car-4.jpg",
+        "contentType": "image/jpeg"
+      },
+      "exteriorRight": {
+        "key": "Images/Car-4.jpg",
+        "url": "Images/Car-4.jpg",
+        "contentType": "image/jpeg"
+      },
+      "interiorSeat": {
+        "key": "Images/Car-4.jpg",
+        "url": "Images/Car-4.jpg",
+        "contentType": "image/jpeg"
+      },
+      "interiorCluster": {
+        "key": "Images/Car-4.jpg",
+        "url": "Images/Car-4.jpg",
+        "contentType": "image/jpeg"
+      }
+    }
+  },
+  {
+    "listingId": "placeholder-003",
+    "status": "approved",
+    "isPlaceholder": true,
+    "createdAt": "2025-10-12T08:45:00.000Z",
+    "updatedAt": "2025-10-12T08:45:00.000Z",
+    "seller": {
+      "name": "Verified Owner",
+      "mobile": "9876543210",
+      "email": "hello@inspectionwale.com"
+    },
+    "car": {
+      "make": "Maruti Suzuki",
+      "model": "Baleno",
+      "edition": "Delta CVT",
+      "registrationYear": "2022",
+      "kmsDriven": "15000",
+      "expectedPrice": "825000"
+    },
+    "photos": {
+      "exteriorFront": {
+        "key": "Images/Car-1.jpg",
+        "url": "Images/Car-1.jpg",
+        "contentType": "image/jpeg"
+      },
+      "exteriorBack": {
+        "key": "Images/Car-1.jpg",
+        "url": "Images/Car-1.jpg",
+        "contentType": "image/jpeg"
+      },
+      "exteriorLeft": {
+        "key": "Images/Car-1.jpg",
+        "url": "Images/Car-1.jpg",
+        "contentType": "image/jpeg"
+      },
+      "exteriorRight": {
+        "key": "Images/Car-1.jpg",
+        "url": "Images/Car-1.jpg",
+        "contentType": "image/jpeg"
+      },
+      "interiorSeat": {
+        "key": "Images/Car-1.jpg",
+        "url": "Images/Car-1.jpg",
+        "contentType": "image/jpeg"
+      },
+      "interiorCluster": {
+        "key": "Images/Car-1.jpg",
+        "url": "Images/Car-1.jpg",
+        "contentType": "image/jpeg"
+      }
+    }
+  },
+  {
+    "listingId": "placeholder-004",
+    "status": "approved",
+    "isPlaceholder": true,
+    "createdAt": "2025-10-12T07:15:00.000Z",
+    "updatedAt": "2025-10-12T07:15:00.000Z",
+    "seller": {
+      "name": "Verified Owner",
+      "mobile": "9876543210",
+      "email": "hello@inspectionwale.com"
+    },
+    "car": {
+      "make": "Honda",
+      "model": "Amaze",
+      "edition": "VX Petrol",
+      "registrationYear": "2021",
+      "kmsDriven": "22000",
+      "expectedPrice": "695000"
+    },
+    "photos": {
+      "exteriorFront": {
+        "key": "Images/Car-2.jpg",
+        "url": "Images/Car-2.jpg",
+        "contentType": "image/jpeg"
+      },
+      "exteriorBack": {
+        "key": "Images/Car-2.jpg",
+        "url": "Images/Car-2.jpg",
+        "contentType": "image/jpeg"
+      },
+      "exteriorLeft": {
+        "key": "Images/Car-2.jpg",
+        "url": "Images/Car-2.jpg",
+        "contentType": "image/jpeg"
+      },
+      "exteriorRight": {
+        "key": "Images/Car-2.jpg",
+        "url": "Images/Car-2.jpg",
+        "contentType": "image/jpeg"
+      },
+      "interiorSeat": {
+        "key": "Images/Car-2.jpg",
+        "url": "Images/Car-2.jpg",
+        "contentType": "image/jpeg"
+      },
+      "interiorCluster": {
+        "key": "Images/Car-2.jpg",
+        "url": "Images/Car-2.jpg",
+        "contentType": "image/jpeg"
+      }
+    }
+  }
+]

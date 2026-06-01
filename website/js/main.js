@@ -1,0 +1,1572 @@
+(function ($) {
+    "use strict";
+
+    // Spinner
+    var spinner = function () {
+        setTimeout(function () {
+            if ($('#spinner').length > 0) {
+                $('#spinner').removeClass('show');
+            }
+        }, 1);
+    };
+    spinner();
+    
+    
+    // Initiate the wowjs
+    new WOW().init();
+
+
+    // Sticky Navbar
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 300) {
+            $('.sticky-top').css('top', '0px');
+        } else {
+            $('.sticky-top').css('top', '-100px');
+        }
+    });
+    
+    
+    // Dropdown on mouse hover
+    const $dropdown = $(".dropdown");
+    const $dropdownToggle = $(".dropdown-toggle");
+    const $dropdownMenu = $(".dropdown-menu");
+    const showClass = "show";
+    
+    $(window).on("load resize", function() {
+        if (this.matchMedia("(min-width: 992px)").matches) {
+            $dropdown.hover(
+            function() {
+                const $this = $(this);
+                $this.addClass(showClass);
+                $this.find($dropdownToggle).attr("aria-expanded", "true");
+                $this.find($dropdownMenu).addClass(showClass);
+            },
+            function() {
+                const $this = $(this);
+                $this.removeClass(showClass);
+                $this.find($dropdownToggle).attr("aria-expanded", "false");
+                $this.find($dropdownMenu).removeClass(showClass);
+            }
+            );
+        } else {
+            $dropdown.off("mouseenter mouseleave");
+        }
+    });
+    
+    
+    // Back to top button
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 300) {
+            $('.back-to-top').fadeIn('slow');
+        } else {
+            $('.back-to-top').fadeOut('slow');
+        }
+    });
+    $('.back-to-top').click(function () {
+        $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
+        return false;
+    });
+
+
+    // Facts counter
+    $('[data-toggle="counter-up"]').counterUp({
+        delay: 10,
+        time: 2000
+    });
+
+
+    // Date and time picker removed - tempusdominus library not needed
+    // Booking form uses native HTML5 date inputs instead
+
+
+    // Testimonials carousel
+    $(".testimonial-carousel").owlCarousel({
+        autoplay: true,
+        smartSpeed: 1000,
+        center: true,
+        margin: 25,
+        dots: true,
+        loop: true,
+        nav : false,
+        responsive: {
+            0:{
+                items:1
+            },
+            768:{
+                items:2
+            },
+            992:{
+                items:3
+            }
+        }
+    });
+    
+})(jQuery);
+
+(function(){
+    const API_ENDPOINT = 'https://423cmvhw3g.execute-api.us-east-1.amazonaws.com/prod/customer-listings'
+    const REQUIRED_PHOTO_SLOTS = [
+        'exteriorFront', 'exteriorBack', 'exteriorLeft', 'exteriorRight',
+        'driverCabin', 'rearCabin', 'bootSpace'
+    ]
+    const DOCUMENT_SLOT = 'rcDocument'
+    const FALLBACK_IMAGES = ['/Images/Car-1.jpg', '/Images/Car-2.jpg', '/Images/Car-3.jpg', '/Images/Car-4.jpg']
+    const LISTINGS_ASSET_BASE = 'https://inspectionwale-car-listings.s3.amazonaws.com/'
+    const SOLD_KEYWORDS = ['sold', 'sold out', 'sold-out', 'soldout', 'sold_out', 'booked', 'reserved', 'unavailable', 'not available', 'pending sale', 'pending-sale', 'under offer', 'deposit taken']
+    
+    // Image compression settings - optimized for fast upload with good quality
+    const MAX_IMAGE_WIDTH = 1280
+    const MAX_IMAGE_HEIGHT = 960
+    const JPEG_QUALITY = 0.80
+    const MAX_FILE_SIZE_MB = 2
+
+    const listingsCache = new Map()
+    const selectedPhotos = new Map()
+    const previewUrls = new Map()
+    let currentListingId = null
+
+    function ensureAbsoluteAssetUrl(value) {
+        if (!value) return ''
+
+        let candidate = value
+        if (typeof candidate === 'object' && candidate !== null) {
+            if (typeof candidate.url === 'string') {
+                candidate = candidate.url
+            } else if (typeof candidate.S === 'string') {
+                candidate = candidate.S
+            } else if (typeof candidate.key === 'string') {
+                candidate = candidate.key
+            } else {
+                return ''
+            }
+        }
+
+        if (typeof candidate !== 'string') return ''
+        const trimmed = candidate.trim()
+        if (!trimmed) return ''
+        if (/^(data:|blob:)/i.test(trimmed)) return trimmed
+        if (/^https?:\/\//i.test(trimmed)) return trimmed
+        if (trimmed.startsWith('//')) return `https:${trimmed}`
+        const withoutDots = trimmed.replace(/^\.\//, '')
+        if (withoutDots.startsWith('/')) return withoutDots
+        const lower = withoutDots.toLowerCase()
+        const localPrefixes = ['images/', 'css/', 'js/', 'lib/', 'assets/', 'static/']
+        if (localPrefixes.some(prefix => lower.startsWith(prefix))) {
+            return `/${withoutDots.replace(/^\/+/, '')}`
+        }
+        return LISTINGS_ASSET_BASE + withoutDots.replace(/^\/+/, '')
+    }
+
+    function isListingSold(listing) {
+        if (!listing) return false
+
+        const candidates = []
+        const pushString = (val) => {
+            if (typeof val === 'string') {
+                const normalised = val.trim().toLowerCase()
+                if (normalised) candidates.push(normalised)
+            }
+        }
+
+        pushString(listing.status)
+        pushString(listing.state)
+        pushString(listing.availability)
+
+        if (listing.metadata) {
+            pushString(listing.metadata.status)
+            pushString(listing.metadata.state)
+        }
+
+        const car = listing.car || {}
+        pushString(car.status)
+        pushString(car.availability)
+
+        const display = listing.display || {}
+        pushString(display.status)
+        pushString(display.statusText)
+        pushString(display.badge)
+        pushString(display.badgeText)
+        pushString(display.tagline)
+        pushString(display.highlight)
+
+        if (Array.isArray(listing.flags)) listing.flags.forEach(pushString)
+        if (Array.isArray(listing.tags)) listing.tags.forEach(pushString)
+
+        return candidates.some(value => SOLD_KEYWORDS.some(keyword => value.includes(keyword)))
+    }
+    
+    // Image compression function - optimized for faster uploads
+    async function compressImage(file) {
+        return new Promise((resolve, reject) => {
+            // Always compress images larger than 300KB for faster upload
+            if (file.size < 300 * 1024) { // Less than 300KB
+                resolve(file)
+                return
+            }
+            
+            const reader = new FileReader()
+            reader.onload = (e) => {
+                const img = new Image()
+                img.onload = () => {
+                    // Calculate new dimensions
+                    let width = img.width
+                    let height = img.height
+                    
+                    if (width > MAX_IMAGE_WIDTH || height > MAX_IMAGE_HEIGHT) {
+                        const ratio = Math.min(MAX_IMAGE_WIDTH / width, MAX_IMAGE_HEIGHT / height)
+                        width = Math.floor(width * ratio)
+                        height = Math.floor(height * ratio)
+                    }
+                    
+                    // Create canvas and compress
+                    const canvas = document.createElement('canvas')
+                    canvas.width = width
+                    canvas.height = height
+                    
+                    const ctx = canvas.getContext('2d')
+                    ctx.imageSmoothingEnabled = true
+                    ctx.imageSmoothingQuality = 'high'
+                    ctx.drawImage(img, 0, 0, width, height)
+                    
+                    // Convert to blob
+                    canvas.toBlob((blob) => {
+                        if (!blob) {
+                            resolve(file)
+                            return
+                        }
+                        
+                        // Create new file with compressed blob
+                        const compressedFile = new File([blob], file.name, {
+                            type: 'image/jpeg',
+                            lastModified: Date.now()
+                        })
+                        
+                        // Use compressed if it's smaller
+                        resolve(compressedFile.size < file.size ? compressedFile : file)
+                    }, 'image/jpeg', JPEG_QUALITY)
+                }
+                img.onerror = () => resolve(file)
+                img.src = e.target.result
+            }
+            reader.onerror = () => resolve(file)
+            reader.readAsDataURL(file)
+        })
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        initListCarForm()
+        initReserveForm()
+        initTestDriveForm()
+        initDetailModal()
+        fetchAndRenderListings()
+
+        try {
+            const stored = sessionStorage.getItem('iw_booking_prefill_listing')
+            if (stored) {
+                sessionStorage.removeItem('iw_booking_prefill_listing')
+                const listing = JSON.parse(stored)
+                if (listing && listing.car) {
+                    prefillBookingForm(listing)
+                    const bookingSection = document.getElementById('book')
+                    if (bookingSection) {
+                        bookingSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                    }
+                }
+            }
+        } catch (e) {
+            // ignore storage/parse errors
+        }
+    })
+
+    async function fetchAndRenderListings() {
+        const carousel = document.getElementById('customerListingsCarousel')
+        if (!carousel) return
+
+        const indicators = document.getElementById('customerListingsIndicators')
+        const inner = document.getElementById('customerListingsInner')
+
+        try {
+            const res = await fetch(API_ENDPOINT, { headers: { Accept: 'application/json' } })
+            const data = await res.json()
+            if (!res.ok || !data || data.ok === false) {
+                throw new Error((data && data.error) || 'failed_to_fetch')
+            }
+
+            const items = Array.isArray(data.items) ? data.items : []
+            listingsCache.clear()
+            items.forEach(item => {
+                if (item && item.listingId) listingsCache.set(item.listingId, item)
+            })
+
+            if (!items.length) {
+                renderEmptyCarousel(inner, indicators)
+            } else {
+                renderCarousel(items, inner, indicators)
+            }
+        } catch (error) {
+            console.error('Unable to load listings', error)
+            renderEmptyCarousel(inner, indicators, 'Customer listings are being verified. Please check again shortly.')
+        }
+    }
+
+    function renderEmptyCarousel(inner, indicators, message) {
+        if (!inner) return
+        inner.innerHTML = ''
+        if (indicators) indicators.innerHTML = ''
+
+        const item = document.createElement('div')
+        item.className = 'carousel-item active'
+        const row = document.createElement('div')
+        row.className = 'row g-4'
+        const col = document.createElement('div')
+        col.className = 'col-12'
+        const card = document.createElement('div')
+        card.className = 'customer-highlight-card p-4 h-100 text-center'
+        const text = document.createElement('p')
+        text.className = 'text-muted mb-0'
+        text.textContent = message || 'Approved customer listings will appear here once they are verified by our team.'
+        card.appendChild(text)
+        col.appendChild(card)
+        row.appendChild(col)
+        item.appendChild(row)
+        inner.appendChild(item)
+
+        toggleCarouselControls(false)
+    }
+
+    function renderCarousel(items, inner, indicators) {
+        if (!inner) return
+        inner.innerHTML = ''
+        if (indicators) indicators.innerHTML = ''
+
+        const groups = []
+        for (let i = 0; i < items.length; i += 2) {
+            groups.push(items.slice(i, i + 2))
+        }
+
+        groups.forEach((group, index) => {
+            const itemEl = document.createElement('div')
+            itemEl.className = 'carousel-item' + (index === 0 ? ' active' : '')
+            const row = document.createElement('div')
+            row.className = 'row g-4'
+
+            group.forEach((listing, groupIndex) => {
+                row.appendChild(buildListingCard(listing, index + groupIndex))
+            })
+
+            itemEl.appendChild(row)
+            inner.appendChild(itemEl)
+
+            if (indicators) {
+                const indicator = document.createElement('button')
+                indicator.type = 'button'
+                indicator.setAttribute('data-bs-target', '#customerListingsCarousel')
+                indicator.setAttribute('data-bs-slide-to', String(index))
+                indicator.setAttribute('aria-label', `Listing set ${index + 1}`)
+                if (index === 0) {
+                    indicator.classList.add('active')
+                    indicator.setAttribute('aria-current', 'true')
+                }
+                indicators.appendChild(indicator)
+            }
+        })
+
+        toggleCarouselControls(groups.length > 1)
+    }
+
+    function toggleCarouselControls(visible) {
+        const carousel = document.getElementById('customerListingsCarousel')
+        if (!carousel) return
+        const controls = carousel.querySelectorAll('.carousel-control-prev, .carousel-control-next')
+        controls.forEach(ctrl => {
+            ctrl.classList.toggle('d-none', !visible)
+        })
+        const indicators = document.getElementById('customerListingsIndicators')
+        if (indicators) {
+            indicators.classList.toggle('d-none', controls.length === 0 || !visible)
+        }
+    }
+
+    function buildListingCard(listing, index) {
+        const col = document.createElement('div')
+        col.className = 'col-lg-6'
+        const article = document.createElement('article')
+        article.className = 'customer-highlight-card p-4 h-100'
+        article.dataset.listingId = listing.listingId
+        
+        // Check if car is sold out
+        const isSoldOut = isListingSold(listing)
+        
+        if (isSoldOut) {
+            article.classList.add('sold-out')
+            // Don't add click handlers for sold out cars
+        } else {
+            article.setAttribute('role', 'button')
+            article.setAttribute('tabindex', '0')
+            article.addEventListener('click', () => openDetailModal(listing.listingId))
+            article.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault()
+                    openDetailModal(listing.listingId)
+                }
+            })
+        }
+
+        const header = document.createElement('div')
+        header.className = 'd-flex justify-content-between align-items-start mb-3'
+
+        const info = document.createElement('div')
+        const title = document.createElement('h4')
+        title.className = 'mb-1'
+        title.textContent = buildListingTitle(listing)
+        const stats = document.createElement('p')
+        stats.className = 'text-muted mb-0'
+        stats.textContent = buildListingStats(listing)
+        info.appendChild(title)
+        info.appendChild(stats)
+
+        const imageWrapper = document.createElement('div')
+        imageWrapper.style.position = 'relative'
+        imageWrapper.className = 'img-placeholder rounded'
+        
+        const heroImg = document.createElement('img')
+        heroImg.className = 'rounded'
+        heroImg.style.width = '110px'
+        heroImg.style.height = '80px'
+        heroImg.style.objectFit = 'cover'
+        heroImg.alt = `${buildListingTitle(listing)} photo`
+    heroImg.src = pickHeroImage(listing, index)
+        heroImg.loading = 'lazy'
+        heroImg.decoding = 'async'
+            heroImg.onerror = () => {
+                heroImg.src = ensureAbsoluteAssetUrl(FALLBACK_IMAGES[0])
+            }
+        
+        // Add sold out banner if car is sold
+        if (isSoldOut) {
+            imageWrapper.classList.add('sold-out-overlay')
+            const soldBanner = document.createElement('div')
+            soldBanner.className = 'sold-out-banner'
+            soldBanner.textContent = 'SOLD OUT'
+            imageWrapper.appendChild(soldBanner)
+        }
+        
+        // Optimize image loading with load event
+        heroImg.addEventListener('load', function() {
+            this.classList.add('loaded')
+            imageWrapper.classList.remove('img-placeholder')
+        })
+        
+        imageWrapper.appendChild(heroImg)
+
+        header.appendChild(info)
+        header.appendChild(imageWrapper)
+
+        const summary = document.createElement('p')
+        summary.className = 'text-muted'
+        summary.textContent = listing.summary || 'Owner-listed vehicle. InspectionWale verifies every submission before it goes live.'
+
+        const footer = document.createElement('div')
+        footer.className = 'd-flex align-items-center justify-content-between'
+        const price = document.createElement('strong')
+        price.className = 'text-primary'
+        price.textContent = formatPrice(listing.car && listing.car.expectedPrice)
+
+        const buttonGroup = document.createElement('div')
+        buttonGroup.className = 'd-flex gap-2'
+
+        const detailsBtn = document.createElement('button')
+        detailsBtn.type = 'button'
+        detailsBtn.className = 'btn btn-outline-primary btn-sm'
+        detailsBtn.textContent = 'View Details'
+        detailsBtn.addEventListener('click', (event) => {
+            event.stopPropagation()
+            openDetailModal(listing.listingId)
+        })
+
+        const reserveBtn = document.createElement('button')
+        reserveBtn.type = 'button'
+        reserveBtn.className = 'btn btn-success btn-sm'
+        if (isSoldOut) {
+            reserveBtn.textContent = 'Sold Out'
+            reserveBtn.classList.remove('btn-success')
+            reserveBtn.classList.add('btn-secondary')
+            reserveBtn.disabled = true
+        } else {
+            reserveBtn.textContent = 'Reserve Now'
+            reserveBtn.addEventListener('click', (event) => {
+                event.stopPropagation()
+                openReserveModal(listing.listingId)
+            })
+        }
+
+        const testDriveBtn = document.createElement('button')
+        testDriveBtn.type = 'button'
+        testDriveBtn.className = 'btn btn-outline-secondary btn-sm'
+        testDriveBtn.textContent = 'Test Drive'
+        if (isSoldOut) {
+            testDriveBtn.disabled = true
+        } else {
+            testDriveBtn.addEventListener('click', (event) => {
+                event.stopPropagation()
+                openTestDriveModal(listing.listingId)
+            })
+        }
+
+        buttonGroup.appendChild(detailsBtn)
+        buttonGroup.appendChild(reserveBtn)
+        buttonGroup.appendChild(testDriveBtn)
+
+        footer.appendChild(price)
+        footer.appendChild(buttonGroup)
+
+        article.appendChild(header)
+        article.appendChild(summary)
+        article.appendChild(footer)
+        col.appendChild(article)
+        return col
+    }
+
+    function buildListingTitle(listing) {
+        const car = listing.car || {}
+        const make = car.make || ''
+        const model = car.model || ''
+        const edition = car.edition ? ` ${car.edition}` : ''
+        return `${make} ${model}${edition}`.trim()
+    }
+
+    function buildListingStats(listing) {
+        const car = listing.car || {}
+        const parts = []
+        if (car.registrationYear) parts.push(car.registrationYear)
+        if (car.kmsDriven) parts.push(formatKms(car.kmsDriven))
+        return parts.join(' • ')
+    }
+
+    function pickHeroImage(listing, index) {
+        const photos = listing.photos || {}
+        const getString = (val) => ensureAbsoluteAssetUrl(val)
+
+        const extFront = getString(photos.exteriorFront)
+        if (extFront) return extFront
+
+        const main = getString(photos.main)
+        if (main) return main
+
+        if (photos.gallery && Array.isArray(photos.gallery) && photos.gallery.length > 0) {
+            const firstGallery = getString(photos.gallery[0])
+            if (firstGallery) return firstGallery
+        }
+
+        const fallback = FALLBACK_IMAGES[index % FALLBACK_IMAGES.length]
+        return ensureAbsoluteAssetUrl(fallback)
+    }
+
+    function formatPrice(value) {
+        if (value === undefined || value === null || value === '') return 'Price on request'
+        const numeric = Number(String(value).replace(/[^0-9.]/g, ''))
+        if (!Number.isFinite(numeric) || numeric <= 0) return 'Price on request'
+        return `Rs. ${new Intl.NumberFormat('en-IN').format(Math.round(numeric))}`
+    }
+
+    function formatKms(value) {
+        if (value === undefined || value === null || value === '') return ''
+        const numeric = Number(String(value).replace(/[^0-9.]/g, ''))
+        if (!Number.isFinite(numeric)) return String(value)
+        return `${new Intl.NumberFormat('en-IN').format(Math.round(numeric))} KM`
+    }
+
+    function initListCarForm() {
+        const form = document.getElementById('listCarForm')
+        if (!form) return
+
+        const alertBox = document.getElementById('listCarFormAlert')
+        const submitBtn = document.getElementById('listCarSubmitBtn')
+        const modalEl = document.getElementById('listCarModal')
+
+        // Required photos are validated by custom slot logic below.
+        // Leaving hidden file inputs as native required fields causes
+        // checkValidity() to fail with a generic "this field" message.
+        form.querySelectorAll('.list-car-photo-camera, .list-car-photo-gallery, .list-car-photo').forEach(input => {
+            input.required = false
+        })
+
+        // Handle both camera and gallery photo inputs
+        form.querySelectorAll('.list-car-photo-camera, .list-car-photo-gallery').forEach(input => {
+            input.addEventListener('change', () => handlePhotoChange(input))
+        })
+        
+        // Legacy support for old single input format
+        form.querySelectorAll('.list-car-photo').forEach(input => {
+            input.addEventListener('change', () => handlePhotoChange(input))
+        })
+
+        form.querySelectorAll('[data-clear]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const slot = btn.getAttribute('data-clear')
+                clearPhotoInput(slot, form)
+            })
+        })
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault()
+            event.stopPropagation()
+
+            // Check form field validity first
+            if (!form.checkValidity()) {
+                form.classList.add('was-validated')
+                
+                // Find first invalid field and scroll to it
+                const firstInvalid = form.querySelector(':invalid')
+                if (firstInvalid) {
+                    // Scroll to the invalid field
+                    firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                    
+                    // Focus after scroll completes
+                    setTimeout(() => {
+                        firstInvalid.focus()
+                    }, 300)
+                    
+                    // Show specific error message based on field
+                    let fieldName = 'this field'
+                    const label = firstInvalid.previousElementSibling
+                    if (label && label.tagName === 'LABEL') {
+                        fieldName = label.textContent.replace('*', '').trim()
+                    } else if (firstInvalid.labels && firstInvalid.labels[0]) {
+                        fieldName = firstInvalid.labels[0].textContent.replace('*', '').trim()
+                    }
+                    
+                    showAlert(alertBox, 'danger', `Please fill in: ${fieldName}`)
+                }
+                
+                return
+            }
+
+            // Check required photos
+            const photoValidation = validateRequiredPhotos()
+            if (!photoValidation.valid) {
+                const missingPhotoNames = photoValidation.missingSlots.map(slot => getPhotoLabelFromSlot(slot)).join(', ')
+                showAlert(alertBox, 'danger', `Missing required photos: ${missingPhotoNames}`)
+                
+                // Scroll to first missing photo
+                const firstMissingSlot = photoValidation.missingSlots[0]
+                const firstMissingInput = form.querySelector(`input[data-slot="${firstMissingSlot}"]`)
+                if (firstMissingInput) {
+                    const fieldContainer = firstMissingInput.closest('.col-md-4') || firstMissingInput.parentElement
+                    const scrollTarget = fieldContainer || firstMissingInput
+                    scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                    setTimeout(() => {
+                        const focusTarget = (fieldContainer && fieldContainer.querySelector('button')) || firstMissingInput
+                        if (focusTarget && typeof focusTarget.focus === 'function') {
+                            focusTarget.focus()
+                        }
+                    }, 300)
+                }
+                
+                return
+            }
+
+            form.classList.remove('was-validated')
+            hideAlert(alertBox)
+            submitBtn.disabled = true
+            submitBtn.innerText = 'Uploading...'
+
+            try {
+                const filesPayload = []
+                for (const [slot, file] of selectedPhotos.entries()) {
+                    filesPayload.push({ slot, contentType: file.type || 'image/jpeg' })
+                }
+
+                const uploadMeta = await apiPost('requestUpload', { files: filesPayload })
+                const submissionId = uploadMeta.submissionId
+
+                for (const upload of uploadMeta.uploads || []) {
+                    const file = selectedPhotos.get(upload.slot)
+                    if (!file) continue
+                    const uploadResponse = await fetch(upload.uploadUrl, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': file.type || 'image/jpeg' },
+                        body: file
+                    })
+                    if (!uploadResponse.ok) {
+                        throw new Error('upload_failed')
+                    }
+                }
+
+                const payload = buildListingPayload(form, uploadMeta)
+                payload.submissionId = submissionId
+
+                const submitResult = await apiPost('submitListing', payload)
+                showAlert(alertBox, 'success', submitResult.message || 'Submitted successfully. Our team will verify and publish the listing.')
+                
+                // Track listing submission
+                if (window.trackEvent) {
+                    window.trackEvent('submit_listing', {
+                        'car_make': payload.car.make,
+                        'car_model': payload.car.model,
+                        'car_year': payload.car.registrationYear,
+                        'price': payload.car.expectedPrice,
+                        'kms_driven': payload.car.kmsDriven,
+                        'photos_count': payload.photos.length
+                    })
+                }
+                
+                // Show success popup and close modal
+                setTimeout(() => {
+                    alert('Thank you for listing your car! We have received your submission and will verify it shortly. You will be contacted once approved.')
+                    
+                    // Safely close modal
+                    const listCarModal = bootstrap.Modal.getInstance(modalEl)
+                    if (listCarModal) {
+                        listCarModal.hide()
+                    }
+                    
+                    form.reset()
+                    resetPhotoPreviews(form)
+                    hideAlert(alertBox)
+                }, 1500)
+            } catch (error) {
+                console.error('Listing submission failed', error)
+                const errorMessage = friendlyError(error)
+                showAlert(alertBox, 'danger', errorMessage)
+                
+                // Scroll to alert box to show error
+                if (alertBox) {
+                    alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                }
+            } finally {
+                submitBtn.disabled = false
+                submitBtn.innerText = 'Submit for Verification'
+            }
+        })
+
+        if (modalEl) {
+            modalEl.addEventListener('hidden.bs.modal', () => {
+                hideAlert(alertBox)
+                form.reset()
+                resetPhotoPreviews(form)
+                form.classList.remove('was-validated')
+                
+                // Clean up any stray modal backdrops safely
+                const backdrops = document.querySelectorAll('.modal-backdrop')
+                backdrops.forEach(backdrop => {
+                    if (backdrop && backdrop.parentNode) {
+                        backdrop.parentNode.removeChild(backdrop)
+                    }
+                })
+                document.body.classList.remove('modal-open')
+                document.body.style.overflow = ''
+                document.body.style.paddingRight = ''
+            })
+        }
+    }
+
+    async function handlePhotoChange(input) {
+        const slot = input.getAttribute('data-slot')
+        if (!slot) return
+        const previewImg = input.form ? input.form.querySelector(`img[data-preview="${slot}"]`) : null
+        const clearBtn = input.form ? input.form.querySelector(`[data-clear="${slot}"]`) : null
+
+        if (!input.files || !input.files.length) {
+            selectedPhotos.delete(slot)
+            if (previewUrls.has(slot)) {
+                URL.revokeObjectURL(previewUrls.get(slot))
+                previewUrls.delete(slot)
+            }
+            if (previewImg) {
+                previewImg.src = ''
+                previewImg.classList.add('d-none')
+            }
+            if (clearBtn) clearBtn.classList.add('d-none')
+            return
+        }
+
+        const file = input.files[0]
+        
+        // Show loading state on preview
+        if (previewImg) {
+            previewImg.style.opacity = '0.5'
+        }
+        
+        try {
+            // Compress image before storing
+            const compressedFile = await compressImage(file)
+            selectedPhotos.set(slot, compressedFile)
+
+            if (previewUrls.has(slot)) {
+                URL.revokeObjectURL(previewUrls.get(slot))
+            }
+            const url = URL.createObjectURL(compressedFile)
+            previewUrls.set(slot, url)
+
+            if (previewImg) {
+                previewImg.src = url
+                previewImg.classList.remove('d-none')
+                previewImg.style.opacity = '1'
+            }
+            if (clearBtn) clearBtn.classList.remove('d-none')
+        } catch (error) {
+            console.error('Error compressing image:', error)
+            // Fallback to original file if compression fails
+            selectedPhotos.set(slot, file)
+            
+            if (previewUrls.has(slot)) {
+                URL.revokeObjectURL(previewUrls.get(slot))
+            }
+            const url = URL.createObjectURL(file)
+            previewUrls.set(slot, url)
+
+            if (previewImg) {
+                previewImg.src = url
+                previewImg.classList.remove('d-none')
+                previewImg.style.opacity = '1'
+            }
+            if (clearBtn) clearBtn.classList.remove('d-none')
+        }
+    }
+
+    function clearPhotoInput(slot, form) {
+        // Clear both camera and gallery inputs for this slot
+        const cameraInput = form.querySelector(`input[data-slot="${slot}"].list-car-photo-camera`)
+        const galleryInput = form.querySelector(`input[data-slot="${slot}"].list-car-photo-gallery`)
+        const legacyInput = form.querySelector(`input[data-slot="${slot}"].list-car-photo`)
+        
+        if (cameraInput) {
+            cameraInput.value = ''
+            cameraInput.dispatchEvent(new Event('change', { bubbles: true }))
+        }
+        if (galleryInput) {
+            galleryInput.value = ''
+            galleryInput.dispatchEvent(new Event('change', { bubbles: true }))
+        }
+        if (legacyInput) {
+            legacyInput.value = ''
+            legacyInput.dispatchEvent(new Event('change', { bubbles: true }))
+        }
+    }
+
+    function resetPhotoPreviews(form) {
+        selectedPhotos.clear()
+        for (const url of previewUrls.values()) {
+            URL.revokeObjectURL(url)
+        }
+        previewUrls.clear()
+        form.querySelectorAll('img[data-preview]').forEach(img => {
+            img.src = ''
+            img.classList.add('d-none')
+        })
+        form.querySelectorAll('[data-clear]').forEach(btn => btn.classList.add('d-none'))
+    }
+
+    function validateRequiredPhotos() {
+        // Only check required photo slots - RC document is now optional
+        const missingSlots = []
+        for (const slot of REQUIRED_PHOTO_SLOTS) {
+            if (!selectedPhotos.has(slot)) {
+                missingSlots.push(slot)
+            }
+        }
+        return { valid: missingSlots.length === 0, missingSlots }
+    }
+    
+    function getPhotoLabelFromSlot(slot) {
+        const labels = {
+            exteriorFront: 'Exterior - Front',
+            exteriorBack: 'Exterior - Back',
+            exteriorLeft: 'Exterior - Left Side',
+            exteriorRight: 'Exterior - Right Side',
+            engine: 'Engine Bay',
+            battery: 'Battery Area',
+            firewall: 'Firewall',
+            rhsApron: 'RHS Apron',
+            lhsApron: 'LHS Apron',
+            tyreLhsFront: 'Tyre - LHS Front',
+            tyreLhsBack: 'Tyre - LHS Back',
+            tyreRhsFront: 'Tyre - RHS Front',
+            tyreRhsBack: 'Tyre - RHS Back',
+            tyreSpare: 'Spare Tyre',
+            seatFrontView: 'Seats - Front View',
+            seatRearView: 'Seats - Rear View',
+            dashboard: 'Dashboard',
+            interiorCluster: 'Cluster / Instrument Panel',
+            rcDocument: 'RC Document (Optional)'
+        }
+        return labels[slot] || slot
+    }
+
+    function buildListingPayload(form, uploadMeta) {
+        const formData = new FormData(form)
+        const seller = {
+            name: formData.get('sellerName') || '',
+            mobile: formData.get('sellerMobile') || '',
+            email: formData.get('sellerEmail') || ''
+        }
+
+        // Extract year from month input (format: "YYYY-MM" -> "YYYY")
+        const regYearValue = formData.get('registrationYear') || '';
+        const registrationYear = regYearValue ? regYearValue.split('-')[0] : '';
+
+        const car = {
+            make: formData.get('carMake') || '',
+            model: formData.get('carModel') || '',
+            edition: formData.get('carEdition') || '',
+            registrationYear: registrationYear,
+            kmsDriven: formData.get('kmsDriven') || '',
+            expectedPrice: formData.get('expectedPrice') || '',
+            location: formData.get('location') || '',
+            fuelType: formData.get('fuelType') || '',
+            numberOfOwners: formData.get('numberOfOwners') || '',
+            variant: formData.get('variant') || '',
+            insuranceValidity: formData.get('insuranceValidity') || '',
+            accidentalHistory: formData.get('accidentalHistory') === 'Yes',
+            warrantyAvailable: formData.get('warrantyAvailable') === 'Yes',
+            spareKeyAvailable: formData.get('spareKeyAvailable') === 'Yes',
+            transmissionType: formData.get('transmissionType') || '',
+            cruiseControl: formData.get('cruiseControl') === 'on',
+            parkingAssistant: formData.get('parkingAssistant') === 'on',
+            audioSystemWorking: formData.get('audioSystemWorking') === 'on',
+            airbags: formData.get('airbags') || '',
+            abs: formData.get('abs') === 'on',
+            sunroof: formData.get('sunroof') === 'on',
+            serviceRecords: formData.get('serviceRecords') === 'on'
+        }
+
+        const photos = []
+        const uploads = uploadMeta.uploads || []
+        uploads.forEach(upload => {
+            const file = selectedPhotos.get(upload.slot)
+            photos.push({
+                slot: upload.slot,
+                key: upload.key,
+                contentType: upload.contentType || (file && file.type) || 'image/jpeg',
+                originalName: file && file.name ? file.name : ''
+            })
+        })
+
+        return { seller, car, photos }
+    }
+
+    function initReserveForm() {
+        const form = document.getElementById('reserveListingForm')
+        if (!form) return
+        const alertBox = document.getElementById('reserveFormAlert')
+        const submitBtn = document.getElementById('reserveSubmitBtn')
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault()
+            event.stopPropagation()
+
+            if (!form.checkValidity()) {
+                form.classList.add('was-validated')
+                return
+            }
+
+            form.classList.remove('was-validated')
+            hideAlert(alertBox)
+            submitBtn.disabled = true
+            submitBtn.innerText = 'Submitting...'
+
+            const formData = new FormData(form)
+            const payload = {
+                listingId: formData.get('listingId'),
+                name: formData.get('name'),
+                email: formData.get('email') || '',
+                mobile: formData.get('mobile'),
+                offerPrice: formData.get('offerPrice') || ''
+            }
+
+            try {
+                const result = await apiPost('reserve', payload)
+                showAlert(alertBox, 'success', result.message || 'Thank you! We will share your offer with the seller and call you shortly.')
+                submitBtn.innerText = 'Submitted'
+                
+                // Track reservation event
+                if (window.trackEvent) {
+                    const listing = listingsCache.get(payload.listingId)
+                    window.trackEvent('reserve_listing', {
+                        'listing_id': payload.listingId,
+                        'car_make': listing ? listing.car.make : '',
+                        'car_model': listing ? listing.car.model : '',
+                        'offer_price': payload.offerPrice || ''
+                    })
+                }
+            } catch (error) {
+                console.error('Reserve request failed', error)
+                showAlert(alertBox, 'danger', friendlyError(error))
+                submitBtn.disabled = false
+                submitBtn.innerText = 'Reserve Now'
+            }
+        })
+
+        const modalEl = document.getElementById('reserveListingModal')
+        if (modalEl) {
+            modalEl.addEventListener('hidden.bs.modal', () => {
+                form.reset()
+                form.classList.remove('was-validated')
+                hideAlert(alertBox)
+                submitBtn.disabled = false
+                submitBtn.innerText = 'Reserve Now'
+                
+                // Clean up any stray modal backdrops safely
+                const backdrops = document.querySelectorAll('.modal-backdrop')
+                backdrops.forEach(backdrop => {
+                    if (backdrop && backdrop.parentNode) {
+                        backdrop.parentNode.removeChild(backdrop)
+                    }
+                })
+                document.body.classList.remove('modal-open')
+                document.body.style.overflow = ''
+                document.body.style.paddingRight = ''
+            })
+        }
+    }
+
+    function initTestDriveForm() {
+        const form = document.getElementById('testDriveForm')
+        if (!form) return
+        const alertBox = document.getElementById('testDriveFormAlert')
+        const submitBtn = document.getElementById('testDriveSubmitBtn')
+        const dateInput = document.getElementById('testDriveDate')
+
+        if (dateInput) {
+            const today = new Date().toISOString().split('T')[0]
+            dateInput.min = today
+        }
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault()
+            event.stopPropagation()
+
+            if (!form.checkValidity()) {
+                form.classList.add('was-validated')
+                return
+            }
+
+            form.classList.remove('was-validated')
+            hideAlert(alertBox)
+
+            if (submitBtn) {
+                submitBtn.disabled = true
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...'
+            }
+
+            const formData = new FormData(form)
+            const payload = {
+                formType: 'test-drive',
+                firstName: formData.get('name') || '',
+                mobile: formData.get('mobile') || '',
+                email: formData.get('email') || '',
+                location: formData.get('location') || '',
+                preferredDate: formData.get('preferredDate') || '',
+                preferredSlot: formData.get('preferredSlot') || '',
+                notes: formData.get('notes') || '',
+                listingId: formData.get('listingId') || '',
+                listingSummary: formData.get('listingSummary') || ''
+            }
+
+            try {
+                const res = await fetch('/api/quote', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                })
+                const data = await res.json().catch(() => ({}))
+                if (!res.ok) {
+                    const err = new Error(data.error || 'request_failed')
+                    err.payload = data
+                    throw err
+                }
+
+                showAlert(alertBox, 'success', 'Request received. Our team will call you with the schedule.')
+                form.reset()
+                setTimeout(() => {
+                    hideAlert(alertBox)
+                    const modalEl = document.getElementById('testDriveModal')
+                    if (modalEl) {
+                        const modal = bootstrap.Modal.getInstance(modalEl)
+                        if (modal) modal.hide()
+                    }
+                }, 1800)
+            } catch (error) {
+                console.error('Test drive request failed', error)
+                showAlert(alertBox, 'danger', 'Unable to submit right now. Please try again.')
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false
+                    submitBtn.innerHTML = 'Book Test Drive'
+                }
+            }
+        })
+
+        const modalEl = document.getElementById('testDriveModal')
+        if (modalEl) {
+            modalEl.addEventListener('hidden.bs.modal', () => {
+                form.reset()
+                form.classList.remove('was-validated')
+                hideAlert(alertBox)
+                if (submitBtn) {
+                    submitBtn.disabled = false
+                    submitBtn.innerHTML = 'Book Test Drive'
+                }
+
+                const backdrops = document.querySelectorAll('.modal-backdrop')
+                backdrops.forEach(backdrop => {
+                    if (backdrop && backdrop.parentNode) {
+                        backdrop.parentNode.removeChild(backdrop)
+                    }
+                })
+                document.body.classList.remove('modal-open')
+                document.body.style.overflow = ''
+                document.body.style.paddingRight = ''
+            })
+        }
+    }
+
+    function openReserveModal(listingId) {
+        let listing = listingsCache.get(listingId)
+        if (!listing && Array.isArray(window.carListingsData)) {
+            listing = window.carListingsData.find(item => item.listingId === listingId)
+        }
+        if (!listing) return
+        const form = document.getElementById('reserveListingForm')
+        if (!form) return
+
+        const summary = document.getElementById('reserveListingSummary')
+        const hiddenId = document.getElementById('reserveListingId')
+        const alertBox = document.getElementById('reserveFormAlert')
+        const submitBtn = document.getElementById('reserveSubmitBtn')
+
+        form.reset()
+        form.classList.remove('was-validated')
+        hideAlert(alertBox)
+        submitBtn.disabled = false
+        submitBtn.innerText = 'Reserve Now'
+
+        if (isListingSold(listing)) {
+            showAlert(alertBox, 'warning', 'This listing is no longer available.')
+            alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            return
+        }
+
+        hiddenId.value = listingId
+        summary.textContent = `${buildListingTitle(listing)} • ${buildListingStats(listing)} • ${formatPrice(listing.car && listing.car.expectedPrice)}`
+
+        const modalEl = document.getElementById('reserveListingModal')
+        const modal = new bootstrap.Modal(modalEl)
+        modal.show()
+    }
+
+    function openTestDriveModal(listingId) {
+        let listing = listingsCache.get(listingId)
+        if (!listing && Array.isArray(window.carListingsData)) {
+            listing = window.carListingsData.find(item => item.listingId === listingId)
+        }
+        if (!listing) return
+        if (isListingSold(listing)) return
+
+        const form = document.getElementById('testDriveForm')
+        if (!form) return
+        const alertBox = document.getElementById('testDriveFormAlert')
+        const hiddenId = document.getElementById('testDriveListingId')
+        const hiddenSummary = document.getElementById('testDriveListingSummary')
+        const summaryText = document.getElementById('testDriveSummaryText')
+        const submitBtn = document.getElementById('testDriveSubmitBtn')
+
+        form.reset()
+        form.classList.remove('was-validated')
+        hideAlert(alertBox)
+        if (submitBtn) {
+            submitBtn.disabled = false
+            submitBtn.innerHTML = 'Book Test Drive'
+        }
+
+        if (hiddenId) hiddenId.value = listingId
+        const summaryParts = [buildListingTitle(listing)]
+        const stats = buildListingStats(listing)
+        if (stats) summaryParts.push(stats)
+        const priceText = formatPrice(listing.car && listing.car.expectedPrice)
+        if (priceText) summaryParts.push(priceText)
+        const summary = summaryParts.filter(Boolean).join(' • ')
+        if (hiddenSummary) hiddenSummary.value = summary
+        if (summaryText) summaryText.textContent = summary
+
+        const modalEl = document.getElementById('testDriveModal')
+        const modal = new bootstrap.Modal(modalEl)
+        modal.show()
+    }
+
+    function initDetailModal() {
+        const detailReserveBtn = document.getElementById('detailReserveBtn')
+        const detailBookBtn = document.getElementById('detailBookInspectionBtn')
+        const detailTestDriveBtn = document.getElementById('detailTestDriveBtn')
+
+        if (detailReserveBtn) {
+            detailReserveBtn.addEventListener('click', () => {
+                if (!currentListingId) return
+                
+                // Close detail modal first
+                const detailModalEl = document.getElementById('listingDetailModal')
+                if (detailModalEl) {
+                    const detailModal = bootstrap.Modal.getInstance(detailModalEl)
+                    if (detailModal) {
+                        detailModal.hide()
+                    }
+                }
+                
+                // Wait for modal to close, then open reserve modal
+                setTimeout(() => {
+                    openReserveModal(currentListingId)
+                }, 300)
+            })
+        }
+
+        if (detailBookBtn) {
+            detailBookBtn.addEventListener('click', () => {
+                if (!currentListingId) return
+                const listing = listingsCache.get(currentListingId)
+                if (!listing) return
+                
+                // Close detail modal first
+                const modalEl = document.getElementById('listingDetailModal')
+                if (modalEl) {
+                    const modal = bootstrap.Modal.getInstance(modalEl)
+                    if (modal) {
+                        modal.hide()
+                    }
+                }
+                
+                // Prefill and scroll to booking form after modal closes
+                setTimeout(() => {
+                    prefillBookingForm(listing)
+                    const bookingSection = document.getElementById('book')
+                    if (bookingSection) {
+                        bookingSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                    }
+                }, 300)
+            })
+        }
+
+        if (detailTestDriveBtn) {
+            detailTestDriveBtn.addEventListener('click', () => {
+                if (!currentListingId) return
+                const listing = listingsCache.get(currentListingId)
+                if (!listing || isListingSold(listing)) return
+
+                const detailModalEl = document.getElementById('listingDetailModal')
+                if (detailModalEl) {
+                    const detailModal = bootstrap.Modal.getInstance(detailModalEl)
+                    if (detailModal) {
+                        detailModal.hide()
+                    }
+                }
+
+                setTimeout(() => {
+                    openTestDriveModal(currentListingId)
+                }, 300)
+            })
+        }
+    }
+
+    // Lazy load images with Intersection Observer
+    function lazyLoadThumbnails(container) {
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src
+                            delete img.dataset.src
+                        }
+                        observer.unobserve(img)
+                    }
+                })
+            }, {
+                rootMargin: '50px' // Start loading 50px before image enters viewport
+            })
+
+            container.querySelectorAll('img[data-src]').forEach(img => {
+                imageObserver.observe(img)
+            })
+        } else {
+            // Fallback for older browsers
+            container.querySelectorAll('img[data-src]').forEach(img => {
+                img.src = img.dataset.src
+                delete img.dataset.src
+            })
+        }
+    }
+
+    function openDetailModal(listingId) {
+        let listing = listingsCache.get(listingId)
+        if (!listing && Array.isArray(window.carListingsData)) {
+            listing = window.carListingsData.find(item => item.listingId === listingId)
+        }
+        if (!listing) return
+        currentListingId = listingId
+
+        // Track listing view event
+        if (window.trackEvent) {
+            window.trackEvent('view_listing', {
+                'listing_id': listingId,
+                'car_make': listing.car.make,
+                'car_model': listing.car.model,
+                'car_year': listing.car.registrationYear,
+                'price': listing.car.expectedPrice,
+                'kms_driven': listing.car.kmsDriven
+            })
+        }
+
+        const titleEl = document.getElementById('listingDetailTitle')
+        const summaryEl = document.getElementById('listingDetailSummary')
+        const metaEl = document.getElementById('listingDetailMeta')
+        const heroImg = document.getElementById('listingDetailHero')
+        const thumbContainer = document.getElementById('listingDetailThumbnails')
+        const yearEl = document.getElementById('detailYear')
+        const kmsEl = document.getElementById('detailKms')
+        const priceEl = document.getElementById('detailPrice')
+
+        if (titleEl) titleEl.textContent = buildListingTitle(listing)
+        if (summaryEl) summaryEl.textContent = listing.summary || 'Owner-listed vehicle. InspectionWale verifies every submission before it goes live.'
+        if (metaEl) metaEl.textContent = listing.createdAt ? `Submitted on ${new Date(listing.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}` : ''
+        if (yearEl) yearEl.textContent = listing.car && listing.car.registrationYear ? listing.car.registrationYear : '-'
+        if (kmsEl) kmsEl.textContent = listing.car && listing.car.kmsDriven ? formatKms(listing.car.kmsDriven) : '-'
+        if (priceEl) priceEl.textContent = formatPrice(listing.car && listing.car.expectedPrice)
+
+        const photos = []
+        const seenUrls = new Set()
+        const photoEntries = listing.photos ? Object.entries(listing.photos) : []
+        
+        // Helper to extract string URL
+            const extractUrl = (val) => ensureAbsoluteAssetUrl(val)
+        
+        // Only add photos with unique URLs
+        photoEntries.forEach(([slot, meta]) => {
+            const url = extractUrl(meta)
+            if (url && slot !== DOCUMENT_SLOT) {
+                if (!seenUrls.has(url)) {
+                    photos.push({ slot, url })
+                    seenUrls.add(url)
+                }
+            }
+        })
+
+        if (!photos.length) {
+            photos.push({ slot: 'exteriorFront', url: pickHeroImage(listing, 0) })
+        }
+
+        if (heroImg && photos[0] && photos[0].url) {
+            // Progressive loading with blur effect
+            heroImg.style.filter = 'blur(10px)'
+            heroImg.style.transition = 'filter 0.3s ease-in-out'
+                heroImg.src = ensureAbsoluteAssetUrl(photos[0].url)
+            heroImg.alt = `${buildListingTitle(listing)} photo`
+            heroImg.loading = 'eager' // Load first image immediately
+            heroImg.decoding = 'async'
+                heroImg.onerror = () => {
+                    heroImg.src = ensureAbsoluteAssetUrl(FALLBACK_IMAGES[0])
+                }
+            
+            // Remove blur when image loads
+            heroImg.onload = () => {
+                heroImg.style.filter = 'none'
+            }
+        }
+
+        if (thumbContainer) {
+            thumbContainer.innerHTML = ''
+            
+            // Only show thumbnails if there are multiple unique photos
+            if (photos.length > 1) {
+                photos.forEach((photo, idx) => {
+                    const btn = document.createElement('button')
+                    btn.type = 'button'
+                    btn.className = 'btn btn-outline-secondary p-0'
+                    btn.style.width = '90px'
+                    btn.style.height = '60px'
+                    btn.style.overflow = 'hidden'
+                    
+                    // Create friendly label for photo slot
+                    const slotLabel = photo.slot
+                        .replace(/([A-Z])/g, ' $1')
+                        .replace(/^./, str => str.toUpperCase())
+                        .trim()
+                    btn.title = `View ${slotLabel}`
+                    
+                    const img = document.createElement('img')
+                    // Use data-src for even lazier loading of thumbnails
+                    if (idx < 3) {
+                            // Load first 3 thumbnails immediately
+                            img.src = ensureAbsoluteAssetUrl(photo.url)
+                    } else {
+                            // Defer loading of remaining thumbnails
+                            img.dataset.src = ensureAbsoluteAssetUrl(photo.url)
+                        img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 60"%3E%3Crect fill="%23ddd" width="90" height="60"/%3E%3C/svg%3E'
+                    }
+                    img.alt = `${slotLabel}`
+                    img.className = 'w-100 h-100'
+                    img.style.objectFit = 'cover'
+                    img.loading = 'lazy'
+                    img.decoding = 'async'
+                    btn.appendChild(img)
+                    btn.addEventListener('click', () => {
+                        if (heroImg) {
+                            // Load actual thumbnail image if not already loaded
+                            if (img.dataset.src) {
+                heroImg.src = ensureAbsoluteAssetUrl(pickHeroImage(listing, index))
+                                delete img.dataset.src
+                            }
+                            
+                            // Show loading state on hero image
+                            heroImg.style.filter = 'blur(10px)'
+                            heroImg.src = ensureAbsoluteAssetUrl(photo.url)
+                            heroImg.alt = `${buildListingTitle(listing)} photo`
+                            heroImg.onload = () => {
+                                heroImg.style.filter = 'none'
+                            }
+                        }
+                        thumbContainer.querySelectorAll('button').forEach(el => el.classList.remove('active'))
+                        btn.classList.add('active')
+                    })
+                    if (idx === 0) btn.classList.add('active')
+                    thumbContainer.appendChild(btn)
+                })
+                
+                // Initialize lazy loading for thumbnails
+                lazyLoadThumbnails(thumbContainer)
+            } else {
+                // Show message when only one photo available
+                const message = document.createElement('p')
+                message.className = 'text-muted small mb-0'
+                message.textContent = 'Only one photo available for this listing'
+                thumbContainer.appendChild(message)
+            }
+        }
+
+        const modalEl = document.getElementById('listingDetailModal')
+        const modal = new bootstrap.Modal(modalEl)
+        
+        // Clean up backdrop on modal hide safely
+        modalEl.addEventListener('hidden.bs.modal', function cleanupBackdrop() {
+            const backdrops = document.querySelectorAll('.modal-backdrop')
+            backdrops.forEach(backdrop => {
+                if (backdrop && backdrop.parentNode) {
+                    backdrop.parentNode.removeChild(backdrop)
+                }
+            })
+            document.body.classList.remove('modal-open')
+            document.body.style.overflow = ''
+            document.body.style.paddingRight = ''
+        }, { once: true })
+        
+        modal.show()
+    }
+
+    function prefillBookingForm(listing) {
+        const car = listing.car || {}
+        const makeField = document.getElementById('bk_make')
+        const yearField = document.getElementById('bk_year')
+        const kmsField = document.getElementById('bk_kms')
+        const typeField = document.getElementById('bk_cartype')
+
+        if (makeField) makeField.value = buildListingTitle(listing)
+        if (yearField) yearField.value = car.registrationYear || ''
+        if (kmsField) kmsField.value = stripDigits(car.kmsDriven)
+        if (typeField) typeField.value = 'used'
+    }
+
+    function stripDigits(value) {
+        if (value === undefined || value === null) return ''
+        const digits = String(value).replace(/[^0-9]/g, '')
+        return digits
+    }
+
+    async function apiPost(action, body) {
+        const res = await fetch(API_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action, ...body })
+        })
+        const data = await res.json().catch(() => ({}))
+        if (!res.ok || (data && data.ok === false)) {
+            const error = new Error((data && data.error) || 'request_failed')
+            error.payload = data
+            throw error
+        }
+        return data
+    }
+
+    function showAlert(element, type, message) {
+        if (!element) return
+        element.className = `alert alert-${type}`
+        element.textContent = message
+        element.classList.remove('d-none')
+    }
+
+    function hideAlert(element) {
+        if (!element) return
+        element.classList.add('d-none')
+        element.textContent = ''
+    }
+
+    function friendlyError(error) {
+        if (!error) return 'Something went wrong. Please try again.'
+        if (error.message === 'upload_failed') {
+            return 'Photo upload failed. Please check your connection and try once more.'
+        }
+        if (error.payload && error.payload.error) {
+            switch (error.payload.error) {
+                case 'files_required':
+                    return 'Please attach the requested photos before submitting.'
+                case 'car_details_incomplete':
+                    return 'Car details are incomplete. Kindly fill in make, model, year, KMs and expected price.'
+                case 'seller_details_required':
+                    return 'Name and mobile number are required.'
+                case 'listing_not_found':
+                    return 'This listing is no longer available.'
+                default:
+                    return 'Unable to process your request right now. Please try again shortly.'
+            }
+        }
+        return 'Unable to process your request right now. Please try again shortly.'
+    }
+    
+    // Lazy load thumbnails using Intersection Observer
+    function lazyLoadThumbnails(container) {
+        if (!container) return
+        
+        const images = container.querySelectorAll('img[data-src]')
+        if (!images.length) return
+        
+        // Check if IntersectionObserver is supported
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src
+                            delete img.dataset.src
+                        }
+                        observer.unobserve(img)
+                    }
+                })
+            }, {
+                rootMargin: '50px 0px', // Start loading 50px before image comes into view
+                threshold: 0.01
+            })
+            
+            images.forEach(img => imageObserver.observe(img))
+        } else {
+            // Fallback for older browsers - load all images immediately
+            images.forEach(img => {
+                if (img.dataset.src) {
+                    img.src = img.dataset.src
+                    delete img.dataset.src
+                }
+            })
+        }
+    }
+})()
+
+

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Inspector Login - InspectionWale</title>
+    <meta content="width=1280" name="viewport">
+    <link href="Images/logo.png" rel="icon">
+    <link rel="manifest" href="manifest.webmanifest" />
+    <meta name="theme-color" content="#0b556b" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9282573140274859" crossorigin="anonymous"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #f5f7fb;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Inter, 'Segoe UI', sans-serif;
+            padding: 20px;
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 24px 64px rgba(15, 23, 42, 0.12);
+            max-width: 420px;
+            width: 100%;
+            padding: 44px 36px;
+            border: 1px solid rgba(15, 23, 42, 0.08);
+        }
+        
+        .logo-section {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        
+        .logo-section h1 {
+            color: #13213a;
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.03em;
+        }
+        
+        .logo-section p {
+            color: #6b778c;
+            font-size: 14px;
+            margin: 0;
+            font-weight: 400;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #5d6880;
+            margin-bottom: 8px;
+            font-size: 13px;
+            display: block;
+            letter-spacing: 0.01em;
+        }
+        
+        .form-control {
+            border: 1px solid rgba(15, 23, 42, 0.12);
+            border-radius: 14px;
+            padding: 14px 16px;
+            font-size: 14px;
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: white;
+            color: #15233c;
+        }
+        
+        .form-control:hover {
+            border-color: rgba(15, 23, 42, 0.18);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: rgba(36, 68, 141, 0.28);
+            box-shadow: 0 0 0 4px rgba(36, 68, 141, 0.08);
+        }
+        
+        .form-control::placeholder {
+            color: #98a2b3;
+        }
+        
+        .password-wrapper {
+            position: relative;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6b778c;
+            cursor: pointer;
+            padding: 4px 8px;
+            font-size: 13px;
+        }
+        
+        .password-toggle:hover {
+            color: #202124;
+        }
+        
+        .btn-login {
+            background: #24448d;
+            border: none;
+            border-radius: 14px;
+            padding: 14px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            width: 100%;
+            cursor: pointer;
+            transition: background 0.15s, box-shadow 0.15s;
+            margin-top: 8px;
+        }
+        
+        .btn-login:hover {
+            background: #1f3974;
+            box-shadow: 0 18px 32px rgba(36, 68, 141, 0.18);
+        }
+        
+        .btn-login:active {
+            background: #1a3162;
+        }
+        
+        .btn-login:disabled {
+            background: #dadce0;
+            color: #80868b;
+            cursor: not-allowed;
+        }
+        
+        .alert {
+            border-radius: 14px;
+            padding: 12px 16px;
+            margin-bottom: 24px;
+            font-size: 13px;
+            border: 1px solid transparent;
+            display: none;
+        }
+        
+        .alert.show {
+            display: block;
+        }
+        
+        .alert-danger {
+            background: #fff1f2;
+            color: #d93025;
+            border-color: rgba(217, 48, 37, 0.14);
+        }
+        
+        .alert-success {
+            background: #ecfdf3;
+            color: #137333;
+            border-color: rgba(19, 115, 51, 0.12);
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 32px;
+        }
+        
+        .back-link a {
+            color: #24448d;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo-section">
+            <h1>InspectionWale</h1>
+            <p>Inspector Portal</p>
+        </div>
+        
+        <div id="alertMessage" class="alert"></div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label class="form-label" for="username">Username</label>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="username" 
+                    name="username" 
+                    placeholder="Enter your username"
+                    required
+                    autocomplete="username">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <div class="password-wrapper">
+                    <input 
+                        type="password" 
+                        class="form-control" 
+                        id="password" 
+                        name="password" 
+                        placeholder="Enter your password"
+                        required
+                        autocomplete="current-password">
+                    <button type="button" class="password-toggle" onclick="togglePassword()">Show</button>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn-login" id="loginBtn">
+                Sign in
+            </button>
+        </form>
+        
+        <div class="back-link">
+            <a href="index.html">← Back to Home</a>
+        </div>
+    </div>
+    
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleBtn = document.querySelector('.password-toggle');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleBtn.textContent = 'Hide';
+            } else {
+                passwordInput.type = 'password';
+                toggleBtn.textContent = 'Show';
+            }
+        }
+        
+        function showAlert(message, type) {
+            const alertDiv = document.getElementById('alertMessage');
+            alertDiv.className = `alert alert-${type} show`;
+            alertDiv.textContent = message;
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    alertDiv.classList.remove('show');
+                }, 3000);
+            }
+        }
+        
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            
+            if (!username || !password) {
+                showAlert('Please enter both username and password', 'danger');
+                return;
+            }
+            
+            // Disable button and show loading
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<span class="spinner"></span>Signing in...';
+            
+            try {
+                const response = await fetch('/api/inspector-login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showAlert('Login successful! Redirecting...', 'success');
+                    
+                    // Store authentication data (using camelCase keys to match form)
+                    sessionStorage.setItem('inspectorToken', data.token);
+                    sessionStorage.setItem('inspectorName', data.name);
+                    sessionStorage.setItem('inspectorUsername', data.username);
+                    
+                    // Redirect to inspector form immediately
+                    window.location.href = 'inspector-form.html';
+                } else {
+                    showAlert(data.message || 'Invalid credentials. Please try again.', 'danger');
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = 'Sign in';
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showAlert('Connection error. Please try again later.', 'danger');
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = 'Sign in';
+            }
+        });
+        
+        // Check if already logged in
+        if (sessionStorage.getItem('inspectorToken')) {
+            window.location.href = 'inspector-form.html';
+        }
+    </script>
+
+    <script type="module" src="js/offline/init-login.mjs"></script>
+</body>
+</html>

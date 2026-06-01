@@ -1,0 +1,137 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>InspectionWale - Vehicle Inspection Report</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    /* A4 sizing */
+    @page { size: A4; margin: 18mm; }
+    body { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color:#222; margin:0; padding:0; }
+    .container { width: 100%; max-width: 800px; margin: 0 auto; }
+    header { display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid #004a99; padding-bottom:8px; margin-bottom:10px; }
+    .brand { display:flex; align-items:center; gap:12px; }
+    .brand img { height:48px; }
+    .title { font-size:18px; font-weight:700; color:#004a99; }
+    .meta { text-align:right; font-size:11px; color:#555; }
+    h2 { font-size:14px; margin:8px 0; color:#004a99; }
+    .section { margin-bottom:10px; }
+    .two-col { display:flex; gap:12px; }
+    .col { flex:1; }
+    table { width:100%; border-collapse:collapse; font-size:12px; }
+    td, th { padding:6px; vertical-align:top; }
+    .label { font-weight:700; width: 40%; color:#333; }
+    .img-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:6px; margin-top:6px; }
+    .img-grid img { width:100%; height:90px; object-fit:cover; border:1px solid #ccc; }
+    .notes { background:#f7f9fc; padding:8px; border-radius:4px; font-size:12px; }
+    .small { font-size:11px; color:#666; }
+    footer { margin-top:12px; border-top:1px dashed #ccc; padding-top:8px; font-size:11px; color:#666; }
+    /* print-specific */
+    @media print {
+      header, footer { color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <img src="LOGO_PLACEHOLDER" alt="InspectionWale Logo" />
+        <div>
+          <div class="title">InspectionWale - Vehicle Inspection Report</div>
+          <div class="small">Rebranded from Whizzcheck</div>
+        </div>
+      </div>
+      <div class="meta">
+        <div>Inspection ID: {{inspectionId}}</div>
+        <div>Date: {{inspectionDate}}</div>
+      </div>
+    </header>
+
+    <section class="section">
+      <h2>Vehicle Registration Details</h2>
+      <table>
+        <tr><td class="label">Registration Number</td><td>{{vehicle.regNumber}}</td><td class="label">Make / Model</td><td>{{vehicle.makeModel}}</td></tr>
+        <tr><td class="label">Chassis Number</td><td>{{vehicle.chassisNumber}}</td><td class="label">Engine Number</td><td>{{vehicle.engineNumber}}</td></tr>
+        <tr><td class="label">Manufacture Date</td><td>{{vehicle.manufactureDate}}</td><td class="label">Registration Date</td><td>{{vehicle.registrationDate}}</td></tr>
+        <tr><td class="label">Fuel Type</td><td>{{vehicle.fuelType}}</td><td class="label">Owners</td><td>{{vehicle.ownersCount}}</td></tr>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>Key Highlights</h2>
+      <div class="notes">
+        <div><strong>Accidental:</strong> {{summary.isAccidental}}</div>
+        <div><strong>Flood Damage:</strong> {{summary.floodDamage}}</div>
+        <div><strong>Fire Damage:</strong> {{summary.fireDamage}}</div>
+        <div><strong>Top Comments:</strong> {{summary.highlights}}</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Exterior / Body</h2>
+      <table>
+        <tr><td class="label">Bonnet</td><td>{{sections.exterior.bonnet.condition}} (Paint depth: {{sections.exterior.bonnet.paintDepth}})</td></tr>
+        <tr><td class="label">Front Bumper</td><td>{{sections.exterior.frontBumper.condition}}</td></tr>
+        <tr><td class="label">Windshield</td><td>{{sections.exterior.windshield.status}}</td></tr>
+      </table>
+      <div class="img-grid">
+        <img src="{{images.front_1}}" alt="Front view 1" />
+        <img src="{{images.front_2}}" alt="Front view 2" />
+        <img src="{{images.front_3}}" alt="Front view 3" />
+      </div>
+    </section>
+
+    <section class="section two-col">
+      <div class="col">
+        <h2>Interior</h2>
+        <table>
+          <tr><td class="label">Dashboard</td><td>{{sections.interior.dashCondition}}</td></tr>
+          <tr><td class="label">AC Vents</td><td>{{sections.interior.acVents}}</td></tr>
+          <tr><td class="label">Music System</td><td>{{sections.interior.musicSystem}}</td></tr>
+        </table>
+      </div>
+      <div class="col">
+        <h2>Engine</h2>
+        <table>
+          <tr><td class="label">Battery</td><td>{{sections.engine.battery}}</td></tr>
+          <tr><td class="label">Oil Leak</td><td>{{sections.engine.oilLeak}}</td></tr>
+          <tr><td class="label">Estimated Repair Cost</td><td>{{sections.engine.estimatedRepairCost}}</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Tires & Wheels</h2>
+      <table>
+        <tr><td class="label">Front LHS</td><td>{{sections.tires.0.remainingPct}} - {{sections.tires.0.brand}}</td></tr>
+        <tr><td class="label">Front RHS</td><td>{{sections.tires.1.remainingPct}} - {{sections.tires.1.brand}}</td></tr>
+        <tr><td class="label">Spare</td><td>{{sections.tires.spare.brand}} - {{sections.tires.spare.remainingPct}}</td></tr>
+      </table>
+    </section>
+
+    <section class="section">
+      <h2>Structure & Test Drive</h2>
+      <div class="notes">
+        <div><strong>Structure:</strong> {{sections.structure.comments}}</div>
+        <div><strong>Test Drive Notes:</strong> {{sections.testDrive.notes}}</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Documents & Images</h2>
+      <div class="img-grid">
+        <img src="{{documents.chassisPlateImage}}" alt="Chassis plate" />
+        <img src="{{documents.rcImage}}" alt="RC Image" />
+        <img src="{{documents.cngPlateImage}}" alt="CNG plate" />
+      </div>
+    </section>
+
+    <footer>
+      <div class="small">Disclaimer: InspectionWale offers visual inspection reports. Mechanical condition beyond visual inspection is not guaranteed. Refer to the original report. </div>
+      <div class="small">Report generated by InspectionWale</div>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "InspectionWale Inspector",
+  "short_name": "Inspector",
+  "start_url": "/inspector-form.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0b556b",
+  "icons": [
+    {
+      "src": "/Images/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/Images/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "report": {
+    "title": "Inspection Report",
+    "generated_at": "2025-12-21"
+  },
+  "inspection": {
+    "id": "INSP-0001",
+    "date": "2025-12-21",
+    "location": "Sample Location"
+  },
+  "vehicle": {
+    "make": "Maruti",
+    "model": "Swift",
+    "variant": "VXi",
+    "year": "2021",
+    "vin": "MA3EXAMPLEVIN123",
+    "registration": "MH01AB1234",
+    "odometer": "24500"
+  },
+  "inspector": {
+    "name": "Inspector Name",
+    "phone": "+91-90000-00000"
+  },
+  "ratings": {
+    "overall": "4.2",
+    "engine": "4.5",
+    "body": "4.0",
+    "interior": "4.1"
+  },
+  "flags": {
+    "accident": "false",
+    "flood": "false",
+    "odometer_tampered": "false"
+  },
+  "images": {
+    "image_1": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMB/az0l0oAAAAASUVORK5CYII=",
+    "image_2": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMB/az0l0oAAAAASUVORK5CYII=",
+    "image_3": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMB/az0l0oAAAAASUVORK5CYII=",
+    "image_4": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMB/az0l0oAAAAASUVORK5CYII=",
+    "image_5": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMB/az0l0oAAAAASUVORK5CYII=",
+    "image_6": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMB/az0l0oAAAAASUVORK5CYII=",
+    "image_7": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMB/az0l0oAAAAASUVORK5CYII=",
+    "image_8": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMB/az0l0oAAAAASUVORK5CYII="
+  }
+}

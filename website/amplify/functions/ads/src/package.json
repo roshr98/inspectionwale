@@ -1,0 +1,12 @@
+{
+  "name": "ads-function",
+  "version": "1.0.0",
+  "description": "Ads API: GET approved ads; POST ad inquiry email",
+  "main": "index.js",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.908.0",
+    "@aws-sdk/client-ses": "^3.908.0",
+    "@aws-sdk/lib-dynamodb": "^3.908.0"
+  }
+}

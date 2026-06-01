@@ -1,0 +1,775 @@
+/* ===========================
+   A4 PAGE LAYOUT
+   =========================== */
+.inspection-page {
+  width: 210mm;
+  height: 297mm;
+  background: white;
+  margin: 0 auto;
+  padding: 15mm 15mm 15mm 15mm;
+  box-sizing: border-box;
+  position: relative;
+  page-break-after: always;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Noto Sans', 'Noto Sans Devanagari', Arial, sans-serif;
+  font-weight: 400;
+}
+
+.info-val,
+.detail-value,
+.flag-value,
+.icon-detail-value,
+.tyre-value {
+  font-synthesis: none;
+  font-weight: 400;
+}
+
+/* ===========================
+   GLOBAL HEADER
+   =========================== */
+.global-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 15px;
+}
+
+.header-logo {
+  flex-shrink: 0;
+}
+
+.header-logo .logo-box {
+  background: #1f2937;
+  padding: 6px 12px;
+  display: inline-block;
+}
+
+.header-logo .logo-text {
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.header-contact {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 9px;
+  color: #374151;
+  flex-wrap: wrap;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.contact-icon {
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
+}
+
+.contact-separator {
+  color: #9ca3af;
+}
+
+/* ===========================
+   GLOBAL FOOTER
+   =========================== */
+.global-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 10px;
+  border-top: 1px solid #e5e7eb;
+  margin-top: auto;
+  font-size: 9px;
+  color: #374151;
+}
+
+.footer-logo .footer-logo-text {
+  color: #1f2937;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.footer-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.footer-icon {
+  width: 12px;
+  height: 12px;
+  color: #10b981;
+  flex-shrink: 0;
+}
+
+.page-number-footer {
+  text-align: center;
+  font-size: 9px;
+  color: #9ca3af;
+  margin-top: 4px;
+}
+
+/* ===========================
+   PAGE CONTENT
+   =========================== */
+.inspection-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===========================
+   PAGE 1 - REPORT HEADER
+   =========================== */
+.report-header-section {
+  text-align: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.report-main-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 8px 0;
+}
+
+.report-tagline {
+  font-size: 13px;
+  color: #374151;
+  margin: 0 0 4px 0;
+  font-weight: 600;
+}
+
+.report-features {
+  font-size: 10px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.inspection-info-box {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  padding: 12px;
+  margin-bottom: 16px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+}
+
+.info-key {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.info-val {
+  color: #111827;
+}
+
+/* ===========================
+   SECTION HEADERS
+   =========================== */
+.section-header {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 12px 0;
+  padding: 8px 12px;
+  background: #f3f4f6;
+  border-left: 4px solid #1f2937;
+}
+
+.section-header-bilingual {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 12px 0;
+  padding: 8px 12px;
+  background: #f3f4f6;
+  border-left: 4px solid #1f2937;
+  text-align: center;
+}
+
+/* ===========================
+   DETAIL CARDS
+   =========================== */
+.detail-card {
+  background: white;
+  border: 1px solid #d1d5db;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.card-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 10px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.detail-grid-four {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.detail-label {
+  font-size: 9px;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.detail-value {
+  font-size: 11px;
+  color: #111827;
+}
+
+/* Compact Card for Side Details */
+.compact-card {
+  padding: 10px;
+}
+
+.detail-item-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.detail-item-compact:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* ===========================
+   RATINGS
+   =========================== */
+.ratings-card {
+  background: white;
+  border: 1px solid #d1d5db;
+  padding: 14px;
+  margin-bottom: 14px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.rating-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rating-label {
+  font-size: 11px;
+  color: #374151;
+  font-weight: 600;
+}
+
+.rating-stars {
+  display: flex;
+  gap: 3px;
+}
+
+.star-filled {
+  width: 14px;
+  height: 14px;
+  fill: #fbbf24;
+  color: #fbbf24;
+}
+
+.star-empty {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  color: #d1d5db;
+  stroke: #d1d5db;
+  stroke-width: 1.5;
+}
+
+/* ===========================
+   PAGE 2 - KEY HIGHLIGHTS
+   =========================== */
+.two-column-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.flag-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.flag-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  padding: 6px;
+  background: #f9fafb;
+  border-left: 2px solid transparent;
+}
+
+.flag-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.flag-yes {
+  color: #10b981;
+}
+
+.flag-no {
+  color: #ef4444;
+}
+
+.flag-label {
+  flex: 1;
+  color: #374151;
+  font-weight: 500;
+}
+
+.flag-value {
+  color: #111827;
+}
+
+.comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.comment-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 6px;
+  background: #f9fafb;
+}
+
+.comment-label {
+  font-size: 9px;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  font-weight: 600;
+}
+
+.comment-text {
+  font-size: 10px;
+  color: #111827;
+  line-height: 1.4;
+}
+
+/* ===========================
+   IMAGES
+   =========================== */
+.image-row-equal {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.image-card-equal {
+  background: white;
+  border: 1px solid #d1d5db;
+  overflow: hidden;
+}
+
+.inspection-image {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.image-label {
+  padding: 6px 8px;
+  font-size: 9px;
+  color: #6b7280;
+  text-align: center;
+  background: #f9fafb;
+}
+
+/* Image with Detail Layout (Page 3+) */
+.image-detail-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.large-image-container {
+  background: white;
+  border: 1px solid #d1d5db;
+  overflow: hidden;
+}
+
+.inspection-image-large {
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* Two Images in a Row */
+.image-row-two {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.image-card-half {
+  background: white;
+  border: 1px solid #d1d5db;
+  overflow: hidden;
+}
+
+/* Three Images in a Row */
+.image-row-three {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.image-card-third {
+  background: white;
+  border: 1px solid #d1d5db;
+  overflow: hidden;
+}
+
+/* Full Width Image */
+.image-card-full {
+  background: white;
+  border: 1px solid #d1d5db;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+
+/* Extra Large Image for Driver Cabin */
+.image-card-extra-large {
+  background: white;
+  border: 1px solid #d1d5db;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+
+.inspection-image-extra-large {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* Large Image for Boot (1.5x normal) */
+.image-card-large {
+  background: white;
+  border: 1px solid #d1d5db;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+
+.inspection-image-large-boot {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* ===========================
+   PAGE 7 - INTERIOR
+   =========================== */
+.icon-detail-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.icon-detail-item {
+  display: grid;
+  grid-template-columns: 16px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  padding: 4px;
+  background: #f9fafb;
+}
+
+.check-icon-small {
+  width: 14px;
+  height: 14px;
+  color: #10b981;
+}
+
+.x-icon-small {
+  width: 14px;
+  height: 14px;
+  color: #9ca3af;
+}
+
+.icon-detail-label {
+  color: #374151;
+}
+
+.icon-detail-value {
+  color: #111827;
+  text-align: right;
+}
+
+.comment-box {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  padding: 12px;
+  font-size: 10px;
+  line-height: 1.6;
+  color: #374151;
+}
+
+.comment-box p {
+  margin: 0;
+}
+
+/* ===========================
+   PAGE 9 - TYRES
+   =========================== */
+.tyre-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.tyre-card {
+  background: white;
+  border: 1px solid #d1d5db;
+  overflow: hidden;
+}
+
+.tyre-image {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  display: block;
+}
+
+.tyre-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: #111827;
+  padding: 8px;
+  margin: 0;
+  background: #f3f4f6;
+  text-align: center;
+}
+
+.tyre-details {
+  padding: 8px;
+}
+
+.tyre-detail-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  padding: 4px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.tyre-detail-item:last-child {
+  border-bottom: none;
+}
+
+.tyre-label {
+  color: #6b7280;
+}
+
+.tyre-value {
+  color: #111827;
+}
+
+/* ===========================
+   PAGE 10 - STRUCTURE DIAGRAM
+   =========================== */
+.diagram-card {
+  background: white;
+  border: 1px solid #d1d5db;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.structure-diagram-container {
+  position: relative;
+  background: #1a1a1a;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+}
+
+.structure-base-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.structure-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.structure-diagram {
+  background: #f9fafb;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+}
+
+.car-diagram {
+  width: 100%;
+  height: auto;
+}
+
+/* ===========================
+   DISCLAIMER PAGE
+   =========================== */
+.disclaimer-card {
+  background: white;
+  border: 1px solid #d1d5db;
+  padding: 16px;
+}
+
+.disclaimer-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #dc2626;
+  margin: 0 0 12px 0;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.disclaimer-content {
+  font-size: 9px;
+  line-height: 1.5;
+  color: #374151;
+}
+
+.disclaimer-content p {
+  margin: 0 0 8px 0;
+}
+
+.disclaimer-content p:last-child {
+  margin-bottom: 0;
+}
+
+.disclaimer-divider {
+  height: 1px;
+  background: #d1d5db;
+  margin: 16px 0;
+}
+
+.disclaimer-content.hindi {
+  direction: ltr;
+}
+
+.signature-section {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.signature-line-disclaimer {
+  width: 200px;
+  height: 1px;
+  background: #9ca3af;
+  margin: 0 auto 8px auto;
+}
+
+.signature-text {
+  font-size: 10px;
+  color: #6b7280;
+  margin: 0 0 4px 0;
+}
+
+.company-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.company-footer {
+  margin-top: 24px;
+  text-align: center;
+}
+
+/* ===========================
+   PRINT STYLES
+   =========================== */
+@media print {
+  .inspection-page {
+    margin: 0;
+    page-break-after: always;
+  }
+  
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+  }
+}
