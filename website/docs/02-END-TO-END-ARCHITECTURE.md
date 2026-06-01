@@ -145,6 +145,8 @@ All under `/home/user/app/website/`:
 
 **CRUD patterns:** GetItem/Query by key; Scan + client sort (createdAt DESC) for admin lists; offset-cursor pagination for inspections via the INDEX record. **Indexing strategy:** currently key-based + scans; recommend GSIs on `status` (CarListings) and `createdAt` for scale. **Retention:** soft-delete via `deletedAt`; no TTL configured (recommend TTL on transient leads).
 
+**Location/City attribute (standardized):** the customer-facing `location` (listings, bookings, leads) and partner-service `city` attributes are now populated from a **fixed dropdown** (values: Mumbai, Navi Mumbai, Thane, Kalyan, Dombivli, Badlapur, Kandivali, Borivali, Andheri, Bandra, Mira-Bhayandar, Vasai-Virar, Bhiwandi, Ambernath, Ulhasnagar, Panvel, Pune, Other). DynamoDB is **schemaless** so this is still stored as the same `String` attribute on the existing items (`CarListings.car`/`seller`, `InspectionPayments`, `Quotes.city`, `CarValueRequests`) — **no schema migration is required**. A verification/backfill helper (`scripts/verify-aws-schema.sh`) describes the relevant tables and confirms the attribute is captured before go-live (see §9).
+
 ---
 
 ## 5. Storage Architecture (S3)

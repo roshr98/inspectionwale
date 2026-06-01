@@ -230,6 +230,12 @@ transition:border-color .2s ease, box-shadow .2s ease;
 
 **Marketplace filter inputs:** radius 12px, 2px border `#dfe3f1`, focus → teal border + `0 0 0 3px rgba(38,166,154,0.1)`.
 
+**Standardized Location/City field (REQUIRED pattern):** Every customer-facing location/city field is a **`<select>` dropdown**, never a free-text input. This keeps lead/listing data clean and queryable. Canonical option set (in this order), `name="location"` (or `name="city"` for partner-service):
+`Mumbai · Navi Mumbai · Thane · Kalyan · Dombivli · Badlapur · Kandivali · Borivali · Andheri · Bandra · Mira-Bhayandar · Vasai-Virar · Bhiwandi · Ambernath · Ulhasnagar · Panvel · Pune · Other`
+- Required fields start with `<option value="" selected disabled>Select city</option>`; optional fields (partner-service `city`) use `<option value="" selected>Select city (optional)</option>`.
+- Applies to: List/Sell-Your-Car (home + marketplace), Book-Inspection (used-car + new-car panes), Test-Drive, and partner-service forms. **Exception:** the internal inspector tool (`inspector-form.html`) keeps a free-text `inspection.location` so inspectors can record precise on-site areas.
+- To extend the list, add the new city to **all** form dropdowns + the doc list. The stored value is still a plain string, so no backend/DynamoDB change is required.
+
 **Validation UX:**
 - Bootstrap `.needs-validation` + HTML5 (`required`, `pattern`, `min/max`, `type`). Phone pattern `^0?\d{10}$`.
 - Invalid field: `data-invalid="true"` → border `#ef4444`, bg `#fef2f2`.

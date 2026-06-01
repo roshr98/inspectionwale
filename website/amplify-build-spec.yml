@@ -36,14 +36,14 @@ customRules:
     target: /admin/index.html
     status: '200'
   - source: /Home
-    target: /index.html
-    status: '200'
+    target: /
+    status: '301'
   - source: /Used-Car-Marketplace
-    target: /car-marketplace/index.html
-    status: '200'
+    target: /car-marketplace/
+    status: '301'
   - source: /Used-Car-Marketplace/
-    target: /car-marketplace/index.html
-    status: '200'
+    target: /car-marketplace/
+    status: '301'
   - source: /car-marketplace
     target: /car-marketplace/index.html
     status: '301'

@@ -12,16 +12,53 @@
     <link rel="canonical" href="https://www.inspectionwale.com/car-marketplace/">
     <link rel="alternate" hreflang="en-IN" href="https://www.inspectionwale.com/car-marketplace/">
     <meta property="og:type" content="website">
+    <meta property="og:site_name" content="InspectionWale">
+    <meta property="og:locale" content="en_IN">
     <meta property="og:url" content="https://www.inspectionwale.com/car-marketplace/">
     <meta property="og:title" content="Buy Used Cars - inspectionWale">
     <meta property="og:description" content="Browse verified used cars inspected by inspectionWale professionals before you buy.">
     <meta property="og:image" content="https://www.inspectionwale.com/Images/brand_logo_new_1.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Buy Used Cars - inspectionWale">
     <meta name="twitter:description" content="Browse verified used cars inspected by inspectionWale professionals before you buy.">
     <meta name="twitter:image" content="https://www.inspectionwale.com/Images/brand_logo_new_1.png">
 
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://www.gstatic.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://*.adtrafficquality.google https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google; script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://translate.google.com https://translate.googleapis.com https://translate-pa.googleapis.com https://www.gstatic.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://*.adtrafficquality.google https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://translate.googleapis.com https://www.gstatic.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https://423cmvhw3g.execute-api.us-east-1.amazonaws.com https://inspectionWale-car-listings.s3.amazonaws.com https://inspectionWale-car-listings.s3.us-east-1.amazonaws.com https://inspectionWale-car-listings.s3-us-east-1.amazonaws.com https://e5c4zwzl3vvb5t6fq3djkuhvjm0omhdm.lambda-url.us-east-1.on.aws https://www.google-analytics.com https://cdn.jsdelivr.net https://translate.googleapis.com https://translate-pa.googleapis.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://*.adtrafficquality.google https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google; frame-src 'self' https://www.google.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://pagead2.googlesyndication.com https://*.adtrafficquality.google https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;">
+
+    <!-- Structured data: Organization + Breadcrumb + Marketplace collection -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://www.inspectionwale.com/#organization",
+          "name": "InspectionWale",
+          "url": "https://www.inspectionwale.com/",
+          "logo": "https://www.inspectionwale.com/Images/brand_logo_new_1.png",
+          "telephone": "+91-8238089600",
+          "areaServed": ["Mumbai", "Navi Mumbai", "Thane", "Kalyan", "Dombivli", "Badlapur", "Pune"]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.inspectionwale.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Used Car Marketplace", "item": "https://www.inspectionwale.com/car-marketplace/" }
+          ]
+        },
+        {
+          "@type": "CollectionPage",
+          "name": "Buy Verified Used Cars — InspectionWale Marketplace",
+          "url": "https://www.inspectionwale.com/car-marketplace/",
+          "description": "Browse used cars listed by owners and dealers across the Mumbai Metropolitan Region. Every car can be professionally inspected by InspectionWale before you buy.",
+          "isPartOf": { "@id": "https://www.inspectionwale.com/#website" },
+          "about": { "@id": "https://www.inspectionwale.com/#organization" }
+        }
+      ]
+    }
+    </script>
 
     <!-- Favicon -->
     <link href="/Images/brand_logo_new_1.png" rel="icon">
@@ -5170,6 +5207,7 @@
                         <strong>Company</strong>
                         <a href="#">About Us</a>
                         <a href="/careers.html">Careers</a>
+                        <a href="/blog/">Guides & Blog</a>
                         <a href="/terms.html">Terms & Conditions</a>
                         <a href="#">Advertise With Us</a>
                     </div>
@@ -5570,8 +5608,28 @@
                             <!-- Location -->
                             <div class="col-md-6">
                                 <label for="location" class="form-label form-label-required">Location</label>
-                                <input type="text" class="form-control" id="location" name="location" placeholder="e.g. Mumbai, Navi Mumbai" required>
-                                <div class="invalid-feedback">Please enter your location</div>
+                                <select class="form-control" id="location" name="location" required>
+                                    <option value="" selected disabled>Select city</option>
+                                    <option value="Mumbai">Mumbai</option>
+                                    <option value="Navi Mumbai">Navi Mumbai</option>
+                                    <option value="Thane">Thane</option>
+                                    <option value="Kalyan">Kalyan</option>
+                                    <option value="Dombivli">Dombivli</option>
+                                    <option value="Badlapur">Badlapur</option>
+                                    <option value="Kandivali">Kandivali</option>
+                                    <option value="Borivali">Borivali</option>
+                                    <option value="Andheri">Andheri</option>
+                                    <option value="Bandra">Bandra</option>
+                                    <option value="Mira-Bhayandar">Mira-Bhayandar</option>
+                                    <option value="Vasai-Virar">Vasai-Virar</option>
+                                    <option value="Bhiwandi">Bhiwandi</option>
+                                    <option value="Ambernath">Ambernath</option>
+                                    <option value="Ulhasnagar">Ulhasnagar</option>
+                                    <option value="Panvel">Panvel</option>
+                                    <option value="Pune">Pune</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <div class="invalid-feedback">Please select your location</div>
                             </div>
 
                             <!-- Additional Comments -->
@@ -5691,8 +5749,8 @@
                                 <div class="detail-side-stack">
                                     <div class="detail-summary-card">
                                         <div class="detail-card-kicker">Verified Listing</div>
-                                        <h2 class="detail-price-display" id="carDetailExpPrice">₹1,30,000</h2>
-                                        <h5 class="detail-vehicle-title" id="carDetailModalTitle">Used 2022 Nissan Altima 2.5 SV</h5>
+                                        <div class="detail-price-display" id="carDetailExpPrice">₹1,30,000</div>
+                                        <h2 class="detail-vehicle-title" id="carDetailModalTitle">Used 2022 Nissan Altima 2.5 SV</h2>
                                         <a href="#" id="carDetailRatingsLink" class="detail-ratings-link">
                                             <i class="fas fa-star"></i> Get car ratings by InspectionWale
                                         </a>
@@ -5937,6 +5995,7 @@
                                             <p style="color:#fff;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.4px;margin-bottom:10px;">Company</p>
                                             <a href="/#about" class="d-block text-decoration-none mb-2" style="color:rgba(255,255,255,0.6);font-size:13px;">About Us</a>
                                             <a href="/careers.html" class="d-block text-decoration-none mb-2" style="color:rgba(255,255,255,0.6);font-size:13px;">Careers</a>
+                                            <a href="/blog/" class="d-block text-decoration-none mb-2" style="color:rgba(255,255,255,0.6);font-size:13px;">Guides &amp; Blog</a>
                                             <a href="/terms.html" class="d-block text-decoration-none mb-2" style="color:rgba(255,255,255,0.6);font-size:13px;">Terms &amp; Conditions</a>
                                         </div>
                                         <div>
@@ -6215,7 +6274,27 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="carLocation" class="form-label">Location (City)<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="carLocation" name="location" placeholder="e.g. Mumbai, Navi Mumbai" required>
+                                <select class="form-control" id="carLocation" name="location" required>
+                                    <option value="" selected disabled>Select city</option>
+                                    <option value="Mumbai">Mumbai</option>
+                                    <option value="Navi Mumbai">Navi Mumbai</option>
+                                    <option value="Thane">Thane</option>
+                                    <option value="Kalyan">Kalyan</option>
+                                    <option value="Dombivli">Dombivli</option>
+                                    <option value="Badlapur">Badlapur</option>
+                                    <option value="Kandivali">Kandivali</option>
+                                    <option value="Borivali">Borivali</option>
+                                    <option value="Andheri">Andheri</option>
+                                    <option value="Bandra">Bandra</option>
+                                    <option value="Mira-Bhayandar">Mira-Bhayandar</option>
+                                    <option value="Vasai-Virar">Vasai-Virar</option>
+                                    <option value="Bhiwandi">Bhiwandi</option>
+                                    <option value="Ambernath">Ambernath</option>
+                                    <option value="Ulhasnagar">Ulhasnagar</option>
+                                    <option value="Panvel">Panvel</option>
+                                    <option value="Pune">Pune</option>
+                                    <option value="Other">Other</option>
+                                </select>
                             </div>
                             <div class="col-md-4">
                                 <label for="carFuelType" class="form-label">Fuel Type<span class="text-danger">*</span></label>
@@ -9105,7 +9184,27 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="partnerServiceCity" class="form-label">City</label>
-                                <input type="text" class="form-control" id="partnerServiceCity" name="city" placeholder="Mumbai, Navi Mumbai, Thane...">
+                                <select class="form-control" id="partnerServiceCity" name="city">
+                                    <option value="" selected>Select city (optional)</option>
+                                    <option value="Mumbai">Mumbai</option>
+                                    <option value="Navi Mumbai">Navi Mumbai</option>
+                                    <option value="Thane">Thane</option>
+                                    <option value="Kalyan">Kalyan</option>
+                                    <option value="Dombivli">Dombivli</option>
+                                    <option value="Badlapur">Badlapur</option>
+                                    <option value="Kandivali">Kandivali</option>
+                                    <option value="Borivali">Borivali</option>
+                                    <option value="Andheri">Andheri</option>
+                                    <option value="Bandra">Bandra</option>
+                                    <option value="Mira-Bhayandar">Mira-Bhayandar</option>
+                                    <option value="Vasai-Virar">Vasai-Virar</option>
+                                    <option value="Bhiwandi">Bhiwandi</option>
+                                    <option value="Ambernath">Ambernath</option>
+                                    <option value="Ulhasnagar">Ulhasnagar</option>
+                                    <option value="Panvel">Panvel</option>
+                                    <option value="Pune">Pune</option>
+                                    <option value="Other">Other</option>
+                                </select>
                             </div>
                             <div class="col-12">
                                 <label for="partnerServiceRequirement" class="form-label">Requirement</label>
