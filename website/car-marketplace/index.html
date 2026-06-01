@@ -4272,9 +4272,21 @@
             .cw-footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
         }
         @media (max-width: 575.98px) {
-            .cw-navbar-inner { height: 56px; padding: 0 12px; }
-            .cw-logo img { height: 30px; }
-            .cw-nav-search { max-width: calc(100% - 100px); }
+            .cw-navbar { position: sticky; top: 0; z-index: 1050; }
+            .cw-navbar-inner {
+                height: auto !important;
+                padding: 8px 12px !important;
+                flex-wrap: wrap !important;
+                gap: 8px !important;
+            }
+            .cw-logo { flex: 1 0 auto; }
+            .cw-logo img { height: 28px; }
+            .cw-nav-actions { flex: 0 0 auto; margin-left: auto; }
+            .cw-nav-search {
+                flex: 0 0 100% !important;
+                max-width: 100% !important;
+                order: 3;
+            }
             .car-card-actions { flex-direction: column !important; align-items: stretch !important; }
             .cw-hero-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
             .cw-hero-stat { border-right: none; padding: 0; margin: 0; border: 1px solid rgba(255,255,255,.12); border-radius: 4px; padding: 12px; }
@@ -4635,41 +4647,44 @@
     </footer>
 
     <style>
+        :root { --iw-red: #c0392b; --iw-red-dark: #a23226; --iw-red-glow: rgba(192,57,43,0.14); }
+
         .iw-sleek-modal-shell {
-            border: 1px solid rgba(15, 23, 42, 0.08);
-            border-radius: 26px !important;
-            background: #ffffff !important;
-            box-shadow: 0 28px 70px rgba(15, 23, 42, 0.16);
-            overflow: hidden;
+            border: none !important;
+            border-radius: 16px !important;
+            background: #f4f5f7 !important;
+            box-shadow: 0 30px 70px rgba(10,18,38,0.38) !important;
+            overflow: hidden !important;
         }
 
         .iw-sleek-modal-shell .modal-header {
-            padding: 24px 28px 18px;
-            background: #ffffff !important;
-            border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+            padding: 22px 24px 16px !important;
+            background: #f4f5f7 !important;
+            border-bottom: 1px solid rgba(17,24,42,0.08) !important;
             align-items: flex-start;
         }
 
         .iw-sleek-modal-shell .modal-title {
-            color: #13213a !important;
-            font-size: 1.28rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
+            font-family: 'Montserrat', sans-serif !important;
+            color: #11182a !important;
+            font-size: 1.18rem !important;
+            font-weight: 800 !important;
+            letter-spacing: -0.01em !important;
         }
 
         .iw-sleek-modal-shell .text-white {
-            color: #13213a !important;
+            color: #11182a !important;
         }
 
         .iw-sleek-modal-shell .modal-body {
-            padding: 24px 28px !important;
-            background: #ffffff !important;
+            padding: 20px 24px !important;
+            background: #f4f5f7 !important;
         }
 
         .iw-sleek-modal-shell .modal-footer {
-            padding: 18px 28px 24px;
-            background: #ffffff !important;
-            border-top: 1px solid rgba(15, 23, 42, 0.08) !important;
+            padding: 16px 24px 20px !important;
+            background: #f4f5f7 !important;
+            border-top: 1px solid rgba(17,24,42,0.08) !important;
         }
 
         .iw-sleek-modal-shell .btn-close-white,
@@ -4707,16 +4722,16 @@
         .filter-section .form-control,
         .marketplace-filter-pill .form-select,
         .marketplace-filter-pill .form-control {
-            min-height: 52px;
-            padding: 14px 16px;
-            border: 1px solid var(--iw-form-border) !important;
-            border-radius: 14px !important;
-            background: var(--iw-form-bg) !important;
+            min-height: 46px;
+            padding: 11px 13px;
+            border: 1px solid #e2e4ea !important;
+            border-radius: 10px !important;
+            background: #fff !important;
             box-shadow: none !important;
-            color: var(--iw-form-text);
-            font-size: 0.95rem;
+            color: #11182a;
+            font-size: 0.92rem;
             line-height: 1.4;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .iw-sleek-form textarea.form-control,
@@ -4746,8 +4761,8 @@
         .marketplace-filter-pill .form-control:focus,
         #carDetailModal .detail-contact-card .form-control:focus,
         #carDetailModal .detail-contact-card .form-select:focus {
-            border-color: var(--iw-form-border-strong) !important;
-            box-shadow: 0 0 0 4px rgba(36, 68, 141, 0.08) !important;
+            border-color: var(--iw-red) !important;
+            box-shadow: 0 0 0 3px var(--iw-red-glow) !important;
         }
 
         .iw-sleek-form .form-control[readonly] {
@@ -4771,41 +4786,43 @@
         }
 
         .iw-sleek-form .btn {
-            min-height: 48px;
-            border-radius: 14px;
-            font-weight: 600;
+            min-height: 46px;
+            border-radius: 10px !important;
+            font-weight: 700;
             box-shadow: none;
         }
 
         .iw-sleek-form .btn-primary,
         #carDetailModal #carDetailRequestInfoBtn {
-            background: #24448d !important;
-            border-color: #24448d !important;
-            box-shadow: none !important;
+            background: var(--iw-red) !important;
+            border-color: var(--iw-red) !important;
+            color: #fff !important;
+            box-shadow: 0 10px 22px var(--iw-red-glow) !important;
         }
 
         .iw-sleek-form .btn-primary:hover,
         .iw-sleek-form .btn-primary:focus,
         #carDetailModal #carDetailRequestInfoBtn:hover,
         #carDetailModal #carDetailRequestInfoBtn:focus {
-            background: #1f3974 !important;
-            border-color: #1f3974 !important;
+            background: var(--iw-red-dark) !important;
+            border-color: var(--iw-red-dark) !important;
         }
 
         .iw-sleek-form .btn-outline-secondary,
         .iw-sleek-form .pay-later-btn,
         #marketplacePayLaterBtn {
-            color: #314158 !important;
-            background: #f6f8fb !important;
-            border: 1px solid rgba(15, 23, 42, 0.12) !important;
+            color: #11182a !important;
+            background: #fff !important;
+            border: 1px solid #cfd3db !important;
+            box-shadow: none !important;
         }
 
         .iw-sleek-form .btn-outline-secondary:hover,
         .iw-sleek-form .pay-later-btn:hover,
         #marketplacePayLaterBtn:hover {
-            background: #eef2f7 !important;
-            color: #15233c !important;
-            border-color: rgba(15, 23, 42, 0.18) !important;
+            background: #eef0f4 !important;
+            color: #11182a !important;
+            border-color: #b8bec8 !important;
         }
 
         .iw-sleek-modal-shell h6.text-uppercase.text-muted {

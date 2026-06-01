@@ -5176,6 +5176,120 @@
         .iw-book-note { font-size: 11px; color: #8a909c; text-align: center; margin: 8px 0 0; }
         @media (max-width: 575.98px) { .iw-book-modal-body { padding: 20px 16px 18px; } .iw-book-title { font-size: 1.25rem; } }
     </style>
+
+    <!-- ══ UNIFIED FORM THEME: all modals match Book Inspection ══ -->
+    <style>
+        :root { --iw-red: #c0392b; --iw-red-dark: #a23226; --iw-red-glow: rgba(192,57,43,0.14); }
+
+        .iw-sleek-modal-shell {
+            border-radius: 16px !important;
+            background: #f4f5f7 !important;
+            border: none !important;
+            box-shadow: 0 30px 70px rgba(10,18,38,0.38) !important;
+            overflow: hidden !important;
+        }
+        .iw-sleek-modal-shell .modal-header {
+            background: #f4f5f7 !important;
+            border-bottom: 1px solid rgba(17,24,42,0.08) !important;
+            padding: 22px 24px 16px !important;
+        }
+        .iw-sleek-modal-shell .modal-title {
+            font-family: 'Montserrat', sans-serif !important;
+            font-size: 1.18rem !important;
+            font-weight: 800 !important;
+            color: #11182a !important;
+            letter-spacing: -0.01em !important;
+        }
+        .iw-sleek-modal-shell .text-white { color: #11182a !important; }
+        .iw-sleek-modal-shell .modal-body {
+            background: #f4f5f7 !important;
+            padding: 20px 24px !important;
+        }
+        .iw-sleek-modal-shell .modal-footer {
+            background: #f4f5f7 !important;
+            border-top: 1px solid rgba(17,24,42,0.08) !important;
+            padding: 16px 24px 20px !important;
+        }
+
+        .iw-sleek-form .form-control,
+        .iw-sleek-form .form-select {
+            background: #fff !important;
+            border: 1px solid #e2e4ea !important;
+            border-radius: 10px !important;
+            font-size: 0.92rem !important;
+            padding: 11px 13px !important;
+            min-height: 46px !important;
+            box-shadow: none !important;
+            color: #11182a !important;
+        }
+        .iw-sleek-form textarea.form-control { min-height: 96px !important; }
+        .iw-sleek-form .form-control::placeholder,
+        .iw-sleek-form textarea::placeholder { color: #9aa1ad !important; }
+        .iw-sleek-form .form-control:focus,
+        .iw-sleek-form .form-select:focus {
+            border-color: var(--iw-red) !important;
+            box-shadow: 0 0 0 3px var(--iw-red-glow) !important;
+        }
+        .iw-sleek-form .form-label,
+        .iw-sleek-form label {
+            font-size: 0.82rem !important;
+            font-weight: 600 !important;
+            color: #5a6472 !important;
+            margin-bottom: 6px !important;
+        }
+        .iw-sleek-form .btn {
+            border-radius: 10px !important;
+            font-weight: 700 !important;
+            min-height: 46px !important;
+        }
+        .iw-sleek-form .btn-primary,
+        .iw-sleek-form button[type="submit"]:not(.pay-later-btn):not(.btn-outline-secondary):not(.btn-secondary) {
+            background: var(--iw-red) !important;
+            border-color: var(--iw-red) !important;
+            color: #fff !important;
+            box-shadow: 0 10px 22px var(--iw-red-glow) !important;
+        }
+        .iw-sleek-form .btn-primary:hover,
+        .iw-sleek-form button[type="submit"]:not(.pay-later-btn):not(.btn-outline-secondary):not(.btn-secondary):hover {
+            background: var(--iw-red-dark) !important;
+            border-color: var(--iw-red-dark) !important;
+        }
+        .iw-sleek-form .btn-outline-secondary,
+        .iw-sleek-form .pay-later-btn,
+        .iw-sleek-form .btn-secondary {
+            background: #fff !important;
+            color: #11182a !important;
+            border: 1px solid #cfd3db !important;
+            box-shadow: none !important;
+        }
+        .iw-sleek-form .btn-outline-secondary:hover,
+        .iw-sleek-form .pay-later-btn:hover,
+        .iw-sleek-form .btn-secondary:hover { background: #eef0f4 !important; color: #11182a !important; }
+
+        .iw-sleek-modal-shell h6.text-uppercase,
+        .iw-sleek-modal-shell h6.text-muted {
+            color: #7b8698 !important;
+            font-size: 0.72rem !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.14em !important;
+        }
+        .partner-service-modal .modal-content {
+            border-radius: 16px !important;
+            background: #f4f5f7 !important;
+            border: none !important;
+        }
+        .partner-service-modal .partner-service-modal__hero {
+            background: #f4f5f7 !important;
+            border-bottom: 1px solid rgba(17,24,42,0.08) !important;
+        }
+
+        @media (max-width: 575.98px) {
+            .iw-sleek-modal-shell .modal-dialog { margin: 10px !important; }
+            .iw-sleek-modal-shell .modal-header,
+            .iw-sleek-modal-shell .modal-body,
+            .iw-sleek-modal-shell .modal-footer { padding-left: 16px !important; padding-right: 16px !important; }
+        }
+    </style>
     <div class="modal fade" id="bookInspectionModal" tabindex="-1" aria-labelledby="bookInspectionLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -5426,50 +5540,58 @@
     <section class="iw-monetization-zone home-band home-band-light" id="homeMonetizationZone" aria-label="Recommended automotive offers"></section>
 
     <!-- Footer Start -->
-    <div class="container-fluid text-light footer pt-4 pb-3" style="background: #0B2154; font-family: 'Montserrat', sans-serif;">
+    <div class="container-fluid text-light footer pt-5 pb-3" style="background: #0B2154; font-family: 'Montserrat', sans-serif;">
         <div class="container">
-            <!-- Top Row: Language and Links -->
-            <div class="row align-items-center py-3 border-bottom" style="border-color: rgba(255,255,255,0.15) !important;">
-                <div class="col-lg-3 col-md-4 mb-3 mb-md-0">
-                    <span style="color: rgba(255,255,255,0.6); font-size: 14px;">Language:</span>
-                    <a href="#" class="text-white text-decoration-none ms-2" style="font-weight: 500; font-size: 14px;">English</a>
-                    <a href="#" class="text-decoration-none ms-2" style="color: rgba(255,255,255,0.6); font-size: 14px;">हिंदी</a>
+            <!-- Logo + Description Row -->
+            <div class="row pb-4 border-bottom" style="border-color: rgba(255,255,255,0.15) !important;">
+                <div class="col-lg-4 col-md-5 mb-4 mb-md-0">
+                    <a href="/" class="d-inline-block mb-3">
+                        <img src="Images/brand_logo_new_1.png" alt="inspectionWale" loading="lazy" style="height: 40px; width: auto; filter: brightness(0) invert(1);">
+                    </a>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 13.5px; line-height: 1.65; max-width: 300px; margin: 0;">Mumbai's most trusted pre-purchase car inspection service. Independent, buyer-first, same-day reports.</p>
                 </div>
-                <div class="col-lg-9 col-md-8">
-                    <div class="d-flex flex-wrap justify-content-md-end justify-content-start gap-4">
-                        <a href="#" class="text-white text-decoration-none" style="font-size: 14px;">About Us</a>
-                        <a href="/careers.html" class="text-white text-decoration-none" style="font-size: 14px;">Careers</a>
-                        <a href="/terms.html" class="text-white text-decoration-none" style="font-size: 14px;">Terms & Conditions</a>
-                        <a href="#" class="text-white text-decoration-none" style="font-size: 14px;">Advertise</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Social Icons Row -->
-            <div class="row py-3 border-bottom" style="border-color: rgba(255,255,255,0.15) !important;">
-                <div class="col-12">
-                    <div class="d-flex align-items-center">
-                        <span class="text-uppercase me-3" style="color: rgba(255,255,255,0.6); font-size: 11px; letter-spacing: 1px;">Connect With Us</span>
-                        <div class="d-flex gap-3">
-                            <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-youtube"></i></a>
-                            <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-instagram"></i></a>
+                <div class="col-lg-8 col-md-7">
+                    <div class="row g-3">
+                        <div class="col-6 col-md-4">
+                            <p class="text-uppercase mb-3" style="color: rgba(255,255,255,0.9); font-size: 11px; font-weight: 700; letter-spacing: 1.5px;">Company</p>
+                            <ul class="list-unstyled mb-0" style="font-size: 13.5px;">
+                                <li class="mb-2"><a href="#" class="text-decoration-none" style="color: rgba(255,255,255,0.6);">About Us</a></li>
+                                <li class="mb-2"><a href="/careers.html" class="text-decoration-none" style="color: rgba(255,255,255,0.6);">Careers</a></li>
+                                <li class="mb-2"><a href="#" class="text-decoration-none" style="color: rgba(255,255,255,0.6);">Advertise</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <p class="text-uppercase mb-3" style="color: rgba(255,255,255,0.9); font-size: 11px; font-weight: 700; letter-spacing: 1.5px;">Services</p>
+                            <ul class="list-unstyled mb-0" style="font-size: 13.5px;">
+                                <li class="mb-2"><a href="#" class="text-decoration-none" style="color: rgba(255,255,255,0.6);">Used Car Inspection</a></li>
+                                <li class="mb-2"><a href="#" class="text-decoration-none" style="color: rgba(255,255,255,0.6);">New Car PDI</a></li>
+                                <li class="mb-2"><a href="/car-marketplace/" class="text-decoration-none" style="color: rgba(255,255,255,0.6);">Car Marketplace</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <p class="text-uppercase mb-3" style="color: rgba(255,255,255,0.9); font-size: 11px; font-weight: 700; letter-spacing: 1.5px;">Connect With Us</p>
+                            <div class="d-flex gap-3 mb-3">
+                                <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-youtube"></i></a>
+                                <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-instagram"></i></a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Copyright Row -->
-            <div class="row pt-3">
+            <!-- Bottom Row: Copyright + Legal -->
+            <div class="row pt-3 align-items-center">
                 <div class="col-md-6 text-md-start text-center mb-2 mb-md-0">
-                    <span style="color: rgba(255,255,255,0.5); font-size: 12px;">&copy; 2025 inspectionwale.com. All Rights Reserved.</span>
-                </div>      
-                
+                    <span style="color: rgba(255,255,255,0.4); font-size: 12px;">&copy; 2025 inspectionwale.com. All Rights Reserved.</span>
+                </div>
+                <div class="col-md-6 text-md-end text-center">
+                    <a href="/terms.html" class="text-decoration-none me-3" style="color: rgba(255,255,255,0.4); font-size: 12px;">Terms &amp; Conditions</a>
+                    <a href="#" class="text-decoration-none" style="color: rgba(255,255,255,0.4); font-size: 12px;">Privacy Policy</a>
+                </div>
             </div>
-
-            <!-- Terms & Careers moved to dedicated pages: /terms.html and /careers.html -->
         </div>
     </div>
     <!-- Footer End -->
@@ -5604,6 +5726,36 @@
             // Also load real marketplace data (will replace fallbacks when ready)
             if (typeof loadPopularMarketplaceCars === 'function') {
                 loadPopularMarketplaceCars();
+            }
+        })();
+
+        // ── Fix: Book Inspection tab switching (Used Car PDI ↔ New Car PDI) ──
+        (function () {
+            function initBookTabs() {
+                var tabs = document.querySelectorAll('#bookInspectionModal .iw-book-tab');
+                if (!tabs.length) return;
+                tabs.forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+                        var targetId = btn.getAttribute('data-bs-target');
+                        if (!targetId) return;
+                        tabs.forEach(function (t) {
+                            t.classList.remove('active');
+                            t.setAttribute('aria-selected', 'false');
+                        });
+                        document.querySelectorAll('#bookInspectionModal .tab-pane').forEach(function (pane) {
+                            pane.classList.remove('show', 'active');
+                        });
+                        btn.classList.add('active');
+                        btn.setAttribute('aria-selected', 'true');
+                        var targetPane = document.querySelector(targetId);
+                        if (targetPane) { targetPane.classList.add('show', 'active'); }
+                    });
+                });
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initBookTabs);
+            } else {
+                initBookTabs();
             }
         })();
 
