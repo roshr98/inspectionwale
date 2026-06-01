@@ -1569,7 +1569,7 @@
            ══════════════════════════════════════════════ */
 
         #carDetailModal .modal-content {
-            background: #f7f4ee !important;
+            background: #f2f4f8 !important;
             font-family: 'Montserrat', sans-serif !important;
             border-radius: 0 !important;
         }
@@ -1610,12 +1610,12 @@
             letter-spacing: -0.02em;
         }
 
-        #carDetailModal .modal-body { background: #f7f4ee !important; }
+        #carDetailModal .modal-body { background: #f2f4f8 !important; }
 
         #carDetailModal .detail-modal-body {
             overflow-y: auto;
             max-height: calc(100vh - 74px);
-            background: #f7f4ee;
+            background: #f2f4f8;
         }
 
         #carDetailModal .detail-shell {
@@ -1727,7 +1727,7 @@
             display: flex;
             flex-direction: column;
             gap: 3px;
-            background: #f7f4ee;
+            background: #f2f4f8;
             border-radius: 10px;
             padding: 10px 14px;
             border: 1px solid rgba(20,33,61,0.07);
@@ -1997,7 +1997,7 @@
             align-items: center;
             gap: 5px;
             padding: 12px 8px;
-            background: #f7f4ee;
+            background: #f2f4f8;
             border: 1px solid rgba(20,33,61,0.07);
             border-radius: 12px;
             text-align: center;
@@ -2148,12 +2148,350 @@
         }
 
         @media (max-width: 575.98px) {
-            #carDetailModal .detail-shell { padding: 16px 14px 32px; }
+            #carDetailModal .detail-shell { padding: 16px 12px 32px; }
             #carDetailModal .detail-gallery-shell { flex-direction: column; }
             #carDetailModal #carDetailThumbnails { display: flex !important; flex-direction: row !important; width: 100% !important; height: 72px !important; }
             #carDetailModal #carDetailThumbnails img { height: 72px !important; width: 33% !important; border-radius: 8px !important; }
-            #carDetailModal .detail-specs-grid { grid-template-columns: 1fr; }
+            #carDetailModal .detail-specs-grid { grid-template-columns: 1fr 1fr; }
             #carDetailModal .detail-features-grid { grid-template-columns: repeat(2, 1fr); }
+            #carDetailModal .detail-summary-card { padding: 18px 16px; }
+        }
+
+        /* ═══ CAR DETAIL MODAL — REDESIGN OVERRIDES ═══ */
+        /* Header strip */
+        #carDetailModal .detail-modal-header {
+            background: #fff !important;
+            border-bottom: 1.5px solid rgba(20,33,61,0.09) !important;
+            padding: 14px 24px !important;
+        }
+        #carDetailModal .detail-modal-title {
+            font-size: clamp(1rem, 2vw, 1.25rem) !important;
+            color: #14213d !important;
+            font-weight: 800 !important;
+        }
+        /* Main image */
+        #carDetailModal #carDetailCarouselMain img {
+            height: 400px !important;
+            object-fit: cover !important;
+            background: #e8edf5 !important;
+            border-radius: 0 !important;
+        }
+        #carDetailModal #carDetailCarouselMain .carousel-inner {
+            border-radius: 12px !important;
+            overflow: hidden !important;
+            box-shadow: 0 6px 28px rgba(20,33,61,0.13) !important;
+        }
+        /* Thumbnail strip */
+        #carDetailModal #carDetailThumbnails img {
+            border-radius: 8px !important;
+            border: 2px solid rgba(20,33,61,0.08) !important;
+            transition: border-color 0.15s, transform 0.15s !important;
+        }
+        #carDetailModal #carDetailThumbnails img:hover,
+        #carDetailModal #carDetailThumbnails img.active-thumb {
+            border-color: #c0392b !important;
+            transform: scale(1.03);
+        }
+        /* Photo counter link */
+        #carDetailModal #photoCountText {
+            background: rgba(20,33,61,0.75) !important;
+            color: #fff !important;
+            font-size: 0.78rem !important;
+            font-weight: 700 !important;
+            padding: 4px 12px !important;
+            border-radius: 20px !important;
+            text-decoration: none !important;
+            display: inline-block !important;
+        }
+        /* Overview card */
+        #carDetailModal .detail-theme-card {
+            background: #fff !important;
+            border: 1.5px solid rgba(20,33,61,0.07) !important;
+            border-radius: 12px !important;
+            box-shadow: 0 2px 12px rgba(20,33,61,0.05) !important;
+            padding: 20px !important;
+            margin-top: 14px !important;
+        }
+        #carDetailModal .detail-card-kicker {
+            color: #c0392b !important;
+            font-size: 0.68rem !important;
+            font-weight: 800 !important;
+            letter-spacing: 0.14em !important;
+            text-transform: uppercase !important;
+        }
+        #carDetailModal .detail-section-title {
+            font-size: 0.95rem !important;
+            font-weight: 800 !important;
+            color: #14213d !important;
+        }
+        #carDetailModal .detail-section-title i { color: #c0392b !important; }
+        /* Specs grid */
+        #carDetailModal .detail-specs-grid {
+            display: grid !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 8px !important;
+        }
+        #carDetailModal .detail-spec-item {
+            background: #f4f6fa !important;
+            border: 1px solid rgba(20,33,61,0.06) !important;
+            border-radius: 8px !important;
+            padding: 10px 14px !important;
+        }
+        #carDetailModal .detail-spec-label {
+            color: rgba(20,33,61,0.48) !important;
+            font-size: 0.66rem !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.1em !important;
+            text-transform: uppercase !important;
+        }
+        #carDetailModal .detail-spec-value {
+            color: #14213d !important;
+            font-size: 0.88rem !important;
+            font-weight: 700 !important;
+            margin-top: 2px !important;
+        }
+        /* Summary card (price + title) */
+        #carDetailModal .detail-summary-card {
+            background: #fff !important;
+            border: 1.5px solid rgba(20,33,61,0.07) !important;
+            border-radius: 12px !important;
+            box-shadow: 0 2px 12px rgba(20,33,61,0.06) !important;
+            padding: 20px 22px !important;
+        }
+        #carDetailModal .detail-price-display {
+            font-size: clamp(1.6rem, 3vw, 2rem) !important;
+            font-weight: 900 !important;
+            color: #14213d !important;
+            letter-spacing: -0.03em !important;
+            margin: 4px 0 6px !important;
+        }
+        #carDetailModal .detail-vehicle-title {
+            font-size: 0.92rem !important;
+            font-weight: 700 !important;
+            color: #4a5568 !important;
+            margin-bottom: 10px !important;
+        }
+        #carDetailModal .detail-ratings-link {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 5px !important;
+            font-size: 0.78rem !important;
+            font-weight: 700 !important;
+            color: #c0392b !important;
+            text-decoration: none !important;
+            border: 1px solid rgba(192,57,43,0.25) !important;
+            border-radius: 20px !important;
+            padding: 3px 10px !important;
+        }
+        /* Stat pills */
+        #carDetailModal .detail-stat-pills {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 6px !important;
+            margin-top: 14px !important;
+        }
+        #carDetailModal .detail-stat-pill {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            background: #f4f6fa !important;
+            border: 1px solid rgba(20,33,61,0.08) !important;
+            border-radius: 6px !important;
+            padding: 5px 10px !important;
+            font-size: 0.76rem !important;
+            font-weight: 600 !important;
+            color: #14213d !important;
+        }
+        #carDetailModal .detail-stat-pill i { color: #c0392b !important; font-size: 0.7rem !important; }
+        /* Contact card */
+        #carDetailModal .detail-contact-card {
+            background: #fff !important;
+            border: 1.5px solid rgba(20,33,61,0.07) !important;
+            border-radius: 12px !important;
+            box-shadow: 0 2px 12px rgba(20,33,61,0.06) !important;
+            padding: 20px 22px !important;
+        }
+        #carDetailModal .detail-contact-heading {
+            font-size: 0.85rem !important;
+            font-weight: 700 !important;
+            color: #14213d !important;
+            margin-bottom: 14px !important;
+        }
+        #carDetailModal .detail-contact-card .form-control,
+        #carDetailModal .detail-contact-card .form-select {
+            background: #f4f6fa !important;
+            border: 1.5px solid rgba(20,33,61,0.1) !important;
+            border-radius: 8px !important;
+            font-size: 0.88rem !important;
+            padding: 10px 12px !important;
+            color: #14213d !important;
+            min-height: 42px !important;
+        }
+        #carDetailModal .detail-contact-card .form-control:focus,
+        #carDetailModal .detail-contact-card .form-select:focus {
+            border-color: #c0392b !important;
+            box-shadow: 0 0 0 3px rgba(192,57,43,0.12) !important;
+            background: #fff !important;
+        }
+        #carDetailModal #carDetailRequestInfoBtn {
+            background: #14213d !important;
+            border: none !important;
+            color: #fff !important;
+            border-radius: 8px !important;
+            font-weight: 700 !important;
+            padding: 12px !important;
+            font-size: 0.92rem !important;
+        }
+        #carDetailModal #carDetailRequestInfoBtn:hover { background: #0e1829 !important; }
+        #carDetailModal .detail-contact-card__legal {
+            font-size: 0.72rem !important;
+            color: #9aa1ad !important;
+            margin-top: 10px !important;
+        }
+        /* Inspection CTA card */
+        #carDetailModal .detail-cta-card {
+            background: linear-gradient(135deg, #14213d 0%, #1e3260 100%) !important;
+            border-radius: 12px !important;
+            padding: 20px 22px !important;
+            border: none !important;
+        }
+        #carDetailModal .detail-cta-card__icon {
+            width: 42px !important;
+            height: 42px !important;
+            background: rgba(192,57,43,0.18) !important;
+            border-radius: 10px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            margin-bottom: 12px !important;
+        }
+        #carDetailModal .detail-cta-card__icon i { color: #c0392b !important; font-size: 1.1rem !important; }
+        #carDetailModal .detail-cta-card__title {
+            color: #fff !important;
+            font-weight: 800 !important;
+            font-size: 0.95rem !important;
+            margin-bottom: 6px !important;
+        }
+        #carDetailModal .detail-cta-card__body {
+            color: rgba(255,255,255,0.65) !important;
+            font-size: 0.8rem !important;
+            line-height: 1.55 !important;
+            margin-bottom: 14px !important;
+        }
+        #carDetailModal .detail-cta-card__btn {
+            background: #c0392b !important;
+            color: #fff !important;
+            border: none !important;
+            border-radius: 8px !important;
+            font-weight: 700 !important;
+            padding: 11px !important;
+            font-size: 0.9rem !important;
+            box-shadow: 0 6px 18px rgba(192,57,43,0.32) !important;
+        }
+        #carDetailModal .detail-cta-card__btn:hover { background: #a23226 !important; }
+        /* Features grid */
+        #carDetailModal .detail-features-grid {
+            display: grid !important;
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 8px !important;
+        }
+        #carDetailModal .detail-feature-chip {
+            background: #fff !important;
+            border: 1.5px solid rgba(20,33,61,0.07) !important;
+            border-radius: 8px !important;
+            padding: 12px 14px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 3px !important;
+        }
+        #carDetailModal .detail-feature-chip__icon {
+            width: 28px !important;
+            height: 28px !important;
+            background: rgba(192,57,43,0.08) !important;
+            border-radius: 6px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            margin-bottom: 4px !important;
+        }
+        #carDetailModal .detail-feature-chip__icon i { color: #c0392b !important; font-size: 0.78rem !important; }
+        #carDetailModal .detail-feature-chip__label {
+            font-size: 0.67rem !important;
+            color: rgba(20,33,61,0.48) !important;
+            font-weight: 700 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.06em !important;
+        }
+        #carDetailModal .detail-feature-chip__value {
+            font-size: 0.82rem !important;
+            color: #14213d !important;
+            font-weight: 700 !important;
+        }
+        /* Partner services */
+        #carDetailModal .detail-partner-services-row {
+            background: #fff !important;
+            border-top: 1.5px solid rgba(20,33,61,0.07) !important;
+            border-bottom: 1.5px solid rgba(20,33,61,0.07) !important;
+            padding: 24px !important;
+            margin: 0 !important;
+        }
+        #carDetailModal .detail-partner-heading {
+            font-size: 1rem !important;
+            font-weight: 800 !important;
+            color: #14213d !important;
+            margin-bottom: 0 !important;
+        }
+        /* Subsection card */
+        #carDetailModal .detail-subsection-card {
+            background: #fff !important;
+            border: 1.5px solid rgba(20,33,61,0.07) !important;
+            border-radius: 12px !important;
+            padding: 20px !important;
+        }
+        /* Reviews card */
+        #carDetailModal .detail-reviews-card {
+            background: #fff !important;
+            border-radius: 12px !important;
+            padding: 20px 24px !important;
+            border: 1.5px solid rgba(20,33,61,0.07) !important;
+        }
+        #carDetailModal .detail-reviews-heading {
+            font-size: 0.95rem !important;
+            font-weight: 800 !important;
+            color: #14213d !important;
+        }
+        #carDetailModal .detail-reviews-heading .fab.fa-google { color: #c0392b !important; }
+        /* Highlights list */
+        #carDetailModal .detail-highlights-list li {
+            display: flex !important;
+            align-items: flex-start !important;
+            gap: 8px !important;
+            margin-bottom: 8px !important;
+            font-size: 0.84rem !important;
+            color: #374151 !important;
+        }
+        #carDetailModal .detail-highlights-list li i { color: #c0392b !important; margin-top: 2px; }
+        /* Footer inside modal */
+        #carDetailModal .detail-footer-row > .col-12 { background: #0d1c38 !important; }
+        #carDetailModal .detail-footer-inner {
+            background: #0d1c38 !important;
+            padding: 32px 28px !important;
+        }
+        /* Responsive overrides */
+        @media (max-width: 991.98px) {
+            #carDetailModal .detail-features-grid { grid-template-columns: repeat(2, 1fr) !important; }
+            #carDetailModal #carDetailCarouselMain img { height: 300px !important; }
+            #carDetailModal #carDetailThumbnails { width: 90px !important; height: 300px !important; }
+        }
+        @media (max-width: 767.98px) {
+            #carDetailModal .detail-features-grid { grid-template-columns: repeat(2, 1fr) !important; }
+            #carDetailModal .detail-summary-card,
+            #carDetailModal .detail-contact-card,
+            #carDetailModal .detail-cta-card { border-radius: 10px !important; }
+        }
+        @media (max-width: 575.98px) {
+            #carDetailModal .detail-features-grid { grid-template-columns: 1fr 1fr !important; }
+            #carDetailModal #carDetailCarouselMain img { height: 230px !important; }
         }
 
         @media (max-width: 991.98px) {
@@ -4610,7 +4948,7 @@
         <div class="cw-footer-inner">
             <div class="cw-footer-top">
                 <div class="cw-footer-brand">
-                    <img src="../Images/brand_logo_new_1.png" alt="inspectionWale" style="height:36px;filter:brightness(0) invert(1);">
+                    <img src="../Images/logo-white.svg" alt="inspectionWale" style="height:36px;">
                     <p>Mumbai's most trusted pre-purchase car inspection service. Independent, buyer-first, same-day reports.</p>
                 </div>
                 <div class="cw-footer-links">
@@ -4910,10 +5248,13 @@
     <div class="modal fade inquiry-modal" id="inquiryModal" tabindex="-1" aria-labelledby="inquiryModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content iw-sleek-modal-shell">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="inquiryModalLabel">
-                        <i class="fa fa-search me-2"></i>Tell Us What You're Looking For
-                    </h5>
+                <div class="modal-header" style="background:#14213d!important;border-bottom:none!important;padding:22px 24px 20px!important;">
+                    <div>
+                        <h5 class="modal-title" id="inquiryModalLabel" style="color:#fff!important;font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.18rem;letter-spacing:-0.01em;">
+                            <i class="fas fa-search me-2" style="color:#c0392b;"></i>Tell Us What You're Looking For
+                        </h5>
+                        <p style="margin:4px 0 0;font-size:0.82rem;color:rgba(255,255,255,0.65);">Share your requirement and we'll match you with the right car.</p>
+                    </div>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="inquiryForm" class="needs-validation iw-sleek-form" novalidate>
@@ -5334,44 +5675,37 @@
                         <!-- Footer -->
                         <div class="row g-0 detail-footer-row">
                             <div class="col-12 detail-footer-inner">
-                                <!-- Language & Links Row -->
-                                <div class="row align-items-center py-3 border-bottom" style="border-color: rgba(255,255,255,0.15) !important;">
-                                    <div class="col-lg-3 col-md-4 mb-3 mb-md-0">
-                                        <span style="color: rgba(255,255,255,0.6); font-size: 14px;">Language:</span>
-                                        <a href="#" class="text-white text-decoration-none ms-2" style="font-weight: 500; font-size: 14px;">English</a>
-                                        <a href="#" class="text-decoration-none ms-2" style="color: rgba(255,255,255,0.6); font-size: 14px;">हिंदी</a>
+                                <div class="d-flex flex-wrap align-items-start justify-content-between gap-4 pb-4 mb-3" style="border-bottom: 1px solid rgba(255,255,255,0.12);">
+                                    <div>
+                                        <a href="/" class="d-inline-block mb-3">
+                                            <img src="../Images/logo-white.svg" alt="inspectionWale" style="height:32px;">
+                                        </a>
+                                        <p style="color:rgba(255,255,255,0.55);font-size:13px;max-width:260px;line-height:1.6;margin:0;">Mumbai's most trusted pre-purchase car inspection. Independent, buyer-first, same-day reports.</p>
                                     </div>
-                                    <div class="col-lg-9 col-md-8">
-                                        <div class="d-flex flex-wrap justify-content-md-end justify-content-start gap-4">
-                                            <a href="/#about" class="text-white text-decoration-none" style="font-size: 14px;">About Us</a>
-                                            <a href="/careers.html" class="text-white text-decoration-none" style="font-size: 14px;">Careers</a>
-                                            <a href="/terms.html" class="text-white text-decoration-none" style="font-size: 14px;">Terms & Conditions</a>
-                                            <a href="#" class="text-white text-decoration-none" style="font-size: 14px;">Advertise</a>
+                                    <div class="d-flex flex-wrap gap-5">
+                                        <div>
+                                            <p style="color:#fff;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.4px;margin-bottom:10px;">Company</p>
+                                            <a href="/#about" class="d-block text-decoration-none mb-2" style="color:rgba(255,255,255,0.6);font-size:13px;">About Us</a>
+                                            <a href="/careers.html" class="d-block text-decoration-none mb-2" style="color:rgba(255,255,255,0.6);font-size:13px;">Careers</a>
+                                            <a href="/terms.html" class="d-block text-decoration-none mb-2" style="color:rgba(255,255,255,0.6);font-size:13px;">Terms &amp; Conditions</a>
                                         </div>
-                                    </div>
-                                </div>
-
-                                <!-- Social Icons Row -->
-                                <div class="row py-3 border-bottom" style="border-color: rgba(255,255,255,0.15) !important;">
-                                    <div class="col-12">
-                                        <div class="d-flex align-items-center">
-                                            <span class="text-uppercase me-3" style="color: rgba(255,255,255,0.6); font-size: 11px; letter-spacing: 1px;">Connect With Us</span>
+                                        <div>
+                                            <p style="color:#fff;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.4px;margin-bottom:10px;">Connect</p>
                                             <div class="d-flex gap-3">
-                                                <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-facebook-f"></i></a>
-                                                <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-twitter"></i></a>
-                                                <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-youtube"></i></a>
-                                                <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-linkedin-in"></i></a>
-                                                <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-instagram"></i></a>
+                                                <a href="#" class="text-white" style="font-size:1.1rem;"><i class="fab fa-facebook-f"></i></a>
+                                                <a href="#" class="text-white" style="font-size:1.1rem;"><i class="fab fa-instagram"></i></a>
+                                                <a href="#" class="text-white" style="font-size:1.1rem;"><i class="fab fa-youtube"></i></a>
+                                                <a href="#" class="text-white" style="font-size:1.1rem;"><i class="fab fa-linkedin-in"></i></a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- Copyright Row -->
-                                <div class="row pt-3">
-                                    <div class="col-md-6 text-md-start text-center mb-2 mb-md-0">
-                                        <span style="color: rgba(255,255,255,0.5); font-size: 12px;">&copy; 2025 inspectionwale.com. All Rights Reserved.</span>
-                                    </div>
+                                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                                    <span style="color:rgba(255,255,255,0.4);font-size:12px;">&copy; 2025 inspectionwale.com. All Rights Reserved.</span>
+                                    <span style="color:rgba(255,255,255,0.4);font-size:12px;">
+                                        <a href="#" class="text-decoration-none me-3" style="color:rgba(255,255,255,0.4);">Privacy Policy</a>
+                                        <a href="#" class="text-decoration-none" style="color:rgba(255,255,255,0.4);">English</a>
+                                    </span>
                                 </div>
                             </div>
                         </div>
