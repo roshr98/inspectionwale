@@ -26,6 +26,10 @@
     <!-- Favicon -->
     <link href="/Images/brand_logo_new_1.png" rel="icon">
 
+    <!-- Performance: DNS prefetch for external APIs -->
+    <link rel="dns-prefetch" href="https://423cmvhw3g.execute-api.us-east-1.amazonaws.com">
+    <link rel="preconnect" href="https://423cmvhw3g.execute-api.us-east-1.amazonaws.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2157,6 +2161,24 @@
             #carDetailModal .detail-summary-card { padding: 18px 16px; }
         }
 
+        /* ═══ MOBILE: Reorder — price/aside first, then images/overview ═══ */
+        @media (max-width: 991.98px) {
+            #carDetailModal .detail-top-row {
+                display: flex !important;
+                flex-direction: column !important;
+            }
+            #carDetailModal .detail-aside-column {
+                order: 1 !important;
+            }
+            #carDetailModal .detail-media-column {
+                order: 2 !important;
+            }
+            /* Kill the fixed height on thumbnail container so it doesn't create whitespace */
+            #carDetailModal #carDetailThumbnails {
+                height: auto !important;
+            }
+        }
+
         /* ═══ CAR DETAIL MODAL — REDESIGN OVERRIDES ═══ */
         /* Header strip */
         #carDetailModal .detail-modal-header {
@@ -2477,6 +2499,120 @@
             background: #0d1c38 !important;
             padding: 32px 28px !important;
         }
+
+        /* ══ COMMENTS SECTION ══ */
+        #carDetailModal .detail-comments-row { padding: 16px 0 0; }
+        #carDetailModal .detail-comments-card {
+            background: #fff;
+            border: 1.5px solid rgba(20,33,61,0.07);
+            border-radius: 12px;
+            padding: 22px 24px;
+            margin: 0 24px 16px;
+        }
+        #carDetailModal .detail-comment-input {
+            background: #f4f6fa !important;
+            border: 1.5px solid rgba(20,33,61,0.1) !important;
+            border-radius: 8px !important;
+            font-size: 0.88rem !important;
+            color: #14213d !important;
+            padding: 10px 12px !important;
+            min-height: 42px !important;
+            resize: vertical;
+        }
+        #carDetailModal .detail-comment-input:focus {
+            border-color: #c0392b !important;
+            box-shadow: 0 0 0 3px rgba(192,57,43,0.1) !important;
+            background: #fff !important;
+        }
+        #carDetailModal .detail-comment-submit-btn {
+            background: #14213d;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 9px 18px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        #carDetailModal .detail-comment-submit-btn:hover { background: #0e1829; }
+        #carDetailModal .detail-comment-submit-btn:disabled { opacity: 0.6; cursor: default; }
+        #carDetailModal .detail-comment-msg {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        #carDetailModal .detail-comment-msg.success { color: #2e7d32; }
+        #carDetailModal .detail-comment-msg.error   { color: #c0392b; }
+        #carDetailModal .detail-comments-list { display: flex; flex-direction: column; gap: 12px; }
+        #carDetailModal .detail-comment-item {
+            background: #f8f9fb;
+            border: 1px solid rgba(20,33,61,0.07);
+            border-radius: 10px;
+            padding: 14px 16px;
+        }
+        #carDetailModal .detail-comment-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        #carDetailModal .detail-comment-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #14213d 0%, #c0392b 100%);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.82rem;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+        #carDetailModal .detail-comment-author {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #14213d;
+        }
+        #carDetailModal .detail-comment-date {
+            font-size: 0.72rem;
+            color: #9aa1ad;
+            margin-left: auto;
+        }
+        #carDetailModal .detail-comment-body {
+            font-size: 0.86rem;
+            color: #374151;
+            line-height: 1.6;
+        }
+        #carDetailModal .detail-comment-loading {
+            font-size: 0.85rem;
+            color: #9aa1ad;
+            padding: 12px 0;
+        }
+        #carDetailModal .detail-comment-empty {
+            font-size: 0.85rem;
+            color: #9aa1ad;
+            text-align: center;
+            padding: 20px 0;
+        }
+        #carDetailModal .detail-comments-more-btn {
+            background: transparent;
+            border: 1.5px solid rgba(20,33,61,0.15);
+            border-radius: 20px;
+            padding: 7px 18px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #14213d;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            transition: border-color 0.15s, background 0.15s;
+        }
+        #carDetailModal .detail-comments-more-btn:hover { background: #f4f6fa; }
+        @media (max-width: 575.98px) {
+            #carDetailModal .detail-comments-card { margin: 0 12px 12px; padding: 16px; }
+        }
+
         /* Responsive overrides */
         @media (max-width: 991.98px) {
             #carDetailModal .detail-features-grid { grid-template-columns: repeat(2, 1fr) !important; }
@@ -4948,7 +5084,7 @@
         <div class="cw-footer-inner">
             <div class="cw-footer-top">
                 <div class="cw-footer-brand">
-                    <img src="../Images/logo-white.svg" alt="inspectionWale" style="height:36px;">
+                    <img src="../Images/brand_logo_new_1.png" alt="inspectionWale" style="height:34px;filter:brightness(0) invert(1);">
                     <p>Mumbai's most trusted pre-purchase car inspection service. Independent, buyer-first, same-day reports.</p>
                 </div>
                 <div class="cw-footer-links">
@@ -5424,19 +5560,15 @@
                                     </div>
 
                                     <!-- Photo Counter (Clickable) -->
-                                    <div class="text-center py-3" style="background: rgba(255,255,255,0.4); border-bottom: 1px solid rgba(17, 24, 39, 0.06);">
-                                        <small class="text-muted" style="font-size: 12px; font-family: 'Montserrat', sans-serif;">
-                                            <i class="fas fa-camera me-1"></i> 
-                                            <a href="#" id="photoCountText" style="color: #007bff; text-decoration: underline; cursor: pointer;" title="Click to browse all photos">46 Photos</a>
-                                        </small>
+                                    <div class="text-center mt-2">
+                                        <a href="#" id="photoCountText" title="Click to browse all photos" style="cursor:pointer;">
+                                            <i class="fas fa-camera me-1"></i> 46 Photos
+                                        </a>
                                     </div>
                                 </div>
 
                                 <div class="detail-theme-card detail-overview-card">
                                     <div class="detail-card-kicker">Vehicle Overview</div>
-                                    <h5 class="detail-section-title">
-                                        <i class="fas fa-car"></i> Car Details
-                                    </h5>
                                     <div class="mb-4 detail-description-text" id="carDetailDescription">
                                         <p>Vehicle description and inspection recommendation will appear here.</p>
                                     </div>
@@ -5672,13 +5804,53 @@
                             </div>
                         </div>
 
+                        <!-- ══ COMMENTS SECTION ══ -->
+                        <div class="row g-0 detail-comments-row" id="carDetailCommentsSection">
+                            <div class="col-12">
+                                <div class="detail-comments-card">
+                                    <div class="detail-card-kicker">Community</div>
+                                    <h5 class="detail-section-title"><i class="fas fa-comments"></i> Comments</h5>
+
+                                    <!-- Add comment form -->
+                                    <div class="detail-comment-form-wrap">
+                                        <div class="row g-2 mb-2">
+                                            <div class="col-sm-5">
+                                                <input type="text" id="commentName" class="form-control detail-comment-input" placeholder="Your name" maxlength="80" required>
+                                            </div>
+                                            <div class="col-sm-7">
+                                                <textarea id="commentText" class="form-control detail-comment-input" rows="2" placeholder="Share your thoughts about this car…" maxlength="800" required></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                                            <button type="button" id="submitCommentBtn" class="detail-comment-submit-btn">
+                                                <i class="fas fa-paper-plane me-1"></i> Post Comment
+                                            </button>
+                                            <span id="commentFormMsg" class="detail-comment-msg"></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Comments list -->
+                                    <div id="carDetailCommentsList" class="detail-comments-list mt-4">
+                                        <div class="detail-comment-loading"><span class="spinner-border spinner-border-sm me-2"></span>Loading comments…</div>
+                                    </div>
+
+                                    <!-- View more -->
+                                    <div id="carDetailCommentsMore" class="text-center mt-3" style="display:none!important;">
+                                        <button type="button" id="loadMoreCommentsBtn" class="detail-comments-more-btn">
+                                            <i class="fas fa-chevron-down me-1"></i> Load More Comments
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Footer -->
                         <div class="row g-0 detail-footer-row">
                             <div class="col-12 detail-footer-inner">
                                 <div class="d-flex flex-wrap align-items-start justify-content-between gap-4 pb-4 mb-3" style="border-bottom: 1px solid rgba(255,255,255,0.12);">
                                     <div>
                                         <a href="/" class="d-inline-block mb-3">
-                                            <img src="../Images/logo-white.svg" alt="inspectionWale" style="height:32px;">
+                                            <img src="../Images/brand_logo_new_1.png" alt="inspectionWale" style="height:30px;filter:brightness(0) invert(1);">
                                         </a>
                                         <p style="color:rgba(255,255,255,0.55);font-size:13px;max-width:260px;line-height:1.6;margin:0;">Mumbai's most trusted pre-purchase car inspection. Independent, buyer-first, same-day reports.</p>
                                     </div>
@@ -6273,7 +6445,7 @@
     <script defer src="../lib/owlcarousel/owl.carousel.min.js"></script>
     <script defer src="../js/main.js"></script>
 
-    <script src="../js/monetization.js?v=20260321"></script>
+    <script defer src="../js/monetization.js?v=20260321"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function () {
     const API_ENDPOINT = 'https://423cmvhw3g.execute-api.us-east-1.amazonaws.com/prod/customer-listings';
@@ -6994,7 +7166,7 @@
             if (!gridElement || !featuredGridElement) return;
 
             try {
-                const res = await fetch(API_ENDPOINT, { headers: { Accept: 'application/json' } });
+                const res = await fetch(API_ENDPOINT, { headers: { Accept: 'application/json' }, cache: 'default' });
                 const data = await res.json();
 
                 if (data.ok && Array.isArray(data.items) && data.items.length) {
@@ -7717,16 +7889,16 @@
         if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
             const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl, { backdrop: 'static', keyboard: false });
             modal.show();
-            return;
-        }
-        if (typeof window.jQuery !== 'undefined' && window.jQuery.fn?.modal) {
+        } else if (typeof window.jQuery !== 'undefined' && window.jQuery.fn?.modal) {
             window.jQuery(modalEl).modal('show');
-            return;
+        } else {
+            modalEl.classList.add('show');
+            modalEl.style.display = 'block';
+            modalEl.removeAttribute('aria-hidden');
+            modalEl.setAttribute('aria-modal', 'true');
         }
-        modalEl.classList.add('show');
-        modalEl.style.display = 'block';
-        modalEl.removeAttribute('aria-hidden');
-        modalEl.setAttribute('aria-modal', 'true');
+        // Load comments for this listing
+        loadListingComments(listingId, true);
     }
 
     window.openCarDetailModal = openCarDetailModal;
@@ -8407,6 +8579,144 @@
         }
     }
 
+    </script>
+
+    <!-- ══ LISTING COMMENTS ══ -->
+    <script>
+    (function () {
+        const COMMENTS_API = '/api/listing-comments';
+        let _currentListingId   = null;
+        let _currentLastKey     = null;
+        let _isLoadingComments  = false;
+
+        function timeAgo(ms) {
+            const secs = Math.floor((Date.now() - ms) / 1000);
+            if (secs < 60)      return 'just now';
+            if (secs < 3600)    return Math.floor(secs / 60) + 'm ago';
+            if (secs < 86400)   return Math.floor(secs / 3600) + 'h ago';
+            if (secs < 604800)  return Math.floor(secs / 86400) + 'd ago';
+            return new Date(ms).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+        }
+
+        function initials(name) {
+            return (name || '?').trim().split(/\s+/).slice(0,2).map(w => w[0].toUpperCase()).join('');
+        }
+
+        function renderComment(c) {
+            return `
+            <div class="detail-comment-item">
+                <div class="detail-comment-header">
+                    <div class="detail-comment-avatar">${initials(c.name)}</div>
+                    <span class="detail-comment-author">${c.name.replace(/[<>]/g,'')}</span>
+                    <span class="detail-comment-date">${timeAgo(c.createdAt)}</span>
+                </div>
+                <div class="detail-comment-body">${c.comment.replace(/[<>]/g,'').replace(/\n/g,'<br>')}</div>
+            </div>`;
+        }
+
+        window.loadListingComments = async function (listingId, reset) {
+            if (_isLoadingComments) return;
+            _isLoadingComments = true;
+
+            if (reset) {
+                _currentListingId = listingId;
+                _currentLastKey   = null;
+                const list = document.getElementById('carDetailCommentsList');
+                if (list) list.innerHTML = '<div class="detail-comment-loading"><span class="spinner-border spinner-border-sm me-2"></span>Loading comments…</div>';
+                const moreWrap = document.getElementById('carDetailCommentsMore');
+                if (moreWrap) moreWrap.style.setProperty('display','none','important');
+            }
+
+            try {
+                let url = `${COMMENTS_API}?listingId=${encodeURIComponent(_currentListingId)}&limit=10`;
+                if (_currentLastKey) url += `&lastKey=${_currentLastKey}`;
+                const res  = await fetch(url);
+                const data = await res.json();
+
+                const list = document.getElementById('carDetailCommentsList');
+                if (!list) return;
+
+                if (reset) list.innerHTML = '';
+
+                if (!data.comments || data.comments.length === 0) {
+                    if (reset) list.innerHTML = '<div class="detail-comment-empty"><i class="fas fa-comment-slash me-2"></i>No comments yet. Be the first!</div>';
+                } else {
+                    list.insertAdjacentHTML('beforeend', data.comments.map(renderComment).join(''));
+                }
+
+                _currentLastKey = data.lastKey || null;
+                const moreWrap  = document.getElementById('carDetailCommentsMore');
+                if (moreWrap) {
+                    if (_currentLastKey) {
+                        moreWrap.style.removeProperty('display');
+                    } else {
+                        moreWrap.style.setProperty('display','none','important');
+                    }
+                }
+            } catch (e) {
+                console.error('Comments load error:', e);
+                if (reset) {
+                    const list = document.getElementById('carDetailCommentsList');
+                    if (list) list.innerHTML = '<div class="detail-comment-empty text-danger"><i class="fas fa-exclamation-circle me-2"></i>Could not load comments.</div>';
+                }
+            } finally {
+                _isLoadingComments = false;
+            }
+        };
+
+        // Submit comment
+        document.addEventListener('click', async function (e) {
+            if (!e.target.closest('#submitCommentBtn')) return;
+            const btn  = document.getElementById('submitCommentBtn');
+            const name = (document.getElementById('commentName')?.value || '').trim();
+            const text = (document.getElementById('commentText')?.value || '').trim();
+            const msg  = document.getElementById('commentFormMsg');
+
+            if (!name || !text) {
+                if (msg) { msg.textContent = 'Please enter your name and comment.'; msg.className = 'detail-comment-msg error'; }
+                return;
+            }
+
+            const listing = window.currentDetailListing || {};
+            const title   = document.getElementById('carDetailTitle')?.textContent?.trim() || listing.listingTitle || '';
+
+            btn.disabled = true;
+            if (msg) { msg.textContent = 'Posting…'; msg.className = 'detail-comment-msg'; }
+
+            try {
+                const res  = await fetch(COMMENTS_API, {
+                    method:  'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body:    JSON.stringify({ listingId: _currentListingId, name, comment: text, listingTitle: title })
+                });
+                const data = await res.json();
+                if (data.ok) {
+                    document.getElementById('commentName').value = '';
+                    document.getElementById('commentText').value = '';
+                    if (msg) { msg.textContent = 'Comment posted!'; msg.className = 'detail-comment-msg success'; }
+                    // Prepend new comment
+                    const list = document.getElementById('carDetailCommentsList');
+                    const empty = list?.querySelector('.detail-comment-empty');
+                    if (empty) empty.remove();
+                    if (list) list.insertAdjacentHTML('afterbegin', renderComment(data.comment));
+                    setTimeout(() => { if (msg) msg.textContent = ''; }, 3000);
+                } else {
+                    if (msg) { msg.textContent = data.error || 'Failed to post.'; msg.className = 'detail-comment-msg error'; }
+                }
+            } catch (e) {
+                if (msg) { msg.textContent = 'Network error. Please try again.'; msg.className = 'detail-comment-msg error'; }
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+        // Load more
+        document.addEventListener('click', function (e) {
+            if (e.target.closest('#loadMoreCommentsBtn') && _currentListingId) {
+                window.loadListingComments(_currentListingId, false);
+            }
+        });
+    })();
     </script>
 
     <script>
