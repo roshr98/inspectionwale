@@ -10,7 +10,7 @@ try {
   // If Dexie fails to load, we still keep caching working.
 }
 
-const CACHE_NAME = 'iw-shell-v2';
+const CACHE_NAME = 'iw-shell-v3';
 
 const PRECACHE_URLS = [
   '/',
