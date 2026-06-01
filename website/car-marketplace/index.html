@@ -6818,21 +6818,34 @@
             const priceFormatted = formatPrice(car.expectedPrice);
             const primaryPhoto = resolvePrimaryPhoto(listing);
             const isSoldOut = isListingSold(listing);
-            const cardClass = `car-card car-card-featured${isSoldOut ? ' sold-out' : ''}`;
+            const cardClass = `iw-car-card${isSoldOut ? ' sold-out' : ''}`;
             const listingIdAttr = listing?.listingId ? `data-listing-id="${listing.listingId}"` : '';
             const sellerType = getListingSellerTypeLabel(listing);
             const sellerClass = sellerType === 'Dealer' ? 'dealer' : '';
+            const year = car.registrationYear || car.year || '';
+            const kms = formatKms(car.kmsDriven);
+            const fuel = car.fuelType ? titleCase(car.fuelType) : '';
+            const city = getListingCity(listing) ? titleCase(getListingCity(listing).split(',')[0].trim()) : '';
+            const metaParts = [year, kms, fuel, city].filter(Boolean);
+            const metaLine = metaParts.join(' · ');
 
             return `
-                <div class="col-4 col-lg-3 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="col-6 col-lg-3 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="${cardClass} ${isSoldOut ? '' : 'js-view-details'}" ${listingIdAttr}>
-                        <div class="car-card-img-wrapper ${isSoldOut ? '' : 'js-view-details'}" ${listingIdAttr}>
-                            <img src="${primaryPhoto}" alt="${title}" class="car-card-img" width="400" height="240" loading="lazy" decoding="async" onerror="this.src='${FALLBACK_IMAGE}'">
-                            <span class="seller-type-badge ${sellerClass}">${sellerType}</span>
+                        <div class="iw-card-img-wrap">
+                            <img src="${primaryPhoto}" alt="${title}" class="iw-card-img" width="400" height="240" loading="lazy" decoding="async" onerror="this.src='${FALLBACK_IMAGE}'">
+                            <span class="iw-seller-badge ${sellerClass}">${sellerType}</span>
+                            ${isSoldOut ? '<span class="iw-sold-badge">SOLD</span>' : ''}
                         </div>
-                        <div class="car-card-body">
-                            <h5 class="car-title">${title}</h5>
-                            <div class="car-price">${priceFormatted}</div>
+                        <div class="iw-card-body">
+                            <h5 class="iw-card-title">${title}</h5>
+                            ${metaLine ? `<p class="iw-card-meta">${metaLine}</p>` : ''}
+                            <div class="iw-card-footer">
+                                <span class="iw-card-price">${priceFormatted}</span>
+                                <button type="button" class="iw-card-btn ${isSoldOut ? '' : 'js-view-details'}" ${listingIdAttr} ${isSoldOut ? 'disabled' : ''}>
+                                    ${isSoldOut ? 'Sold' : 'View Listing'}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -6848,17 +6861,30 @@
             const listingIdAttr = listing?.listingId ? `data-listing-id="${listing.listingId}"` : '';
             const sellerType = getListingSellerTypeLabel(listing);
             const sellerClass = sellerType === 'Dealer' ? 'dealer' : '';
+            const year = car.registrationYear || car.year || '';
+            const kms = formatKms(car.kmsDriven);
+            const fuel = car.fuelType ? titleCase(car.fuelType) : '';
+            const city = getListingCity(listing) ? titleCase(getListingCity(listing).split(',')[0].trim()) : '';
+            const metaParts = [year, kms, fuel, city].filter(Boolean);
+            const metaLine = metaParts.join(' · ');
 
             return `
-                <div class="col-4 col-lg-3 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="car-card car-card-standard${isSoldOut ? ' sold-out' : ''} ${isSoldOut ? '' : 'js-view-details'}" ${listingIdAttr}>
-                        <div class="car-card-img-wrapper ${isSoldOut ? '' : 'js-view-details'}" ${listingIdAttr}>
-                            <img src="${primaryPhoto}" alt="${title}" class="car-card-img" width="400" height="240" loading="lazy" decoding="async" onerror="this.src='${FALLBACK_IMAGE}'">
-                            <span class="seller-type-badge ${sellerClass}">${sellerType}</span>
+                <div class="col-6 col-lg-3 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="iw-car-card${isSoldOut ? ' sold-out' : ''} ${isSoldOut ? '' : 'js-view-details'}" ${listingIdAttr}>
+                        <div class="iw-card-img-wrap">
+                            <img src="${primaryPhoto}" alt="${title}" class="iw-card-img" width="400" height="240" loading="lazy" decoding="async" onerror="this.src='${FALLBACK_IMAGE}'">
+                            <span class="iw-seller-badge ${sellerClass}">${sellerType}</span>
+                            ${isSoldOut ? '<span class="iw-sold-badge">SOLD</span>' : ''}
                         </div>
-                        <div class="car-card-body">
-                            <h5 class="car-title">${title}</h5>
-                            <div class="car-price">${priceFormatted}</div>
+                        <div class="iw-card-body">
+                            <h5 class="iw-card-title">${title}</h5>
+                            ${metaLine ? `<p class="iw-card-meta">${metaLine}</p>` : ''}
+                            <div class="iw-card-footer">
+                                <span class="iw-card-price">${priceFormatted}</span>
+                                <button type="button" class="iw-card-btn ${isSoldOut ? '' : 'js-view-details'}" ${listingIdAttr} ${isSoldOut ? 'disabled' : ''}>
+                                    ${isSoldOut ? 'Sold' : 'View Listing'}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -8373,6 +8399,17 @@
         html, body, body.marketplace-page {
             font-family: 'Inter', 'Montserrat', Arial, sans-serif !important;
         }
+        /* Restore Font Awesome font-family overridden by inherited !important above */
+        .fa, .fas, .far, .fab, .fal, .fad, [class^="fa-"], [class*=" fa-"],
+        .bi, [class^="bi-"], [class*=" bi-"] {
+            font-family: "Font Awesome 5 Free" !important;
+        }
+        .fas { font-weight: 900 !important; }
+        .far, .fal { font-weight: 400 !important; }
+        .fab { font-family: "Font Awesome 5 Brands" !important; font-weight: 400 !important; }
+        .bi, [class^="bi-"], [class*=" bi-"] {
+            font-family: "bootstrap-icons" !important;
+        }
 
         /* ── NAVBAR: light bar + full-colour logo (like homepage) ── */
         .cw-navbar {
@@ -8471,121 +8508,146 @@
             color: var(--iw-navy) !important;
         }
 
-        /* ── CAR CARDS: homepage overlay style (featured + listings unified) ── */
-        .car-card.car-card-featured,
-        .car-card.car-card-standard {
-            position: relative !important;
-            display: block !important;
-            flex-direction: initial !important;
-            aspect-ratio: 4 / 3 !important;
-            min-height: 0 !important;
-            background: #e8edf5 !important;
+        /* ── CAR CARDS: clean vertical card, square corners, details + button ── */
+        .iw-car-card {
+            background: #ffffff !important;
             border: 1px solid rgba(20,33,61,0.10) !important;
-            border-radius: 12px !important;
+            border-radius: 4px !important;
             overflow: hidden !important;
-            box-shadow: 0 2px 12px rgba(17,27,49,0.10) !important;
+            box-shadow: 0 2px 10px rgba(17,27,49,0.08) !important;
             transition: box-shadow .2s, transform .2s !important;
             cursor: pointer !important;
+            display: flex !important;
+            flex-direction: column !important;
+            height: 100% !important;
         }
-        .car-card.car-card-featured:hover,
-        .car-card.car-card-standard:hover {
-            box-shadow: 0 10px 26px rgba(17,27,49,0.20) !important;
-            transform: translateY(-3px) !important;
+        .iw-car-card:hover {
+            box-shadow: 0 8px 24px rgba(17,27,49,0.16) !important;
+            transform: translateY(-2px) !important;
         }
-        .car-card .car-card-img-wrapper {
-            position: absolute !important;
-            inset: 0 !important;
-            height: auto !important;
-            min-height: 0 !important;
-            border-radius: 12px !important;
+        .iw-car-card.sold-out { opacity: 0.72 !important; }
+
+        /* Image section */
+        .iw-card-img-wrap {
+            position: relative !important;
+            width: 100% !important;
+            aspect-ratio: 16 / 10 !important;
             overflow: hidden !important;
+            background: #e8edf5 !important;
+            flex-shrink: 0 !important;
         }
-        .car-card .car-card-img-wrapper::after {
-            content: '' !important;
-            position: absolute !important;
-            inset: 0 !important;
-            background: linear-gradient(180deg, rgba(0,0,0,0) 34%, rgba(0,0,0,0.22) 60%, rgba(0,0,0,0.80) 100%) !important;
-            pointer-events: none !important;
-            z-index: 1 !important;
-        }
-        .car-card .car-card-img {
+        .iw-card-img {
             width: 100% !important;
             height: 100% !important;
             object-fit: cover !important;
-            object-position: center center !important;
+            object-position: center !important;
             display: block !important;
+            transition: transform .3s ease !important;
         }
-        .car-card .car-card-body {
+        .iw-car-card:hover .iw-card-img { transform: scale(1.04) !important; }
+
+        /* Seller badge top-right */
+        .iw-seller-badge {
             position: absolute !important;
-            bottom: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            z-index: 2 !important;
-            padding: 12px 13px !important;
+            top: 8px !important;
+            right: 8px !important;
+            padding: 2px 8px !important;
+            border-radius: 2px !important;
+            background: rgba(255,255,255,0.93) !important;
+            color: var(--iw-navy) !important;
+            border: 1px solid rgba(20,33,61,0.12) !important;
+            font-size: 0.58rem !important;
+            font-weight: 700 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.04em !important;
+        }
+        .iw-seller-badge.dealer {
+            color: #7a4f1a !important;
+            border-color: rgba(180,120,40,0.3) !important;
+            background: rgba(255,247,236,0.95) !important;
+        }
+        .iw-sold-badge {
+            position: absolute !important;
+            top: 8px !important;
+            left: 8px !important;
+            padding: 3px 10px !important;
+            border-radius: 2px !important;
+            background: rgba(20,33,61,0.90) !important;
+            color: #fff !important;
+            font-size: 0.6rem !important;
+            font-weight: 800 !important;
+            letter-spacing: 0.06em !important;
+            text-transform: uppercase !important;
+        }
+
+        /* Card body */
+        .iw-card-body {
+            padding: 12px 13px 13px !important;
             display: flex !important;
             flex-direction: column !important;
-            align-items: flex-start !important;
-            gap: 6px !important;
-            background: transparent !important;
-            border: none !important;
+            gap: 4px !important;
+            flex: 1 !important;
+            background: #fff !important;
         }
-        .car-card .car-title {
-            color: #ffffff !important;
+        .iw-card-title {
             font-family: 'Montserrat', 'Inter', sans-serif !important;
-            font-size: 0.92rem !important;
+            font-size: 0.9rem !important;
             font-weight: 700 !important;
-            margin: 0 !important;
-            line-height: 1.2 !important;
-            text-shadow: 0 1px 6px rgba(0,0,0,0.55) !important;
+            color: var(--iw-ink) !important;
+            margin: 0 0 2px !important;
+            line-height: 1.25 !important;
             display: -webkit-box !important;
             -webkit-line-clamp: 2 !important;
             -webkit-box-orient: vertical !important;
             overflow: hidden !important;
         }
-        .car-card .car-price {
-            display: inline-flex !important;
+        .iw-card-meta {
+            font-size: 0.72rem !important;
+            color: #6b7280 !important;
+            margin: 0 0 4px !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            line-height: 1.3 !important;
+        }
+        .iw-card-footer {
+            display: flex !important;
             align-items: center !important;
-            padding: 3px 9px !important;
-            border-radius: 5px !important;
-            background: var(--iw-accent) !important;
-            color: #ffffff !important;
-            font-size: 0.82rem !important;
-            font-weight: 800 !important;
-            margin: 0 !important;
-            line-height: 1.4 !important;
-            box-shadow: 0 1px 6px rgba(0,0,0,0.22) !important;
+            justify-content: space-between !important;
+            gap: 8px !important;
+            margin-top: auto !important;
+            padding-top: 8px !important;
+            border-top: 1px solid rgba(20,33,61,0.07) !important;
         }
-        .car-card .seller-type-badge {
-            position: absolute !important;
-            top: 10px !important;
-            right: 10px !important;
-            z-index: 3 !important;
-            padding: 2px 9px !important;
-            border-radius: 999px !important;
-            background: rgba(255,255,255,0.92) !important;
-            color: var(--iw-navy) !important;
-            border: 1px solid rgba(20,33,61,0.12) !important;
-            font-size: 0.56rem !important;
+        .iw-card-price {
+            font-family: 'Montserrat', 'Inter', sans-serif !important;
+            font-size: 0.94rem !important;
+            font-weight: 800 !important;
+            color: var(--iw-accent) !important;
+            white-space: nowrap !important;
+        }
+        .iw-card-btn {
+            flex-shrink: 0 !important;
+            padding: 5px 12px !important;
+            border-radius: 2px !important;
+            border: 1.5px solid var(--iw-accent) !important;
+            background: transparent !important;
+            color: var(--iw-accent) !important;
+            font-size: 0.72rem !important;
             font-weight: 700 !important;
-            text-transform: uppercase !important;
-            letter-spacing: 0.03em !important;
+            cursor: pointer !important;
+            transition: background .18s, color .18s !important;
+            white-space: nowrap !important;
+            letter-spacing: 0.01em !important;
         }
-        .car-card .car-card-actions,
-        .car-card .car-card-tags,
-        .car-card .car-card-status { display: none !important; }
-        .car-card.sold-out::before {
-            content: 'SOLD' !important;
-            position: absolute !important;
-            z-index: 4 !important;
-            top: 10px !important;
-            left: 10px !important;
-            padding: 3px 10px !important;
-            background: rgba(20,33,61,0.92) !important;
-            color: #ffffff !important;
-            font-size: 0.62rem !important;
-            font-weight: 800 !important;
-            border-radius: 6px !important;
-            letter-spacing: 0.05em !important;
+        .iw-card-btn:hover:not(:disabled) {
+            background: var(--iw-accent) !important;
+            color: #fff !important;
+        }
+        .iw-card-btn:disabled {
+            border-color: rgba(20,33,61,0.2) !important;
+            color: rgba(20,33,61,0.4) !important;
+            cursor: default !important;
         }
 
         /* ── SIDEBAR + FILTER ACCENTS ── */
