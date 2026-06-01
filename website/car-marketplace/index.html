@@ -6826,7 +6826,7 @@
             const kms = formatKms(car.kmsDriven);
             const fuel = car.fuelType ? titleCase(car.fuelType) : '';
             const city = getListingCity(listing) ? titleCase(getListingCity(listing).split(',')[0].trim()) : '';
-            const metaParts = [year, kms, fuel, city].filter(Boolean);
+            const metaParts = [year, kms, fuel].filter(Boolean);
             const metaLine = metaParts.join(' · ');
 
             return `
@@ -6834,7 +6834,7 @@
                     <div class="${cardClass} ${isSoldOut ? '' : 'js-view-details'}" ${listingIdAttr}>
                         <div class="iw-card-img-wrap">
                             <img src="${primaryPhoto}" alt="${title}" class="iw-card-img" width="400" height="240" loading="lazy" decoding="async" onerror="this.src='${FALLBACK_IMAGE}'">
-                            <span class="iw-seller-badge ${sellerClass}">${sellerType}</span>
+                            ${city ? `<span class="iw-location-badge"><i class="fas fa-map-marker-alt"></i> ${city}</span>` : `<span class="iw-seller-badge ${sellerClass}">${sellerType}</span>`}
                             ${isSoldOut ? '<span class="iw-sold-badge">SOLD</span>' : ''}
                         </div>
                         <div class="iw-card-body">
@@ -6842,10 +6842,10 @@
                             ${metaLine ? `<p class="iw-card-meta">${metaLine}</p>` : ''}
                             <div class="iw-card-footer">
                                 <span class="iw-card-price">${priceFormatted}</span>
-                                <button type="button" class="iw-card-btn ${isSoldOut ? '' : 'js-view-details'}" ${listingIdAttr} ${isSoldOut ? 'disabled' : ''}>
-                                    ${isSoldOut ? 'Sold' : 'View Listing'}
-                                </button>
                             </div>
+                            <button type="button" class="iw-card-btn iw-card-btn-full ${isSoldOut ? '' : 'js-view-details'}" ${listingIdAttr} ${isSoldOut ? 'disabled' : ''}>
+                                ${isSoldOut ? 'Sold' : 'View Listing'}
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -6865,7 +6865,7 @@
             const kms = formatKms(car.kmsDriven);
             const fuel = car.fuelType ? titleCase(car.fuelType) : '';
             const city = getListingCity(listing) ? titleCase(getListingCity(listing).split(',')[0].trim()) : '';
-            const metaParts = [year, kms, fuel, city].filter(Boolean);
+            const metaParts = [year, kms, fuel].filter(Boolean);
             const metaLine = metaParts.join(' · ');
 
             return `
@@ -6873,7 +6873,7 @@
                     <div class="iw-car-card${isSoldOut ? ' sold-out' : ''} ${isSoldOut ? '' : 'js-view-details'}" ${listingIdAttr}>
                         <div class="iw-card-img-wrap">
                             <img src="${primaryPhoto}" alt="${title}" class="iw-card-img" width="400" height="240" loading="lazy" decoding="async" onerror="this.src='${FALLBACK_IMAGE}'">
-                            <span class="iw-seller-badge ${sellerClass}">${sellerType}</span>
+                            ${city ? `<span class="iw-location-badge"><i class="fas fa-map-marker-alt"></i> ${city}</span>` : `<span class="iw-seller-badge ${sellerClass}">${sellerType}</span>`}
                             ${isSoldOut ? '<span class="iw-sold-badge">SOLD</span>' : ''}
                         </div>
                         <div class="iw-card-body">
@@ -6881,10 +6881,10 @@
                             ${metaLine ? `<p class="iw-card-meta">${metaLine}</p>` : ''}
                             <div class="iw-card-footer">
                                 <span class="iw-card-price">${priceFormatted}</span>
-                                <button type="button" class="iw-card-btn ${isSoldOut ? '' : 'js-view-details'}" ${listingIdAttr} ${isSoldOut ? 'disabled' : ''}>
-                                    ${isSoldOut ? 'Sold' : 'View Listing'}
-                                </button>
                             </div>
+                            <button type="button" class="iw-card-btn iw-card-btn-full ${isSoldOut ? '' : 'js-view-details'}" ${listingIdAttr} ${isSoldOut ? 'disabled' : ''}>
+                                ${isSoldOut ? 'Sold' : 'View Listing'}
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -8648,6 +8648,31 @@
             border-color: rgba(20,33,61,0.2) !important;
             color: rgba(20,33,61,0.4) !important;
             cursor: default !important;
+        }
+        .iw-card-btn-full {
+            display: block !important;
+            width: 100% !important;
+            margin-top: 8px !important;
+            text-align: center !important;
+            padding: 7px 12px !important;
+        }
+        .iw-location-badge {
+            position: absolute !important;
+            top: 8px !important;
+            right: 8px !important;
+            padding: 2px 8px !important;
+            border-radius: 2px !important;
+            background: rgba(255,255,255,0.93) !important;
+            color: #14213d !important;
+            border: 1px solid rgba(20,33,61,0.12) !important;
+            font-size: 0.58rem !important;
+            font-weight: 700 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.04em !important;
+        }
+        .iw-location-badge i {
+            color: var(--iw-accent) !important;
+            margin-right: 2px !important;
         }
 
         /* ── SIDEBAR + FILTER ACCENTS ── */
