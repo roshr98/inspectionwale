@@ -506,6 +506,910 @@
             }
         }
                 </style>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         INSPECTIONWALE HOMEPAGE — CARWALE-INSPIRED REDESIGN
+         Overrides all previous inline styles with a premium,
+         clean white/blue theme. Backend functionality unchanged.
+    ═══════════════════════════════════════════════════════════ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* ── 1. DESIGN TOKENS ──────────────────────────────────── */
+        :root {
+            --iw-blue:       #002f6c;   /* CarWale deep navy */
+            --iw-blue-mid:   #1a4da6;
+            --iw-blue-light: #e8f0fe;
+            --iw-orange:     #e8520a;   /* CarWale accent orange */
+            --iw-orange-lt:  #fff3ee;
+            --iw-green:      #1a9e88;
+            --iw-bg:         #f7f4ee;
+            --iw-surface:    #ffffff;
+            --iw-border:     #dde3f0;
+            --iw-text:       #1a1f36;
+            --iw-text-soft:  #6b7280;
+            --iw-shadow-sm:  0 2px 8px rgba(0,47,108,.08);
+            --iw-shadow-md:  0 8px 28px rgba(0,47,108,.12);
+            --iw-shadow-lg:  0 20px 56px rgba(0,47,108,.15);
+            --iw-radius:     14px;
+            --iw-radius-lg:  22px;
+            --iw-radius-xl:  32px;
+        }
+
+        /* ── 2. GLOBAL RESET ───────────────────────────────────── */
+        html, body {
+            font-family: 'Inter', 'Montserrat', Arial, sans-serif !important;
+        }
+        /* Only set font on non-icon elements so FontAwesome ::before/::after still work */
+        *:not(i):not(.fas):not(.far):not(.fab):not(.fal):not(.fad):not([class^="fa-"]):not([class*=" fa-"]) {
+            font-family: inherit;
+        }
+        body.home-page {
+            background: #f7f4ee !important;
+            color: var(--iw-text) !important;
+            margin: 0;
+            padding-top: 0 !important;
+        }
+
+        /* ── 3. STICKY NAVBAR ──────────────────────────────────── */
+        .top-banner {
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 1050 !important;
+            background: #f5efe6 !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            box-shadow: 0 1px 0 rgba(20,33,61,0.10) !important;
+            padding: 0 !important;
+            transition: none !important;
+        }
+        .top-banner.is-scrolled {
+            background: #f5efe6 !important;
+            backdrop-filter: none !important;
+            box-shadow: 0 2px 10px rgba(20,33,61,0.10) !important;
+        }
+        .banner-container {
+            width: min(1360px, calc(100% - 32px)) !important;
+            margin: 0 auto !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 20px !important;
+            padding: 12px 0 !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+        }
+        .banner-logo img {
+            height: 42px !important;
+            width: auto !important;
+            filter: none !important;
+        }
+        .home-nav {
+            display: flex !important;
+            align-items: center !important;
+            gap: 4px !important;
+        }
+        .home-nav a {
+            color: #b95730 !important;
+            font-size: 0.875rem !important;
+            font-weight: 600 !important;
+            text-decoration: none !important;
+            padding: 7px 14px !important;
+            border-radius: 8px !important;
+            transition: background .18s, color .18s !important;
+        }
+        .home-nav a:hover {
+            color: #8f3e18 !important;
+            background: rgba(185,87,48,0.08) !important;
+            opacity: 1 !important;
+        }
+        .banner-icons {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+        }
+        .banner-icon,
+        .banner-contact {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 6px !important;
+            min-height: 36px !important;
+            padding: 0 14px !important;
+            border-radius: 8px !important;
+            border: 1px solid rgba(20,33,61,0.15) !important;
+            background: rgba(20,33,61,0.05) !important;
+            color: #14213d !important;
+            text-decoration: none !important;
+            font-size: 0.875rem !important;
+            font-weight: 600 !important;
+            box-shadow: none !important;
+            transition: background .18s !important;
+        }
+        .banner-icon:hover,
+        .banner-contact:hover {
+            background: rgba(185,87,48,0.08) !important;
+            color: #b95730 !important;
+            border-color: rgba(185,87,48,0.25) !important;
+            transform: none !important;
+        }
+        .banner-icon i, .banner-contact i { font-size: 0.9rem !important; color: #b95730 !important; }
+
+        /* ── 4. HERO SECTION ───────────────────────────────────── */
+        .home-shell { padding: 0 !important; }
+        .home-hero  { padding: 0 !important; margin: 0 !important; }
+
+        .home-hero-card {
+            border-radius: 0 !important;
+            padding: 72px 0 50px !important;
+            background:
+                linear-gradient(105deg, rgba(6,28,46,0.97) 0%, rgba(8,40,60,0.92) 50%, rgba(10,55,70,0.82) 100%),
+                url('Images/final_banner.jpg') center right/cover no-repeat !important;
+            box-shadow: none !important;
+        }
+        .home-hero-card::before {
+            display: none !important;
+        }
+        .home-hero-card > * { position: relative; z-index: 1; }
+
+        /* Inner container for hero */
+        .home-hero-card > .row,
+        .home-hero-card > .container > .row {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            width: 100%;
+            display: grid !important;
+            grid-template-columns: 1fr 480px !important;
+            gap: 48px !important;
+            align-items: center !important;
+        }
+        /* Ensure cols still work */
+        .home-hero-card .col-lg-6 {
+            max-width: 100% !important;
+            width: 100% !important;
+            flex: none !important;
+        }
+
+        .home-eyebrow {
+            display: inline-block !important;
+            padding: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            border: none !important;
+            color: rgba(255,255,255,0.70) !important;
+            font-size: 0.78rem !important;
+            font-weight: 600 !important;
+            letter-spacing: .14em !important;
+            text-transform: uppercase !important;
+        }
+        .home-hero-copy h1 {
+            margin: 16px 0 18px !important;
+            color: #fff !important;
+            font-size: clamp(2.2rem, 3.8vw, 3.6rem) !important;
+            line-height: 1.06 !important;
+            font-weight: 800 !important;
+            letter-spacing: -.02em !important;
+            max-width: 100% !important;
+        }
+        .home-hero-copy p {
+            color: rgba(255,255,255,.78) !important;
+            font-size: 1.05rem !important;
+            line-height: 1.8 !important;
+            margin-bottom: 28px !important;
+            max-width: 520px !important;
+        }
+        .home-hero-actions {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 12px !important;
+            margin-bottom: 36px !important;
+        }
+        .home-btn-primary {
+            border: none !important;
+            background: linear-gradient(135deg, var(--iw-orange), #ff7043) !important;
+            color: #fff !important;
+            border-radius: 10px !important;
+            min-height: 50px !important;
+            padding: 0 26px !important;
+            font-size: .95rem !important;
+            font-weight: 700 !important;
+            gap: 8px !important;
+            box-shadow: 0 12px 28px rgba(232,82,10,.32) !important;
+            text-decoration: none !important;
+            display: inline-flex !important;
+            align-items: center !important;
+        }
+        .home-btn-primary:hover {
+            color: #fff !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 16px 32px rgba(232,82,10,.42) !important;
+        }
+        .home-btn-secondary {
+            border: 1.5px solid rgba(255,255,255,.32) !important;
+            background: rgba(255,255,255,.1) !important;
+            color: #fff !important;
+            border-radius: 10px !important;
+            min-height: 50px !important;
+            padding: 0 22px !important;
+            font-size: .95rem !important;
+            font-weight: 600 !important;
+            gap: 8px !important;
+            text-decoration: none !important;
+            display: inline-flex !important;
+            align-items: center !important;
+        }
+        .home-btn-secondary:hover {
+            background: rgba(255,255,255,.18) !important;
+            color: #fff !important;
+            border-color: rgba(255,255,255,.48) !important;
+            transform: translateY(-2px) !important;
+        }
+
+        /* Metrics strip */
+        .home-hero-metrics {
+            display: grid !important;
+            grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+            gap: 0 !important;
+            max-width: 540px !important;
+            border-top: 1px solid rgba(255,255,255,.18) !important;
+            padding-top: 28px !important;
+        }
+        .home-metric {
+            padding: 0 20px 0 0 !important;
+            border: none !important;
+            border-top: none !important;
+            background: transparent !important;
+            backdrop-filter: none !important;
+        }
+        .home-metric + .home-metric {
+            padding-left: 20px !important;
+            border-left: 1px solid rgba(255,255,255,.15) !important;
+        }
+        .home-metric strong {
+            display: block !important;
+            color: #fff !important;
+            font-size: 1.7rem !important;
+            font-weight: 800 !important;
+            letter-spacing: -.02em !important;
+        }
+        .home-metric span {
+            display: block !important;
+            margin-top: 3px !important;
+            color: rgba(255,255,255,.65) !important;
+            font-size: 0.82rem !important;
+            line-height: 1.45 !important;
+        }
+
+        /* Hero contact card (right panel) */
+        .hero-contact-card {
+            max-width: 100% !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 32px 28px !important;
+            border-radius: var(--iw-radius-lg) !important;
+            background: #fff !important;
+            border: none !important;
+            box-shadow: 0 24px 60px rgba(0,0,0,.18) !important;
+        }
+        .hero-contact-card h5,
+        .hero-mobile-form-card h5 {
+            margin-bottom: 18px !important;
+            color: var(--iw-blue) !important;
+            font-size: 1.25rem !important;
+            font-weight: 800 !important;
+        }
+        .hero-contact-card .form-label {
+            color: var(--iw-text) !important;
+            font-size: 0.8rem !important;
+            font-weight: 600 !important;
+            letter-spacing: .02em !important;
+            text-transform: none !important;
+            margin-bottom: 6px !important;
+        }
+        .hero-contact-card .form-control,
+        .hero-mobile-form-card input,
+        .hero-mobile-form-card textarea {
+            min-height: 48px !important;
+            border-radius: 10px !important;
+            border: 1.5px solid var(--iw-border) !important;
+            background: #fafbff !important;
+            color: var(--iw-text) !important;
+            box-shadow: none !important;
+            padding: 12px 14px !important;
+            font-size: .9rem !important;
+            transition: border-color .2s !important;
+        }
+        .hero-contact-card .form-control:focus,
+        .hero-mobile-form-card input:focus,
+        .hero-mobile-form-card textarea:focus {
+            border-color: var(--iw-blue-mid) !important;
+            box-shadow: 0 0 0 3px rgba(26,77,166,.1) !important;
+            background: #fff !important;
+        }
+        .hero-contact-card textarea,
+        .hero-mobile-form-card textarea {
+            min-height: 90px !important;
+        }
+        .hero-submit-btn,
+        .hero-contact-card .hero-submit-btn {
+            min-height: 50px !important;
+            border: none !important;
+            border-radius: 10px !important;
+            background: linear-gradient(135deg, var(--iw-blue), var(--iw-blue-mid)) !important;
+            color: #fff !important;
+            font-weight: 700 !important;
+            font-size: .95rem !important;
+            box-shadow: 0 12px 28px rgba(0,47,108,.22) !important;
+            transition: transform .2s, box-shadow .2s !important;
+        }
+        .hero-submit-btn:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 16px 32px rgba(0,47,108,.3) !important;
+        }
+        .hero-form-toast {
+            border-radius: 10px !important;
+            background: var(--iw-green) !important;
+        }
+        .hero-form-toast.error { background: #d81324 !important; }
+
+        /* Mobile form panel */
+        .hero-mobile-form-card {
+            border-radius: var(--iw-radius-lg) !important;
+            background: #fff !important;
+            border: none !important;
+            box-shadow: 0 16px 40px rgba(0,0,0,.14) !important;
+            padding: 26px 22px !important;
+        }
+        .hero-mobile-form-card button {
+            min-height: 50px !important;
+            border: none !important;
+            border-radius: 10px !important;
+            background: linear-gradient(135deg, var(--iw-blue), var(--iw-blue-mid)) !important;
+            color: #fff !important;
+            font-weight: 700 !important;
+        }
+
+        /* ── 5. TRUST STRIP (4 icons) ──────────────────────────── */
+        .home-band,
+        .home-band::before {
+            background: transparent !important;
+        }
+        .home-band-warm,
+        .home-band-light {
+            --home-band-bg: transparent !important;
+        }
+        .home-strip {
+            width: 100% !important;
+            max-width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            background: var(--iw-blue) !important;
+        }
+        .home-strip .home-strip-grid {
+            max-width: 1280px !important;
+            margin: 0 auto !important;
+            padding: 20px 24px !important;
+            display: grid !important;
+            grid-template-columns: repeat(4, minmax(0,1fr)) !important;
+            gap: 0 !important;
+        }
+        .home-strip-card {
+            display: flex !important;
+            align-items: center !important;
+            gap: 14px !important;
+            padding: 14px 20px !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            border-right: 1px solid rgba(255,255,255,.12) !important;
+        }
+        .home-strip-card:last-child { border-right: none !important; }
+        .home-strip-icon {
+            flex: 0 0 40px !important;
+            width: 40px !important;
+            height: 40px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            border-radius: 10px !important;
+            background: rgba(255,255,255,.14) !important;
+            color: #ffb380 !important;
+            font-size: 1.1rem !important;
+        }
+        .home-strip-copy strong {
+            display: block !important;
+            color: #fff !important;
+            font-size: .92rem !important;
+            font-weight: 700 !important;
+        }
+        .home-strip-copy span {
+            display: block !important;
+            color: rgba(255,255,255,.65) !important;
+            font-size: .8rem !important;
+            line-height: 1.45 !important;
+            margin-top: 2px !important;
+        }
+
+        /* ── 6. SECTION WRAPPERS ───────────────────────────────── */
+        .home-section {
+            width: min(1280px, calc(100% - 40px)) !important;
+            padding: 18px 0 !important;
+            margin: 0 auto !important;
+        }
+        .home-section-header {
+            margin-bottom: 16px !important;
+        }
+        .home-section-header span {
+            color: var(--iw-orange) !important;
+            font-size: .78rem !important;
+            font-weight: 700 !important;
+            letter-spacing: .1em !important;
+            text-transform: uppercase !important;
+            display: inline-block !important;
+            margin-bottom: 10px !important;
+        }
+        .home-section-header h2 {
+            color: var(--iw-blue) !important;
+            font-size: clamp(1.4rem, 2.2vw, 1.9rem) !important;
+            font-weight: 800 !important;
+            letter-spacing: -.02em !important;
+            line-height: 1.2 !important;
+            margin: 0 0 8px !important;
+        }
+        .home-section-header p {
+            color: var(--iw-text-soft) !important;
+            font-size: .97rem !important;
+            line-height: 1.7 !important;
+            max-width: 520px !important;
+            margin: 0 !important;
+        }
+
+        /* ── 7. CTA BAND ───────────────────────────────────────── */
+        .home-cta-band {
+            background: linear-gradient(135deg, #fff8f3 0%, #fef3ea 100%) !important;
+            border-radius: 14px !important;
+            padding: 20px 28px !important;
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 24px !important;
+            border: 1px solid rgba(232,82,10,0.18) !important;
+            box-shadow: 0 2px 16px rgba(232,82,10,0.07) !important;
+        }
+        .home-cta-band h3 {
+            color: #0b2154 !important;
+            font-size: 1.15rem !important;
+            font-weight: 800 !important;
+            margin: 0 !important;
+            white-space: nowrap !important;
+        }
+        .home-cta-band p {
+            color: rgba(70,84,111,0.84) !important;
+            line-height: 1.65 !important;
+            margin: 0 !important;
+        }
+        .home-cta-band .home-hero-actions { margin-bottom: 0 !important; flex-shrink: 0 !important; }
+        .home-cta-band .home-btn-primary {
+            background: #e8520a !important;
+            border-color: #e8520a !important;
+            color: #fff !important;
+        }
+        .home-cta-band .home-btn-secondary {
+            background: transparent !important;
+            border-color: rgba(11,33,84,0.25) !important;
+            color: #0b2154 !important;
+        }
+
+        /* ── 8. HOW IT WORKS ───────────────────────────────────── */
+        .home-steps-grid {
+            grid-template-columns: repeat(4, minmax(0,1fr)) !important;
+            gap: 24px !important;
+            display: grid !important;
+        }
+        .home-step {
+            background: #ffffff !important;
+            border: 1px solid rgba(20,33,61,0.08) !important;
+            border-radius: 14px !important;
+            padding: 22px 20px !important;
+            box-shadow: 0 2px 12px rgba(20,33,61,0.06) !important;
+            transition: box-shadow .2s, transform .2s !important;
+        }
+        .home-step:hover {
+            box-shadow: 0 6px 24px rgba(20,33,61,0.1) !important;
+            transform: translateY(-3px) !important;
+        }
+        .home-step-number {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 36px !important;
+            height: 36px !important;
+            border-radius: 10px !important;
+            background: rgba(232,82,10,0.1) !important;
+            color: #e8520a !important;
+            font-size: 0.9rem !important;
+            font-weight: 800 !important;
+            margin-bottom: 14px !important;
+        }
+        .home-step h3 {
+            color: #0b2154 !important;
+            font-size: 0.98rem !important;
+            font-weight: 700 !important;
+            margin: 0 0 8px !important;
+        }
+        .home-step p {
+            color: rgba(70,84,111,0.85) !important;
+            font-size: .84rem !important;
+            line-height: 1.6 !important;
+            margin: 0 !important;
+        }
+
+        /* ── 9. SERVICES GRID ──────────────────────────────────── */
+        .home-services-grid {
+            display: grid !important;
+            grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+            gap: 16px !important;
+        }
+        .home-service-card {
+            background: #ffffff !important;
+            border: 1px solid rgba(20,33,61,0.08) !important;
+            border-radius: 14px !important;
+            padding: 24px 22px !important;
+            box-shadow: 0 2px 12px rgba(20,33,61,0.06) !important;
+            transition: box-shadow .2s, transform .2s !important;
+            border-top: 3px solid #e8520a !important;
+        }
+        .home-service-card:hover {
+            box-shadow: 0 6px 24px rgba(20,33,61,0.1) !important;
+            transform: translateY(-3px) !important;
+        }
+        .home-service-card > i {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 44px !important;
+            height: 44px !important;
+            border-radius: 12px !important;
+            background: rgba(232,82,10,0.1) !important;
+            color: #e8520a !important;
+            font-size: 1.1rem !important;
+            margin-bottom: 14px !important;
+        }
+        .home-service-card h3 {
+            color: #0b2154 !important;
+            font-size: 1rem !important;
+            font-weight: 700 !important;
+            margin: 0 0 8px !important;
+        }
+        .home-service-card > p {
+            color: var(--iw-text-soft) !important;
+            font-size: .875rem !important;
+            line-height: 1.6 !important;
+            margin: 0 0 12px !important;
+        }
+        .home-service-card ul {
+            list-style: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+        .home-service-card ul li {
+            padding: 5px 0 5px 18px !important;
+            position: relative !important;
+            color: var(--iw-text-soft) !important;
+            font-size: .84rem !important;
+            line-height: 1.5 !important;
+            border-bottom: 1px solid rgba(20,33,61,0.06) !important;
+        }
+        .home-service-card ul li:last-child { border-bottom: none !important; }
+        .home-service-card ul li::before {
+            content: '' !important;
+            position: absolute !important;
+            left: 0 !important;
+            top: 12px !important;
+            width: 5px !important;
+            height: 5px !important;
+            border-radius: 50% !important;
+            background: #e8520a !important;
+        }
+
+        /* ── 10. STORY CARDS ───────────────────────────────────── */
+        .home-story-grid {
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+            gap: 16px !important;
+        }
+        .home-story-card {
+            background: #ffffff !important;
+            border: 1px solid rgba(20,33,61,0.08) !important;
+            border-radius: 14px !important;
+            padding: 24px 22px !important;
+            box-shadow: 0 2px 12px rgba(20,33,61,0.06) !important;
+        }
+        .home-story-card > i {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 40px !important;
+            height: 40px !important;
+            border-radius: 10px !important;
+            background: rgba(232,82,10,0.1) !important;
+            color: #e8520a !important;
+            font-size: 1rem !important;
+            margin-bottom: 12px !important;
+        }
+        .home-story-card > h3 {
+            color: #0b2154 !important;
+            font-size: 1.05rem !important;
+            font-weight: 700 !important;
+            margin: 0 0 6px !important;
+        }
+        .home-story-card > p {
+            color: var(--iw-text-soft) !important;
+            font-size: .875rem !important;
+            line-height: 1.6 !important;
+            margin: 0 0 16px !important;
+        }
+        .home-story-icon-grid {
+            display: grid !important;
+            grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+            gap: 10px !important;
+        }
+        .home-story-icon-item {
+            background: #f7f4ee !important;
+            border: 1px solid rgba(20,33,61,0.07) !important;
+            border-radius: 10px !important;
+            padding: 14px 12px !important;
+        }
+        .home-story-icon-item i {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 32px !important;
+            height: 32px !important;
+            border-radius: 8px !important;
+            background: rgba(232,82,10,0.1) !important;
+            color: #e8520a !important;
+            font-size: .85rem !important;
+            margin-bottom: 8px !important;
+        }
+        .home-story-icon-item strong {
+            display: block !important;
+            color: var(--iw-text) !important;
+            font-size: .88rem !important;
+            font-weight: 700 !important;
+            margin-bottom: 5px !important;
+            min-height: auto !important;
+        }
+        .home-story-icon-item span {
+            display: block !important;
+            color: var(--iw-text-soft) !important;
+            font-size: .8rem !important;
+            line-height: 1.5 !important;
+        }
+        .home-story-card ul { margin-top: 0 !important; }
+        .home-story-card ul li {
+            padding: 9px 0 9px 16px !important;
+            border-bottom: 1px solid var(--iw-border) !important;
+            color: var(--iw-text-soft) !important;
+            font-size: .9rem !important;
+        }
+        .home-story-card ul li::before {
+            background: var(--iw-blue) !important;
+            top: 18px !important;
+        }
+        .home-story-card ul li:last-child { border-bottom: none !important; }
+
+        /* ── 11. FEATURED CARS SECTION (homepage slider) ────────── */
+        .iw-featured-section {
+            background: #f7f4ee !important;
+            padding: 8px 0 16px !important;
+        }
+        .iw-featured-section .container { max-width: 1320px !important; }
+        #marketplace { background: #f7f4ee !important; }
+        #marketplace .container { max-width: 1320px !important; }
+
+        .price-filter-tab {
+            font-family: 'Inter', sans-serif !important;
+            color: var(--iw-text-soft) !important;
+            border-bottom: 3px solid transparent !important;
+        }
+        .price-filter-tab:hover {
+            color: var(--iw-blue) !important;
+            background: rgba(0,47,108,.05) !important;
+        }
+        .price-filter-tab.active {
+            color: var(--iw-blue) !important;
+            border-bottom-color: var(--iw-orange) !important;
+            font-weight: 700 !important;
+        }
+        .price-filter-tabs { border-bottom: 2px solid var(--iw-border) !important; }
+
+        .popular-car-card {
+            border-radius: 8px !important;
+            border: 1px solid rgba(20,33,61,0.10) !important;
+            background: #e8edf5 !important;
+            box-shadow: 0 2px 12px rgba(17,27,49,0.10) !important;
+        }
+        .popular-car-card:hover {
+            box-shadow: 0 8px 24px rgba(17,27,49,0.18) !important;
+            transform: translateY(-3px) !important;
+        }
+        .car-image-wrapper { border-radius: 8px !important; }
+        .car-name {
+            color: #fff !important;
+            font-weight: 700 !important;
+            text-shadow: 0 2px 8px rgba(0,0,0,.5) !important;
+        }
+        .car-price {
+            color: #ffe082 !important;
+            font-weight: 700 !important;
+        }
+
+        .sell-car-btn {
+            border: 2px solid var(--iw-blue) !important;
+            color: var(--iw-blue) !important;
+            border-radius: 10px !important;
+        }
+        .sell-car-btn:hover {
+            background: var(--iw-blue) !important;
+            color: #fff !important;
+        }
+        .view-more-btn {
+            background: linear-gradient(135deg, var(--iw-blue), var(--iw-blue-mid)) !important;
+            color: #fff !important;
+            border-radius: 10px !important;
+            padding: 13px 32px !important;
+            font-weight: 700 !important;
+        }
+        .view-more-btn:hover {
+            color: #fff !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 12px 28px rgba(0,47,108,.25) !important;
+        }
+
+        /* Section headers inside marketplace strip */
+        #marketplace h2 {
+            color: var(--iw-blue) !important;
+            font-weight: 800 !important;
+        }
+
+        /* Partner cards */
+        .partner-lead-card {
+            border-radius: var(--iw-radius) !important;
+            border: 1.5px solid var(--iw-border) !important;
+            background: #fff !important;
+            box-shadow: var(--iw-shadow-sm) !important;
+            transition: box-shadow .2s, transform .2s !important;
+        }
+        .partner-lead-card:hover {
+            box-shadow: var(--iw-shadow-md) !important;
+            transform: translateY(-3px) !important;
+        }
+
+        /* ── 12. FOOTER ────────────────────────────────────────── */
+        footer,
+        .footer,
+        .site-footer {
+            background: var(--iw-blue) !important;
+            color: rgba(255,255,255,.85) !important;
+        }
+        footer a, .footer a, .site-footer a {
+            color: rgba(255,255,255,.75) !important;
+            transition: color .18s !important;
+        }
+        footer a:hover, .footer a:hover, .site-footer a:hover {
+            color: #fff !important;
+        }
+
+        /* ── 13. RESPONSIVE ────────────────────────────────────── */
+        @media (max-width: 1199.98px) {
+            .home-hero-card > .row,
+            .home-hero-card > .container > .row {
+                grid-template-columns: 1fr 420px !important;
+                gap: 36px !important;
+            }
+        }
+        @media (max-width: 991.98px) {
+            .home-hero-card > .row,
+            .home-hero-card > .container > .row {
+                grid-template-columns: 1fr !important;
+                gap: 0 !important;
+            }
+            .home-hero-card {
+                padding: 52px 0 50px !important;
+            }
+            .home-strip .home-strip-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 1px !important;
+            }
+            .home-strip-card {
+                border-right: none !important;
+                border-bottom: 1px solid rgba(255,255,255,.12) !important;
+            }
+            .home-strip-card:nth-child(odd) { border-right: 1px solid rgba(255,255,255,.12) !important; }
+            .home-steps-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+            .home-services-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+            .home-story-icon-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+            .home-cta-band {
+                flex-direction: row !important;
+                align-items: center !important;
+                padding: 20px 24px !important;
+            }
+            .banner-container {
+                width: min(100% - 24px, 1360px) !important;
+            }
+            .home-nav { display: none !important; }
+        }
+        @media (max-width: 767.98px) {
+            .home-hero-card {
+                padding: 40px 0 44px !important;
+            }
+            .home-hero-copy h1 { font-size: 2.1rem !important; }
+            .home-hero-metrics {
+                grid-template-columns: 1fr !important;
+                border-top: 1px solid rgba(255,255,255,.18) !important;
+                gap: 12px !important;
+            }
+            .home-metric + .home-metric {
+                border-left: none !important;
+                padding-left: 0 !important;
+                border-top: 1px solid rgba(255,255,255,.15) !important;
+                padding-top: 12px !important;
+            }
+            .home-strip .home-strip-grid {
+                grid-template-columns: 1fr !important;
+            }
+            .home-strip-card { border-right: none !important; }
+            .home-steps-grid,
+            .home-services-grid,
+            .home-story-grid {
+                grid-template-columns: 1fr !important;
+            }
+            .home-story-icon-grid {
+                grid-template-columns: 1fr !important;
+            }
+            .home-section { padding: 18px 0 !important; }
+            .banner-icon span,
+            .banner-contact span { display: none !important; }
+            .banner-icon, .banner-contact {
+                padding: 0 !important;
+                width: 38px !important;
+                min-width: 38px !important;
+                min-height: 38px !important;
+                font-size: 0 !important;
+            }
+            .banner-icon i, .banner-contact i { font-size: .95rem !important; }
+        }
+        @media (max-width: 575.98px) {
+            .home-hero-card {
+                padding: 32px 0 90px !important;
+            }
+            .hero-contact-card,
+            .hero-mobile-form-card {
+                border-radius: var(--iw-radius) !important;
+            }
+            .home-cta-band {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 12px !important;
+                padding: 14px 0 !important;
+            }
+            .home-cta-band h3 { font-size: 1.1rem !important; white-space: normal !important; }
+        }
+    </style>
 </head>
 
 <body class="home-page" data-page="home">
@@ -664,14 +1568,409 @@
         }
 
         .home-hero-card {
-            position: relative;
-            overflow: hidden;
-            border-radius: 0 0 56px 56px;
-            padding: 48px 52px;
+            position: relative !important;
+            overflow: visible !important;
+            border-radius: 0 !important;
+            padding: 72px 0 50px !important;
             background:
-                linear-gradient(135deg, rgba(20, 33, 61, 0.95), rgba(17, 27, 49, 0.86)),
-                url('Images/final_banner.jpg') center/cover no-repeat;
-            box-shadow: none;
+                linear-gradient(105deg, rgba(6,28,46,0.97) 0%, rgba(8,40,60,0.92) 50%, rgba(10,55,70,0.82) 100%),
+                url('Images/final_banner.jpg') center right/cover no-repeat !important;
+            box-shadow: none !important;
+        }
+        .home-hero-slim-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+
+        /* ── INSPECTION CHECKPOINTS FLOATING CARD ─────────────── */
+        .iw-checks-float-wrap {
+            position: relative;
+            z-index: 10;
+            margin-top: -48px;
+            padding: 0;
+            background: transparent;
+        }
+        .iw-checks-card {
+            width: min(1280px, calc(100% - 40px));
+            margin: 0 auto;
+            background: rgba(255,255,255,0.97);
+            border-radius: 14px;
+            box-shadow: 0 8px 48px rgba(20,33,61,0.18), 0 1px 4px rgba(20,33,61,0.06);
+            padding: 12px 24px 10px;
+            border: 1px solid rgba(20,33,61,0.06);
+            backdrop-filter: blur(8px);
+        }
+        .iw-checks-header-row {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+            row-gap: 2px;
+        }
+        .iw-checks-label {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.58rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #e8520a;
+            white-space: nowrap;
+            margin: 0;
+        }
+        .iw-checks-sep {
+            display: inline-block;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: rgba(232,82,10,0.4);
+            margin: 0 8px;
+            flex-shrink: 0;
+        }
+        .iw-checks-divider-line {
+            flex: 1;
+            height: 1px;
+            background: rgba(20,33,61,0.07);
+            margin-left: 10px;
+            min-width: 16px;
+        }
+        /* Checkpoints — 5-col per row, inline icon+label */
+        .iw-checks-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0;
+            border: 1px solid rgba(20,33,61,0.07);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .iw-check-item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 7px 6px;
+            border-right: 1px solid rgba(20,33,61,0.07);
+            border-bottom: 1px solid rgba(20,33,61,0.07);
+            border-radius: 0;
+            background: transparent;
+            cursor: default;
+            transition: background 0.15s;
+        }
+        .iw-check-item:hover { background: rgba(232,82,10,0.03); }
+        .iw-check-item:nth-child(5n) { border-right: none; }
+        .iw-check-item:nth-last-child(-n+5) { border-bottom: none; }
+        .iw-check-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            min-width: 20px;
+            border-radius: 5px;
+            background: rgba(232,82,10,0.08);
+            flex-shrink: 0;
+        }
+        .iw-check-icon i {
+            font-size: 0.62rem;
+            line-height: 1;
+            color: #e8520a;
+        }
+        .iw-check-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #1a2a4a;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+        /* trust row removed — now inline in header */
+
+        /* ── SERVICES WE PROVIDE (below featured cars) ─────────── */
+        .iw-services-section {
+            padding: 12px 0 16px;
+            background: #f7f4ee !important;
+        }
+        .iw-services-section-inner {
+            width: min(1280px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 0;
+        }
+        .iw-services-section-label {
+            display: block;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #e8520a;
+            margin-bottom: 4px;
+        }
+        .iw-services-section-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #14213d;
+            margin: 0 0 10px;
+            letter-spacing: -0.01em;
+        }
+        .iw-services-mini-row {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            background: #fff;
+            border-radius: 14px;
+            border: 1px solid rgba(20,33,61,0.09);
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(20,33,61,0.07);
+        }
+        .iw-svc-item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            background: transparent;
+            border: none;
+            border-right: 1px solid rgba(20,33,61,0.08);
+            color: #14213d;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.15s;
+            flex: 1;
+        }
+        .iw-svc-item:last-child {
+            border-right: none;
+        }
+        .iw-svc-item:hover {
+            background: rgba(232,82,10,0.04);
+            color: #14213d;
+        }
+        .iw-svc-item-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+            border-radius: 10px;
+            background: rgba(232,82,10,0.1);
+            flex-shrink: 0;
+        }
+        .iw-svc-item-icon i {
+            font-size: 1rem;
+            line-height: 1;
+            color: #e8520a;
+        }
+        .iw-svc-item-name {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #14213d;
+            line-height: 1.2;
+        }
+        /* hide desc */
+        .iw-svc-item-desc { display: none; }
+
+        /* Responsive */
+        @media (max-width: 991.98px) {
+            .iw-checks-float-wrap { margin-top: -44px; }
+            .iw-checks-card { width: calc(100% - 40px); padding: 10px 16px 9px; }
+            .iw-check-label { white-space: normal; }
+            .iw-services-section-inner { width: calc(100% - 40px); }
+        }
+        @media (max-width: 767.98px) {
+            .iw-checks-float-wrap { margin-top: -38px; }
+            .iw-checks-card { width: calc(100% - 32px); padding: 9px 12px 8px; border-radius: 12px; }
+            .iw-check-item { padding: 6px 4px; gap: 4px; }
+            .iw-check-icon { width: 18px; height: 18px; min-width: 18px; }
+            .iw-check-icon i { font-size: 0.55rem; }
+            .iw-check-label { font-size: 0.58rem; white-space: normal; }
+            .iw-services-section-inner { width: calc(100% - 32px); }
+            .iw-services-mini-row {
+                flex-direction: column;
+                border-radius: 14px;
+            }
+            .iw-svc-item {
+                border-right: none;
+                border-bottom: 1px solid rgba(20,33,61,0.08);
+                width: 100%;
+            }
+            .iw-svc-item:last-child { border-bottom: none; }
+            .iw-services-section-inner { padding: 0 3%; }
+        }
+        @media (max-width: 575.98px) {
+            .iw-checks-grid { grid-template-columns: repeat(2, 1fr); }
+            .iw-check-item:nth-child(5n) { border-right: 1px solid rgba(20,33,61,0.07); }
+            .iw-check-item:nth-child(2n) { border-right: none; }
+            .iw-check-item:nth-last-child(-n+5) { border-bottom: 1px solid rgba(20,33,61,0.07); }
+            .iw-check-item:nth-last-child(-n+2) { border-bottom: none; }
+            .home-hero-card { padding-bottom: 40px !important; }
+            .iw-checks-float-wrap { margin-top: -40px; }
+            .iw-checks-card { width: calc(100% - 24px); }
+        }
+
+        /* ── COMPACT INFO BLOCK (How It Works + 3-col cards) ───── */
+        .iw-info-block {
+            padding-top: 20px !important;
+            padding-bottom: 24px !important;
+        }
+        .iw-block-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.13em;
+            text-transform: uppercase;
+            color: #e8520a;
+            margin-bottom: 12px;
+        }
+
+        /* Horizontal stepper */
+        .iw-stepper-row {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            background: #ffffff;
+            border: 1px solid rgba(20,33,61,0.08);
+            border-radius: 14px;
+            padding: 14px 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 10px rgba(20,33,61,0.05);
+        }
+        .iw-stepper-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+        .iw-stepper-num {
+            width: 30px;
+            height: 30px;
+            min-width: 30px;
+            border-radius: 8px;
+            background: rgba(232,82,10,0.1);
+            color: #e8520a;
+            font-size: 0.72rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .iw-stepper-text strong {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #0b2154;
+            line-height: 1.2;
+        }
+        .iw-stepper-text span {
+            display: block;
+            font-size: 0.68rem;
+            color: rgba(70,84,111,0.8);
+            line-height: 1.3;
+        }
+        .iw-stepper-arrow {
+            color: rgba(20,33,61,0.2);
+            font-size: 0.7rem;
+            padding: 0 10px;
+            flex-shrink: 0;
+        }
+
+        /* 3-col compact cards */
+        .iw-compact-cards-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+        .iw-compact-card {
+            background: #ffffff;
+            border: 1px solid rgba(20,33,61,0.08);
+            border-radius: 14px;
+            padding: 16px 18px;
+            box-shadow: 0 2px 10px rgba(20,33,61,0.05);
+        }
+        .iw-compact-card-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid rgba(20,33,61,0.07);
+        }
+        .iw-compact-icon {
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            border-radius: 9px;
+            background: rgba(232,82,10,0.1);
+            color: #e8520a;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .iw-compact-label {
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #e8520a;
+            line-height: 1;
+            margin-bottom: 3px;
+        }
+        .iw-compact-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #0b2154;
+            line-height: 1.2;
+        }
+        .iw-compact-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .iw-compact-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 0.78rem;
+            line-height: 1.4;
+            color: rgba(40,55,80,0.85);
+        }
+        .iw-compact-list li i {
+            color: #e8520a;
+            font-size: 0.7rem;
+            margin-top: 3px;
+            flex-shrink: 0;
+            width: 12px;
+        }
+        .iw-compact-list li strong {
+            color: #0b2154;
+        }
+        @media (max-width: 767.98px) {
+            .iw-stepper-row { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px 14px; }
+            .iw-stepper-arrow { display: none; }
+            .iw-stepper-item { width: 100%; }
+            .iw-compact-cards-row { grid-template-columns: 1fr; gap: 10px; }
+            .iw-compact-card { padding: 14px 16px; }
+            .iw-cta-band-wrap { flex-direction: column !important; align-items: flex-start !important; gap: 12px !important; }
+            .home-cta-band { flex-direction: column !important; align-items: flex-start !important; gap: 12px !important; padding: 18px 20px !important; }
+            .home-cta-band h3 { font-size: 1rem !important; white-space: normal !important; }
+            .home-cta-band .home-hero-actions { flex-wrap: wrap; }
+        }
+        @media (min-width: 768px) and (max-width: 991.98px) {
+            .iw-compact-cards-row { grid-template-columns: repeat(2, 1fr); }
+            .iw-stepper-item { flex: 1; }
+        }
+        @media (max-width: 575.98px) {
+            .iw-compact-cards-row { gap: 8px; }
+            .iw-compact-card { padding: 12px 14px; }
+            .iw-stepper-row { padding: 10px 12px; gap: 6px; }
+            .iw-stepper-num { width: 26px; height: 26px; min-width: 26px; font-size: 0.65rem; }
+            .iw-stepper-text strong { font-size: 0.72rem; }
+            .iw-stepper-text span { font-size: 0.62rem; }
         }
 
         .home-band {
@@ -688,34 +1987,19 @@
             width: 100vw;
             transform: translateX(-50%);
             z-index: -1;
-            background: var(--home-band-bg,
-                radial-gradient(circle at top left, rgba(216, 111, 69, 0.08), transparent 32%),
-                radial-gradient(circle at top right, rgba(22, 124, 116, 0.08), transparent 24%),
-                linear-gradient(180deg, #f6f1e8 0%, #faf7f1 100%));
+            background: var(--home-band-bg, #f7f4ee);
         }
 
         .home-band-warm {
-            --home-band-bg:
-                radial-gradient(circle at top left, rgba(216, 111, 69, 0.1), transparent 34%),
-                radial-gradient(circle at 84% 18%, rgba(22, 124, 116, 0.06), transparent 24%),
-                linear-gradient(180deg, #f5efe6 0%, #faf7f1 100%);
+            --home-band-bg: #f7f4ee;
         }
 
         .home-band-light {
-            --home-band-bg:
-                radial-gradient(circle at 14% 16%, rgba(216, 111, 69, 0.06), transparent 28%),
-                radial-gradient(circle at top right, rgba(22, 124, 116, 0.08), transparent 22%),
-                linear-gradient(180deg, #f7f4ee 0%, #fcfaf6 100%);
+            --home-band-bg: #f7f4ee;
         }
 
         .home-hero-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(circle at 18% 22%, rgba(216, 111, 69, 0.42), transparent 28%),
-                radial-gradient(circle at 82% 14%, rgba(22, 124, 116, 0.34), transparent 22%);
-            pointer-events: none;
+            display: none !important;
         }
 
         .home-hero-card > * {
@@ -738,12 +2022,13 @@
         }
 
         .home-hero-copy h1 {
-            margin: 14px 0 16px;
-            max-width: 580px;
-            color: #fff7ef;
-            font-size: clamp(2rem, 4vw, 3.8rem);
-            line-height: 1.02;
-            font-weight: 800;
+            margin: 14px 0 28px;
+            max-width: 700px;
+            color: #ffffff;
+            font-size: clamp(2.4rem, 5vw, 4.2rem);
+            line-height: 1.0;
+            font-weight: 900;
+            letter-spacing: -0.02em;
         }
 
         .home-hero-copy p {
@@ -947,7 +2232,7 @@
         .home-section {
             width: min(1180px, calc(100% - 24px));
             margin: 0 auto;
-            padding: 28px 0;
+            padding: 18px 0;
         }
 
         .home-section-header {
@@ -955,8 +2240,8 @@
             flex-wrap: wrap;
             align-items: end;
             justify-content: space-between;
-            gap: 18px;
-            margin-bottom: 24px;
+            gap: 12px;
+            margin-bottom: 16px;
         }
 
         .home-section-header span {
@@ -1305,27 +2590,32 @@
         }
 
         .home-cta-band {
-            padding: 14px 4px 18px;
+            padding: 20px 28px;
             display: flex;
+            flex-direction: row;
             align-items: center;
             justify-content: space-between;
-            gap: 18px;
-            background: transparent;
-            border-top: 1px solid rgba(20, 33, 61, 0.08);
-            border-bottom: 1px solid rgba(20, 33, 61, 0.08);
+            gap: 24px;
+            background: linear-gradient(135deg, #fff8f3 0%, #fef3ea 100%);
+            border-radius: 14px;
+            border: 1px solid rgba(232,82,10,0.18);
         }
 
         .home-cta-band h3 {
-            margin: 0 0 6px;
-            color: var(--home-ink);
-            font-size: 1.5rem;
+            margin: 0;
+            color: #0b2154;
+            font-size: 1.15rem;
             font-weight: 800;
+            white-space: nowrap;
         }
 
         .home-cta-band p {
             margin: 0;
-            color: rgba(70, 84, 111, 0.84);
+            color: rgba(70,84,111,0.84);
             line-height: 1.7;
+        }
+        .home-cta-band .home-hero-actions {
+            flex-shrink: 0;
         }
 
         @media (max-width: 991.98px) {
@@ -1340,7 +2630,10 @@
             }
 
             .home-hero-card {
-                padding: 34px 24px;
+                padding: 52px 0 50px;
+            }
+            .home-hero-slim-inner {
+                padding: 0 20px;
             }
 
             .home-band::before {
@@ -1368,7 +2661,9 @@
             .home-cta-band {
                 flex-direction: column;
                 align-items: flex-start;
+                gap: 12px;
             }
+            .home-cta-band .home-hero-actions { flex-shrink: initial; }
         }
 
         @media (max-width: 767.98px) {
@@ -1430,8 +2725,11 @@
             }
 
             .home-hero-card {
-                border-radius: 0 0 28px 28px;
-                padding: 28px 18px 24px;
+                border-radius: 0;
+                padding: 40px 0 44px;
+            }
+            .home-hero-slim-inner {
+                padding: 0 16px;
             }
 
             .home-eyebrow {
@@ -1636,11 +2934,10 @@
     <main class="home-shell">
         <section class="home-hero">
             <div class="home-hero-card">
-                <div class="row g-4 align-items-center">
-                    <div class="col-lg-6 home-hero-copy">
+                <div class="home-hero-slim-inner">
+                    <div class="home-hero-copy">
                         <span class="home-eyebrow">Mumbai • Navi Mumbai • Thane • Kalyan</span>
-                        <h1>Make every car decision with a clean inspection trail.</h1>
-                        <p>Independent pre-purchase inspections, new car delivery checks, verified used car leads, and pricing guidance built for buyers who do not want surprises after payment.</p>
+                        <h1>Safety starts with inspection.</h1>
                         <div class="home-hero-actions">
                             <button type="button" class="home-btn-primary" data-bs-toggle="modal" data-bs-target="#usedCarInspectionModal">
                                 <i class="fas fa-search"></i>
@@ -1651,167 +2948,75 @@
                                 <span>Browse Featured Cars</span>
                             </a>
                         </div>
-                        <div class="home-hero-metrics">
-                            <div class="home-metric">
-                                <strong>160+</strong>
-                                <span>checkpoints across engine, body, electricals and road test</span>
-                            </div>
-                            <div class="home-metric">
-                                <strong>Same day</strong>
-                                <span>reporting for faster negotiation and decision support</span>
-                            </div>
-                            <div class="home-metric">
-                                <strong>Buyer-first</strong>
-                                <span>independent observations instead of dealer-led summaries</span>
-                            </div>
-                        </div>
                     </div>
-
-                    <div class="col-lg-6 d-none d-lg-block">
-                        <div class="hero-contact-card">
-                            <h5>Check Your Car Value</h5>
-                            <form class="hero-contact-form" id="heroContactForm" novalidate data-car-value-form="desktop" data-toast-id="heroFormToastDesktop">
-                                <input type="hidden" name="formSource" value="hero-desktop">
-                                <div class="hero-contact-grid">
-                                    <div>
-                                        <label class="form-label" for="heroName">Name</label>
-                                        <input type="text" id="heroName" name="name" class="form-control" placeholder="Enter your name" required>
-                                    </div>
-                                    <div>
-                                        <label class="form-label" for="heroEmail">Email</label>
-                                        <input type="email" id="heroEmail" name="email" class="form-control" placeholder="Enter your email" required>
-                                    </div>
-                                    <div class="hero-field-full">
-                                        <label class="form-label" for="heroMobile">Mobile</label>
-                                        <input type="tel" id="heroMobile" name="mobile" class="form-control" placeholder="Mobile number" inputmode="tel" required pattern="[0-9+\-() ]{8,15}">
-                                    </div>
-                                    <div class="hero-field-full">
-                                        <label class="form-label" for="heroMessage">Vehicle details</label>
-                                        <textarea id="heroMessage" name="message" class="form-control" rows="3" placeholder="Make, model, year, variant, asking price..." required></textarea>
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn w-100 hero-submit-btn">Get Value Estimate</button>
-                                <div id="heroFormToastDesktop" class="hero-form-toast" role="status" aria-live="polite">
-                                    <i class="fas fa-check-circle" aria-hidden="true"></i>
-                                    <span>Captured! We will call you shortly.</span>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="hero-mobile-panel d-lg-none">
-                <div class="hero-mobile-form-card">
-                    <h5>Check Your Car Value</h5>
-                    <form id="mobileHeroForm" novalidate data-car-value-form="mobile" data-toast-id="heroFormToastMobile">
-                        <input type="hidden" name="formSource" value="hero-mobile">
-                        <input type="text" name="name" placeholder="Enter your name" required>
-                        <input type="email" name="email" placeholder="Enter your email" required>
-                        <input type="tel" name="mobile" placeholder="Mobile number" inputmode="tel" required pattern="[0-9+\-() ]{8,15}">
-                        <textarea name="message" placeholder="Make, model, year, asking price" required></textarea>
-                        <button type="submit">Get Value Estimate</button>
-                        <div id="heroFormToastMobile" class="hero-form-toast" role="status" aria-live="polite">
-                            <i class="fas fa-check-circle" aria-hidden="true"></i>
-                            <span>Captured! We will call you shortly.</span>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </section>
-
-        <section class="home-strip home-band home-band-warm" aria-label="Key stats">
-            <div class="home-strip-grid">
-                <article class="home-strip-card">
-                    <div class="home-strip-icon"><i class="fas fa-clipboard-check"></i></div>
-                    <div class="home-strip-copy">
-                        <strong>Pre-purchase</strong>
-                        <span>Inspection reports built to expose hidden repair risk before you pay.</span>
-                    </div>
-                </article>
-                <article class="home-strip-card">
-                    <div class="home-strip-icon"><i class="fas fa-shield-alt"></i></div>
-                    <div class="home-strip-copy">
-                        <strong>New car PDI</strong>
-                        <span>Catch transit damage, paint defects, missing features, and delivery misses.</span>
-                    </div>
-                </article>
-                <article class="home-strip-card">
-                    <div class="home-strip-icon"><i class="fas fa-car-side"></i></div>
-                    <div class="home-strip-copy">
-                        <strong>Verified listings</strong>
-                        <span>Customer-to-customer marketplace with usable photos and real condition context.</span>
-                    </div>
-                </article>
-                <article class="home-strip-card">
-                    <div class="home-strip-icon"><i class="fas fa-rupee-sign"></i></div>
-                    <div class="home-strip-copy">
-                        <strong>Pricing help</strong>
-                        <span>Use inspection findings to negotiate based on condition instead of guesswork.</span>
-                    </div>
-                </article>
-            </div>
-        </section>
-
-        <section class="home-section home-band home-band-light">
-            <div class="home-cta-band">
-                <div>
-                    <h3>Need an inspection or want to list a car today?</h3>
-                </div>
-                <div class="home-hero-actions mb-0">
-                    <button type="button" class="home-btn-primary" data-bs-toggle="modal" data-bs-target="#newCarInspectionModal">
-                        <i class="fas fa-car"></i>
-                        <span>Book New Car PDI</span>
-                    </button>
-                    <button type="button" class="home-btn-secondary" data-bs-toggle="modal" data-bs-target="#listCarModal">
-                        <i class="fas fa-plus-circle"></i>
-                        <span>Sell Your Car</span>
-                    </button>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <!-- Buy Used Cars Section -->
-    <section class="py-5 home-band home-band-warm" id="marketplace">
-        <div class="container">
-            <div class="partner-leads-section">
-                <div class="partner-leads-grid">
-                    <button type="button" class="partner-lead-card" data-partner-service="loan" data-partner-service-source="homepage" data-partner-service-copy="Compare EMI-fit finance options once the car and budget look right.">
-                        <span class="partner-lead-card__icon partner-lead-card__icon--loan"><i class="fas fa-hand-holding-usd"></i></span>
-                        <span class="partner-lead-card__body">
-                            <strong>Car Loan</strong>
-                            <span>Compare EMI-fit finance options once the car and budget look right.</span>
-                        </span>
-                    </button>
-                    <button type="button" class="partner-lead-card" data-partner-service="insurance" data-partner-service-source="homepage" data-partner-service-copy="Renew expiring policies or request quotes that match the inspected vehicle.">
-                        <span class="partner-lead-card__icon partner-lead-card__icon--insurance"><i class="fas fa-shield-alt"></i></span>
-                        <span class="partner-lead-card__body">
-                            <strong>Insurance</strong>
-                            <span>Renew expiring policies or request quotes that match the inspected vehicle.</span>
-                        </span>
-                    </button>
-                    <button type="button" class="partner-lead-card" data-partner-service="warranty" data-partner-service-source="homepage" data-partner-service-copy="Keep major repair risk covered for used cars with longer ownership plans.">
-                        <span class="partner-lead-card__icon partner-lead-card__icon--warranty"><i class="fas fa-certificate"></i></span>
-                        <span class="partner-lead-card__body">
-                            <strong>Extended Warranty</strong>
-                            <span>Keep major repair risk covered for used cars with longer ownership plans.</span>
-                        </span>
-                    </button>
-                    <button type="button" class="partner-lead-card" data-partner-service="rto-transfer" data-partner-service-source="homepage" data-partner-service-copy="Track ownership paperwork, RC transfer and compliance tasks after the deal closes.">
-                        <span class="partner-lead-card__icon partner-lead-card__icon--rto-transfer"><i class="fas fa-exchange-alt"></i></span>
-                        <span class="partner-lead-card__body">
-                            <strong>RTO Transfer</strong>
-                            <span>Track ownership paperwork, RC transfer and compliance tasks after the deal closes.</span>
-                        </span>
-                    </button>
+    <!-- ═══ INSPECTION CHECKPOINTS FLOATING CARD ═══ -->
+    <div class="iw-checks-float-wrap">
+        <div class="iw-checks-card">
+            <div class="iw-checks-header-row">
+                <span class="iw-checks-label">160+ point inspection covers</span>
+                <span class="iw-checks-sep"></span>
+                <span class="iw-checks-label">Same-day report for faster decisions</span>
+                <span class="iw-checks-sep"></span>
+                <span class="iw-checks-label">Buyer-first insights, not dealer-driven</span>
+                <div class="iw-checks-divider-line"></div>
+            </div>
+            <div class="iw-checks-grid">
+                <div class="iw-check-item">
+                    <div class="iw-check-icon"><i class="fas fa-cog"></i></div>
+                    <span class="iw-check-label">Engine</span>
+                </div>
+                <div class="iw-check-item">
+                    <div class="iw-check-icon"><i class="fas fa-car-crash"></i></div>
+                    <span class="iw-check-label">Structure &amp; Accident</span>
+                </div>
+                <div class="iw-check-item">
+                    <div class="iw-check-icon"><i class="fas fa-tint"></i></div>
+                    <span class="iw-check-label">Flood Damage</span>
+                </div>
+                <div class="iw-check-item">
+                    <div class="iw-check-icon"><i class="fas fa-fire"></i></div>
+                    <span class="iw-check-label">Fire Damage</span>
+                </div>
+                <div class="iw-check-item">
+                    <div class="iw-check-icon"><i class="fas fa-paint-brush"></i></div>
+                    <span class="iw-check-label">Paint Check</span>
+                </div>
+                <div class="iw-check-item">
+                    <div class="iw-check-icon"><i class="fas fa-car-side"></i></div>
+                    <span class="iw-check-label">Exterior</span>
+                </div>
+                <div class="iw-check-item">
+                    <div class="iw-check-icon"><i class="fas fa-chair"></i></div>
+                    <span class="iw-check-label">Interior</span>
+                </div>
+                <div class="iw-check-item">
+                    <div class="iw-check-icon"><i class="fas fa-bolt"></i></div>
+                    <span class="iw-check-label">Electricals</span>
+                </div>
+                <div class="iw-check-item">
+                    <div class="iw-check-icon"><i class="fas fa-eye"></i></div>
+                    <span class="iw-check-label">Exterior Condition</span>
+                </div>
+                <div class="iw-check-item">
+                    <div class="iw-check-icon"><i class="fas fa-road"></i></div>
+                    <span class="iw-check-label">Road Test 3–5 km</span>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Featured Cars Section - immediately after banner -->
+    <section class="iw-featured-section" id="marketplace">
+        <div class="container">
             <div class="d-flex align-items-center justify-content-between mb-3 home-marketplace-header">
                 <div>
-                    <span style="display:block; margin-bottom:6px; color:#b95730; font-size:0.8rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;">Featured Cars</span>
-                    <h2 class="mb-0" style="font-family: 'Montserrat', sans-serif; color: #0B2154; font-weight: 700;">Verified used cars ready for the next step</h2>
+                    <span style="display:block; color:#b95730; font-size:0.8rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;">Featured Cars</span>
                 </div>
                 <button type="button" class="btn sell-car-btn home-marketplace-sell" data-bs-toggle="modal" data-bs-target="#listCarModal">
                     Sell Your Car <span class="sell-car-dot">•</span>
@@ -1875,7 +3080,7 @@
             </div>
             
             <!-- View More Button -->
-            <div class="text-center mt-4">
+            <div class="text-center mt-3">
                 <a href="car-marketplace/index.html" id="viewMoreUsedCarsBtn" class="btn view-more-btn" onclick="navigateToMarketplaceWithFilter(event)">
                     View More <i class="fas fa-chevron-right ms-2"></i>
                 </a>
@@ -1883,130 +3088,145 @@
         </div>
     </section>
 
-    <section class="home-section home-band home-band-light" id="process">
-        <div class="home-section-header">
+    <!-- CTA Band -->
+    <section class="home-section home-band home-band-light" style="padding-top:10px;padding-bottom:10px;">
+        <div class="home-cta-band">
             <div>
-                <span>How It Works</span>
-                <h2>A short path from inquiry to report.</h2>
+                <h3>Need an inspection or want to list a car today?</h3>
             </div>
-            <p>This keeps the user journey simple: book, inspect, receive findings, then decide whether to buy, renegotiate, reserve, or walk away.</p>
-        </div>
-
-        <div class="home-steps-grid">
-            <article class="home-step">
-                <span class="home-step-number">01</span>
-                <h3>Share car details</h3>
-                <p>Tell us the make, model, registration year, seller context, and whether it is a used-car purchase or new-car delivery check.</p>
-            </article>
-            <article class="home-step">
-                <span class="home-step-number">02</span>
-                <h3>Schedule the inspection</h3>
-                <p>Pick the inspection type and submit through the live booking flow already wired into the page.</p>
-            </article>
-            <article class="home-step">
-                <span class="home-step-number">03</span>
-                <h3>Receive findings fast</h3>
-                <p>Get photos, issue notes, and actionable insight quickly enough to support a live negotiation or delivery decision.</p>
-            </article>
-            <article class="home-step">
-                <span class="home-step-number">04</span>
-                <h3>Act with confidence</h3>
-                <p>Proceed, negotiate, reserve, or reject the deal based on condition instead of pressure or guesswork.</p>
-            </article>
+            <div class="home-hero-actions mb-0">
+                <button type="button" class="home-btn-primary" data-bs-toggle="modal" data-bs-target="#newCarInspectionModal">
+                    <i class="fas fa-car"></i>
+                    <span>Book Inspection</span>
+                </button>
+                <button type="button" class="home-btn-secondary" data-bs-toggle="modal" data-bs-target="#listCarModal">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>List Your Car</span>
+                </button>
+            </div>
         </div>
     </section>
 
-    <section class="home-section home-band home-band-warm" id="services">
-        <div class="home-section-header">
-            <div>
-                <span>Services</span>
-                <h2>Inspection-first services for buyers, sellers, and cautious deliveries.</h2>
+    <!-- ═══ SERVICES WE PROVIDE ═══ -->
+    <section class="iw-services-section home-band">
+        <div class="iw-services-section-inner">
+            <span class="iw-services-section-label">What We Offer</span>
+            <h2 class="iw-services-section-title">Services We Provide</h2>
+            <div class="iw-services-mini-row">
+                <button type="button" class="iw-svc-item" data-partner-service="loan" data-partner-service-source="homepage" data-partner-service-copy="Compare EMI-fit finance options once the car and budget look right.">
+                    <span class="iw-svc-item-icon"><i class="fas fa-hand-holding-usd"></i></span>
+                    <span class="iw-svc-item-name">Car Loan</span>
+                </button>
+                <button type="button" class="iw-svc-item" data-partner-service="insurance" data-partner-service-source="homepage" data-partner-service-copy="Renew expiring policies or request quotes that match the inspected vehicle.">
+                    <span class="iw-svc-item-icon"><i class="fas fa-shield-alt"></i></span>
+                    <span class="iw-svc-item-name">Insurance</span>
+                </button>
+                <button type="button" class="iw-svc-item" data-bs-toggle="modal" data-bs-target="#usedCarInspectionModal">
+                    <span class="iw-svc-item-icon"><i class="fas fa-clipboard-check"></i></span>
+                    <span class="iw-svc-item-name">Inspection</span>
+                </button>
+                <a href="car-marketplace/index.html" class="iw-svc-item">
+                    <span class="iw-svc-item-icon"><i class="fas fa-car-side"></i></span>
+                    <span class="iw-svc-item-name">Used Car Marketplace</span>
+                </a>
             </div>
-        </div>
-
-        <div class="home-services-grid">
-            <article class="home-service-card">
-                <i class="fas fa-car-crash"></i>
-                <h3>Used Car Inspection</h3>
-                <p>Independent inspection before purchase with usable findings for negotiation.</p>
-                <ul>
-                    <li>Body, paint and accident checks</li>
-                    <li>Engine, suspension and road test review</li>
-                    <li>Same-day summary for negotiation</li>
-                </ul>
-            </article>
-
-            <article class="home-service-card">
-                <i class="fas fa-shield-alt"></i>
-                <h3>New Car Delivery Check</h3>
-                <p>Pre-delivery validation before you accept a showroom handover.</p>
-                <ul>
-                    <li>Transit damage and repaint detection</li>
-                    <li>Feature verification and software checks</li>
-                    <li>Dealer handover confidence</li>
-                </ul>
-            </article>
-
-            <article class="home-service-card">
-                <i class="fas fa-store"></i>
-                <h3>Verified Used Car Access</h3>
-                <p>Browse, reserve, or list cars through the verified marketplace flow.</p>
-                <ul>
-                    <li>Customer listing submission flow</li>
-                    <li>Reserve and test-drive requests</li>
-                    <li>Condition-led discovery</li>
-                </ul>
-            </article>
         </div>
     </section>
 
-    <section class="home-section home-band home-band-light">
+    <!-- ═══ HOW IT WORKS + SERVICES + WHY US — compact unified block ═══ -->
+    <section class="home-section home-band home-band-light iw-info-block" id="process">
+
+        <!-- How It Works — horizontal stepper -->
+        <div class="iw-block-label">How It Works</div>
+        <div class="iw-stepper-row">
+            <div class="iw-stepper-item">
+                <div class="iw-stepper-num">01</div>
+                <div class="iw-stepper-text">
+                    <strong>Share car details</strong>
+                    <span>Make, model, year &amp; seller context</span>
+                </div>
+            </div>
+            <div class="iw-stepper-arrow"><i class="fas fa-chevron-right"></i></div>
+            <div class="iw-stepper-item">
+                <div class="iw-stepper-num">02</div>
+                <div class="iw-stepper-text">
+                    <strong>Schedule inspection</strong>
+                    <span>Pick type &amp; confirm booking</span>
+                </div>
+            </div>
+            <div class="iw-stepper-arrow"><i class="fas fa-chevron-right"></i></div>
+            <div class="iw-stepper-item">
+                <div class="iw-stepper-num">03</div>
+                <div class="iw-stepper-text">
+                    <strong>Receive findings</strong>
+                    <span>Photos, notes &amp; same-day report</span>
+                </div>
+            </div>
+            <div class="iw-stepper-arrow"><i class="fas fa-chevron-right"></i></div>
+            <div class="iw-stepper-item">
+                <div class="iw-stepper-num">04</div>
+                <div class="iw-stepper-text">
+                    <strong>Act with confidence</strong>
+                    <span>Buy, negotiate or walk away</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Services + What's Reported + Why Us — 3-col compact cards -->
+        <div class="iw-compact-cards-row" id="services">
+            <!-- Services -->
+            <div class="iw-compact-card">
+                <div class="iw-compact-card-head">
+                    <span class="iw-compact-icon"><i class="fas fa-clipboard-list"></i></span>
+                    <div>
+                        <div class="iw-compact-label">Services</div>
+                        <div class="iw-compact-title">What we inspect</div>
+                    </div>
+                </div>
+                <ul class="iw-compact-list">
+                    <li><i class="fas fa-car-crash"></i><span><strong>Used Car Inspection</strong> — body, engine, paint &amp; road test</span></li>
+                    <li><i class="fas fa-shield-alt"></i><span><strong>New Car PDI</strong> — transit damage &amp; feature verification</span></li>
+                    <li><i class="fas fa-store"></i><span><strong>Verified Marketplace</strong> — list, reserve or buy with confidence</span></li>
+                </ul>
+            </div>
+
+            <!-- What Gets Reported -->
+            <div class="iw-compact-card">
+                <div class="iw-compact-card-head">
+                    <span class="iw-compact-icon"><i class="fas fa-file-alt"></i></span>
+                    <div>
+                        <div class="iw-compact-label">Report Contents</div>
+                        <div class="iw-compact-title">What gets reported</div>
+                    </div>
+                </div>
+                <ul class="iw-compact-list">
+                    <li><i class="fas fa-search"></i><span><strong>Condition snapshot</strong> — panels, paint, structure &amp; electricals</span></li>
+                    <li><i class="fas fa-tools"></i><span><strong>Repair risk</strong> — hidden fixes &amp; upcoming cost flags</span></li>
+                    <li><i class="fas fa-comments-dollar"></i><span><strong>Negotiation edge</strong> — documented issues to push back on price</span></li>
+                </ul>
+            </div>
+
+            <!-- Why InspectionWale -->
+            <div class="iw-compact-card">
+                <div class="iw-compact-card-head">
+                    <span class="iw-compact-icon"><i class="fas fa-bolt"></i></span>
+                    <div>
+                        <div class="iw-compact-label">Why Us</div>
+                        <div class="iw-compact-title">Why buyers choose us</div>
+                    </div>
+                </div>
+                <ul class="iw-compact-list">
+                    <li><i class="fas fa-car-side"></i><span><strong>Delivery check</strong> — catch showroom issues before handover</span></li>
+                    <li><i class="fas fa-eye"></i><span><strong>History flags</strong> — spot repaint, accident or flood signs</span></li>
+                    <li><i class="fas fa-user-check"></i><span><strong>Buyer-first</strong> — independent, not dealer-driven</span></li>
+                </ul>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="home-section home-band home-band-light" style="display:none">
         <div class="home-story-grid">
-            <article class="home-story-card">
-                <i class="fas fa-clipboard-check"></i>
-                <h3>What gets reported</h3>
-                <p>Reports focus on the decisions that matter before you commit to the car.</p>
-                <div class="home-story-icon-grid">
-                    <div class="home-story-icon-item">
-                        <i class="fas fa-search"></i>
-                        <strong>Condition snapshot</strong>
-                        <span>Panels, paint, structure, interior, electronics and road behavior.</span>
-                    </div>
-                    <div class="home-story-icon-item">
-                        <i class="fas fa-tools"></i>
-                        <strong>Repair risk</strong>
-                        <span>Visible damage, hidden fixes, and issues likely to cost money next.</span>
-                    </div>
-                    <div class="home-story-icon-item">
-                        <i class="fas fa-comments-dollar"></i>
-                        <strong>Negotiation edge</strong>
-                        <span>Use documented findings to push back on inflated asking prices.</span>
-                    </div>
-                </div>
-            </article>
-
-            <article class="home-story-card">
-                <i class="fas fa-bolt"></i>
-                <h3>Why buyers use inspectionWale</h3>
-                <p>Independent inspection replaces seller claims with evidence you can act on immediately.</p>
-                <div class="home-story-icon-grid">
-                    <div class="home-story-icon-item">
-                        <i class="fas fa-car-side"></i>
-                        <strong>Delivery check</strong>
-                        <span>Catch transit or showroom issues before handover.</span>
-                    </div>
-                    <div class="home-story-icon-item">
-                        <i class="fas fa-shield-alt"></i>
-                        <strong>History flags</strong>
-                        <span>Spot repaint, accident, flood signs or missing features.</span>
-                    </div>
-                    <div class="home-story-icon-item">
-                        <i class="fas fa-bolt"></i>
-                        <strong>Decide faster</strong>
-                        <span>Move on a good car without guesswork.</span>
-                    </div>
-                </div>
-            </article>
         </div>
     </section>
 
@@ -2083,12 +3303,12 @@
             display: block;
             flex: 0 0 calc((100% - (var(--popular-card-gap) * 3)) / 4);
             min-width: 0;
-            aspect-ratio: 1 / 1;
-            background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
-            border-radius: 24px;
+            aspect-ratio: 4 / 3;
+            background: #e8edf5;
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 12px 28px rgba(17, 27, 49, 0.08);
-            border: 1px solid rgba(20, 33, 61, 0.08);
+            box-shadow: 0 2px 12px rgba(17, 27, 49, 0.10);
+            border: 1px solid rgba(20, 33, 61, 0.10);
             transition: box-shadow 0.2s, transform 0.2s;
             text-decoration: none;
         }
@@ -2097,23 +3317,21 @@
             min-height: 0;
         }
         .popular-car-card:hover {
-            box-shadow: 0 16px 30px rgba(17, 27, 49, 0.12);
-            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(17, 27, 49, 0.18);
+            transform: translateY(-3px);
         }
         .car-image-wrapper {
             position: absolute;
             inset: 0;
-            height: auto;
-            position: relative;
             overflow: hidden;
-            border-radius: 24px;
+            border-radius: 8px;
             background: #d7e0ee;
         }
         .car-image-wrapper::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(180deg, rgba(7, 14, 30, 0) 42%, rgba(7, 14, 30, 0.14) 68%, rgba(7, 14, 30, 0.8) 100%);
+            background: linear-gradient(180deg, rgba(0,0,0,0) 35%, rgba(0,0,0,0.18) 60%, rgba(0,0,0,0.72) 100%);
             pointer-events: none;
         }
         .popular-car-seller-badge {
@@ -2144,8 +3362,8 @@
         .shimmer-block {
             width: 100%;
             height: 100%;
-            border-radius: 24px;
-            background: linear-gradient(90deg, #f0f0f0 25%, #f7f7f7 50%, #f0f0f0 75%);
+            border-radius: 8px;
+            background: linear-gradient(90deg, #e8edf5 25%, #f2f5fa 50%, #e8edf5 75%);
             background-size: 200% 100%;
             animation: shimmer 1.2s linear infinite;
         }
@@ -2160,11 +3378,15 @@
         }
         .car-info {
             position: absolute;
-            inset: auto 0 0;
-            z-index: 1;
-            padding: 8px 10px 9px;
-            display: grid;
-            gap: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 2;
+            padding: 10px 12px 11px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
             pointer-events: none;
         }
         .skeleton-line {
@@ -2184,19 +3406,19 @@
             display: block;
         }
         .car-name {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.92rem;
-                        font-weight: 700;
-            color: #fff5e8;
+            font-family: 'Montserrat', 'Inter', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #ffffff;
             margin: 0;
-                        display: -webkit-box;
-                        line-clamp: 2;
-                        -webkit-line-clamp: 2;
-                        -webkit-box-orient: vertical;
+            display: -webkit-box;
+            line-clamp: 2;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
             overflow: hidden;
-                        min-height: 2.05em;
-                        line-height: 1.14;
-            text-shadow: 0 10px 24px rgba(0, 0, 0, 0.32);
+            line-height: 1.2;
+            text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
+            letter-spacing: 0.01em;
         }
         .car-year-badge {
             display: none;
@@ -2212,16 +3434,16 @@
             align-items: center;
             justify-content: flex-start;
             min-height: auto;
-            padding: 0;
-            border-radius: 0;
-            background: transparent;
-            color: #ffd95c;
-            font-size: 0.77rem;
-            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 4px;
+            background: rgba(0, 47, 108, 0.82);
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 800;
             margin: 0;
-            box-shadow: none;
-            line-height: 1.05;
-            text-shadow: 0 10px 24px rgba(0, 0, 0, 0.34);
+            box-shadow: 0 1px 6px rgba(0,0,0,0.22);
+            line-height: 1.4;
+            letter-spacing: 0.02em;
         }
         .car-price .car-kms {
             display: none;
@@ -2347,13 +3569,13 @@
 
             .popular-car-card {
                 flex: 0 0 calc((100% - var(--popular-card-gap)) / 2);
-                border-radius: 18px;
+                border-radius: 8px;
             }
             .popular-car-card.loading-card {
                 min-height: 0;
             }
             .car-image-wrapper {
-                border-radius: 18px;
+                border-radius: 8px;
             }
             .popular-car-seller-badge {
                 top: 8px;
