@@ -1637,6 +1637,7 @@
         #carDetailModal .detail-media-column {
             padding: 0 20px 0 0 !important;
             background: transparent !important;
+            align-self: flex-start !important;
         }
 
         /* ── Gallery ── */
@@ -1663,8 +1664,9 @@
             display: grid !important;
             grid-template-rows: repeat(3, minmax(0, 1fr));
             width: 148px !important;
-            height: 460px;
+            height: 400px !important;
             gap: 10px !important;
+            flex-shrink: 0 !important;
         }
 
         #carDetailModal #carDetailThumbnails img {
@@ -1673,9 +1675,11 @@
             background: #edf0f7 !important;
             width: 100% !important;
             height: 100% !important;
+            min-height: 60px !important;
             object-fit: cover !important;
             cursor: pointer;
             transition: border-color 0.15s;
+            display: block !important;
         }
         #carDetailModal #carDetailThumbnails img:hover { border-color: #e8520a !important; }
 
@@ -2161,21 +2165,26 @@
             #carDetailModal .detail-summary-card { padding: 18px 16px; }
         }
 
-        /* ═══ MOBILE: Reorder — price/aside first, then images/overview ═══ */
+        /* ═══ MOBILE: Reorder — images first, then aside (price/contact/CTA) ═══ */
         @media (max-width: 991.98px) {
             #carDetailModal .detail-top-row {
                 display: flex !important;
                 flex-direction: column !important;
             }
-            #carDetailModal .detail-aside-column {
+            #carDetailModal .detail-media-column {
                 order: 1 !important;
             }
-            #carDetailModal .detail-media-column {
+            #carDetailModal .detail-aside-column {
                 order: 2 !important;
             }
-            /* Kill the fixed height on thumbnail container so it doesn't create whitespace */
+            /* Thumbnails: keep fixed height at tablet so grid rows don't collapse */
             #carDetailModal #carDetailThumbnails {
-                height: auto !important;
+                height: 280px !important;
+            }
+            #carDetailModal #carDetailThumbnails img {
+                height: 100% !important;
+                min-height: 80px !important;
+                flex: 0 0 auto !important;
             }
         }
 
@@ -5084,7 +5093,7 @@
         <div class="cw-footer-inner">
             <div class="cw-footer-top">
                 <div class="cw-footer-brand">
-                    <img src="../Images/brand_logo_new_1.png" alt="inspectionWale" style="height:34px;filter:brightness(0) invert(1);">
+                    <img src="../Images/brand_logo_new_1.png" alt="inspectionWale" style="height:34px;mix-blend-mode:screen;filter:brightness(1.3);">
                     <p>Mumbai's most trusted pre-purchase car inspection service. Independent, buyer-first, same-day reports.</p>
                 </div>
                 <div class="cw-footer-links">
@@ -5691,6 +5700,46 @@
                             </div>
                         </div>
 
+                        <!-- ══ COMMENTS SECTION ══ -->
+                        <div class="row g-0 detail-comments-row" id="carDetailCommentsSection">
+                            <div class="col-12">
+                                <div class="detail-comments-card">
+                                    <div class="detail-card-kicker">Community</div>
+                                    <h5 class="detail-section-title"><i class="fas fa-comments"></i> Comments</h5>
+
+                                    <!-- Add comment form -->
+                                    <div class="detail-comment-form-wrap">
+                                        <div class="row g-2 mb-2">
+                                            <div class="col-sm-5">
+                                                <input type="text" id="commentName" class="form-control detail-comment-input" placeholder="Your name" maxlength="80" required>
+                                            </div>
+                                            <div class="col-sm-7">
+                                                <textarea id="commentText" class="form-control detail-comment-input" rows="2" placeholder="Share your thoughts about this car…" maxlength="800" required></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                                            <button type="button" id="submitCommentBtn" class="detail-comment-submit-btn">
+                                                <i class="fas fa-paper-plane me-1"></i> Post Comment
+                                            </button>
+                                            <span id="commentFormMsg" class="detail-comment-msg"></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Comments list -->
+                                    <div id="carDetailCommentsList" class="detail-comments-list mt-4">
+                                        <div class="detail-comment-loading"><span class="spinner-border spinner-border-sm me-2"></span>Loading comments…</div>
+                                    </div>
+
+                                    <!-- View more -->
+                                    <div id="carDetailCommentsMore" class="text-center mt-3" style="display:none!important;">
+                                        <button type="button" id="loadMoreCommentsBtn" class="detail-comments-more-btn">
+                                            <i class="fas fa-chevron-down me-1"></i> Load More Comments
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row g-0">
                             <div class="col-12 detail-partner-services-row">
                                 <div class="d-flex align-items-start justify-content-between flex-wrap gap-3 mb-3">
@@ -5804,53 +5853,13 @@
                             </div>
                         </div>
 
-                        <!-- ══ COMMENTS SECTION ══ -->
-                        <div class="row g-0 detail-comments-row" id="carDetailCommentsSection">
-                            <div class="col-12">
-                                <div class="detail-comments-card">
-                                    <div class="detail-card-kicker">Community</div>
-                                    <h5 class="detail-section-title"><i class="fas fa-comments"></i> Comments</h5>
-
-                                    <!-- Add comment form -->
-                                    <div class="detail-comment-form-wrap">
-                                        <div class="row g-2 mb-2">
-                                            <div class="col-sm-5">
-                                                <input type="text" id="commentName" class="form-control detail-comment-input" placeholder="Your name" maxlength="80" required>
-                                            </div>
-                                            <div class="col-sm-7">
-                                                <textarea id="commentText" class="form-control detail-comment-input" rows="2" placeholder="Share your thoughts about this car…" maxlength="800" required></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-center gap-2 flex-wrap">
-                                            <button type="button" id="submitCommentBtn" class="detail-comment-submit-btn">
-                                                <i class="fas fa-paper-plane me-1"></i> Post Comment
-                                            </button>
-                                            <span id="commentFormMsg" class="detail-comment-msg"></span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Comments list -->
-                                    <div id="carDetailCommentsList" class="detail-comments-list mt-4">
-                                        <div class="detail-comment-loading"><span class="spinner-border spinner-border-sm me-2"></span>Loading comments…</div>
-                                    </div>
-
-                                    <!-- View more -->
-                                    <div id="carDetailCommentsMore" class="text-center mt-3" style="display:none!important;">
-                                        <button type="button" id="loadMoreCommentsBtn" class="detail-comments-more-btn">
-                                            <i class="fas fa-chevron-down me-1"></i> Load More Comments
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Footer -->
                         <div class="row g-0 detail-footer-row">
                             <div class="col-12 detail-footer-inner">
                                 <div class="d-flex flex-wrap align-items-start justify-content-between gap-4 pb-4 mb-3" style="border-bottom: 1px solid rgba(255,255,255,0.12);">
                                     <div>
                                         <a href="/" class="d-inline-block mb-3">
-                                            <img src="../Images/brand_logo_new_1.png" alt="inspectionWale" style="height:30px;filter:brightness(0) invert(1);">
+                                            <img src="../Images/brand_logo_new_1.png" alt="inspectionWale" style="height:30px;mix-blend-mode:screen;filter:brightness(1.3);">
                                         </a>
                                         <p style="color:rgba(255,255,255,0.55);font-size:13px;max-width:260px;line-height:1.6;margin:0;">Mumbai's most trusted pre-purchase car inspection. Independent, buyer-first, same-day reports.</p>
                                     </div>
@@ -9077,7 +9086,12 @@
             background: #fafafa !important;
             box-shadow: 0 1px 0 rgba(20,33,61,0.10) !important;
         }
-        .cw-logo img { filter: none !important; height: 42px !important; }
+        .cw-logo img { filter: none !important; height: 42px !important; mix-blend-mode: multiply !important; }
+        /* ── FOOTER: logo blend — makes dark bg transparent on dark footer ── */
+        .cw-footer-brand img, .detail-footer-inner img[alt="inspectionWale"] {
+            mix-blend-mode: screen !important;
+            filter: brightness(1.3) !important;
+        }
         .cw-nav-search {
             background: #ffffff !important;
             border: 1.5px solid rgba(20,33,61,0.14) !important;
