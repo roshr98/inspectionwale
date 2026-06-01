@@ -1,0 +1,7 @@
+{
+  "startupCommands": [
+    "cd website; npm install; npx --yes live-server --port=3000 --host=0.0.0.0 --no-browser --entry-file=index.html ."
+  ],
+  "projectId": "00162f54-9a88-457c-8010-ae6fc378a67a",
+  "templateId": "any"
+}
