@@ -2146,46 +2146,103 @@
             font-family: 'Montserrat', sans-serif !important;
         }
 
-        /* ── Mobile responsive ── */
+        /* ── Tablet (576–991px): side-by-side gallery still, but thumbnails smaller ── */
         @media (max-width: 991.98px) {
             #carDetailModal .detail-media-column { padding: 0 !important; }
             #carDetailModal #carDetailCarouselMain img { height: 280px !important; }
-            #carDetailModal #carDetailThumbnails { width: 90px !important; height: 280px; gap: 8px !important; }
+            #carDetailModal #carDetailThumbnails {
+                width: 90px !important;
+                height: 280px !important;
+                gap: 8px !important;
+            }
             #carDetailModal .detail-specs-grid { grid-template-columns: repeat(2, 1fr); }
             #carDetailModal .detail-features-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
-        @media (max-width: 575.98px) {
-            #carDetailModal .detail-shell { padding: 16px 12px 32px; }
-            #carDetailModal .detail-gallery-shell { flex-direction: column; }
-            #carDetailModal #carDetailThumbnails { display: flex !important; flex-direction: row !important; width: 100% !important; height: 72px !important; }
-            #carDetailModal #carDetailThumbnails img { height: 72px !important; width: 33% !important; border-radius: 8px !important; }
-            #carDetailModal .detail-specs-grid { grid-template-columns: 1fr 1fr; }
-            #carDetailModal .detail-features-grid { grid-template-columns: repeat(2, 1fr); }
-            #carDetailModal .detail-summary-card { padding: 18px 16px; }
-        }
-
-        /* ═══ MOBILE: Reorder — images first, then aside (price/contact/CTA) ═══ */
-        @media (max-width: 991.98px) {
+        /* ═══ MOBILE (≤767px): full reorder using display:contents ═══
+           Desired order:
+           1. Car Images (gallery)
+           2. Verified Listing / Price (summary card)
+           3. Vehicle Overview / Details (overview card)
+           4. Comments (handled outside top-row, below)
+           5. Seller Contact form
+           6. Book Inspection CTA
+        ═══════════════════════════════════════════════════════════════ */
+        @media (max-width: 767.98px) {
+            /* Turn top-row into a flat flex column */
             #carDetailModal .detail-top-row {
                 display: flex !important;
                 flex-direction: column !important;
+                gap: 12px !important;
             }
-            #carDetailModal .detail-media-column {
+            /* Both columns become display:contents so their children
+               are direct flex children of detail-top-row            */
+            #carDetailModal .detail-media-column,
+            #carDetailModal .detail-aside-column {
+                display: contents !important;
+            }
+            /* The inner stack also becomes contents */
+            #carDetailModal .detail-side-stack {
+                display: contents !important;
+            }
+            /* Order each block */
+            /* 1 — Gallery wrapper (position:relative div containing gallery + counter) */
+            #carDetailModal .detail-gallery-wrap {
                 order: 1 !important;
             }
-            #carDetailModal .detail-aside-column {
-                order: 2 !important;
+            /* 2 — Verified Listing / Price */
+            #carDetailModal .detail-summary-card {
+                order: 3 !important;
+                margin: 0 !important;
             }
-            /* Thumbnails: keep fixed height at tablet so grid rows don't collapse */
+            /* 3 — Vehicle Overview / Specs */
+            #carDetailModal .detail-theme-card.detail-overview-card {
+                order: 4 !important;
+                margin-top: 0 !important;
+            }
+            /* 5 — Seller Contact (after comments which is outside top-row) */
+            #carDetailModal .detail-contact-card {
+                order: 6 !important;
+            }
+            /* 6 — Book Inspection CTA */
+            #carDetailModal .detail-cta-card {
+                order: 7 !important;
+            }
+            /* Monetization slot hidden on mobile to reduce clutter */
+            #carDetailModal #carDetailMonetizationSlot {
+                display: none !important;
+            }
+            /* Gallery: big image full width, thumbnails below in a row */
+            #carDetailModal .detail-gallery-shell {
+                flex-direction: column !important;
+                gap: 8px !important;
+                display: flex !important;
+            }
             #carDetailModal #carDetailThumbnails {
-                height: 280px !important;
+                display: flex !important;
+                flex-direction: row !important;
+                width: 100% !important;
+                height: 80px !important;
+                gap: 8px !important;
             }
             #carDetailModal #carDetailThumbnails img {
-                height: 100% !important;
-                min-height: 80px !important;
-                flex: 0 0 auto !important;
+                flex: 1 1 0 !important;
+                width: 0 !important;
+                height: 80px !important;
+                min-height: unset !important;
+                border-radius: 6px !important;
+                object-fit: cover !important;
             }
+            #carDetailModal #carDetailCarouselMain img { height: 240px !important; }
+            #carDetailModal .detail-specs-grid { grid-template-columns: 1fr 1fr !important; }
+            #carDetailModal .detail-summary-card { padding: 16px !important; }
+        }
+
+        @media (max-width: 575.98px) {
+            #carDetailModal .detail-shell { padding: 12px 10px 32px !important; }
+            #carDetailModal #carDetailCarouselMain img { height: 210px !important; }
+            #carDetailModal #carDetailThumbnails { height: 68px !important; }
+            #carDetailModal #carDetailThumbnails img { height: 68px !important; }
         }
 
         /* ═══ CAR DETAIL MODAL — REDESIGN OVERRIDES ═══ */
@@ -5541,7 +5598,7 @@
                             <!-- Left Column: Large Image Gallery + Specs Table -->
                             <div class="col-lg-7 detail-media-column">
                                 <!-- Image Gallery -->
-                                <div class="position-relative">
+                                <div class="position-relative detail-gallery-wrap">
                                     <div class="detail-gallery-shell">
                                         <!-- Main Large Image -->
                                         <div style="flex: 1;">
@@ -5569,7 +5626,7 @@
                                     </div>
 
                                     <!-- Photo Counter (Clickable) -->
-                                    <div class="text-center mt-2">
+                                    <div class="text-center mt-2 detail-photo-counter-wrap">
                                         <a href="#" id="photoCountText" title="Click to browse all photos" style="cursor:pointer;">
                                             <i class="fas fa-camera me-1"></i> 46 Photos
                                         </a>
