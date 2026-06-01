@@ -522,10 +522,10 @@
             --iw-blue:       #002f6c;   /* CarWale deep navy */
             --iw-blue-mid:   #1a4da6;
             --iw-blue-light: #e8f0fe;
-            --iw-orange:     #e8520a;   /* CarWale accent orange */
+            --iw-orange:     #c0392b;   /* CarWale accent orange */
             --iw-orange-lt:  #fff3ee;
-            --iw-green:      #1a9e88;
-            --iw-bg:         #f7f4ee;
+            --iw-green:      #2e7d32;
+            --iw-bg:         #fafafa;
             --iw-surface:    #ffffff;
             --iw-border:     #dde3f0;
             --iw-text:       #1a1f36;
@@ -547,7 +547,7 @@
             font-family: inherit;
         }
         body.home-page {
-            background: #f7f4ee !important;
+            background: #fafafa !important;
             color: var(--iw-text) !important;
             margin: 0;
             padding-top: 0 !important;
@@ -558,7 +558,7 @@
             position: sticky !important;
             top: 0 !important;
             z-index: 1050 !important;
-            background: #f5efe6 !important;
+            background: #fafafa !important;
             backdrop-filter: none !important;
             -webkit-backdrop-filter: none !important;
             box-shadow: 0 1px 0 rgba(20,33,61,0.10) !important;
@@ -566,7 +566,7 @@
             transition: none !important;
         }
         .top-banner.is-scrolled {
-            background: #f5efe6 !important;
+            background: #fafafa !important;
             backdrop-filter: none !important;
             box-shadow: 0 2px 10px rgba(20,33,61,0.10) !important;
         }
@@ -594,7 +594,7 @@
             gap: 4px !important;
         }
         .home-nav a {
-            color: #b95730 !important;
+            color: #a23226 !important;
             font-size: 0.875rem !important;
             font-weight: 600 !important;
             text-decoration: none !important;
@@ -633,11 +633,11 @@
         .banner-icon:hover,
         .banner-contact:hover {
             background: rgba(185,87,48,0.08) !important;
-            color: #b95730 !important;
+            color: #a23226 !important;
             border-color: rgba(185,87,48,0.25) !important;
             transform: none !important;
         }
-        .banner-icon i, .banner-contact i { font-size: 0.9rem !important; color: #b95730 !important; }
+        .banner-icon i, .banner-contact i { font-size: 0.9rem !important; color: #a23226 !important; }
 
         /* ── 4. HERO SECTION ───────────────────────────────────── */
         .home-shell { padding: 0 !important; }
@@ -645,10 +645,10 @@
 
         .home-hero-card {
             border-radius: 0 !important;
-            padding: 72px 0 50px !important;
+            padding: 44px 0 64px !important;
             background:
-                linear-gradient(105deg, rgba(6,28,46,0.97) 0%, rgba(8,40,60,0.92) 50%, rgba(10,55,70,0.82) 100%),
-                url('Images/final_banner.jpg') center right/cover no-repeat !important;
+                linear-gradient(105deg, rgba(6,28,46,0.55) 0%, rgba(8,40,60,0.28) 42%, rgba(10,55,70,0.05) 70%, rgba(10,55,70,0) 100%),
+                url('Images/final_banner.jpg') right 58%/cover no-repeat !important;
             box-shadow: none !important;
         }
         .home-hero-card::before {
@@ -681,11 +681,12 @@
             border-radius: 0 !important;
             background: transparent !important;
             border: none !important;
-            color: rgba(255,255,255,0.70) !important;
+            color: rgba(255,255,255,0.88) !important;
             font-size: 0.78rem !important;
             font-weight: 600 !important;
             letter-spacing: .14em !important;
             text-transform: uppercase !important;
+            text-shadow: 0 1px 8px rgba(2, 14, 28, 0.6) !important;
         }
         .home-hero-copy h1 {
             margin: 16px 0 18px !important;
@@ -695,6 +696,7 @@
             font-weight: 800 !important;
             letter-spacing: -.02em !important;
             max-width: 100% !important;
+            text-shadow: 0 2px 18px rgba(2, 14, 28, 0.55), 0 1px 4px rgba(2, 14, 28, 0.6) !important;
         }
         .home-hero-copy p {
             color: rgba(255,255,255,.78) !important;
@@ -708,10 +710,11 @@
             flex-wrap: wrap !important;
             gap: 12px !important;
             margin-bottom: 36px !important;
+            align-items: flex-start !important;
         }
         .home-btn-primary {
             border: none !important;
-            background: linear-gradient(135deg, var(--iw-orange), #ff7043) !important;
+            background: linear-gradient(135deg, var(--iw-orange), #d35f52) !important;
             color: #fff !important;
             border-radius: 10px !important;
             min-height: 50px !important;
@@ -719,7 +722,7 @@
             font-size: .95rem !important;
             font-weight: 700 !important;
             gap: 8px !important;
-            box-shadow: 0 12px 28px rgba(232,82,10,.32) !important;
+            box-shadow: 0 12px 28px rgba(192,57,43,.32) !important;
             text-decoration: none !important;
             display: inline-flex !important;
             align-items: center !important;
@@ -727,7 +730,7 @@
         .home-btn-primary:hover {
             color: #fff !important;
             transform: translateY(-2px) !important;
-            box-shadow: 0 16px 32px rgba(232,82,10,.42) !important;
+            box-shadow: 0 16px 32px rgba(192,57,43,.42) !important;
         }
         .home-btn-secondary {
             border: 1.5px solid rgba(255,255,255,.32) !important;
@@ -919,7 +922,7 @@
             justify-content: center !important;
             border-radius: 10px !important;
             background: rgba(255,255,255,.14) !important;
-            color: #ffb380 !important;
+            color: #e98a7f !important;
             font-size: 1.1rem !important;
         }
         .home-strip-copy strong {
@@ -980,8 +983,8 @@
             align-items: center !important;
             justify-content: space-between !important;
             gap: 24px !important;
-            border: 1px solid rgba(232,82,10,0.18) !important;
-            box-shadow: 0 2px 16px rgba(232,82,10,0.07) !important;
+            border: 1px solid rgba(192,57,43,0.18) !important;
+            box-shadow: 0 2px 16px rgba(192,57,43,0.07) !important;
         }
         .home-cta-band h3 {
             color: #0b2154 !important;
@@ -997,8 +1000,8 @@
         }
         .home-cta-band .home-hero-actions { margin-bottom: 0 !important; flex-shrink: 0 !important; }
         .home-cta-band .home-btn-primary {
-            background: #e8520a !important;
-            border-color: #e8520a !important;
+            background: #c0392b !important;
+            border-color: #c0392b !important;
             color: #fff !important;
         }
         .home-cta-band .home-btn-secondary {
@@ -1032,8 +1035,8 @@
             width: 36px !important;
             height: 36px !important;
             border-radius: 10px !important;
-            background: rgba(232,82,10,0.1) !important;
-            color: #e8520a !important;
+            background: rgba(192,57,43,0.1) !important;
+            color: #c0392b !important;
             font-size: 0.9rem !important;
             font-weight: 800 !important;
             margin-bottom: 14px !important;
@@ -1064,7 +1067,7 @@
             padding: 24px 22px !important;
             box-shadow: 0 2px 12px rgba(20,33,61,0.06) !important;
             transition: box-shadow .2s, transform .2s !important;
-            border-top: 3px solid #e8520a !important;
+            border-top: 3px solid #c0392b !important;
         }
         .home-service-card:hover {
             box-shadow: 0 6px 24px rgba(20,33,61,0.1) !important;
@@ -1077,8 +1080,8 @@
             width: 44px !important;
             height: 44px !important;
             border-radius: 12px !important;
-            background: rgba(232,82,10,0.1) !important;
-            color: #e8520a !important;
+            background: rgba(192,57,43,0.1) !important;
+            color: #c0392b !important;
             font-size: 1.1rem !important;
             margin-bottom: 14px !important;
         }
@@ -1116,7 +1119,7 @@
             width: 5px !important;
             height: 5px !important;
             border-radius: 50% !important;
-            background: #e8520a !important;
+            background: #c0392b !important;
         }
 
         /* ── 10. STORY CARDS ───────────────────────────────────── */
@@ -1139,8 +1142,8 @@
             width: 40px !important;
             height: 40px !important;
             border-radius: 10px !important;
-            background: rgba(232,82,10,0.1) !important;
-            color: #e8520a !important;
+            background: rgba(192,57,43,0.1) !important;
+            color: #c0392b !important;
             font-size: 1rem !important;
             margin-bottom: 12px !important;
         }
@@ -1162,7 +1165,7 @@
             gap: 10px !important;
         }
         .home-story-icon-item {
-            background: #f7f4ee !important;
+            background: #fafafa !important;
             border: 1px solid rgba(20,33,61,0.07) !important;
             border-radius: 10px !important;
             padding: 14px 12px !important;
@@ -1174,8 +1177,8 @@
             width: 32px !important;
             height: 32px !important;
             border-radius: 8px !important;
-            background: rgba(232,82,10,0.1) !important;
-            color: #e8520a !important;
+            background: rgba(192,57,43,0.1) !important;
+            color: #c0392b !important;
             font-size: .85rem !important;
             margin-bottom: 8px !important;
         }
@@ -1208,11 +1211,11 @@
 
         /* ── 11. FEATURED CARS SECTION (homepage slider) ────────── */
         .iw-featured-section {
-            background: #f7f4ee !important;
+            background: #fafafa !important;
             padding: 8px 0 16px !important;
         }
         .iw-featured-section .container { max-width: 1320px !important; }
-        #marketplace { background: #f7f4ee !important; }
+        #marketplace { background: #fafafa !important; }
         #marketplace .container { max-width: 1320px !important; }
 
         .price-filter-tab {
@@ -1248,7 +1251,7 @@
             text-shadow: 0 2px 8px rgba(0,0,0,.5) !important;
         }
         .car-price {
-            color: #ffe082 !important;
+            color: #c0392b !important;
             font-weight: 700 !important;
         }
 
@@ -1437,21 +1440,21 @@
     <!-- Homepage Redesign -->
     <style>
         :root {
-            --home-bg: #f4efe6;
+            --home-bg: #fafafa;
             --home-surface: rgba(255, 250, 244, 0.82);
             --home-surface-strong: #fffaf3;
             --home-ink: #14213d;
             --home-ink-soft: #46546f;
-            --home-accent: #d86f45;
-            --home-accent-dark: #b95730;
-            --home-highlight: #167c74;
+            --home-accent: #c0392b;
+            --home-accent-dark: #a23226;
+            --home-highlight: #c0392b;
             --home-icon: #4e8a84;
             --home-line: rgba(20, 33, 61, 0.12);
             --home-shadow: 0 24px 60px rgba(27, 39, 59, 0.14);
         }
 
         body.home-page {
-            background: #f8f3eb;
+            background: #fafafa;
             color: var(--home-ink);
         }
 
@@ -1571,10 +1574,10 @@
             position: relative !important;
             overflow: visible !important;
             border-radius: 0 !important;
-            padding: 72px 0 50px !important;
+            padding: 44px 0 64px !important;
             background:
-                linear-gradient(105deg, rgba(6,28,46,0.97) 0%, rgba(8,40,60,0.92) 50%, rgba(10,55,70,0.82) 100%),
-                url('Images/final_banner.jpg') center right/cover no-repeat !important;
+                linear-gradient(105deg, rgba(6,28,46,0.55) 0%, rgba(8,40,60,0.28) 42%, rgba(10,55,70,0.05) 70%, rgba(10,55,70,0) 100%),
+                url('Images/final_banner.jpg') right 58%/cover no-repeat !important;
             box-shadow: none !important;
         }
         .home-hero-slim-inner {
@@ -1616,16 +1619,17 @@
             font-weight: 700;
             letter-spacing: 0.12em;
             text-transform: uppercase;
-            color: #e8520a;
+            color: #c0392b;
             white-space: nowrap;
             margin: 0;
         }
+        .iw-checks-label .lbl-short { display: none; }
         .iw-checks-sep {
             display: inline-block;
             width: 3px;
             height: 3px;
             border-radius: 50%;
-            background: rgba(232,82,10,0.4);
+            background: rgba(192,57,43,0.4);
             margin: 0 8px;
             flex-shrink: 0;
         }
@@ -1659,7 +1663,7 @@
             cursor: default;
             transition: background 0.15s;
         }
-        .iw-check-item:hover { background: rgba(232,82,10,0.03); }
+        .iw-check-item:hover { background: rgba(192,57,43,0.03); }
         .iw-check-item:nth-child(5n) { border-right: none; }
         .iw-check-item:nth-last-child(-n+5) { border-bottom: none; }
         .iw-check-icon {
@@ -1670,13 +1674,13 @@
             height: 20px;
             min-width: 20px;
             border-radius: 5px;
-            background: rgba(232,82,10,0.08);
+            background: rgba(192,57,43,0.08);
             flex-shrink: 0;
         }
         .iw-check-icon i {
             font-size: 0.62rem;
             line-height: 1;
-            color: #e8520a;
+            color: #c0392b;
         }
         .iw-check-label {
             font-size: 0.65rem;
@@ -1690,7 +1694,7 @@
         /* ── SERVICES WE PROVIDE (below featured cars) ─────────── */
         .iw-services-section {
             padding: 12px 0 16px;
-            background: #f7f4ee !important;
+            background: #fafafa !important;
         }
         .iw-services-section-inner {
             width: min(1280px, calc(100% - 40px));
@@ -1703,7 +1707,7 @@
             font-weight: 700;
             letter-spacing: 0.12em;
             text-transform: uppercase;
-            color: #e8520a;
+            color: #c0392b;
             margin-bottom: 4px;
         }
         .iw-services-section-title {
@@ -1744,7 +1748,7 @@
             border-right: none;
         }
         .iw-svc-item:hover {
-            background: rgba(232,82,10,0.04);
+            background: rgba(192,57,43,0.04);
             color: #14213d;
         }
         .iw-svc-item-icon {
@@ -1755,13 +1759,13 @@
             height: 38px;
             min-width: 38px;
             border-radius: 10px;
-            background: rgba(232,82,10,0.1);
+            background: rgba(192,57,43,0.1);
             flex-shrink: 0;
         }
         .iw-svc-item-icon i {
             font-size: 1rem;
             line-height: 1;
-            color: #e8520a;
+            color: #c0392b;
         }
         .iw-svc-item-name {
             font-weight: 700;
@@ -1780,12 +1784,29 @@
             .iw-services-section-inner { width: calc(100% - 40px); }
         }
         @media (max-width: 767.98px) {
-            .iw-checks-float-wrap { margin-top: -38px; }
-            .iw-checks-card { width: calc(100% - 32px); padding: 9px 12px 8px; border-radius: 12px; }
-            .iw-check-item { padding: 6px 4px; gap: 4px; }
-            .iw-check-icon { width: 18px; height: 18px; min-width: 18px; }
-            .iw-check-icon i { font-size: 0.55rem; }
-            .iw-check-label { font-size: 0.58rem; white-space: normal; }
+            .iw-checks-float-wrap { margin-top: -34px; }
+            .iw-checks-card { width: calc(100% - 28px); padding: 14px 16px 12px; border-radius: 14px; }
+            .iw-checks-header-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+                margin-bottom: 12px;
+            }
+            .iw-checks-label { font-size: 0.66rem; letter-spacing: 0.06em; gap: 7px; }
+            .iw-checks-label .lbl-full { display: none; }
+            .iw-checks-label .lbl-short { display: inline; }
+            .iw-checks-label::before {
+                content: "";
+                width: 5px; height: 5px;
+                border-radius: 50%;
+                background: #c0392b;
+                flex-shrink: 0;
+            }
+            .iw-checks-sep, .iw-checks-divider-line { display: none; }
+            .iw-check-item { justify-content: flex-start; align-items: center; padding: 11px 12px; gap: 9px; }
+            .iw-check-icon { width: 24px; height: 24px; min-width: 24px; }
+            .iw-check-icon i { font-size: 0.72rem; }
+            .iw-check-label { font-size: 0.72rem; line-height: 1.25; white-space: normal; text-align: left; }
             .iw-services-section-inner { width: calc(100% - 32px); }
             .iw-services-mini-row {
                 flex-direction: column;
@@ -1820,7 +1841,7 @@
             font-weight: 700;
             letter-spacing: 0.13em;
             text-transform: uppercase;
-            color: #e8520a;
+            color: #c0392b;
             margin-bottom: 12px;
         }
 
@@ -1847,8 +1868,8 @@
             height: 30px;
             min-width: 30px;
             border-radius: 8px;
-            background: rgba(232,82,10,0.1);
-            color: #e8520a;
+            background: rgba(192,57,43,0.1);
+            color: #c0392b;
             font-size: 0.72rem;
             font-weight: 800;
             display: flex;
@@ -1901,8 +1922,8 @@
             height: 36px;
             min-width: 36px;
             border-radius: 9px;
-            background: rgba(232,82,10,0.1);
-            color: #e8520a;
+            background: rgba(192,57,43,0.1);
+            color: #c0392b;
             font-size: 0.9rem;
             display: flex;
             align-items: center;
@@ -1913,7 +1934,7 @@
             font-weight: 700;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: #e8520a;
+            color: #c0392b;
             line-height: 1;
             margin-bottom: 3px;
         }
@@ -1940,7 +1961,7 @@
             color: rgba(40,55,80,0.85);
         }
         .iw-compact-list li i {
-            color: #e8520a;
+            color: #c0392b;
             font-size: 0.7rem;
             margin-top: 3px;
             flex-shrink: 0;
@@ -1987,15 +2008,15 @@
             width: 100vw;
             transform: translateX(-50%);
             z-index: -1;
-            background: var(--home-band-bg, #f7f4ee);
+            background: var(--home-band-bg, #fafafa);
         }
 
         .home-band-warm {
-            --home-band-bg: #f7f4ee;
+            --home-band-bg: #fafafa;
         }
 
         .home-band-light {
-            --home-band-bg: #f7f4ee;
+            --home-band-bg: #fafafa;
         }
 
         .home-hero-card::before {
@@ -2006,6 +2027,8 @@
             position: relative;
             z-index: 1;
         }
+
+        .home-hero-mobile-img { display: none; }
 
         .home-eyebrow {
             display: inline-flex;
@@ -2063,15 +2086,15 @@
 
         .home-btn-primary {
             border: none;
-            background: linear-gradient(135deg, var(--home-accent), #ef9362);
+            background: linear-gradient(135deg, var(--home-accent), #d35f52);
             color: #fff;
-            box-shadow: 0 16px 35px rgba(216, 111, 69, 0.28);
+            box-shadow: 0 16px 35px rgba(192, 57, 43, 0.28);
         }
 
         .home-btn-primary:hover {
             color: #fff;
             transform: translateY(-2px);
-            box-shadow: 0 18px 38px rgba(216, 111, 69, 0.34);
+            box-shadow: 0 18px 38px rgba(192, 57, 43, 0.34);
         }
 
         .home-btn-secondary {
@@ -2175,8 +2198,8 @@
         .hero-contact-card .form-control:focus,
         .hero-mobile-form-card input:focus,
         .hero-mobile-form-card textarea:focus {
-            border-color: rgba(22, 124, 116, 0.45);
-            box-shadow: 0 0 0 4px rgba(22, 124, 116, 0.12);
+            border-color: rgba(192, 57, 43, 0.45);
+            box-shadow: 0 0 0 4px rgba(192, 57, 43, 0.12);
         }
 
         .hero-contact-card textarea,
@@ -2190,10 +2213,10 @@
             min-height: 54px;
             border: none;
             border-radius: 16px;
-            background: linear-gradient(135deg, var(--home-highlight), #26a69a);
+            background: linear-gradient(135deg, var(--home-highlight), #c0392b);
             color: #fff;
             font-weight: 700;
-            box-shadow: 0 16px 30px rgba(22, 124, 116, 0.25);
+            box-shadow: 0 16px 30px rgba(192, 57, 43, 0.25);
         }
 
         .hero-form-toast {
@@ -2204,7 +2227,7 @@
             padding: 10px 12px;
             border-radius: 14px;
             font-size: 0.88rem;
-            background: rgba(22, 124, 116, 0.92);
+            background: rgba(192, 57, 43, 0.92);
             color: #fff;
         }
 
@@ -2598,7 +2621,7 @@
             gap: 24px;
             background: linear-gradient(135deg, #fff8f3 0%, #fef3ea 100%);
             border-radius: 14px;
-            border: 1px solid rgba(232,82,10,0.18);
+            border: 1px solid rgba(192,57,43,0.18);
         }
 
         .home-cta-band h3 {
@@ -2724,16 +2747,53 @@
                 margin: 0;
             }
 
+            /* Mobile hero: use the ORIGINAL banner image covering the whole
+               section — text overlays the top gray band, car sits in the
+               middle, and the action buttons overlay the bottom gray band. */
             .home-hero-card {
                 border-radius: 0;
-                padding: 40px 0 44px;
+                min-height: 420px;
+                display: flex !important;
+                flex-direction: column;
+                justify-content: space-between;
+                padding: 22px 0 24px !important;
+                background:
+                    linear-gradient(to bottom,
+                        rgba(20,23,27,0.82) 0%,
+                        rgba(20,23,27,0.34) 18%,
+                        rgba(20,23,27,0.05) 42%,
+                        rgba(20,23,27,0.24) 74%,
+                        rgba(20,23,27,0.86) 100%),
+                    url('Images/final_banner.jpg') center 1% / 126% auto no-repeat,
+                    #1b1e22 !important;
             }
             .home-hero-slim-inner {
-                padding: 0 16px;
+                width: 100%;
+                padding: 0 18px;
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+            }
+            .home-hero-copy {
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+            }
+            /* Car image is shown by the banner background now */
+            .home-hero-mobile-img { display: none !important; }
+            .home-hero-actions {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                margin: auto 0 0;
+            }
+            .home-hero-copy h1 {
+                margin: 10px auto 0;
             }
 
             .home-eyebrow {
-                font-size: 0.82rem;
+                font-size: 0.78rem;
             }
 
             .hero-mobile-form-card {
@@ -2938,10 +2998,11 @@
                     <div class="home-hero-copy">
                         <span class="home-eyebrow">Mumbai • Navi Mumbai • Thane • Kalyan</span>
                         <h1>Safety starts with inspection.</h1>
+                        <div class="home-hero-mobile-img" aria-hidden="true"></div>
                         <div class="home-hero-actions">
-                            <button type="button" class="home-btn-primary" data-bs-toggle="modal" data-bs-target="#usedCarInspectionModal">
+                            <button type="button" class="home-btn-primary" data-bs-toggle="modal" data-bs-target="#bookInspectionModal">
                                 <i class="fas fa-search"></i>
-                                <span>Book Used Car Inspection</span>
+                                <span>Book Inspection</span>
                             </button>
                             <a href="#marketplace" class="home-btn-secondary">
                                 <i class="fas fa-car-side"></i>
@@ -2959,11 +3020,11 @@
     <div class="iw-checks-float-wrap">
         <div class="iw-checks-card">
             <div class="iw-checks-header-row">
-                <span class="iw-checks-label">160+ point inspection covers</span>
+                <span class="iw-checks-label"><span class="lbl-full">160+ point inspection covers</span><span class="lbl-short">160+ point inspection</span></span>
                 <span class="iw-checks-sep"></span>
-                <span class="iw-checks-label">Same-day report for faster decisions</span>
+                <span class="iw-checks-label"><span class="lbl-full">Same-day report for faster decisions</span><span class="lbl-short">Same-day report</span></span>
                 <span class="iw-checks-sep"></span>
-                <span class="iw-checks-label">Buyer-first insights, not dealer-driven</span>
+                <span class="iw-checks-label"><span class="lbl-full">Buyer-first insights, not dealer-driven</span><span class="lbl-short">Buyer-first, unbiased</span></span>
                 <div class="iw-checks-divider-line"></div>
             </div>
             <div class="iw-checks-grid">
@@ -3016,7 +3077,7 @@
         <div class="container">
             <div class="d-flex align-items-center justify-content-between mb-3 home-marketplace-header">
                 <div>
-                    <span style="display:block; color:#b95730; font-size:0.8rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;">Featured Cars</span>
+                    <span style="display:block; color:#a23226; font-size:0.8rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;">Featured Cars</span>
                 </div>
                 <button type="button" class="btn sell-car-btn home-marketplace-sell" data-bs-toggle="modal" data-bs-target="#listCarModal">
                     Sell Your Car <span class="sell-car-dot">•</span>
@@ -3082,7 +3143,7 @@
             <!-- View More Button -->
             <div class="text-center mt-3">
                 <a href="car-marketplace/index.html" id="viewMoreUsedCarsBtn" class="btn view-more-btn" onclick="navigateToMarketplaceWithFilter(event)">
-                    View More <i class="fas fa-chevron-right ms-2"></i>
+                    View More Cars <i class="fas fa-chevron-right ms-2"></i>
                 </a>
             </div>
         </div>
@@ -3095,40 +3156,14 @@
                 <h3>Need an inspection or want to list a car today?</h3>
             </div>
             <div class="home-hero-actions mb-0">
-                <button type="button" class="home-btn-primary" data-bs-toggle="modal" data-bs-target="#newCarInspectionModal">
-                    <i class="fas fa-car"></i>
+                <button type="button" class="home-btn-primary" data-bs-toggle="modal" data-bs-target="#bookInspectionModal">
+                    <i class="fas fa-clipboard-check"></i>
                     <span>Book Inspection</span>
                 </button>
                 <button type="button" class="home-btn-secondary" data-bs-toggle="modal" data-bs-target="#listCarModal">
-                    <i class="fas fa-plus-circle"></i>
+                    <i class="fas fa-tag"></i>
                     <span>List Your Car</span>
                 </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- ═══ SERVICES WE PROVIDE ═══ -->
-    <section class="iw-services-section home-band">
-        <div class="iw-services-section-inner">
-            <span class="iw-services-section-label">What We Offer</span>
-            <h2 class="iw-services-section-title">Services We Provide</h2>
-            <div class="iw-services-mini-row">
-                <button type="button" class="iw-svc-item" data-partner-service="loan" data-partner-service-source="homepage" data-partner-service-copy="Compare EMI-fit finance options once the car and budget look right.">
-                    <span class="iw-svc-item-icon"><i class="fas fa-hand-holding-usd"></i></span>
-                    <span class="iw-svc-item-name">Car Loan</span>
-                </button>
-                <button type="button" class="iw-svc-item" data-partner-service="insurance" data-partner-service-source="homepage" data-partner-service-copy="Renew expiring policies or request quotes that match the inspected vehicle.">
-                    <span class="iw-svc-item-icon"><i class="fas fa-shield-alt"></i></span>
-                    <span class="iw-svc-item-name">Insurance</span>
-                </button>
-                <button type="button" class="iw-svc-item" data-bs-toggle="modal" data-bs-target="#usedCarInspectionModal">
-                    <span class="iw-svc-item-icon"><i class="fas fa-clipboard-check"></i></span>
-                    <span class="iw-svc-item-name">Inspection</span>
-                </button>
-                <a href="car-marketplace/index.html" class="iw-svc-item">
-                    <span class="iw-svc-item-icon"><i class="fas fa-car-side"></i></span>
-                    <span class="iw-svc-item-name">Used Car Marketplace</span>
-                </a>
             </div>
         </div>
     </section>
@@ -3253,12 +3288,12 @@
             font-family: 'Montserrat', sans-serif;
         }
         .price-filter-tab:hover {
-            color: #26a69a;
+            color: #c0392b;
             background: rgba(38, 166, 154, 0.05);
         }
         .price-filter-tab.active {
-            color: #26a69a;
-            border-bottom-color: #26a69a;
+            color: #c0392b;
+            border-bottom-color: #c0392b;
             font-weight: 600;
         }
         /* Note: removed transform-based auto-scroll to avoid white/blank space while scrolling */
@@ -3497,8 +3532,8 @@
         /* Sell Your Car Button - Green */
         .sell-car-btn {
             background: #fff;
-            border: 2px solid #26a69a;
-            color: #26a69a;
+            border: 2px solid #c0392b;
+            color: #c0392b;
             padding: 10px 25px;
             border-radius: 30px;
             font-weight: 500;
@@ -3506,7 +3541,7 @@
             transition: all 0.3s ease;
         }
         .sell-car-btn:hover {
-            background: #26a69a;
+            background: #c0392b;
             color: #fff;
         }
 
@@ -3526,7 +3561,7 @@
         }
         /* View More Button - Green */
         .view-more-btn {
-            background: #26a69a;
+            background: #c0392b;
             color: #fff;
             padding: 12px 30px;
             border-radius: 30px;
@@ -3536,7 +3571,7 @@
             text-decoration: none;
         }
         .view-more-btn:hover {
-            background: #1e8e82;
+            background: #a23226;
             color: #fff;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(38, 166, 154, 0.3);
@@ -3642,6 +3677,148 @@
                 font-size: 0.53rem;
             }
         }
+
+        /* ── Featured car cards — CarWale-style redesign (overrides) ── */
+        .popular-car-card {
+            display: flex !important;
+            flex-direction: column !important;
+            aspect-ratio: auto !important;
+            height: auto !important;
+            background: #ffffff !important;
+            border: 1px solid #e3e6ec !important;
+            border-radius: 0 !important;
+            box-shadow: 0 1px 3px rgba(17,27,49,0.08) !important;
+            overflow: hidden !important;
+        }
+        .popular-car-card:hover {
+            box-shadow: 0 10px 26px rgba(17,27,49,0.16) !important;
+            transform: translateY(-3px) !important;
+        }
+        .popular-car-card.loading-card {
+            aspect-ratio: 4 / 3 !important;
+            border-style: dashed !important;
+            background: #eef1f6 !important;
+        }
+        .popular-car-card .car-image-wrapper {
+            position: relative !important;
+            inset: auto !important;
+            width: 100% !important;
+            aspect-ratio: 4 / 3 !important;
+            height: auto !important;
+            flex: 0 0 auto !important;
+            border-radius: 0 !important;
+            overflow: hidden !important;
+            background: #eef1f6 !important;
+        }
+        .popular-car-card .car-image-wrapper::after {
+            display: none !important;
+            content: none !important;
+        }
+        .popular-car-card .car-image-wrapper img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            transition: transform 0.3s ease !important;
+        }
+        .popular-car-card:hover .car-image-wrapper img {
+            transform: scale(1.05) !important;
+        }
+        .popular-car-location-badge {
+            position: absolute !important;
+            top: 8px !important;
+            left: 8px !important;
+            z-index: 2 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 4px !important;
+            padding: 3px 8px !important;
+            background: rgba(17, 24, 42, 0.88) !important;
+            color: #ffffff !important;
+            font-size: 0.66rem !important;
+            font-weight: 600 !important;
+            line-height: 1.2 !important;
+            border-radius: 0 !important;
+            letter-spacing: 0.01em !important;
+        }
+        .popular-car-location-badge i { font-size: 0.62rem !important; }
+        .popular-car-card .car-info {
+            position: static !important;
+            inset: auto !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0 !important;
+            padding: 10px 12px 12px !important;
+            background: #ffffff !important;
+            pointer-events: auto !important;
+            flex: 1 1 auto !important;
+        }
+        .popular-car-card .car-name {
+            font-family: 'Montserrat','Inter',sans-serif !important;
+            font-size: 0.9rem !important;
+            font-weight: 600 !important;
+            color: #1a1f36 !important;
+            text-shadow: none !important;
+            margin: 0 !important;
+            line-height: 1.3 !important;
+            display: -webkit-box !important;
+            -webkit-line-clamp: 1 !important;
+            line-clamp: 1 !important;
+            -webkit-box-orient: vertical !important;
+            overflow: hidden !important;
+            min-height: 0 !important;
+        }
+        .car-specs {
+            display: flex !important;
+            align-items: center !important;
+            flex-wrap: wrap !important;
+            gap: 6px !important;
+            margin-top: 6px !important;
+            font-size: 0.72rem !important;
+            color: #6b7280 !important;
+        }
+        .car-spec-sep {
+            display: inline-block;
+            width: 1px;
+            height: 11px;
+            background: #d3d8e0;
+        }
+        .popular-car-card .car-price {
+            display: block !important;
+            margin: 8px 0 0 !important;
+            padding: 0 !important;
+            background: none !important;
+            box-shadow: none !important;
+            color: #a23226 !important;
+            font-weight: 700 !important;
+            font-size: 0.95rem !important;
+            letter-spacing: 0 !important;
+            min-height: 0 !important;
+        }
+        .car-view-listing {
+            display: block !important;
+            text-align: center !important;
+            margin-top: 10px !important;
+            padding: 7px 0 !important;
+            border: 1.5px solid #a23226 !important;
+            color: #a23226 !important;
+            background: #ffffff !important;
+            font-size: 0.78rem !important;
+            font-weight: 600 !important;
+            border-radius: 0 !important;
+            transition: background 0.2s ease, color 0.2s ease !important;
+        }
+        .popular-car-card:hover .car-view-listing {
+            background: #a23226 !important;
+            color: #ffffff !important;
+        }
+        @media (max-width: 575.98px) {
+            .popular-car-card .car-info { padding: 8px 9px 10px !important; }
+            .popular-car-card .car-name { font-size: 0.82rem !important; }
+            .car-specs { font-size: 0.66rem !important; gap: 5px !important; margin-top: 5px !important; }
+            .popular-car-card .car-price { font-size: 0.86rem !important; }
+            .car-view-listing { font-size: 0.72rem !important; margin-top: 8px !important; }
+        }
     </style>
     
     <script>
@@ -3665,22 +3842,26 @@
         const POPULAR_CAR_FALLBACKS = [
             {
                 listingId: 'placeholder-003',
-                car: { make: 'Maruti Suzuki', model: 'Baleno', edition: 'Delta CVT', expectedPrice: 825000, kmsDriven: 15000 },
+                city: 'Mumbai',
+                car: { make: 'Maruti Suzuki', model: 'Baleno', edition: 'Delta CVT', expectedPrice: 825000, kmsDriven: 15000, registrationYear: '2021', fuelType: 'Petrol' },
                 photos: { exteriorFront: '/Images/Car-1.jpg' }
             },
             {
                 listingId: 'placeholder-004',
-                car: { make: 'Honda', model: 'Amaze', edition: 'VX Petrol', expectedPrice: 695000, kmsDriven: 22000 },
+                city: 'Thane',
+                car: { make: 'Honda', model: 'Amaze', edition: 'VX Petrol', expectedPrice: 695000, kmsDriven: 22000, registrationYear: '2019', fuelType: 'Petrol' },
                 photos: { exteriorFront: '/Images/Car-2.jpg' }
             },
             {
                 listingId: 'placeholder-001',
-                car: { make: 'Tata', model: 'Altroz', edition: 'XZ Plus', expectedPrice: 750000, kmsDriven: 32000 },
+                city: 'Navi Mumbai',
+                car: { make: 'Tata', model: 'Altroz', edition: 'XZ Plus', expectedPrice: 750000, kmsDriven: 32000, registrationYear: '2020', fuelType: 'Diesel' },
                 photos: { exteriorFront: '/Images/Car-3.jpg' }
             },
             {
                 listingId: 'placeholder-002',
-                car: { make: 'Hyundai', model: 'Grand i10', edition: 'Sportz', expectedPrice: 525000, kmsDriven: 38000 },
+                city: 'Kalyan',
+                car: { make: 'Hyundai', model: 'Grand i10', edition: 'Sportz', expectedPrice: 525000, kmsDriven: 38000, registrationYear: '2018', fuelType: 'Petrol' },
                 photos: { exteriorFront: '/Images/Car-4.jpg' }
             }
         ];
@@ -4012,6 +4193,41 @@
             rebuildPopularCars(track, POPULAR_CAR_FALLBACKS);
         }
 
+        function formatListingYear(listing) {
+            const car = listing?.car || {};
+            const raw = car.registrationYear || car.year || listing?.registrationYear || listing?.year || '';
+            const match = String(raw).match(/\d{4}/);
+            return match ? match[0] : '';
+        }
+
+        function formatListingFuel(listing) {
+            const car = listing?.car || {};
+            const raw = car.fuelType || car.fuel || listing?.fuelType || listing?.fuel || '';
+            const value = String(raw).trim();
+            if (!value) return '';
+            return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+        }
+
+        function formatListingCity(listing) {
+            const candidates = [
+                listing?.city,
+                listing?.location,
+                listing?.sellerCity,
+                listing?.seller?.city,
+                listing?.seller?.location,
+                listing?.metadata?.city,
+                listing?.metadata?.location,
+                listing?.car?.city
+            ];
+            for (const candidate of candidates) {
+                const value = String(candidate || '').trim();
+                if (value) {
+                    return value.charAt(0).toUpperCase() + value.slice(1);
+                }
+            }
+            return '';
+        }
+
         function buildPopularCarCard(listing, index = 0) {
             const title = buildPopularListingTitle(listing);
             const price = formatListingPrice(listing?.car?.expectedPrice ?? listing.expectedPrice);
@@ -4019,21 +4235,28 @@
             const listingId = listing?.listingId;
             const ctaUrl = listingId ? `${MARKETPLACE_ENTRY}?listingId=${encodeURIComponent(listingId)}` : MARKETPLACE_ENTRY;
             const eager = index < 2;
-            const sellerType = buildPopularSellerTypeLabel(listing);
-            const sellerClass = sellerType === 'Dealer' ? 'dealer' : '';
+            const city = formatListingCity(listing);
+            const year = formatListingYear(listing);
+            const kms = formatListingKms(listing?.car?.kmsDriven ?? listing?.kmsDriven ?? listing?.odometer);
+            const fuel = formatListingFuel(listing);
+            const specs = [year, kms, fuel].filter(Boolean);
+            const specsHtml = specs.length
+                ? `<div class="car-specs">${specs.map(s => `<span class="car-spec">${s}</span>`).join('<span class="car-spec-sep"></span>')}</div>`
+                : '';
+            const locationBadge = city
+                ? `<span class="popular-car-location-badge"><i class="fas fa-map-marker-alt"></i>${city}</span>`
+                : '';
             return `
                 <a href="${ctaUrl}" class="popular-car-card" aria-label="View details for ${title}">
                     <div class="car-image-wrapper">
-                        <span class="popular-car-seller-badge ${sellerClass}">${sellerType}</span>
+                        ${locationBadge}
                         <img src="${photo}" alt="${title}" loading="${eager ? 'eager' : 'lazy'}" fetchpriority="${eager ? 'high' : 'low'}" decoding="async" onerror="this.onerror=null;this.src='${POPULAR_FALLBACK_IMAGE}'">
                     </div>
                     <div class="car-info">
-                        <div class="car-title-row">
-                            <h5 class="car-name">${title}</h5>
-                        </div>
-                        <div class="car-card-footer">
-                            <p class="car-price">${price}</p>
-                        </div>
+                        <h5 class="car-name">${title}</h5>
+                        ${specsHtml}
+                        <p class="car-price">${price}</p>
+                        <span class="car-view-listing">View Listing</span>
                     </div>
                 </a>`;
         }
@@ -4069,9 +4292,9 @@
             const numeric = Number(String(value).replace(/[^0-9.]/g, ''));
             if (!Number.isFinite(numeric) || numeric <= 0) return 'Price on request';
             if (numeric >= 100000) {
-                return `Rs. ${(numeric / 100000).toFixed(2)} Lakh`;
+                return `₹ ${(numeric / 100000).toFixed(2)} Lakh`;
             }
-            return `Rs. ${numeric.toLocaleString('en-IN')}`;
+            return `₹ ${numeric.toLocaleString('en-IN')}`;
         }
 
         function formatListingKms(value) {
@@ -4347,14 +4570,14 @@
             }
 
             .iw-sleek-form .btn-success {
-                background: #167c74;
-                border-color: #167c74;
+                background: #2e7d32;
+                border-color: #2e7d32;
             }
 
             .iw-sleek-form .btn-success:hover,
             .iw-sleek-form .btn-success:focus {
-                background: #11665f;
-                border-color: #11665f;
+                background: #256628;
+                border-color: #256628;
             }
 
             .iw-sleek-form .btn-outline-secondary,
@@ -4929,16 +5152,44 @@
         </div>
     </div>
 
-    <!-- USED CAR INSPECTION MODAL -->
-    <div class="modal fade" id="usedCarInspectionModal" tabindex="-1" aria-labelledby="usedCarInspectionLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content iw-sleek-modal-shell" style="border-radius: 16px; overflow: hidden;">
-                <div class="modal-header" style="background: #528FF0; border: none; padding: 20px 24px;">
-                    <h5 class="modal-title text-white" id="usedCarInspectionLabel" style="font-family: 'Montserrat', sans-serif; font-size: 1.5rem; font-weight: 700;">Book an Inspection</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-4" style="background: linear-gradient(180deg, #f5f5f5 0%, #e8e8e8 100%);">
-                    <form id="usedCarInspectionForm" class="iw-sleek-form" novalidate>
+    <!-- BOOK INSPECTION MODAL (Used Car / New Car PDI tabs) -->
+    <style>
+        #bookInspectionModal .modal-dialog { max-width: 520px; }
+        #bookInspectionModal .modal-content { border: none; border-radius: 16px; overflow: hidden; background: #f4f5f7; box-shadow: 0 30px 70px rgba(10,18,38,0.4); }
+        .iw-book-modal-body { padding: 24px 24px 22px; position: relative; }
+        .iw-book-close { position: absolute; top: 16px; right: 18px; z-index: 3; }
+        .iw-book-title { font-family: 'Montserrat', sans-serif; font-size: 1.45rem; font-weight: 800; color: #11182a; margin: 0 0 2px; letter-spacing: -0.01em; }
+        .iw-book-sub { font-size: 0.85rem; color: #6b7280; margin: 0 0 16px; }
+        .iw-book-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: #e7e9ee; border-radius: 12px; padding: 5px; margin: 0 0 18px; list-style: none; }
+        .iw-book-tab { width: 100%; border: none; background: transparent; color: #5a6472; font-size: 0.9rem; font-weight: 700; padding: 9px 8px; border-radius: 9px; transition: all .2s ease; cursor: pointer; }
+        .iw-book-tab.active { background: #11182a; color: #fff; box-shadow: 0 4px 12px rgba(17,24,42,0.25); }
+        .iw-book-form .mb-3, .iw-book-form .mb-4 { margin-bottom: 10px !important; }
+        .iw-book-form .row { --bs-gutter-x: 10px; }
+        .iw-book-form .form-control, .iw-book-form .form-select { background: #fff !important; border: 1px solid #e2e4ea !important; border-radius: 10px !important; font-size: 0.92rem !important; padding: 11px 13px !important; box-shadow: none !important; color: #11182a !important; }
+        .iw-book-form .form-control::placeholder { color: #9aa1ad !important; }
+        .iw-book-form .form-control:focus, .iw-book-form .form-select:focus { border-color: #c0392b !important; box-shadow: 0 0 0 3px rgba(192,57,43,0.12) !important; }
+        .iw-book-form .iw-slot-label { font-size: 0.72rem; font-weight: 600; color: #6b7280; margin: 0 0 4px 2px; }
+        .iw-book-form button[type="submit"] { background: #c0392b !important; color: #fff !important; border: none !important; border-radius: 10px !important; font-weight: 700 !important; box-shadow: 0 10px 22px rgba(192,57,43,0.28) !important; }
+        .iw-book-form button[type="submit"]:hover { background: #a23226 !important; }
+        .iw-book-form .pay-later-btn { background: #fff !important; color: #11182a !important; border: 1px solid #cfd3db !important; border-radius: 10px !important; font-weight: 600 !important; }
+        .iw-book-form .pay-later-btn:hover { background: #eef0f4 !important; }
+        .iw-book-note { font-size: 11px; color: #8a909c; text-align: center; margin: 8px 0 0; }
+        @media (max-width: 575.98px) { .iw-book-modal-body { padding: 20px 16px 18px; } .iw-book-title { font-size: 1.25rem; } }
+    </style>
+    <div class="modal fade" id="bookInspectionModal" tabindex="-1" aria-labelledby="bookInspectionLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="iw-book-modal-body">
+                    <button type="button" class="btn-close iw-book-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="iw-book-title" id="bookInspectionLabel">Book Your Inspection</h5>
+                    <p class="iw-book-sub">Pick a slot — our certified inspector will confirm shortly.</p>
+                    <ul class="iw-book-tabs" role="tablist">
+                        <li role="presentation"><button class="iw-book-tab active" id="usedCarTab" data-bs-toggle="tab" data-bs-target="#usedCarPane" type="button" role="tab" aria-controls="usedCarPane" aria-selected="true">Used Car</button></li>
+                        <li role="presentation"><button class="iw-book-tab" id="newCarTab" data-bs-toggle="tab" data-bs-target="#newCarPane" type="button" role="tab" aria-controls="newCarPane" aria-selected="false">New Car PDI</button></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="usedCarPane" role="tabpanel" aria-labelledby="usedCarTab">
+                    <form id="usedCarInspectionForm" class="iw-book-form" novalidate>
                         <input type="hidden" name="carType" value="Used Car">
                         <div class="mb-3">
                             <input type="text" name="name" class="form-control form-control-lg" placeholder="Name" required style="border-radius: 8px; border: none; background: #fff;">
@@ -4967,7 +5218,7 @@
                                 <input type="text" name="kmsDriven" class="form-control form-control-lg" placeholder="KMs driven" required style="border-radius: 8px; border: none; background: #fff;">
                             </div>
                         </div>
-                        <div class="mb-4">
+                        <div class="mb-3">
                             <select name="ownership" class="form-select form-select-lg" required style="border-radius: 8px; border: none; background: #fff;">
                                 <option value="" disabled selected>Ownership type</option>
                                 <option value="1st Owner">1st Owner</option>
@@ -4976,27 +5227,28 @@
                                 <option value="4th Owner or more">4th Owner or more</option>
                             </select>
                         </div>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label class="iw-slot-label">Preferred date</label>
+                                <input type="date" name="slotDate" class="form-control form-control-lg" required aria-label="Preferred inspection date" style="border-radius: 8px; border: none; background: #fff;">
+                            </div>
+                            <div class="col-6">
+                                <label class="iw-slot-label">Preferred time</label>
+                                <input type="time" name="slotTime" class="form-control form-control-lg" required aria-label="Preferred inspection time" style="border-radius: 8px; border: none; background: #fff;">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <input type="text" name="location" class="form-control form-control-lg" placeholder="Location (e.g. Andheri, Mumbai)" required aria-label="Inspection location" style="border-radius: 8px; border: none; background: #fff;">
+                        </div>
                         <div class="d-flex gap-2">
-                            <button type="submit" class="btn flex-grow-1 py-3" style="background: #528FF0; color: #fff; border-radius: 30px; font-size: 0.95rem; font-weight: 600;">Book Inspection @ ₹1,399</button>
+                            <button type="submit" class="btn flex-grow-1 py-3" style="background: #c0392b; color: #fff; border-radius: 10px; font-size: 0.95rem; font-weight: 700;">Book Inspection @ ₹1,399</button>
                             <button type="button" class="btn pay-later-btn flex-grow-1 py-3" style="background: #6c757d; color: #fff; border-radius: 30px; font-size: 0.95rem; font-weight: 600;">Pay Later</button>
                         </div>
-                        <p class="text-muted text-center mt-2 mb-0" style="font-size: 11px;"><i class="fas fa-shield-alt me-1"></i> Book Now: Secure Razorpay | Pay Later: We'll call to confirm</p>
+                        <p class="iw-book-note text-center mt-2 mb-0"><i class="fas fa-shield-alt me-1"></i> Book Now: Secure Razorpay | Pay Later: We'll call to confirm</p>
                     </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- NEW CAR INSPECTION MODAL -->
-    <div class="modal fade" id="newCarInspectionModal" tabindex="-1" aria-labelledby="newCarInspectionLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content iw-sleek-modal-shell" style="border-radius: 16px; overflow: hidden;">
-                <div class="modal-header" style="background: #528FF0; border: none; padding: 20px 24px;">
-                    <h5 class="modal-title text-white" id="newCarInspectionLabel" style="font-family: 'Montserrat', sans-serif; font-size: 1.5rem; font-weight: 700;">Book an Inspection</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-4" style="background: linear-gradient(180deg, #f5f5f5 0%, #e8e8e8 100%);">
-                    <form id="newCarInspectionForm" class="iw-sleek-form" novalidate>
+                        </div>
+                        <div class="tab-pane fade" id="newCarPane" role="tabpanel" aria-labelledby="newCarTab">
+                    <form id="newCarInspectionForm" class="iw-book-form" novalidate>
                         <input type="hidden" name="carType" value="New Car">
                         <div class="mb-3">
                             <input type="text" name="name" class="form-control form-control-lg" placeholder="Name" required style="border-radius: 8px; border: none; background: #fff;">
@@ -5025,7 +5277,7 @@
                                 <input type="text" name="kmsDriven" class="form-control form-control-lg" placeholder="KMs driven" required style="border-radius: 8px; border: none; background: #fff;">
                             </div>
                         </div>
-                        <div class="mb-4">
+                        <div class="mb-3">
                             <select name="ownership" class="form-select form-select-lg" required style="border-radius: 8px; border: none; background: #fff;">
                                 <option value="" disabled selected>Ownership type</option>
                                 <option value="1st Owner">1st Owner</option>
@@ -5034,16 +5286,56 @@
                                 <option value="4th Owner or more">4th Owner or more</option>
                             </select>
                         </div>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label class="iw-slot-label">Preferred date</label>
+                                <input type="date" name="slotDate" class="form-control form-control-lg" required aria-label="Preferred inspection date" style="border-radius: 8px; border: none; background: #fff;">
+                            </div>
+                            <div class="col-6">
+                                <label class="iw-slot-label">Preferred time</label>
+                                <input type="time" name="slotTime" class="form-control form-control-lg" required aria-label="Preferred inspection time" style="border-radius: 8px; border: none; background: #fff;">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <input type="text" name="location" class="form-control form-control-lg" placeholder="Location (e.g. Andheri, Mumbai)" required aria-label="Inspection location" style="border-radius: 8px; border: none; background: #fff;">
+                        </div>
                         <div class="d-flex gap-2">
-                            <button type="submit" class="btn flex-grow-1 py-3" style="background: #528FF0; color: #fff; border-radius: 30px; font-size: 0.95rem; font-weight: 600;">Book Inspection @ ₹1,399</button>
+                            <button type="submit" class="btn flex-grow-1 py-3" style="background: #c0392b; color: #fff; border-radius: 10px; font-size: 0.95rem; font-weight: 700;">Book Inspection @ ₹1,399</button>
                             <button type="button" class="btn pay-later-btn flex-grow-1 py-3" style="background: #6c757d; color: #fff; border-radius: 30px; font-size: 0.95rem; font-weight: 600;">Pay Later</button>
                         </div>
-                        <p class="text-muted text-center mt-2 mb-0" style="font-size: 11px;"><i class="fas fa-shield-alt me-1"></i> Book Now: Secure Razorpay | Pay Later: We'll call to confirm</p>
+                        <p class="iw-book-note text-center mt-2 mb-0"><i class="fas fa-shield-alt me-1"></i> Book Now: Secure Razorpay | Pay Later: We'll call to confirm</p>
                     </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- ═══ SERVICES SECTION (moved above reviews) ═══ -->
+    <section class="iw-services-section home-band">
+        <div class="iw-services-section-inner">
+            <span class="iw-services-section-label">Post-deal essentials</span>
+            <div class="iw-services-mini-row">
+                <button type="button" class="iw-svc-item" data-partner-service="loan" data-partner-service-source="homepage" data-partner-service-copy="Compare EMI-fit finance options once the car and budget look right.">
+                    <span class="iw-svc-item-icon"><i class="fas fa-hand-holding-usd"></i></span>
+                    <span class="iw-svc-item-name">Car Loan</span>
+                </button>
+                <button type="button" class="iw-svc-item" data-partner-service="insurance" data-partner-service-source="homepage" data-partner-service-copy="Renew expiring policies or request quotes that match the inspected vehicle.">
+                    <span class="iw-svc-item-icon"><i class="fas fa-shield-alt"></i></span>
+                    <span class="iw-svc-item-name">Insurance</span>
+                </button>
+                <button type="button" class="iw-svc-item" data-bs-toggle="modal" data-bs-target="#bookInspectionModal">
+                    <span class="iw-svc-item-icon"><i class="fas fa-clipboard-check"></i></span>
+                    <span class="iw-svc-item-name">Inspection</span>
+                </button>
+                <a href="car-marketplace/index.html" class="iw-svc-item">
+                    <span class="iw-svc-item-icon"><i class="fas fa-car-side"></i></span>
+                    <span class="iw-svc-item-name">Used Car Marketplace</span>
+                </a>
+            </div>
+        </div>
+    </section>
 
     <!-- Google Reviews Section -->
     <section class="py-4" id="reviews" style="background: linear-gradient(180deg, #1a2a3a 0%, #2d4a5e 30%, #4a6a7a 60%, #6a8a9a 100%);">
@@ -5294,13 +5586,13 @@
                 
                 initInspectionModalForm({
                     formId: 'usedCarInspectionForm',
-                    modalId: 'usedCarInspectionModal',
+                    modalId: 'bookInspectionModal',
                     carType: 'Used Car',
                     formType: 'used-car-modal'
                 });
                 initInspectionModalForm({
                     formId: 'newCarInspectionForm',
-                    modalId: 'newCarInspectionModal',
+                    modalId: 'bookInspectionModal',
                     carType: 'New Car',
                     formType: 'new-car-modal'
                 });
@@ -5573,6 +5865,9 @@
                     regYear: fd.get('regYear') || '',
                     kmsDriven: fd.get('kmsDriven') || '',
                     ownership: fd.get('ownership') || '',
+                    slotDate: fd.get('slotDate') || '',
+                    slotTime: fd.get('slotTime') || '',
+                    location: fd.get('location') || '',
                     formType: config.formType,
                     source: 'homepage'
                 };
@@ -5608,7 +5903,7 @@
                     
                     // Show success and redirect to Razorpay
                     submitBtn.innerHTML = '<i class="fas fa-check"></i> Redirecting to Payment...';
-                    submitBtn.style.background = '#26a69a';
+                    submitBtn.style.background = '#2e7d32';
                     const recommendationHost = form.querySelector('.iw-inline-recommendation-host') || document.createElement('div');
                     if (!recommendationHost.classList.contains('iw-inline-recommendation-host')) {
                         recommendationHost.className = 'iw-inline-recommendation-host mt-3';
@@ -5646,7 +5941,7 @@
                     submitBtn.disabled = false;
                     setTimeout(() => {
                         submitBtn.innerHTML = defaultLabel;
-                        submitBtn.style.background = '#528FF0';
+                        submitBtn.style.background = '#c0392b';
                     }, 3000);
                 }
             }
@@ -5679,6 +5974,9 @@
                         registrationYear: fd.get('regYear') || '',
                         kmsDriven: fd.get('kmsDriven') || '',
                         ownership: fd.get('ownership') || '',
+                        slotDate: fd.get('slotDate') || '',
+                        slotTime: fd.get('slotTime') || '',
+                        location: fd.get('location') || '',
                         formType: config.formType + '-pay-later',
                         paymentMode: 'pay-later'
                     };
@@ -5699,6 +5997,9 @@
                             regYear: fd.get('regYear') || '',
                             kmsDriven: fd.get('kmsDriven') || '',
                             ownership: fd.get('ownership') || '',
+                            slotDate: fd.get('slotDate') || '',
+                            slotTime: fd.get('slotTime') || '',
+                            location: fd.get('location') || '',
                             formType: config.formType + '-pay-later',
                             source: 'homepage',
                             paymentMode: 'pay-later'
@@ -5720,7 +6021,7 @@
                         
                         // Show success
                         payLaterBtn.innerHTML = '<i class="fas fa-check"></i> Booking Received!';
-                        payLaterBtn.style.background = '#26a69a';
+                        payLaterBtn.style.background = '#2e7d32';
                         const recommendationHost = form.querySelector('.iw-inline-recommendation-host') || document.createElement('div');
                         if (!recommendationHost.classList.contains('iw-inline-recommendation-host')) {
                             recommendationHost.className = 'iw-inline-recommendation-host mt-3';
@@ -6078,6 +6379,209 @@
             background: #f8f9fa !important;
         }
         .skiptranslate iframe { display: none !important; }
+    </style>
+
+    <!-- ═══ PROFESSIONAL POLISH: consistent typography, rhythm & spacing ═══ -->
+    <style id="iw-pro-polish">
+        body.home-page, body.home-page * {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+        /* Unified heading font across the site */
+        body.home-page h1, body.home-page h2, body.home-page h3,
+        .iw-services-section-title, .home-section-header h2,
+        .iw-book-title, .home-hero-copy h1 {
+            font-family: 'Montserrat', sans-serif !important;
+            letter-spacing: -0.01em;
+        }
+        /* Unified small-caps eyebrow/label style */
+        .iw-checks-label, .iw-services-section-label, .iw-block-label,
+        .home-marketplace-header span, .home-eyebrow {
+            font-family: 'Inter', sans-serif !important;
+        }
+        /* Consistent, breathable section rhythm (de-pack the page) */
+        .iw-featured-section { padding: 28px 0 26px !important; }
+        .iw-info-block { padding-top: 32px !important; padding-bottom: 32px !important; }
+        .iw-services-section { padding: 30px 0 32px !important; }
+        #reviews { padding-top: 34px !important; padding-bottom: 40px !important; }
+        /* A touch more air under the floating checks card */
+        .iw-checks-float-wrap { margin-bottom: 8px; }
+        /* Section title sizing consistency */
+        .iw-services-section-title { font-size: 1.45rem !important; margin-bottom: 18px !important; }
+        .home-marketplace-header span { font-size: 0.82rem !important; }
+
+        @media (max-width: 767.98px) {
+            .iw-featured-section { padding: 28px 0 26px !important; }
+            .iw-info-block { padding-top: 32px !important; padding-bottom: 32px !important; }
+            .iw-services-section { padding: 30px 0 30px !important; }
+            #reviews { padding-top: 34px !important; padding-bottom: 36px !important; }
+            .iw-services-section-title { font-size: 1.25rem !important; }
+        }
+
+        /* ── Smooth transition: more air under the floating checks card ── */
+        .iw-checks-float-wrap { margin-bottom: 18px !important; }
+
+        /* ════════ CTA BAND — subtle, professional light band ════════ */
+        .home-cta-band {
+            background: linear-gradient(135deg, #ffffff 0%, #faf3f1 100%) !important;
+            border: 1px solid rgba(192,57,43,0.14) !important;
+            padding: 30px 36px !important;
+            border-radius: 18px !important;
+            box-shadow: 0 8px 28px rgba(20,33,61,0.06) !important;
+        }
+        .home-cta-band h3 {
+            color: #14213d !important;
+            font-size: 1.5rem !important;
+            font-weight: 800 !important;
+            letter-spacing: -0.01em !important;
+        }
+        /* Primary = solid accent, Secondary = accent outline */
+        .home-cta-band .home-btn-primary {
+            background: #c0392b !important;
+            color: #ffffff !important;
+            box-shadow: 0 10px 24px rgba(192,57,43,0.22) !important;
+        }
+        .home-cta-band .home-btn-primary:hover { background: #a23226 !important; color: #fff !important; }
+        .home-cta-band .home-btn-secondary {
+            background: #ffffff !important;
+            border: 1.5px solid rgba(192,57,43,0.5) !important;
+            color: #c0392b !important;
+        }
+        .home-cta-band .home-btn-secondary:hover { background: #faf0ee !important; border-color: #c0392b !important; color: #a23226 !important; }
+        /* Keep both CTA buttons on the same row — even on mobile */
+        .home-cta-band .home-hero-actions {
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            gap: 12px !important;
+        }
+        .home-cta-band .home-hero-actions > .home-btn-primary,
+        .home-cta-band .home-hero-actions > .home-btn-secondary {
+            flex: 1 1 0 !important;
+            justify-content: center !important;
+            white-space: nowrap !important;
+        }
+
+        /* ════════ HOW IT WORKS — clearer stepper ════════ */
+        .iw-block-label {
+            font-size: 0.74rem !important;
+            letter-spacing: 0.16em !important;
+            margin-bottom: 16px !important;
+        }
+        .iw-stepper-row {
+            padding: 22px 26px !important;
+            border-radius: 16px !important;
+            box-shadow: 0 6px 22px rgba(20,33,61,0.06) !important;
+            margin-bottom: 28px !important;
+        }
+        .iw-stepper-num {
+            width: 40px !important; height: 40px !important; min-width: 40px !important;
+            border-radius: 50% !important;
+            background: linear-gradient(135deg, #c0392b, #d35f52) !important;
+            color: #fff !important;
+            font-size: 0.9rem !important;
+            box-shadow: 0 6px 14px rgba(192,57,43,0.28) !important;
+        }
+        .iw-stepper-item { gap: 14px !important; }
+        .iw-stepper-text strong { font-size: 0.95rem !important; margin-bottom: 2px; }
+        .iw-stepper-text span { font-size: 0.78rem !important; }
+        .iw-stepper-arrow { font-size: 0.85rem !important; color: rgba(192,57,43,0.38) !important; padding: 0 14px !important; }
+
+        /* ════════ 3 INFO CARDS — premium cards with accent ════════ */
+        .iw-compact-card {
+            padding: 26px 24px !important;
+            border-radius: 16px !important;
+            border: 1px solid rgba(20,33,61,0.07) !important;
+            box-shadow: 0 6px 22px rgba(20,33,61,0.06) !important;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+        .iw-compact-card::before {
+            content: "";
+            position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, #c0392b, #d35f52);
+        }
+        .iw-compact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 18px 38px rgba(20,33,61,0.13) !important;
+        }
+        .iw-compact-card-head { padding-bottom: 16px !important; margin-bottom: 16px !important; }
+        .iw-compact-icon {
+            width: 46px !important; height: 46px !important; min-width: 46px !important;
+            border-radius: 12px !important; font-size: 1.1rem !important;
+        }
+        .iw-compact-label { font-size: 0.66rem !important; letter-spacing: 0.12em !important; margin-bottom: 4px !important; }
+        .iw-compact-title { font-size: 1.08rem !important; }
+        .iw-compact-cards-row { gap: 22px !important; }
+        .iw-compact-list { gap: 13px !important; }
+        .iw-compact-list li { font-size: 0.86rem !important; line-height: 1.5 !important; }
+        .iw-compact-list li i { margin-top: 4px !important; }
+
+        /* ════════ VIEW MORE CARS — professional red ════════ */
+        .view-more-btn {
+            background: linear-gradient(135deg, #c0392b, #a23226) !important;
+            color: #fff !important;
+            border-radius: 10px !important;
+        }
+        .view-more-btn:hover {
+            background: linear-gradient(135deg, #b02f24, #a23226) !important;
+            color: #fff !important;
+            box-shadow: 0 12px 28px rgba(162,50,38,0.28) !important;
+        }
+
+        /* ════════ POST-DEAL ESSENTIALS — separated professional cards ════════ */
+        .iw-services-section-label { font-size: 0.74rem !important; letter-spacing: 0.16em !important; margin-bottom: 16px !important; }
+        .iw-services-mini-row {
+            display: grid !important;
+            grid-template-columns: repeat(4, 1fr) !important;
+            gap: 16px !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            overflow: visible !important;
+        }
+        .iw-svc-item {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            justify-content: flex-start !important;
+            gap: 14px !important;
+            flex: initial !important;
+            background: #ffffff !important;
+            border: 1px solid rgba(20,33,61,0.08) !important;
+            border-radius: 16px !important;
+            box-shadow: 0 4px 18px rgba(20,33,61,0.05) !important;
+            padding: 22px 20px !important;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+        }
+        .iw-svc-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 34px rgba(20,33,61,0.13) !important;
+            border-color: rgba(192,57,43,0.35) !important;
+            background: #ffffff !important;
+        }
+        .iw-svc-item-icon { width: 48px !important; height: 48px !important; min-width: 48px !important; border-radius: 13px !important; }
+        .iw-svc-item-icon i { font-size: 1.2rem !important; }
+        .iw-svc-item-name { font-size: 0.98rem !important; font-weight: 700 !important; }
+        .iw-svc-item:hover .iw-svc-item-icon { background: rgba(192,57,43,0.16); }
+
+        @media (max-width: 767.98px) {
+            .home-cta-band { padding: 24px 22px !important; border-radius: 16px !important; }
+            .home-cta-band h3 { font-size: 1.2rem !important; }
+            .home-cta-band .home-hero-actions { gap: 10px !important; }
+            .home-cta-band .home-hero-actions > .home-btn-primary,
+            .home-cta-band .home-hero-actions > .home-btn-secondary {
+                padding: 12px 10px !important;
+                font-size: 0.92rem !important;
+            }
+            .home-cta-band .home-hero-actions i { font-size: 0.9rem !important; }
+            .iw-stepper-row { padding: 18px 18px !important; }
+            .iw-compact-card { padding: 20px 18px !important; }
+            .iw-compact-cards-row { gap: 14px !important; }
+            .iw-services-mini-row { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+            .iw-svc-item { padding: 18px 16px !important; gap: 12px !important; }
+        }
     </style>
 </body>
 
