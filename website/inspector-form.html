@@ -2,7 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=1280" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
     <title>Inspector Form - InspectionWale</title>
     <link href="Images/logo.png" rel="icon" />
 
@@ -82,9 +83,17 @@
       .section-header { background: #f8fafc; padding: 12px 14px; font-weight: 800; color: #13213a; border-bottom: 1px solid rgba(15, 23, 42, 0.06); }
       .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; padding: 12px; }
       @media (max-width: 1050px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-      @media (max-width: 650px) { 
-        .grid { grid-template-columns: 1fr; } 
+      @media (max-width: 650px) {
+        .grid { grid-template-columns: 1fr; }
         .field[style*="grid-column: span"] { grid-column: span 1 !important; }
+        body { padding: 10px; }
+        .header { padding: 12px 14px; border-radius: 16px; }
+        .container { border-radius: 18px; }
+        form { padding: 12px; }
+        .hero { padding: 16px 16px; }
+        .hero h1 { font-size: 18px; }
+        /* Prevent iOS zoom-on-focus by keeping inputs at 16px */
+        input, select, textarea { font-size: 16px; }
       }
       label { font-size: 12px; font-weight: 700; color: #5d6880; display: block; margin-bottom: 8px; letter-spacing: 0.01em; }
       input, select, textarea {

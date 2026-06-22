@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="100" viewBox="0 0 480 100" role="img" aria-label="inspectionWale logo">
+  <!-- Car + magnifier icon -->
+  <g transform="translate(0,10)">
+    <!-- Car body -->
+    <path d="M14 52 L18 36 Q20 30 26 30 L56 30 Q62 30 64 36 L68 52 L72 54 L72 66 Q72 70 68 70 L64 70 L64 66 Q64 62 60 62 L22 62 Q18 62 18 66 L18 70 L14 70 Q10 70 10 66 L10 54 Z" fill="none" stroke="#ffffff" stroke-width="3" stroke-linejoin="round"/>
+    <!-- Wheels -->
+    <circle cx="24" cy="66" r="7" fill="none" stroke="#ffffff" stroke-width="3"/>
+    <circle cx="58" cy="66" r="7" fill="none" stroke="#ffffff" stroke-width="3"/>
+    <!-- Windshield -->
+    <path d="M22 30 L28 18 L54 18 L60 30" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linejoin="round"/>
+  </g>
+  <!-- Magnifier overlapping car -->
+  <g transform="translate(38,32)">
+    <circle cx="14" cy="14" r="12" fill="none" stroke="#FF5A26" stroke-width="3"/>
+    <line x1="23" y1="23" x2="33" y2="33" stroke="#FF5A26" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <!-- Wordmark -->
+  <text x="90" y="66" font-family="Montserrat, Arial, sans-serif" font-size="38" font-weight="700" fill="#ffffff" letter-spacing="-0.5">inspection<tspan font-weight="800" fill="#ffffff">Wale</tspan></text>
+</svg>
