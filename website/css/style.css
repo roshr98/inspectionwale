@@ -1179,3 +1179,43 @@ html body svg.svg-inline--fa:not(.icon-keep):not(.icon-keep-2) {
     fill: #33b3a8 !important;
 }
 
+/* ===== Teal icon-chip backgrounds (brand) =====
+   Turns the icon container squares (previously black/grey/tinted) teal,
+   with white glyphs for contrast. Applied to the decorative icon chips
+   across the homepage and marketplace. */
+html body .iw-check-icon,
+html body .iw-checks-card .iw-check-icon,
+html body .iw-compact-icon,
+html body .iw-svc-item-icon,
+html body .iw-services-mini-row .iw-svc-item-icon,
+html body .iw-stepper-num,
+html body .cw-svc-compact-icon,
+html body .cw-service-icon,
+html body #carDetailModal .detail-feature-chip__icon,
+html body #carDetailModal .detail-cta-card__icon {
+    background: #33b3a8 !important;
+    background-image: none !important;
+    box-shadow: 0 4px 12px rgba(51, 179, 168, 0.25) !important;
+}
+
+html body .iw-services-mini-row .iw-svc-item:hover .iw-svc-item-icon,
+html body .cw-service-card:hover .cw-service-icon {
+    background: #2aa096 !important;
+}
+
+/* White glyphs on the teal chips (beats the global teal-icon rule above) */
+html body .iw-check-icon i:not(.icon-keep):not(.icon-keep-2):not(.icon-keep-3),
+html body .iw-compact-icon i:not(.icon-keep):not(.icon-keep-2):not(.icon-keep-3),
+html body .iw-svc-item-icon i:not(.icon-keep):not(.icon-keep-2):not(.icon-keep-3),
+html body .cw-svc-compact-icon i:not(.icon-keep):not(.icon-keep-2):not(.icon-keep-3),
+html body .cw-service-icon i:not(.icon-keep):not(.icon-keep-2):not(.icon-keep-3),
+html body #carDetailModal .detail-feature-chip__icon i:not(.icon-keep):not(.icon-keep-2),
+html body #carDetailModal .detail-cta-card__icon i:not(.icon-keep):not(.icon-keep-2) {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+}
+
+html body .iw-stepper-num {
+    color: #ffffff !important;
+}
+
