@@ -3087,6 +3087,9 @@
 
         /* (6) Mobile sticky CTA bar */
         .iw-mobile-cta{ display:none; }
+        /* Hide the fixed call/book bar whenever a modal (Book Inspection / List Your Car) is open
+           so it doesn't cover the modal's submit button. */
+        body.modal-open .iw-mobile-cta{ display:none !important; }
         @media (max-width:767px){
             .iw-mobile-cta{
                 display:flex; gap:10px; align-items:center;
