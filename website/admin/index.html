@@ -784,6 +784,10 @@
                 <input type="text" class="form-control" id="editListingFuelType">
               </div>
               <div class="col-md-3">
+                <label class="form-label">Body Type</label>
+                <input type="text" class="form-control" id="editListingBodyType" placeholder="SUV / Sedan / Hatchback">
+              </div>
+              <div class="col-md-3">
                 <label class="form-label">Transmission</label>
                 <input type="text" class="form-control" id="editListingTransmissionType">
               </div>
@@ -2095,6 +2099,7 @@
       document.getElementById('editListingStatus').value = listing.status || 'pending';
       document.getElementById('editListingLocation').value = car.location || car.city || display.location || listing.location || '';
       document.getElementById('editListingFuelType').value = car.fuelType || '';
+      document.getElementById('editListingBodyType').value = car.bodyType || '';
       document.getElementById('editListingTransmissionType').value = car.transmissionType || '';
       document.getElementById('editListingOwners').value = car.numberOfOwners || '';
       document.getElementById('editListingHeadline').value = listing.headline || `${car.make || ''} ${car.model || ''}`.trim();
@@ -2229,6 +2234,7 @@
         location: document.getElementById('editListingLocation').value.trim(),
         city: document.getElementById('editListingLocation').value.trim(),
         fuelType: document.getElementById('editListingFuelType').value.trim(),
+        bodyType: document.getElementById('editListingBodyType').value.trim(),
         numberOfOwners: document.getElementById('editListingOwners').value.trim(),
         insuranceValidity: document.getElementById('editListingInsuranceValidity').value.trim(),
         transmissionType: document.getElementById('editListingTransmissionType').value.trim(),

@@ -254,6 +254,7 @@ async function handleSubmitListing(body) {
   const expectedPrice = normaliseString(car.expectedPrice)
   const carLocation = normaliseString(car.location)
   const carFuelType = normaliseString(car.fuelType)
+  const carBodyType = normaliseString(car.bodyType)
   const numberOfOwners = normaliseString(car.numberOfOwners)
   const sellerType = normaliseString(seller.type) || 'Individual'
 
@@ -320,6 +321,7 @@ async function handleSubmitListing(body) {
       location: carLocation,
       city: carLocation,
       fuelType: carFuelType,
+      bodyType: carBodyType,
       numberOfOwners,
       variant,
       insuranceValidity,

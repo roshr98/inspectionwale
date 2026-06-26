@@ -220,6 +220,7 @@ function buildListingRecord(input, existingItem = {}) {
     location: normaliseString(incomingCar.location || input.location || currentCar.location || existingItem.location),
     city: normaliseString(incomingCar.city || input.city || currentCar.city || existingItem.location || currentCar.location),
     fuelType: normaliseString(incomingCar.fuelType || input.fuelType || currentCar.fuelType),
+    bodyType: normaliseString(incomingCar.bodyType || input.bodyType || currentCar.bodyType),
     numberOfOwners: normaliseString(incomingCar.numberOfOwners || input.numberOfOwners || currentCar.numberOfOwners),
     insuranceValidity: normaliseString(incomingCar.insuranceValidity || input.insuranceValidity || currentCar.insuranceValidity),
     transmissionType: normaliseString(incomingCar.transmissionType || input.transmissionType || currentCar.transmissionType),

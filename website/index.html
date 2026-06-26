@@ -109,7 +109,7 @@
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
@@ -248,11 +248,11 @@
 
         /* Montserrat as default font with Arial fallback */
         html, body, h1, h2, h3, h4, h5, h6, p, a, li, span, input, button, select, textarea, label, div {
-            font-family: 'Montserrat', Arial, sans-serif;
+            font-family: 'Plus Jakarta Sans', Arial, sans-serif;
         }
         
         * {
-            font-family: 'Montserrat', Arial, sans-serif;
+            font-family: 'Plus Jakarta Sans', Arial, sans-serif;
         }
         body.home-page {
             padding-top: 0;
@@ -306,7 +306,7 @@
         }
         
         .banner-icon:hover {
-            color: #D81324;
+            color: #111111;
             transform: scale(1.1);
         }
         
@@ -514,7 +514,7 @@
     ═══════════════════════════════════════════════════════════ -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         /* ── 1. DESIGN TOKENS ──────────────────────────────────── */
@@ -522,7 +522,7 @@
             --iw-blue:       #002f6c;   /* CarWale deep navy */
             --iw-blue-mid:   #1a4da6;
             --iw-blue-light: #e8f0fe;
-            --iw-orange:     #c0392b;   /* CarWale accent orange */
+            --iw-orange:     #111111;   /* CarWale accent orange */
             --iw-orange-lt:  #fff3ee;
             --iw-green:      #2e7d32;
             --iw-bg:         #fafafa;
@@ -540,12 +540,26 @@
 
         /* ── 2. GLOBAL RESET ───────────────────────────────────── */
         html, body {
-            font-family: 'Inter', 'Montserrat', Arial, sans-serif !important;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif !important;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+            letter-spacing: -0.005em;
         }
         /* Only set font on non-icon elements so FontAwesome ::before/::after still work */
         *:not(i):not(.fas):not(.far):not(.fab):not(.fal):not(.fad):not([class^="fa-"]):not([class*=" fa-"]) {
             font-family: inherit;
         }
+        /* ── RICHER TYPE HIERARCHY (Acko-style) ────────────────── */
+        h1, h2, h3, h4, h5,
+        .section-title, .hero-title, .home-hero h1, .iw-book-title {
+            letter-spacing: -0.022em !important;
+            font-feature-settings: 'ss01' 1, 'kern' 1, 'liga' 1;
+        }
+        h1, .hero-title, .home-hero h1 { font-weight: 800 !important; line-height: 1.08 !important; }
+        h2, .section-title { font-weight: 700 !important; line-height: 1.15 !important; }
+        p, li, .lead { letter-spacing: -0.003em; }
         body.home-page {
             background: #fafafa !important;
             color: var(--iw-text) !important;
@@ -594,7 +608,7 @@
             gap: 4px !important;
         }
         .home-nav a {
-            color: #a23226 !important;
+            color: #000000 !important;
             font-size: 0.875rem !important;
             font-weight: 600 !important;
             text-decoration: none !important;
@@ -603,8 +617,8 @@
             transition: background .18s, color .18s !important;
         }
         .home-nav a:hover {
-            color: #8f3e18 !important;
-            background: rgba(185,87,48,0.08) !important;
+            color: #000000 !important;
+            background: rgba(17, 17, 17,0.08) !important;
             opacity: 1 !important;
         }
         .banner-icons {
@@ -632,12 +646,12 @@
         }
         .banner-icon:hover,
         .banner-contact:hover {
-            background: rgba(185,87,48,0.08) !important;
-            color: #a23226 !important;
-            border-color: rgba(185,87,48,0.25) !important;
+            background: rgba(17, 17, 17,0.08) !important;
+            color: #000000 !important;
+            border-color: rgba(17, 17, 17,0.25) !important;
             transform: none !important;
         }
-        .banner-icon i, .banner-contact i { font-size: 0.9rem !important; color: #a23226 !important; }
+        .banner-icon i, .banner-contact i { font-size: 0.9rem !important; color: #000000 !important; }
 
         /* ── 4. HERO SECTION ───────────────────────────────────── */
         .home-shell { padding: 0 !important; }
@@ -714,7 +728,7 @@
         }
         .home-btn-primary {
             border: none !important;
-            background: linear-gradient(135deg, var(--iw-orange), #d35f52) !important;
+            background: linear-gradient(135deg, var(--iw-orange), #444444) !important;
             color: #fff !important;
             border-radius: 10px !important;
             min-height: 50px !important;
@@ -722,7 +736,7 @@
             font-size: .95rem !important;
             font-weight: 700 !important;
             gap: 8px !important;
-            box-shadow: 0 12px 28px rgba(192,57,43,.32) !important;
+            box-shadow: 0 12px 28px rgba(17, 17, 17,.32) !important;
             text-decoration: none !important;
             display: inline-flex !important;
             align-items: center !important;
@@ -730,7 +744,7 @@
         .home-btn-primary:hover {
             color: #fff !important;
             transform: translateY(-2px) !important;
-            box-shadow: 0 16px 32px rgba(192,57,43,.42) !important;
+            box-shadow: 0 16px 32px rgba(17, 17, 17,.42) !important;
         }
         .home-btn-secondary {
             border: 1.5px solid rgba(255,255,255,.32) !important;
@@ -858,7 +872,7 @@
             border-radius: 10px !important;
             background: var(--iw-green) !important;
         }
-        .hero-form-toast.error { background: #d81324 !important; }
+        .hero-form-toast.error { background: #111111 !important; }
 
         /* Mobile form panel */
         .hero-mobile-form-card {
@@ -922,7 +936,7 @@
             justify-content: center !important;
             border-radius: 10px !important;
             background: rgba(255,255,255,.14) !important;
-            color: #e98a7f !important;
+            color: #555555 !important;
             font-size: 1.1rem !important;
         }
         .home-strip-copy strong {
@@ -983,8 +997,8 @@
             align-items: center !important;
             justify-content: space-between !important;
             gap: 24px !important;
-            border: 1px solid rgba(192,57,43,0.18) !important;
-            box-shadow: 0 2px 16px rgba(192,57,43,0.07) !important;
+            border: 1px solid rgba(17, 17, 17,0.18) !important;
+            box-shadow: 0 2px 16px rgba(17, 17, 17,0.07) !important;
         }
         .home-cta-band h3 {
             color: #0b2154 !important;
@@ -1000,8 +1014,8 @@
         }
         .home-cta-band .home-hero-actions { margin-bottom: 0 !important; flex-shrink: 0 !important; }
         .home-cta-band .home-btn-primary {
-            background: #c0392b !important;
-            border-color: #c0392b !important;
+            background: #111111 !important;
+            border-color: #111111 !important;
             color: #fff !important;
         }
         .home-cta-band .home-btn-secondary {
@@ -1035,8 +1049,8 @@
             width: 36px !important;
             height: 36px !important;
             border-radius: 10px !important;
-            background: rgba(192,57,43,0.1) !important;
-            color: #c0392b !important;
+            background: rgba(17, 17, 17,0.1) !important;
+            color: #111111 !important;
             font-size: 0.9rem !important;
             font-weight: 800 !important;
             margin-bottom: 14px !important;
@@ -1067,7 +1081,7 @@
             padding: 24px 22px !important;
             box-shadow: 0 2px 12px rgba(20,33,61,0.06) !important;
             transition: box-shadow .2s, transform .2s !important;
-            border-top: 3px solid #c0392b !important;
+            border-top: 3px solid #111111 !important;
         }
         .home-service-card:hover {
             box-shadow: 0 6px 24px rgba(20,33,61,0.1) !important;
@@ -1080,8 +1094,8 @@
             width: 44px !important;
             height: 44px !important;
             border-radius: 12px !important;
-            background: rgba(192,57,43,0.1) !important;
-            color: #c0392b !important;
+            background: rgba(17, 17, 17,0.1) !important;
+            color: #111111 !important;
             font-size: 1.1rem !important;
             margin-bottom: 14px !important;
         }
@@ -1119,7 +1133,7 @@
             width: 5px !important;
             height: 5px !important;
             border-radius: 50% !important;
-            background: #c0392b !important;
+            background: #111111 !important;
         }
 
         /* ── 10. STORY CARDS ───────────────────────────────────── */
@@ -1142,8 +1156,8 @@
             width: 40px !important;
             height: 40px !important;
             border-radius: 10px !important;
-            background: rgba(192,57,43,0.1) !important;
-            color: #c0392b !important;
+            background: rgba(17, 17, 17,0.1) !important;
+            color: #111111 !important;
             font-size: 1rem !important;
             margin-bottom: 12px !important;
         }
@@ -1177,8 +1191,8 @@
             width: 32px !important;
             height: 32px !important;
             border-radius: 8px !important;
-            background: rgba(192,57,43,0.1) !important;
-            color: #c0392b !important;
+            background: rgba(17, 17, 17,0.1) !important;
+            color: #111111 !important;
             font-size: .85rem !important;
             margin-bottom: 8px !important;
         }
@@ -1219,7 +1233,7 @@
         #marketplace .container { max-width: 1320px !important; }
 
         .price-filter-tab {
-            font-family: 'Inter', sans-serif !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
             color: var(--iw-text-soft) !important;
             border-bottom: 3px solid transparent !important;
         }
@@ -1251,7 +1265,7 @@
             text-shadow: 0 2px 8px rgba(0,0,0,.5) !important;
         }
         .car-price {
-            color: #c0392b !important;
+            color: #111111 !important;
             font-weight: 700 !important;
         }
 
@@ -1419,7 +1433,7 @@
     <!-- Spinner Start -->
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center flex-column">
         <div class="car-loader" style="position: relative; width: 120px; height: 60px;">
-            <i class="fas fa-car-side" style="font-size: 3rem; color: #D81324; animation: carBounce 0.6s ease-in-out infinite;"></i>
+            <i class="fas fa-car-side" style="font-size: 3rem; color: #111111; animation: carBounce 0.6s ease-in-out infinite;"></i>
             <div class="road" style="position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent 0%, #333 20%, #333 80%, transparent 100%);"></div>
         </div>
         <p class="mt-3 text-muted" style="font-style: italic;">Loading...</p>
@@ -1445,9 +1459,9 @@
             --home-surface-strong: #fffaf3;
             --home-ink: #14213d;
             --home-ink-soft: #46546f;
-            --home-accent: #c0392b;
-            --home-accent-dark: #a23226;
-            --home-highlight: #c0392b;
+            --home-accent: #111111;
+            --home-accent-dark: #000000;
+            --home-highlight: #111111;
             --home-icon: #4e8a84;
             --home-line: rgba(20, 33, 61, 0.12);
             --home-shadow: 0 24px 60px rgba(27, 39, 59, 0.14);
@@ -1541,7 +1555,7 @@
             min-height: 36px;
             padding: 0 12px;
             border-radius: 999px;
-            border: 1px solid rgba(185, 87, 48, 0.14);
+            border: 1px solid rgba(17, 17, 17, 0.14);
             background: transparent;
             color: var(--home-accent-dark);
             text-decoration: none;
@@ -1551,8 +1565,8 @@
         .banner-icon:hover,
         .banner-contact:hover {
             color: var(--home-accent-dark);
-            border-color: rgba(185, 87, 48, 0.22);
-            background: rgba(185, 87, 48, 0.04);
+            border-color: rgba(17, 17, 17, 0.22);
+            background: rgba(17, 17, 17, 0.04);
         }
 
         .banner-contact {
@@ -1619,7 +1633,7 @@
             font-weight: 700;
             letter-spacing: 0.12em;
             text-transform: uppercase;
-            color: #c0392b;
+            color: #111111;
             white-space: nowrap;
             margin: 0;
         }
@@ -1629,7 +1643,7 @@
             width: 3px;
             height: 3px;
             border-radius: 50%;
-            background: rgba(192,57,43,0.4);
+            background: rgba(17, 17, 17,0.4);
             margin: 0 8px;
             flex-shrink: 0;
         }
@@ -1663,7 +1677,7 @@
             cursor: default;
             transition: background 0.15s;
         }
-        .iw-check-item:hover { background: rgba(192,57,43,0.03); }
+        .iw-check-item:hover { background: rgba(17, 17, 17,0.03); }
         .iw-check-item:nth-child(5n) { border-right: none; }
         .iw-check-item:nth-last-child(-n+5) { border-bottom: none; }
         .iw-check-icon {
@@ -1674,13 +1688,13 @@
             height: 20px;
             min-width: 20px;
             border-radius: 5px;
-            background: rgba(192,57,43,0.08);
+            background: rgba(17, 17, 17,0.08);
             flex-shrink: 0;
         }
         .iw-check-icon i {
             font-size: 0.62rem;
             line-height: 1;
-            color: #c0392b;
+            color: #111111;
         }
         .iw-check-label {
             font-size: 0.65rem;
@@ -1707,7 +1721,7 @@
             font-weight: 700;
             letter-spacing: 0.12em;
             text-transform: uppercase;
-            color: #c0392b;
+            color: #111111;
             margin-bottom: 4px;
         }
         .iw-services-section-title {
@@ -1748,7 +1762,7 @@
             border-right: none;
         }
         .iw-svc-item:hover {
-            background: rgba(192,57,43,0.04);
+            background: rgba(17, 17, 17,0.04);
             color: #14213d;
         }
         .iw-svc-item-icon {
@@ -1759,13 +1773,13 @@
             height: 38px;
             min-width: 38px;
             border-radius: 10px;
-            background: rgba(192,57,43,0.1);
+            background: rgba(17, 17, 17,0.1);
             flex-shrink: 0;
         }
         .iw-svc-item-icon i {
             font-size: 1rem;
             line-height: 1;
-            color: #c0392b;
+            color: #111111;
         }
         .iw-svc-item-name {
             font-weight: 700;
@@ -1799,7 +1813,7 @@
                 content: "";
                 width: 5px; height: 5px;
                 border-radius: 50%;
-                background: #c0392b;
+                background: #111111;
                 flex-shrink: 0;
             }
             .iw-checks-sep, .iw-checks-divider-line { display: none; }
@@ -1841,7 +1855,7 @@
             font-weight: 700;
             letter-spacing: 0.13em;
             text-transform: uppercase;
-            color: #c0392b;
+            color: #111111;
             margin-bottom: 12px;
         }
 
@@ -1868,8 +1882,8 @@
             height: 30px;
             min-width: 30px;
             border-radius: 8px;
-            background: rgba(192,57,43,0.1);
-            color: #c0392b;
+            background: rgba(17, 17, 17,0.1);
+            color: #111111;
             font-size: 0.72rem;
             font-weight: 800;
             display: flex;
@@ -1922,8 +1936,8 @@
             height: 36px;
             min-width: 36px;
             border-radius: 9px;
-            background: rgba(192,57,43,0.1);
-            color: #c0392b;
+            background: rgba(17, 17, 17,0.1);
+            color: #111111;
             font-size: 0.9rem;
             display: flex;
             align-items: center;
@@ -1934,7 +1948,7 @@
             font-weight: 700;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: #c0392b;
+            color: #111111;
             line-height: 1;
             margin-bottom: 3px;
         }
@@ -1961,7 +1975,7 @@
             color: rgba(40,55,80,0.85);
         }
         .iw-compact-list li i {
-            color: #c0392b;
+            color: #111111;
             font-size: 0.7rem;
             margin-top: 3px;
             flex-shrink: 0;
@@ -2086,15 +2100,15 @@
 
         .home-btn-primary {
             border: none;
-            background: linear-gradient(135deg, var(--home-accent), #d35f52);
+            background: linear-gradient(135deg, var(--home-accent), #444444);
             color: #fff;
-            box-shadow: 0 16px 35px rgba(192, 57, 43, 0.28);
+            box-shadow: 0 16px 35px rgba(17, 17, 17, 0.28);
         }
 
         .home-btn-primary:hover {
             color: #fff;
             transform: translateY(-2px);
-            box-shadow: 0 18px 38px rgba(192, 57, 43, 0.34);
+            box-shadow: 0 18px 38px rgba(17, 17, 17, 0.34);
         }
 
         .home-btn-secondary {
@@ -2198,8 +2212,8 @@
         .hero-contact-card .form-control:focus,
         .hero-mobile-form-card input:focus,
         .hero-mobile-form-card textarea:focus {
-            border-color: rgba(192, 57, 43, 0.45);
-            box-shadow: 0 0 0 4px rgba(192, 57, 43, 0.12);
+            border-color: rgba(17, 17, 17, 0.45);
+            box-shadow: 0 0 0 4px rgba(17, 17, 17, 0.12);
         }
 
         .hero-contact-card textarea,
@@ -2213,10 +2227,10 @@
             min-height: 54px;
             border: none;
             border-radius: 16px;
-            background: linear-gradient(135deg, var(--home-highlight), #c0392b);
+            background: linear-gradient(135deg, var(--home-highlight), #111111);
             color: #fff;
             font-weight: 700;
-            box-shadow: 0 16px 30px rgba(192, 57, 43, 0.25);
+            box-shadow: 0 16px 30px rgba(17, 17, 17, 0.25);
         }
 
         .hero-form-toast {
@@ -2227,12 +2241,12 @@
             padding: 10px 12px;
             border-radius: 14px;
             font-size: 0.88rem;
-            background: rgba(192, 57, 43, 0.92);
+            background: rgba(17, 17, 17, 0.92);
             color: #fff;
         }
 
         .hero-form-toast.error {
-            background: rgba(216, 19, 36, 0.9);
+            background: rgba(17, 17, 17, 0.9);
         }
 
         .hero-mobile-panel {
@@ -2621,7 +2635,7 @@
             gap: 24px;
             background: linear-gradient(135deg, #fff8f3 0%, #fef3ea 100%);
             border-radius: 14px;
-            border: 1px solid rgba(192,57,43,0.18);
+            border: 1px solid rgba(17, 17, 17,0.18);
         }
 
         .home-cta-band h3 {
@@ -2758,14 +2772,7 @@
                 justify-content: space-between;
                 padding: 22px 0 24px !important;
                 background:
-                    linear-gradient(to bottom,
-                        rgba(20,23,27,0.82) 0%,
-                        rgba(20,23,27,0.34) 18%,
-                        rgba(20,23,27,0.05) 42%,
-                        rgba(20,23,27,0.24) 74%,
-                        rgba(20,23,27,0.86) 100%),
-                    url('Images/final_banner.jpg') center 1% / 126% auto no-repeat,
-                    #1b1e22 !important;
+                    radial-gradient(125% 78% at 50% 44%, #2b2f34 0%, #1b1e22 58%, #15171a 100%) !important;
             }
             .home-hero-slim-inner {
                 width: 100%;
@@ -2781,7 +2788,16 @@
                 flex: 1;
             }
             /* Car image is shown by the banner background now */
-            .home-hero-mobile-img { display: none !important; }
+            .home-hero-mobile-img {
+                display: block !important;
+                flex: 1 1 auto;
+                width: calc(100% + 36px);
+                margin: 6px -18px;
+                min-height: 132px;
+                background: url('Images/final_banner.jpg') center 50% / cover no-repeat;
+                -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 15%, #000 85%, transparent 100%);
+                mask-image: linear-gradient(to bottom, transparent 0%, #000 15%, #000 85%, transparent 100%);
+            }
             .home-hero-actions {
                 flex-direction: column;
                 align-items: stretch;
@@ -2959,6 +2975,141 @@
         }
     </style>
 
+    <!-- ═══════════════════════════════════════════════════════════
+         PROFESSIONAL POLISH (Acko-inspired) — items 1-7
+    ═══════════════════════════════════════════════════════════ -->
+    <style id="iw-pro-polish">
+        :root{
+            --iw-green-trust:#0fa457;                 /* restrained trust accent */
+            --iw-shadow-card:0 1px 2px rgba(16,24,40,.04), 0 10px 26px rgba(16,24,40,.08);
+            --iw-shadow-card-hv:0 2px 6px rgba(16,24,40,.06), 0 20px 44px rgba(16,24,40,.16);
+        }
+
+        /* (3) Whitespace & vertical rhythm */
+        .home-section{ padding:44px 0 !important; }
+        .home-section-header{ margin-bottom:30px !important; }
+        .iw-featured-section{ padding:40px 0 16px !important; }
+        @media (max-width:767px){
+            .home-section{ padding:30px 0 !important; }
+            .iw-featured-section{ padding:26px 0 8px !important; }
+        }
+
+        /* (4) Cards — squared edges, softer layered shadow, hover lift */
+        .iw-featured-section .popular-car-card,
+        .home-section .popular-car-card{
+            border-radius:0 !important;
+            border:1px solid rgba(16,24,40,.06) !important;
+            background:#ffffff !important;
+            box-shadow:var(--iw-shadow-card) !important;
+            transition:transform .25s cubic-bezier(.2,.7,.2,1), box-shadow .25s ease !important;
+        }
+        .iw-featured-section .popular-car-card:hover,
+        .home-section .popular-car-card:hover{
+            box-shadow:var(--iw-shadow-card-hv) !important;
+            transform:translateY(-5px) !important;
+        }
+        .iw-featured-section .popular-car-card .car-image-wrapper,
+        .home-section .popular-car-card .car-image-wrapper{ border-radius:0 !important; }
+
+        /* (8) Richer, premium icons — service chips & CTA buttons */
+        /* Service mini-row: white glyph on a soft dark gradient chip */
+        .iw-services-mini-row .iw-svc-item-icon{
+            width:44px !important; height:44px !important; min-width:44px !important;
+            border-radius:13px !important;
+            background:linear-gradient(145deg,#2c2c2e 0%,#0c0c0d 100%) !important;
+            box-shadow:0 6px 16px rgba(17,17,17,.20), inset 0 1px 0 rgba(255,255,255,.10) !important;
+            transition:transform .22s cubic-bezier(.2,.7,.2,1), box-shadow .22s ease !important;
+        }
+        .iw-services-mini-row .iw-svc-item-icon i{
+            color:#ffffff !important;
+            font-size:1.12rem !important;
+            line-height:1 !important;
+        }
+        .iw-services-mini-row .iw-svc-item:hover .iw-svc-item-icon{
+            transform:translateY(-3px) !important;
+            box-shadow:0 11px 22px rgba(17,17,17,.30), inset 0 1px 0 rgba(255,255,255,.16) !important;
+        }
+        /* Hero / CTA buttons: clean, crisp glyphs (no box) */
+        .home-btn-primary > i,
+        .home-btn-secondary > i{
+            font-size:1rem !important;
+            opacity:.95 !important;
+            transition:transform .2s ease !important;
+        }
+        .home-btn-primary:hover > i,
+        .home-btn-secondary:hover > i{ transform:translateX(1px) scale(1.05) !important; }
+
+        /* Inspection checklist icons — premium chips to match service row */
+        .iw-checks-card .iw-check-icon{
+            background:linear-gradient(145deg,#2c2c2e 0%,#0c0c0d 100%) !important;
+            border-radius:7px !important;
+            box-shadow:0 3px 8px rgba(17,17,17,.16) !important;
+        }
+        .iw-checks-card .iw-check-icon i{ color:#ffffff !important; }
+
+        /* (1) One accent system — active filter chip solid dark */
+        .price-filter-tab.active{
+            color:#111111 !important;
+            border-bottom-color:#111111 !important;
+        }
+        .price-filter-tab:hover{ background:rgba(17,17,17,.05) !important; color:#111111 !important; }
+
+        /* (7) Coverage strip — breathing room + softer shadow */
+        .iw-checks-card{
+            border-radius:18px !important;
+            padding:18px 28px 16px !important;
+            box-shadow:0 1px 2px rgba(16,24,40,.04), 0 16px 44px rgba(16,24,40,.10) !important;
+        }
+        .iw-check-item{ padding:13px 12px !important; transition:background .2s ease; }
+        .iw-check-item:hover{ background:rgba(15,164,87,.06) !important; }
+
+        /* (2)+(5) Trust strip with restrained green check marks */
+        .iw-trust-strip{
+            width:min(1280px, calc(100% - 40px));
+            margin:22px auto 0;
+            display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
+            gap:10px 26px; padding:15px 22px;
+            background:#ffffff; border:1px solid rgba(16,24,40,.07);
+            border-radius:16px;
+            box-shadow:0 1px 2px rgba(16,24,40,.04), 0 10px 30px rgba(16,24,40,.07);
+        }
+        .iw-trust-item{ display:inline-flex; align-items:center; gap:9px; color:#1a1f36; font-weight:600; font-size:.92rem; }
+        .iw-trust-item i{ color:var(--iw-green-trust); font-size:1.05rem; }
+        .iw-trust-sep{ width:1px; height:20px; background:rgba(16,24,40,.12); }
+        @media (max-width:767px){
+            .iw-trust-strip{ display:grid; grid-template-columns:1fr 1fr; gap:12px 14px; padding:14px 16px; margin-top:16px; }
+            .iw-trust-sep{ display:none; }
+            .iw-trust-item{ font-size:.82rem; justify-content:flex-start; }
+        }
+
+        /* (6) Mobile sticky CTA bar */
+        .iw-mobile-cta{ display:none; }
+        @media (max-width:767px){
+            .iw-mobile-cta{
+                display:flex; gap:10px; align-items:center;
+                position:fixed; left:0; right:0; bottom:0; z-index:1200;
+                padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));
+                background:rgba(255,255,255,.96);
+                -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+                border-top:1px solid rgba(16,24,40,.10);
+                box-shadow:0 -6px 24px rgba(16,24,40,.10);
+            }
+            .iw-mobile-cta .mc-call{
+                flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center;
+                width:48px; height:48px; border-radius:12px;
+                border:1.5px solid rgba(16,24,40,.16); color:#111111; background:#fff;
+                font-size:1.1rem; text-decoration:none;
+            }
+            .iw-mobile-cta .mc-book{
+                flex:1; display:inline-flex; align-items:center; justify-content:center; gap:8px;
+                height:48px; border:none; border-radius:12px; background:#111111; color:#fff;
+                font-weight:700; font-size:.98rem; cursor:pointer;
+            }
+            body.home-page{ padding-bottom:74px !important; }
+            .back-to-top{ bottom:86px !important; }
+        }
+    </style>
+
     <div class="top-banner">
         <div class="banner-container">
             <a href="/" class="banner-logo" aria-label="inspectionWale homepage">
@@ -3002,11 +3153,11 @@
                         <div class="home-hero-mobile-img" aria-hidden="true"></div>
                         <div class="home-hero-actions">
                             <button type="button" class="home-btn-primary" data-bs-toggle="modal" data-bs-target="#bookInspectionModal">
-                                <i class="fas fa-search"></i>
+                                <i class="fas fa-shield-alt"></i>
                                 <span>Book Inspection</span>
                             </button>
                             <a href="#marketplace" class="home-btn-secondary">
-                                <i class="fas fa-car-side"></i>
+                                <i class="fas fa-car"></i>
                                 <span>Browse Featured Cars</span>
                             </a>
                         </div>
@@ -3020,14 +3171,6 @@
     <!-- ═══ INSPECTION CHECKPOINTS FLOATING CARD ═══ -->
     <div class="iw-checks-float-wrap">
         <div class="iw-checks-card">
-            <div class="iw-checks-header-row">
-                <span class="iw-checks-label"><span class="lbl-full">160+ point inspection covers</span><span class="lbl-short">160+ point inspection</span></span>
-                <span class="iw-checks-sep"></span>
-                <span class="iw-checks-label"><span class="lbl-full">Same-day report for faster decisions</span><span class="lbl-short">Same-day report</span></span>
-                <span class="iw-checks-sep"></span>
-                <span class="iw-checks-label"><span class="lbl-full">Buyer-first insights, not dealer-driven</span><span class="lbl-short">Buyer-first, unbiased</span></span>
-                <div class="iw-checks-divider-line"></div>
-            </div>
             <div class="iw-checks-grid">
                 <div class="iw-check-item">
                     <div class="iw-check-icon"><i class="fas fa-cog"></i></div>
@@ -3073,12 +3216,23 @@
         </div>
     </div>
 
+    <!-- ═══ TRUST STRIP (social proof) ═══ -->
+    <div class="iw-trust-strip" aria-label="Why buyers trust inspectionWale">
+        <span class="iw-trust-item"><i class="fas fa-check-circle"></i> Certified Inspectors</span>
+        <span class="iw-trust-sep"></span>
+        <span class="iw-trust-item"><i class="fas fa-check-circle"></i> Same-Day PDF Report</span>
+        <span class="iw-trust-sep"></span>
+        <span class="iw-trust-item"><i class="fas fa-check-circle"></i> On-Site Inspection</span>
+        <span class="iw-trust-sep"></span>
+        <span class="iw-trust-item"><i class="fas fa-check-circle"></i> 160+ Point Check</span>
+    </div>
+
     <!-- Featured Cars Section - immediately after banner -->
     <section class="iw-featured-section" id="marketplace">
         <div class="container">
             <div class="d-flex align-items-center justify-content-between mb-3 home-marketplace-header">
                 <div>
-                    <span style="display:block; color:#a23226; font-size:0.8rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;">Featured Cars</span>
+                    <span style="display:block; color:#000000; font-size:0.8rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;">Featured Cars</span>
                 </div>
                 <button type="button" class="btn sell-car-btn home-marketplace-sell" data-bs-toggle="modal" data-bs-target="#listCarModal">
                     Sell Your Car <span class="sell-car-dot">•</span>
@@ -3158,7 +3312,7 @@
             </div>
             <div class="home-hero-actions mb-0">
                 <button type="button" class="home-btn-primary" data-bs-toggle="modal" data-bs-target="#bookInspectionModal">
-                    <i class="fas fa-clipboard-check"></i>
+                    <i class="fas fa-shield-alt"></i>
                     <span>Book Inspection</span>
                 </button>
                 <button type="button" class="home-btn-secondary" data-bs-toggle="modal" data-bs-target="#listCarModal">
@@ -3286,15 +3440,15 @@
             border-bottom: 3px solid transparent;
             transition: all 0.3s ease;
             white-space: nowrap;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
         .price-filter-tab:hover {
-            color: #c0392b;
+            color: #111111;
             background: rgba(38, 166, 154, 0.05);
         }
         .price-filter-tab.active {
-            color: #c0392b;
-            border-bottom-color: #c0392b;
+            color: #111111;
+            border-bottom-color: #111111;
             font-weight: 600;
         }
         /* Note: removed transform-based auto-scroll to avoid white/blank space while scrolling */
@@ -3442,7 +3596,7 @@
             display: block;
         }
         .car-name {
-            font-family: 'Montserrat', 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', 'Plus Jakarta Sans', sans-serif;
             font-size: 0.88rem;
             font-weight: 700;
             color: #ffffff;
@@ -3533,8 +3687,8 @@
         /* Sell Your Car Button - Green */
         .sell-car-btn {
             background: #fff;
-            border: 2px solid #c0392b;
-            color: #c0392b;
+            border: 2px solid #111111;
+            color: #111111;
             padding: 10px 25px;
             border-radius: 30px;
             font-weight: 500;
@@ -3542,7 +3696,7 @@
             transition: all 0.3s ease;
         }
         .sell-car-btn:hover {
-            background: #c0392b;
+            background: #111111;
             color: #fff;
         }
 
@@ -3556,13 +3710,13 @@
             margin-left: auto;
         }
         .sell-car-dot {
-            color: #D81324;
+            color: #111111;
             font-size: 1.2rem;
             margin-left: 5px;
         }
         /* View More Button - Green */
         .view-more-btn {
-            background: #c0392b;
+            background: #111111;
             color: #fff;
             padding: 12px 30px;
             border-radius: 30px;
@@ -3572,7 +3726,7 @@
             text-decoration: none;
         }
         .view-more-btn:hover {
-            background: #a23226;
+            background: #000000;
             color: #fff;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(38, 166, 154, 0.3);
@@ -3755,7 +3909,7 @@
             flex: 1 1 auto !important;
         }
         .popular-car-card .car-name {
-            font-family: 'Montserrat','Inter',sans-serif !important;
+            font-family: 'Plus Jakarta Sans','Plus Jakarta Sans',sans-serif !important;
             font-size: 0.9rem !important;
             font-weight: 600 !important;
             color: #1a1f36 !important;
@@ -3790,7 +3944,7 @@
             padding: 0 !important;
             background: none !important;
             box-shadow: none !important;
-            color: #a23226 !important;
+            color: #000000 !important;
             font-weight: 700 !important;
             font-size: 0.95rem !important;
             letter-spacing: 0 !important;
@@ -3801,8 +3955,8 @@
             text-align: center !important;
             margin-top: 10px !important;
             padding: 7px 0 !important;
-            border: 1.5px solid #a23226 !important;
-            color: #a23226 !important;
+            border: 1.5px solid #000000 !important;
+            color: #000000 !important;
             background: #ffffff !important;
             font-size: 0.78rem !important;
             font-weight: 600 !important;
@@ -3810,7 +3964,7 @@
             transition: background 0.2s ease, color 0.2s ease !important;
         }
         .popular-car-card:hover .car-view-listing {
-            background: #a23226 !important;
+            background: #000000 !important;
             color: #ffffff !important;
         }
         @media (max-width: 575.98px) {
@@ -4763,6 +4917,20 @@
                                     </select>
                                 </div>
                                 <div class="col-md-4">
+                                    <label for="carBodyType" class="form-label">Body Type<span class="text-danger">*</span></label>
+                                    <select class="form-select" id="carBodyType" name="bodyType" required>
+                                        <option value="">Select Body Type</option>
+                                        <option value="Hatchback">Hatchback</option>
+                                        <option value="Sedan">Sedan</option>
+                                        <option value="SUV">SUV</option>
+                                        <option value="MUV">MUV / MPV</option>
+                                        <option value="Coupe">Coupe</option>
+                                        <option value="Convertible">Convertible</option>
+                                        <option value="Pickup">Pickup</option>
+                                        <option value="Luxury">Luxury</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
                                     <label for="numberOfOwners" class="form-label">Number of Owners<span class="text-danger">*</span></label>
                                     <select class="form-select" id="numberOfOwners" name="numberOfOwners" required>
                                         <option value="">Select</option>
@@ -5193,7 +5361,7 @@
         #bookInspectionModal .modal-content { border: none; border-radius: 16px; overflow: hidden; background: #f4f5f7; box-shadow: 0 30px 70px rgba(10,18,38,0.4); }
         .iw-book-modal-body { padding: 24px 24px 22px; position: relative; }
         .iw-book-close { position: absolute; top: 16px; right: 18px; z-index: 3; }
-        .iw-book-title { font-family: 'Montserrat', sans-serif; font-size: 1.45rem; font-weight: 800; color: #11182a; margin: 0 0 2px; letter-spacing: -0.01em; }
+        .iw-book-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.45rem; font-weight: 800; color: #11182a; margin: 0 0 2px; letter-spacing: -0.01em; }
         .iw-book-sub { font-size: 0.85rem; color: #6b7280; margin: 0 0 16px; }
         .iw-book-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: #e7e9ee; border-radius: 12px; padding: 5px; margin: 0 0 18px; list-style: none; }
         .iw-book-tab { width: 100%; border: none; background: transparent; color: #5a6472; font-size: 0.9rem; font-weight: 700; padding: 9px 8px; border-radius: 9px; transition: all .2s ease; cursor: pointer; }
@@ -5202,10 +5370,10 @@
         .iw-book-form .row { --bs-gutter-x: 10px; }
         .iw-book-form .form-control, .iw-book-form .form-select { background: #fff !important; border: 1px solid #e2e4ea !important; border-radius: 10px !important; font-size: 0.92rem !important; padding: 11px 13px !important; box-shadow: none !important; color: #11182a !important; }
         .iw-book-form .form-control::placeholder { color: #9aa1ad !important; }
-        .iw-book-form .form-control:focus, .iw-book-form .form-select:focus { border-color: #c0392b !important; box-shadow: 0 0 0 3px rgba(192,57,43,0.12) !important; }
+        .iw-book-form .form-control:focus, .iw-book-form .form-select:focus { border-color: #111111 !important; box-shadow: 0 0 0 3px rgba(17, 17, 17,0.12) !important; }
         .iw-book-form .iw-slot-label { font-size: 0.72rem; font-weight: 600; color: #6b7280; margin: 0 0 4px 2px; }
-        .iw-book-form button[type="submit"] { background: #c0392b !important; color: #fff !important; border: none !important; border-radius: 10px !important; font-weight: 700 !important; box-shadow: 0 10px 22px rgba(192,57,43,0.28) !important; }
-        .iw-book-form button[type="submit"]:hover { background: #a23226 !important; }
+        .iw-book-form button[type="submit"] { background: #111111 !important; color: #fff !important; border: none !important; border-radius: 10px !important; font-weight: 700 !important; box-shadow: 0 10px 22px rgba(17, 17, 17,0.28) !important; }
+        .iw-book-form button[type="submit"]:hover { background: #000000 !important; }
         .iw-book-form .pay-later-btn { background: #fff !important; color: #11182a !important; border: 1px solid #cfd3db !important; border-radius: 10px !important; font-weight: 600 !important; }
         .iw-book-form .pay-later-btn:hover { background: #eef0f4 !important; }
         .iw-book-note { font-size: 11px; color: #8a909c; text-align: center; margin: 8px 0 0; }
@@ -5214,7 +5382,7 @@
 
     <!-- ══ UNIFIED FORM THEME: all modals match Book Inspection ══ -->
     <style>
-        :root { --iw-red: #c0392b; --iw-red-dark: #a23226; --iw-red-glow: rgba(192,57,43,0.14); }
+        :root { --iw-red: #111111; --iw-red-dark: #000000; --iw-red-glow: rgba(17, 17, 17,0.14); }
 
         .iw-sleek-modal-shell {
             border-radius: 16px !important;
@@ -5229,7 +5397,7 @@
             padding: 22px 24px 16px !important;
         }
         .iw-sleek-modal-shell .modal-title {
-            font-family: 'Montserrat', sans-serif !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
             font-size: 1.18rem !important;
             font-weight: 800 !important;
             color: #11182a !important;
@@ -5410,7 +5578,7 @@
                             </select>
                         </div>
                         <div class="d-flex gap-2">
-                            <button type="submit" class="btn flex-grow-1 py-3" style="background: #c0392b; color: #fff; border-radius: 10px; font-size: 0.95rem; font-weight: 700;">Book Inspection @ ₹1,399</button>
+                            <button type="submit" class="btn flex-grow-1 py-3" style="background: #111111; color: #fff; border-radius: 10px; font-size: 0.95rem; font-weight: 700;">Book Inspection @ ₹1,399</button>
                             <button type="button" class="btn pay-later-btn flex-grow-1 py-3" style="background: #6c757d; color: #fff; border-radius: 30px; font-size: 0.95rem; font-weight: 600;">Pay Later</button>
                         </div>
                         <p class="iw-book-note text-center mt-2 mb-0"><i class="fas fa-shield-alt me-1"></i> Book Now: Secure Razorpay | Pay Later: We'll call to confirm</p>
@@ -5489,7 +5657,7 @@
                             </select>
                         </div>
                         <div class="d-flex gap-2">
-                            <button type="submit" class="btn flex-grow-1 py-3" style="background: #c0392b; color: #fff; border-radius: 10px; font-size: 0.95rem; font-weight: 700;">Book Inspection @ ₹1,399</button>
+                            <button type="submit" class="btn flex-grow-1 py-3" style="background: #111111; color: #fff; border-radius: 10px; font-size: 0.95rem; font-weight: 700;">Book Inspection @ ₹1,399</button>
                             <button type="button" class="btn pay-later-btn flex-grow-1 py-3" style="background: #6c757d; color: #fff; border-radius: 30px; font-size: 0.95rem; font-weight: 600;">Pay Later</button>
                         </div>
                         <p class="iw-book-note text-center mt-2 mb-0"><i class="fas fa-shield-alt me-1"></i> Book Now: Secure Razorpay | Pay Later: We'll call to confirm</p>
@@ -5530,8 +5698,8 @@
     <section class="py-4" id="reviews" style="background: linear-gradient(180deg, #1a2a3a 0%, #2d4a5e 30%, #4a6a7a 60%, #6a8a9a 100%);">
         <div class="container">
             <div class="text-center mb-4">
-                <h2 class="text-white mb-2" style="font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: clamp(1.7rem, 2.8vw, 2.4rem);">
-                    What Our <span style="color: #D81324;">Customers</span> Say
+                <h2 class="text-white mb-2" style="font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; font-size: clamp(1.7rem, 2.8vw, 2.4rem);">
+                    What Our <span style="color: #111111;">Customers</span> Say
                 </h2>
                 <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
                     <div id="overallStars" style="color: #ffc107; font-size: 1.25rem;">★★★★★</div>
@@ -5588,7 +5756,7 @@
             background: rgba(255,255,255,0.3);
         }
         .google-reviews-carousel .owl-dots .owl-dot.active span {
-            background: #D81324;
+            background: #111111;
         }
         .google-review-item .bg-light {
             background: rgba(255,255,255,0.1) !important;
@@ -5615,44 +5783,44 @@
     <!-- Guides / Blog teaser -->
     <section class="container py-5" id="guides" aria-label="Car buying and inspection guides">
         <div class="text-center mb-4">
-            <h2 style="font-family:'Montserrat',sans-serif; font-weight:800; color:#0B2154; font-size:28px;">Car Buying &amp; Inspection Guides</h2>
+            <h2 style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; color:#0B2154; font-size:28px;">Car Buying &amp; Inspection Guides</h2>
             <p style="color:#5b6472; max-width:680px; margin:8px auto 0;">Practical, India-specific advice from inspectors who examine hundreds of used cars every month.</p>
         </div>
         <div class="row g-4">
             <div class="col-md-6 col-lg-3">
                 <a href="/blog/used-car-buying-guide-india.html" class="text-decoration-none d-block h-100 p-4" style="border:1px solid #e6e9f0; border-radius:14px; background:#fff;">
-                    <span style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:#D81324;">Buying Guide</span>
-                    <h3 style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:17px; color:#0B2154; margin:8px 0 0; line-height:1.35;">The Complete Used Car Buying Guide for India (2026)</h3>
+                    <span style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:#111111;">Buying Guide</span>
+                    <h3 style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:17px; color:#0B2154; margin:8px 0 0; line-height:1.35;">The Complete Used Car Buying Guide for India (2026)</h3>
                 </a>
             </div>
             <div class="col-md-6 col-lg-3">
                 <a href="/blog/pre-purchase-car-inspection-checklist.html" class="text-decoration-none d-block h-100 p-4" style="border:1px solid #e6e9f0; border-radius:14px; background:#fff;">
-                    <span style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:#D81324;">Inspection</span>
-                    <h3 style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:17px; color:#0B2154; margin:8px 0 0; line-height:1.35;">Pre-Purchase Inspection Checklist: 160+ Points</h3>
+                    <span style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:#111111;">Inspection</span>
+                    <h3 style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:17px; color:#0B2154; margin:8px 0 0; line-height:1.35;">Pre-Purchase Inspection Checklist: 160+ Points</h3>
                 </a>
             </div>
             <div class="col-md-6 col-lg-3">
                 <a href="/blog/rc-transfer-process-maharashtra.html" class="text-decoration-none d-block h-100 p-4" style="border:1px solid #e6e9f0; border-radius:14px; background:#fff;">
-                    <span style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:#D81324;">Paperwork</span>
-                    <h3 style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:17px; color:#0B2154; margin:8px 0 0; line-height:1.35;">RC Transfer Process in Maharashtra: Step-by-Step</h3>
+                    <span style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:#111111;">Paperwork</span>
+                    <h3 style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:17px; color:#0B2154; margin:8px 0 0; line-height:1.35;">RC Transfer Process in Maharashtra: Step-by-Step</h3>
                 </a>
             </div>
             <div class="col-md-6 col-lg-3">
                 <a href="/blog/spot-accidental-or-flood-damaged-car.html" class="text-decoration-none d-block h-100 p-4" style="border:1px solid #e6e9f0; border-radius:14px; background:#fff;">
-                    <span style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:#D81324;">Red Flags</span>
-                    <h3 style="font-family:'Montserrat',sans-serif; font-weight:700; font-size:17px; color:#0B2154; margin:8px 0 0; line-height:1.35;">How to Spot an Accidental or Flood-Damaged Car</h3>
+                    <span style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:#111111;">Red Flags</span>
+                    <h3 style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:17px; color:#0B2154; margin:8px 0 0; line-height:1.35;">How to Spot an Accidental or Flood-Damaged Car</h3>
                 </a>
             </div>
         </div>
         <div class="text-center mt-4">
-            <a href="/blog/" class="text-decoration-none" style="font-family:'Montserrat',sans-serif; font-weight:700; color:#D81324;">View all guides &rarr;</a>
+            <a href="/blog/" class="text-decoration-none" style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; color:#111111;">View all guides &rarr;</a>
         </div>
     </section>
 
     <!-- FAQ (mirrors FAQPage schema) -->
     <section class="container py-5" id="faq" aria-label="Frequently asked questions">
         <div class="text-center mb-4">
-            <h2 style="font-family:'Montserrat',sans-serif; font-weight:800; color:#0B2154; font-size:28px;">Frequently Asked Questions</h2>
+            <h2 style="font-family:'Plus Jakarta Sans',sans-serif; font-weight:800; color:#0B2154; font-size:28px;">Frequently Asked Questions</h2>
         </div>
         <div class="row justify-content-center">
             <div class="col-lg-9">
@@ -5686,14 +5854,14 @@
     <style>
         .iw-faq-item { border-bottom:1px solid #e6e9f0; padding:18px 0; }
         .iw-faq-item:first-child { border-top:1px solid #e6e9f0; }
-        .iw-faq-item h3 { font-family:'Montserrat',sans-serif; font-weight:700; font-size:17px; color:#0B2154; margin:0 0 8px; }
-        .iw-faq-item p { font-family:'Lato',sans-serif; color:#5b6472; font-size:15.5px; line-height:1.7; margin:0; }
+        .iw-faq-item h3 { font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:17px; color:#0B2154; margin:0 0 8px; }
+        .iw-faq-item p { font-family:'Plus Jakarta Sans',sans-serif; color:#5b6472; font-size:15.5px; line-height:1.7; margin:0; }
     </style>
 
     <section class="iw-monetization-zone home-band home-band-light" id="homeMonetizationZone" aria-label="Recommended automotive offers"></section>
 
     <!-- Footer Start -->
-    <div class="container-fluid text-light footer pt-5 pb-3" style="background: #0B2154; font-family: 'Montserrat', sans-serif;">
+    <div class="container-fluid text-light footer pt-5 pb-3" style="background: #0B2154; font-family: 'Plus Jakarta Sans', sans-serif;">
         <div class="container">
             <!-- Logo + Description Row -->
             <div class="row pb-4 border-bottom" style="border-color: rgba(255,255,255,0.15) !important;">
@@ -5756,7 +5924,7 @@
                 <div class="partner-service-modal__hero" style="background:#14213d!important;padding:22px 24px 20px!important;">
                     <div class="d-flex align-items-start justify-content-between gap-3">
                         <div>
-                            <h5 id="partnerServiceModalLabel" style="color:#fff;font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.18rem;letter-spacing:-0.01em;margin-bottom:4px;">Submit Requirement</h5>
+                            <h5 id="partnerServiceModalLabel" style="color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.18rem;letter-spacing:-0.01em;margin-bottom:4px;">Submit Requirement</h5>
                             <p style="color:rgba(255,255,255,0.65);font-size:0.82rem;margin:0;">Share your requirement and our team will connect with the right next step for you.</p>
                         </div>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -5834,6 +6002,14 @@
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+    <!-- ═══ MOBILE STICKY CTA BAR (mobile only) ═══ -->
+    <div class="iw-mobile-cta" role="region" aria-label="Quick actions">
+        <a href="tel:+918238089600" class="mc-call" aria-label="Call inspectionWale"><i class="fas fa-phone-alt"></i></a>
+        <button type="button" class="mc-book" data-bs-toggle="modal" data-bs-target="#bookInspectionModal">
+            <i class="fas fa-shield-alt"></i> Book Inspection
+        </button>
+    </div>
 
 
     <!-- JavaScript Libraries - load Bootstrap synchronously so it's available for inline scripts -->
@@ -6247,7 +6423,10 @@
                     if (isAffiliateMonetizationReady()) {
                         window.IWMonetization.hydrate(recommendationHost);
                     }
-                    form.reset();
+                    // NOTE: intentionally NOT resetting the form here. If the user
+                    // returns from Razorpay (e.g. taps Back), the entered data is
+                    // preserved so they can retry payment or switch to Pay Later
+                    // instead of being stuck with an empty, invalid form.
 
                     // Close modal and redirect to Razorpay payment page
                     console.log('[IW] Redirecting to:', data.paymentUrl);
@@ -6267,15 +6446,15 @@
                     submitBtn.disabled = false;
                     setTimeout(() => {
                         submitBtn.innerHTML = defaultLabel;
-                        submitBtn.style.background = '#c0392b';
+                        submitBtn.style.background = '#111111';
                     }, 3000);
                 }
             }
 
             // Pay Later button handler
             const payLaterBtn = form.querySelector('.pay-later-btn');
+            const payLaterDefaultLabel = payLaterBtn ? payLaterBtn.innerHTML : 'Pay Later';
             if (payLaterBtn) {
-                const payLaterDefaultLabel = payLaterBtn.innerHTML;
                 
                 payLaterBtn.addEventListener('click', async function(e) {
                     e.preventDefault();
@@ -6395,6 +6574,28 @@
 
             // Bind to form submit event
             form.addEventListener('submit', handleSubmit);
+
+            // When the user returns from the Razorpay page using the browser Back
+            // button, the page can be restored from the bfcache with the submit
+            // button still stuck on "Redirecting to Payment…" and disabled, which
+            // also makes the form look broken so Pay Later appears to do nothing.
+            // Re-enable both buttons (form data is preserved) so the user can
+            // retry payment or choose Pay Later.
+            window.addEventListener('pageshow', function (ev) {
+                const nav = performance.getEntriesByType('navigation')[0];
+                const cameBack = ev.persisted || (nav && nav.type === 'back_forward');
+                if (!cameBack) return;
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = defaultLabel;
+                    submitBtn.style.background = '#111111';
+                }
+                if (payLaterBtn) {
+                    payLaterBtn.disabled = false;
+                    payLaterBtn.innerHTML = payLaterDefaultLabel;
+                    payLaterBtn.style.background = '#6c757d';
+                }
+            });
 
             // Also bind directly to button click as backup
             if (submitBtn) {
@@ -6777,18 +6978,18 @@
         body.home-page h1, body.home-page h2, body.home-page h3,
         .iw-services-section-title, .home-section-header h2,
         .iw-book-title, .home-hero-copy h1 {
-            font-family: 'Montserrat', sans-serif !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
             letter-spacing: -0.01em;
         }
         /* Unified small-caps eyebrow/label style */
         .iw-checks-label, .iw-services-section-label, .iw-block-label,
         .home-marketplace-header span, .home-eyebrow {
-            font-family: 'Inter', sans-serif !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
         }
         /* Consistent, breathable section rhythm (de-pack the page) */
         .iw-featured-section { padding: 28px 0 26px !important; }
         .iw-info-block { padding-top: 32px !important; padding-bottom: 32px !important; }
-        .iw-services-section { padding: 30px 0 32px !important; }
+        .iw-services-section { padding: 22px 0 22px !important; }
         #reviews { padding-top: 34px !important; padding-bottom: 40px !important; }
         /* A touch more air under the floating checks card */
         .iw-checks-float-wrap { margin-bottom: 8px; }
@@ -6810,7 +7011,7 @@
         /* ════════ CTA BAND — subtle, professional light band ════════ */
         .home-cta-band {
             background: linear-gradient(135deg, #ffffff 0%, #faf3f1 100%) !important;
-            border: 1px solid rgba(192,57,43,0.14) !important;
+            border: 1px solid rgba(17, 17, 17,0.14) !important;
             padding: 30px 36px !important;
             border-radius: 18px !important;
             box-shadow: 0 8px 28px rgba(20,33,61,0.06) !important;
@@ -6823,17 +7024,17 @@
         }
         /* Primary = solid accent, Secondary = accent outline */
         .home-cta-band .home-btn-primary {
-            background: #c0392b !important;
+            background: #111111 !important;
             color: #ffffff !important;
-            box-shadow: 0 10px 24px rgba(192,57,43,0.22) !important;
+            box-shadow: 0 10px 24px rgba(17, 17, 17,0.22) !important;
         }
-        .home-cta-band .home-btn-primary:hover { background: #a23226 !important; color: #fff !important; }
+        .home-cta-band .home-btn-primary:hover { background: #000000 !important; color: #fff !important; }
         .home-cta-band .home-btn-secondary {
             background: #ffffff !important;
-            border: 1.5px solid rgba(192,57,43,0.5) !important;
-            color: #c0392b !important;
+            border: 1.5px solid rgba(17, 17, 17,0.5) !important;
+            color: #111111 !important;
         }
-        .home-cta-band .home-btn-secondary:hover { background: #faf0ee !important; border-color: #c0392b !important; color: #a23226 !important; }
+        .home-cta-band .home-btn-secondary:hover { background: #faf0ee !important; border-color: #111111 !important; color: #000000 !important; }
         /* Keep both CTA buttons on the same row — even on mobile */
         .home-cta-band .home-hero-actions {
             display: flex !important;
@@ -6863,15 +7064,15 @@
         .iw-stepper-num {
             width: 40px !important; height: 40px !important; min-width: 40px !important;
             border-radius: 50% !important;
-            background: linear-gradient(135deg, #c0392b, #d35f52) !important;
+            background: linear-gradient(135deg, #111111, #444444) !important;
             color: #fff !important;
             font-size: 0.9rem !important;
-            box-shadow: 0 6px 14px rgba(192,57,43,0.28) !important;
+            box-shadow: 0 6px 14px rgba(17, 17, 17,0.28) !important;
         }
         .iw-stepper-item { gap: 14px !important; }
         .iw-stepper-text strong { font-size: 0.95rem !important; margin-bottom: 2px; }
         .iw-stepper-text span { font-size: 0.78rem !important; }
-        .iw-stepper-arrow { font-size: 0.85rem !important; color: rgba(192,57,43,0.38) !important; padding: 0 14px !important; }
+        .iw-stepper-arrow { font-size: 0.85rem !important; color: rgba(17, 17, 17,0.38) !important; padding: 0 14px !important; }
 
         /* ════════ 3 INFO CARDS — premium cards with accent ════════ */
         .iw-compact-card {
@@ -6886,7 +7087,7 @@
         .iw-compact-card::before {
             content: "";
             position: absolute; top: 0; left: 0; right: 0; height: 4px;
-            background: linear-gradient(90deg, #c0392b, #d35f52);
+            background: linear-gradient(90deg, #111111, #444444);
         }
         .iw-compact-card:hover {
             transform: translateY(-5px);
@@ -6906,50 +7107,50 @@
 
         /* ════════ VIEW MORE CARS — professional red ════════ */
         .view-more-btn {
-            background: linear-gradient(135deg, #c0392b, #a23226) !important;
+            background: linear-gradient(135deg, #111111, #000000) !important;
             color: #fff !important;
             border-radius: 10px !important;
         }
         .view-more-btn:hover {
-            background: linear-gradient(135deg, #b02f24, #a23226) !important;
+            background: linear-gradient(135deg, #000000, #000000) !important;
             color: #fff !important;
             box-shadow: 0 12px 28px rgba(162,50,38,0.28) !important;
         }
 
         /* ════════ POST-DEAL ESSENTIALS — separated professional cards ════════ */
-        .iw-services-section-label { font-size: 0.74rem !important; letter-spacing: 0.16em !important; margin-bottom: 16px !important; }
+        .iw-services-section-label { font-size: 0.74rem !important; letter-spacing: 0.16em !important; margin-bottom: 12px !important; }
         .iw-services-mini-row {
             display: grid !important;
             grid-template-columns: repeat(4, 1fr) !important;
-            gap: 16px !important;
+            gap: 14px !important;
             background: transparent !important;
             border: none !important;
             box-shadow: none !important;
             overflow: visible !important;
         }
         .iw-svc-item {
-            flex-direction: column !important;
-            align-items: flex-start !important;
+            flex-direction: row !important;
+            align-items: center !important;
             justify-content: flex-start !important;
-            gap: 14px !important;
+            gap: 12px !important;
             flex: initial !important;
             background: #ffffff !important;
             border: 1px solid rgba(20,33,61,0.08) !important;
-            border-radius: 16px !important;
+            border-radius: 14px !important;
             box-shadow: 0 4px 18px rgba(20,33,61,0.05) !important;
-            padding: 22px 20px !important;
+            padding: 14px 16px !important;
             transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
         }
         .iw-svc-item:hover {
             transform: translateY(-5px);
             box-shadow: 0 16px 34px rgba(20,33,61,0.13) !important;
-            border-color: rgba(192,57,43,0.35) !important;
+            border-color: rgba(17, 17, 17,0.35) !important;
             background: #ffffff !important;
         }
-        .iw-svc-item-icon { width: 48px !important; height: 48px !important; min-width: 48px !important; border-radius: 13px !important; }
-        .iw-svc-item-icon i { font-size: 1.2rem !important; }
-        .iw-svc-item-name { font-size: 0.98rem !important; font-weight: 700 !important; }
-        .iw-svc-item:hover .iw-svc-item-icon { background: rgba(192,57,43,0.16); }
+        .iw-svc-item-icon { width: 44px !important; height: 44px !important; min-width: 44px !important; border-radius: 13px !important; }
+        .iw-svc-item-icon i { font-size: 1.12rem !important; }
+        .iw-svc-item-name { font-size: 0.95rem !important; font-weight: 700 !important; }
+        .iw-svc-item:hover .iw-svc-item-icon { background: rgba(17, 17, 17,0.16); }
 
         @media (max-width: 767.98px) {
             .home-cta-band { padding: 24px 22px !important; border-radius: 16px !important; }

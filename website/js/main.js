@@ -915,6 +915,7 @@
             expectedPrice: formData.get('expectedPrice') || '',
             location: formData.get('location') || '',
             fuelType: formData.get('fuelType') || '',
+            bodyType: formData.get('bodyType') || '',
             numberOfOwners: formData.get('numberOfOwners') || '',
             variant: formData.get('variant') || '',
             insuranceValidity: formData.get('insuranceValidity') || '',
