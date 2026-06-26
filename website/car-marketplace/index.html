@@ -8594,9 +8594,10 @@
                             window.IWMonetization.hydrate(alertBox);
                         }
                         
-                        // Reset form and redirect to Razorpay
+                        // Keep the form data intact (do NOT reset) before sending the
+                        // user to Razorpay. If they return via the browser Back button,
+                        // their details are still filled in and Pay Later keeps working.
                         setTimeout(() => {
-                            marketplaceBookingForm.reset();
                             marketplaceBookingForm.classList.remove('was-validated');
                             const modal = bootstrap.Modal.getInstance(document.getElementById('bookingModal'));
                             if (modal) modal.hide();
@@ -8623,6 +8624,7 @@
         if (payLaterBtn && marketplaceBookingForm) {
             const payLaterDefaultLabel = payLaterBtn.innerHTML;
             const submitBtn = document.getElementById('marketplaceBookingSubmit');
+            const submitDefaultLabel = submitBtn ? submitBtn.innerHTML : 'Book Inspection @ ₹1,399';
             const alertBox = document.getElementById('bookingAlert');
             
             payLaterBtn.addEventListener('click', async function(e) {
@@ -8728,6 +8730,25 @@
                     submitBtn.disabled = false;
                     payLaterBtn.innerHTML = payLaterDefaultLabel;
                 }
+            });
+
+            // When the user returns from the Razorpay payment page using the browser
+            // Back button, the page can be restored from the bfcache with the buttons
+            // still disabled / showing a loading label, which makes Pay Later look
+            // broken. Re-enable both buttons (the form data is preserved) so the user
+            // can retry payment or choose Pay Later.
+            window.addEventListener('pageshow', function (ev) {
+                const nav = performance.getEntriesByType('navigation')[0];
+                const cameBack = ev.persisted || (nav && nav.type === 'back_forward');
+                if (!cameBack) return;
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = submitDefaultLabel;
+                    submitBtn.style.background = '#111111';
+                }
+                payLaterBtn.disabled = false;
+                payLaterBtn.innerHTML = payLaterDefaultLabel;
+                payLaterBtn.style.background = '#6c757d';
             });
         }
 
