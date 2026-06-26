@@ -512,10 +512,6 @@
          Overrides all previous inline styles with a premium,
          clean white/blue theme. Backend functionality unchanged.
     ═══════════════════════════════════════════════════════════ -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
     <style>
         /* ── 1. DESIGN TOKENS ──────────────────────────────────── */
         :root {
@@ -3126,7 +3122,7 @@
     <div class="top-banner">
         <div class="banner-container">
             <a href="/" class="banner-logo" aria-label="inspectionWale homepage">
-                <img src="Images/brand_logo_new_1.png?v=2026" alt="inspectionWale Logo" loading="eager" decoding="async">
+                <img src="Images/brand_logo_new_1.png?v=2026" alt="inspectionWale Logo" width="819" height="199" loading="eager" decoding="async">
             </a>
 
             <nav class="home-nav" aria-label="Primary navigation">
@@ -3245,7 +3241,7 @@
         <div class="container">
             <div class="d-flex align-items-center justify-content-between mb-3 home-marketplace-header">
                 <div>
-                    <span style="display:block; color:#000000; font-size:0.8rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;">Featured Cars</span>
+                    <h2 style="display:block; margin:0; color:#000000; font-size:0.8rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;">Featured Cars</h2>
                 </div>
                 <button type="button" class="btn sell-car-btn home-marketplace-sell" data-bs-toggle="modal" data-bs-target="#listCarModal">
                     Sell Your Car <span class="sell-car-dot">•</span>
@@ -4528,7 +4524,7 @@
                         <img src="${photo}" alt="${title}" loading="${eager ? 'eager' : 'lazy'}" fetchpriority="${eager ? 'high' : 'low'}" decoding="async" onerror="this.onerror=null;this.src='${POPULAR_FALLBACK_IMAGE}'">
                     </div>
                     <div class="car-info">
-                        <h5 class="car-name">${title}</h5>
+                        <h3 class="car-name">${title}</h3>
                         ${specsHtml}
                         <p class="car-price">${price}</p>
                         <span class="car-view-listing">View Listing</span>
@@ -5987,7 +5983,7 @@
             <div class="row pb-4 border-bottom" style="border-color: rgba(255,255,255,0.15) !important;">
                 <div class="col-lg-4 col-md-5 mb-4 mb-md-0">
                     <a href="/" class="d-inline-block mb-3">
-                        <img src="Images/brand_logo_new_1.png?v=2026" alt="inspectionWale" loading="lazy" style="height:38px;">
+                        <img src="Images/brand_logo_new_1.png?v=2026" alt="inspectionWale" width="819" height="199" loading="lazy" style="height:38px;width:auto;">
                     </a>
                     <p style="color: rgba(255,255,255,0.6); font-size: 13.5px; line-height: 1.65; max-width: 300px; margin: 0;">Mumbai's most trusted pre-purchase car inspection service. Independent, buyer-first, same-day reports.</p>
                 </div>
@@ -6013,11 +6009,11 @@
                         <div class="col-12 col-md-4">
                             <p class="text-uppercase mb-3" style="color: rgba(255,255,255,0.9); font-size: 11px; font-weight: 700; letter-spacing: 1.5px;">Connect With Us</p>
                             <div class="d-flex gap-3 mb-3">
-                                <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-twitter"></i></a>
-                                <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-youtube"></i></a>
-                                <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-linkedin-in"></i></a>
-                                <a href="#" class="text-white" style="font-size: 1.1rem;"><i class="fab fa-instagram"></i></a>
+                                <a href="#" class="text-white" style="font-size: 1.1rem;" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                                <a href="#" class="text-white" style="font-size: 1.1rem;" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                                <a href="#" class="text-white" style="font-size: 1.1rem;" aria-label="YouTube"><i class="fab fa-youtube" aria-hidden="true"></i></a>
+                                <a href="#" class="text-white" style="font-size: 1.1rem;" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                                <a href="#" class="text-white" style="font-size: 1.1rem;" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
                             </div>
                         </div>
                     </div>
@@ -6121,7 +6117,7 @@
 
 
     <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top" aria-label="Back to top"><i class="bi bi-arrow-up" aria-hidden="true"></i></a>
 
     <!-- ═══ MOBILE STICKY CTA BAR (mobile only) ═══ -->
     <div class="iw-mobile-cta" role="region" aria-label="Quick actions">
@@ -6798,7 +6794,7 @@
                                             `<div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:52px;height:52px;font-size:20px;font-weight:bold;">${review.author.charAt(0)}</div>`
                                         }
                                     </div>
-                                    <h5 class="mb-1">${review.author}</h5>
+                                    <h3 class="mb-1 h5">${review.author}</h3>
                                     <small class="text-muted d-block mb-2">${review.time || ''}</small>
                                     <div class="mb-2" style="color:#ffc107;font-size:1.1em;">
                                         ${getStars(review.rating)}
