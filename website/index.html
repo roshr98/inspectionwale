@@ -3272,11 +3272,18 @@
                         <div class="popular-car-card loading-card">
                             <div class="car-image-wrapper shimmer-block">
                                 <div class="iw-car-loader">
-                                    <div class="iw-car-loader-scene">
-                                        <i class="fas fa-car-side iw-car-loader-car" aria-hidden="true"></i>
-                                        <span class="iw-car-loader-road"></span>
+                                    <div class="iw-engine-scene">
+                                        <span class="iw-eng-glow" aria-hidden="true"></span>
+                                        <span class="iw-eng-gear-wrap main"><i class="fas fa-gear" aria-hidden="true"></i></span>
+                                        <span class="iw-eng-gear-wrap sub"><i class="fas fa-gear" aria-hidden="true"></i></span>
+                                        <span class="iw-eng-spark s1" aria-hidden="true"></span>
+                                        <span class="iw-eng-spark s2" aria-hidden="true"></span>
+                                        <span class="iw-eng-spark s3" aria-hidden="true"></span>
+                                        <span class="iw-eng-spark s4" aria-hidden="true"></span>
+                                        <span class="iw-eng-spark s5" aria-hidden="true"></span>
+                                        <span class="iw-eng-spark s6" aria-hidden="true"></span>
                                     </div>
-                                    <div class="iw-car-loader-text">Finding great cars…</div>
+                                    <div class="iw-car-loader-text">Tuning the engine…</div>
                                 </div>
                                 <span class="visually-hidden">Loading car photo...</span>
                             </div>
@@ -3284,11 +3291,18 @@
                         <div class="popular-car-card loading-card d-none d-md-flex">
                             <div class="car-image-wrapper shimmer-block">
                                 <div class="iw-car-loader">
-                                    <div class="iw-car-loader-scene">
-                                        <i class="fas fa-car-side iw-car-loader-car" aria-hidden="true"></i>
-                                        <span class="iw-car-loader-road"></span>
+                                    <div class="iw-engine-scene">
+                                        <span class="iw-eng-glow" aria-hidden="true"></span>
+                                        <span class="iw-eng-gear-wrap main"><i class="fas fa-gear" aria-hidden="true"></i></span>
+                                        <span class="iw-eng-gear-wrap sub"><i class="fas fa-gear" aria-hidden="true"></i></span>
+                                        <span class="iw-eng-spark s1" aria-hidden="true"></span>
+                                        <span class="iw-eng-spark s2" aria-hidden="true"></span>
+                                        <span class="iw-eng-spark s3" aria-hidden="true"></span>
+                                        <span class="iw-eng-spark s4" aria-hidden="true"></span>
+                                        <span class="iw-eng-spark s5" aria-hidden="true"></span>
+                                        <span class="iw-eng-spark s6" aria-hidden="true"></span>
                                     </div>
-                                    <div class="iw-car-loader-text">Finding great cars…</div>
+                                    <div class="iw-car-loader-text">Tuning the engine…</div>
                                 </div>
                                 <span class="visually-hidden">Loading car photo...</span>
                             </div>
@@ -3515,7 +3529,7 @@
             border-style: dashed;
             min-height: 0;
         }
-        /* Rich animated "sports car driving" loader for car placeholders */
+        /* Premium animated "exploded engine" loader for car placeholders */
         .iw-car-loader {
             position: absolute;
             inset: 0;
@@ -3526,35 +3540,57 @@
             justify-content: center;
             gap: 14px;
             padding: 16px;
-            background: linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(232,237,245,0.35) 100%);
+            background: linear-gradient(180deg, rgba(255,255,255,0.60) 0%, rgba(232,237,245,0.40) 100%);
         }
-        .iw-car-loader-scene {
+        .iw-engine-scene {
             position: relative;
-            width: 130px;
-            height: 56px;
+            width: 124px;
+            height: 88px;
         }
-        .iw-car-loader-car {
+        .iw-eng-glow {
             position: absolute;
-            left: 50%;
-            bottom: 16px;
-            transform: translateX(-50%);
-            font-size: 2.8rem;
+            left: 50%; top: 50%;
+            width: 90px; height: 90px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(51,179,168,0.32) 0%, rgba(51,179,168,0) 70%);
+            animation: iw-eng-pulse 2.2s ease-in-out infinite;
+        }
+        .iw-eng-gear-wrap { position: absolute; line-height: 0; }
+        .iw-eng-gear-wrap.main { left: 24px; top: 12px; }
+        .iw-eng-gear-wrap.sub { left: 64px; top: 40px; }
+        .iw-eng-gear-wrap i {
+            display: block;
             color: #33b3a8 !important;
-            filter: drop-shadow(0 8px 8px rgba(51,179,168,0.28));
-            animation: iw-car-bob 0.62s ease-in-out infinite;
+            filter: drop-shadow(0 6px 10px rgba(51,179,168,0.30));
         }
-        .iw-car-loader-road {
+        .iw-eng-gear-wrap.main i {
+            font-size: 3.3rem;
+            animation: iw-eng-spin 3.4s linear infinite;
+        }
+        .iw-eng-gear-wrap.sub i {
+            font-size: 1.95rem;
+            color: #0b2154 !important;
+            filter: drop-shadow(0 4px 8px rgba(11,33,84,0.28));
+            animation: iw-eng-spin-rev 2.1s linear infinite;
+        }
+        .iw-eng-spark {
             position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 10px;
-            height: 3px;
-            border-radius: 3px;
-            background: repeating-linear-gradient(90deg, #33b3a8 0 14px, transparent 14px 28px);
-            background-size: 28px 3px;
-            opacity: 0.85;
-            animation: iw-road-move 0.5s linear infinite;
+            left: 50%; top: 50%;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: #33b3a8;
+            box-shadow: 0 0 8px rgba(51,179,168,0.75);
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.3);
+            animation: iw-eng-burst 2.4s ease-out infinite;
         }
+        .iw-eng-spark.s1 { --tx: 36px;  --ty: -20px; animation-delay: 0s; }
+        .iw-eng-spark.s2 { --tx: -38px; --ty: -8px;  animation-delay: 0.35s; }
+        .iw-eng-spark.s3 { --tx: 30px;  --ty: 24px;  animation-delay: 0.7s; }
+        .iw-eng-spark.s4 { --tx: -28px; --ty: 26px;  animation-delay: 1.05s; }
+        .iw-eng-spark.s5 { --tx: 8px;   --ty: -32px; animation-delay: 1.4s;  background:#0b2154; box-shadow:0 0 8px rgba(11,33,84,0.6); }
+        .iw-eng-spark.s6 { --tx: -10px; --ty: 30px;  animation-delay: 1.75s; background:#0b2154; box-shadow:0 0 8px rgba(11,33,84,0.6); }
         .iw-car-loader-text {
             font-family: 'Montserrat', Arial, sans-serif;
             font-size: 0.78rem;
@@ -3562,16 +3598,26 @@
             letter-spacing: 0.04em;
             color: #0b2154;
         }
-        @keyframes iw-car-bob {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(-3px); }
+        @keyframes iw-eng-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
-        @keyframes iw-road-move {
-            from { background-position: 0 0; }
-            to { background-position: -28px 0; }
+        @keyframes iw-eng-spin-rev {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(-360deg); }
+        }
+        @keyframes iw-eng-pulse {
+            0%, 100% { opacity: 0.55; transform: translate(-50%, -50%) scale(0.92); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); }
+        }
+        @keyframes iw-eng-burst {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.3); }
+            15% { opacity: 1; }
+            100% { opacity: 0; transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1); }
         }
         @media (prefers-reduced-motion: reduce) {
-            .iw-car-loader-car, .iw-car-loader-road { animation: none; }
+            .iw-eng-gear-wrap i, .iw-eng-spark, .iw-eng-glow { animation: none; }
+            .iw-eng-spark { opacity: 0; }
         }
         .popular-car-card:hover {
             box-shadow: 0 8px 24px rgba(17, 27, 49, 0.18);
