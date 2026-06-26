@@ -695,10 +695,11 @@
             border-radius: 0 !important;
             background: transparent !important;
             border: none !important;
-            color: rgba(255,255,255,0.88) !important;
-            font-size: 0.78rem !important;
-            font-weight: 600 !important;
-            letter-spacing: .14em !important;
+            color: rgba(255,255,255,0.92) !important;
+            font-family: 'Montserrat', Arial, sans-serif !important;
+            font-size: 0.8rem !important;
+            font-weight: 800 !important;
+            letter-spacing: .16em !important;
             text-transform: uppercase !important;
             text-shadow: 0 1px 8px rgba(2, 14, 28, 0.6) !important;
         }
@@ -1717,12 +1718,12 @@
         }
         .iw-services-section-label {
             display: block;
-            font-size: 0.65rem;
-            font-weight: 700;
-            letter-spacing: 0.12em;
+            font-size: 0.95rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
             color: #111111;
-            margin-bottom: 4px;
+            margin-bottom: 8px;
         }
         .iw-services-section-title {
             font-size: 1.15rem;
@@ -1985,9 +1986,10 @@
             color: #0b2154;
         }
         @media (max-width: 767.98px) {
-            .iw-stepper-row { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px 14px; }
+            .iw-stepper-row { flex-direction: column; align-items: stretch; gap: 0; padding: 4px 16px; }
             .iw-stepper-arrow { display: none; }
-            .iw-stepper-item { width: 100%; }
+            .iw-stepper-item { width: 100%; padding: 16px 0; border-bottom: 1px solid rgba(20,33,61,0.09); }
+            .iw-stepper-item:last-child { border-bottom: none; }
             .iw-compact-cards-row { grid-template-columns: 1fr; gap: 10px; }
             .iw-compact-card { padding: 14px 16px; }
             .iw-cta-band-wrap { flex-direction: column !important; align-items: flex-start !important; gap: 12px !important; }
@@ -2002,7 +2004,8 @@
         @media (max-width: 575.98px) {
             .iw-compact-cards-row { gap: 8px; }
             .iw-compact-card { padding: 12px 14px; }
-            .iw-stepper-row { padding: 10px 12px; gap: 6px; }
+            .iw-stepper-row { padding: 4px 14px; }
+            .iw-stepper-item { padding: 14px 0; }
             .iw-stepper-num { width: 26px; height: 26px; min-width: 26px; font-size: 0.65rem; }
             .iw-stepper-text strong { font-size: 0.72rem; }
             .iw-stepper-text span { font-size: 0.62rem; }
@@ -3220,7 +3223,7 @@
     <div class="iw-trust-strip" aria-label="Why buyers trust inspectionWale">
         <span class="iw-trust-item"><i class="fas fa-check-circle"></i> Certified Inspectors</span>
         <span class="iw-trust-sep"></span>
-        <span class="iw-trust-item"><i class="fas fa-check-circle"></i> Same-Day PDF Report</span>
+        <span class="iw-trust-item"><i class="fas fa-check-circle"></i> Reports in 2 Hours</span>
         <span class="iw-trust-sep"></span>
         <span class="iw-trust-item"><i class="fas fa-check-circle"></i> On-Site Inspection</span>
         <span class="iw-trust-sep"></span>
@@ -3265,22 +3268,26 @@
                     <div class="popular-cars-track d-flex gap-4" id="popularCarsTrack" aria-live="polite">
                         <div class="popular-car-card loading-card">
                             <div class="car-image-wrapper shimmer-block">
+                                <div class="iw-car-loader">
+                                    <div class="iw-car-loader-scene">
+                                        <i class="fas fa-car-side iw-car-loader-car" aria-hidden="true"></i>
+                                        <span class="iw-car-loader-road"></span>
+                                    </div>
+                                    <div class="iw-car-loader-text">Finding great cars…</div>
+                                </div>
                                 <span class="visually-hidden">Loading car photo...</span>
-                            </div>
-                            <div class="car-info">
-                                <div class="skeleton-line w-75"></div>
-                                <div class="skeleton-line w-50"></div>
-                                <div class="skeleton-line w-60"></div>
                             </div>
                         </div>
                         <div class="popular-car-card loading-card d-none d-md-flex">
                             <div class="car-image-wrapper shimmer-block">
+                                <div class="iw-car-loader">
+                                    <div class="iw-car-loader-scene">
+                                        <i class="fas fa-car-side iw-car-loader-car" aria-hidden="true"></i>
+                                        <span class="iw-car-loader-road"></span>
+                                    </div>
+                                    <div class="iw-car-loader-text">Finding great cars…</div>
+                                </div>
                                 <span class="visually-hidden">Loading car photo...</span>
-                            </div>
-                            <div class="car-info">
-                                <div class="skeleton-line w-75"></div>
-                                <div class="skeleton-line w-50"></div>
-                                <div class="skeleton-line w-60"></div>
                             </div>
                         </div>
                     </div>
@@ -3349,7 +3356,7 @@
                 <div class="iw-stepper-num">03</div>
                 <div class="iw-stepper-text">
                     <strong>Receive findings</strong>
-                    <span>Photos, notes &amp; same-day report</span>
+                    <span>Photos, notes &amp; report in 2 hours</span>
                 </div>
             </div>
             <div class="iw-stepper-arrow"><i class="fas fa-chevron-right"></i></div>
@@ -3385,7 +3392,6 @@
                 <div class="iw-compact-card-head">
                     <span class="iw-compact-icon"><i class="fas fa-file-alt"></i></span>
                     <div>
-                        <div class="iw-compact-label">Report Contents</div>
                         <div class="iw-compact-title">What gets reported</div>
                     </div>
                 </div>
@@ -3505,6 +3511,64 @@
         .popular-car-card.loading-card {
             border-style: dashed;
             min-height: 0;
+        }
+        /* Rich animated "sports car driving" loader for car placeholders */
+        .iw-car-loader {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            padding: 16px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(232,237,245,0.35) 100%);
+        }
+        .iw-car-loader-scene {
+            position: relative;
+            width: 130px;
+            height: 56px;
+        }
+        .iw-car-loader-car {
+            position: absolute;
+            left: 50%;
+            bottom: 16px;
+            transform: translateX(-50%);
+            font-size: 2.8rem;
+            color: #33b3a8 !important;
+            filter: drop-shadow(0 8px 8px rgba(51,179,168,0.28));
+            animation: iw-car-bob 0.62s ease-in-out infinite;
+        }
+        .iw-car-loader-road {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 10px;
+            height: 3px;
+            border-radius: 3px;
+            background: repeating-linear-gradient(90deg, #33b3a8 0 14px, transparent 14px 28px);
+            background-size: 28px 3px;
+            opacity: 0.85;
+            animation: iw-road-move 0.5s linear infinite;
+        }
+        .iw-car-loader-text {
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: #0b2154;
+        }
+        @keyframes iw-car-bob {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-3px); }
+        }
+        @keyframes iw-road-move {
+            from { background-position: 0 0; }
+            to { background-position: -28px 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .iw-car-loader-car, .iw-car-loader-road { animation: none; }
         }
         .popular-car-card:hover {
             box-shadow: 0 8px 24px rgba(17, 27, 49, 0.18);
@@ -7118,7 +7182,7 @@
         }
 
         /* ════════ POST-DEAL ESSENTIALS — separated professional cards ════════ */
-        .iw-services-section-label { font-size: 0.74rem !important; letter-spacing: 0.16em !important; margin-bottom: 12px !important; }
+        .iw-services-section-label { font-size: 0.92rem !important; letter-spacing: 0.12em !important; margin-bottom: 10px !important; }
         .iw-services-mini-row {
             display: grid !important;
             grid-template-columns: repeat(4, 1fr) !important;
